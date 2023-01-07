@@ -1,0 +1,25 @@
+Currupt Script Instructions:
+
+
+Paste "lib" files in lib folder 
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Paste "Outifits" files in Places folder 
+C:\Users\PC-NAME\AppData\Roaming\Stand\Outifits
+
+
+Paste "resources" files in resources folder 
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Paste "store" files in resources folder 
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Paste "Currupt Script.lua" file in lua folder 
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Note: You only need the lua file if you already have Currupt script installed*

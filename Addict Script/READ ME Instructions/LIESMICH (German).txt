@@ -1,0 +1,25 @@
+Anweisungen für das Currupt-Skript:
+
+
+Fügen Sie „lib“-Dateien in den lib-Ordner ein
+C:\Benutzer\PC-NAME\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Fügen Sie "Outifits"-Dateien in den Ordner "Orte" ein
+C:\Benutzer\PC-NAME\AppData\Roaming\Stand\Outifits
+
+
+Fügen Sie "Ressourcen" -Dateien in den Ressourcenordner ein
+C:\Benutzer\PC-NAME\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Fügen Sie "Speicher"-Dateien in den Ressourcenordner ein
+C:\Benutzer\PC-NAME\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Fügen Sie die Datei „Currupt Script.lua“ in den Lua-Ordner ein
+C:\Benutzer\PC-NAME\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Hinweis: Sie benötigen die Lua-Datei nur, wenn Sie das Currupt-Skript bereits installiert haben*

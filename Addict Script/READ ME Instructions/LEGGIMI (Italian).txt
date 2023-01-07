@@ -1,0 +1,25 @@
+Istruzioni per lo script Currupt:
+
+
+Incolla i file "lib" nella cartella lib
+C:\Utenti\NOME PC\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Incolla i file "Abbigliamento" nella cartella Luoghi
+C:\Utenti\NOME PC\AppData\Roaming\Stand\Outifits
+
+
+Incolla i file "risorse" nella cartella delle risorse
+C:\Utenti\NOME PC\AppData\Roaming\Stand\Script Lua\risorse
+
+
+Incolla i file "store" nella cartella delle risorse
+C:\Utenti\NOME PC\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Incolla il file "Currupt Script.lua" nella cartella lua
+C:\Utenti\NOME PC\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Nota: hai bisogno del file lua solo se hai già installato lo script Currupt*

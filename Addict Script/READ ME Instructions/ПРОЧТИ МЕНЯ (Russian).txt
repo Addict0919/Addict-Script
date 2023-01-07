@@ -1,0 +1,25 @@
+Инструкции по скрипту Currupt:
+
+
+Вставьте файлы «lib» в папку lib
+C:\Users\ИМЯ ПК\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Вставьте файлы Outifits в папку Places.
+C:\Users\ИМЯ ПК\AppData\Roaming\Stand\Outifits
+
+
+Вставьте файлы "resources" в папку ресурсов
+C:\Users\ИМЯ ПК\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Вставьте «хранить» файлы в папку ресурсов
+C:\Users\ИМЯ ПК\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Вставьте файл «Currupt Script.lua» в папку lua.
+C:\Users\ИМЯ ПК\AppData\Roaming\Stand\Lua скрипты
+
+
+
+*Примечание: вам нужен файл lua, только если у вас уже установлен скрипт Currupt*

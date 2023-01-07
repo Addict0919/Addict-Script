@@ -1,0 +1,25 @@
+Instrucciones de secuencia de comandos Currupt:
+
+
+Pegue los archivos "lib" en la carpeta lib
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Pegue los archivos "Outifits" en la carpeta Lugares
+C:\Users\PC-NAME\AppData\Roaming\Stand\Outifits
+
+
+Pegue los archivos de "recursos" en la carpeta de recursos
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Pegue los archivos "almacenados" en la carpeta de recursos
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Pegue el archivo "Currupt Script.lua" en la carpeta lua
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Nota: solo necesita el archivo lua si ya tiene instalado el script Currupt*

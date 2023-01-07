@@ -1,0 +1,25 @@
+Instrucțiuni pentru scriptul currupt:
+
+
+Lipiți fișierele „lib” în folderul lib
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Lipiți fișierele „Otifits” în folderul Locații
+C:\Users\PC-NAME\AppData\Roaming\Stand\Outifits
+
+
+Lipiți fișierele „resurse” în folderul de resurse
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Lipiți fișierele „magazin” în folderul de resurse
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Lipiți fișierul „Currupt Script.lua” în folderul lua
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Notă: aveți nevoie de fișierul lua doar dacă aveți deja instalat scriptul Currupt*

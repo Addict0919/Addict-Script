@@ -1,0 +1,25 @@
+Currupt-scriptinstructies:
+
+
+Plak "lib"-bestanden in de lib-map
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\lib
+
+
+Plak "Outifits"-bestanden in de map Places
+C:\Users\PC-NAME\AppData\Roaming\Stand\Outifits
+
+
+Plak "resources"-bestanden in de map resources
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\resources
+
+
+Plak "store"-bestanden in de map resources
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts\store
+
+
+Plak het "Currupt Script.lua"-bestand in de lua-map
+C:\Users\PC-NAME\AppData\Roaming\Stand\Lua Scripts
+
+
+
+*Opmerking: je hebt het lua-bestand alleen nodig als je Currupt-script al hebt geïnstalleerd*
