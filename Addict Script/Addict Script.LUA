@@ -114,7 +114,7 @@ end)
         starttime = os.clock()
         local alpha = 0
         while true do
-            directx.draw_texture(Addictscript_logo, 0.15, 0.10, 0.5, 1.2, 0.5, 0.5, 0, 1, 1, 1, logo_alpha)
+            directx.draw_texture(Addictscript_logo, 0.15, 0.10, 0.5, 0.7, 0.5, 0.5, 0, 1, 1, 1, logo_alpha)
             timepassed = os.clock() - starttime
             if timepassed > 1 then
                 logo_alpha_incr = -0.01
