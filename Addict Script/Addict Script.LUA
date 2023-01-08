@@ -41,11 +41,11 @@ local a=0.3;if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
-                    local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
-                        util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
+                notification("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
+                    local d=select(2,load(c))if d then notification("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
+                        notification("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+notification("Welcome To Addict Script 1.4.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -413,7 +413,7 @@ local fake_pickup_types <const> = {
 
                     wait_session_transition()
                     menu.trigger_command(all_weapons_command_ref)
-                    util.toast("Weapons loaded successfully. :)")
+                    notification("Weapons loaded successfully. :)")
                 end
             end)
         end
@@ -663,7 +663,7 @@ local function wait_until_path_is_available(path, message)
     while true do
         if not does_path_exist(path) then
             if not SCRIPT_SILENT_START then
-                util.toast(message)
+                notification(message)
             end
         else
             break
@@ -715,7 +715,7 @@ local relative_paths = {
 
 if idiot_proof and not does_path_exist(main_mb_path .. relative_paths.find_safer_ways) then
 elseif idiot_proof and not SCRIPT_SILENT_START then 
-    util.toast("MB is already loaded. Nice!")
+    notification("MB is already loaded. Nice!")
 end
 
 local selected_whouse_ref = menu.ref_by_path(main_mb_path .. relative_paths.selected_whouse)
@@ -968,10 +968,10 @@ function create_timer_entry(data)
         menu.action(this_timer_root, "Delete timer", {}, "Delete this timer\'s file.", function(click_type)
             ok, err = os.remove(this_timer_path)
             if not ok then
-                util.toast("Timer could not be removed: " .. err)
+                notification("Timer could not be removed: " .. err)
             else
                 all_timer_lists[timer_name] = nil
-                util.toast("Timer removed.")
+                notification("Timer removed.")
                 menu.delete(this_timer_root)
                 parse_all_timer_files()
             end
@@ -1020,13 +1020,13 @@ menu.action(create_timer_root, "Create timer", {}, "Create and save this timer a
     }
     local timer_path = store_dir .. '/' .. new_timer_name .. '.lua'
     if filesystem.exists(timer_path) then
-        util.toast("A timer with that name already exists.")
+        notification("A timer with that name already exists.")
         return 
     else
         table.save(new_timer_data, timer_path)
         parse_all_timer_files()
         menu.trigger_commands("Addict" .. new_timer_name:gsub(' ', ''))
-        util.toast("Timer created! I\'ve opened it for you :)")
+        notification("Timer created! I\'ve opened it for you :)")
     end
 end)
 
@@ -1050,7 +1050,7 @@ end
 
 local resource_dir = filesystem.resources_dir()
 if not filesystem.exists(resource_dir) then
-	util.toast("resource directory not found. notification system will be less of a bruh")
+	notification("resource directory not found. notification system will be less of a bruh")
 else
 	util.register_file(resource_dir .. "bruhzowski.ytd")
 end
@@ -1142,7 +1142,7 @@ function get_control_request(ent) -- #testing -- new get control request, yield 
 		end
 	end
 	if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(ent) then
-		util.toast("No Control of "..ent)
+		notification("No Control of "..ent)
 	end
 	return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(ent)
 end
@@ -2604,13 +2604,13 @@ local chaos, gravity, speed = false, true, 100
 			if excludeselected then
 				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
 					menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
 					notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 				end
 			else
 				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
 					menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
 					notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 				end
 			end
@@ -2636,12 +2636,12 @@ local chaos, gravity, speed = false, true, 100
 			if excludeselected then
 				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
 					menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
 				end
 			else
 				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
 					menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
 				end
 			end
 		end
@@ -2653,13 +2653,13 @@ local chaos, gravity, speed = false, true, 100
 				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                     util.yield(100)
 					menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
 				end
 			else
 				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                     util.yield(100)
 					menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+                    notification("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
 				end
 			end
 		end
@@ -2773,7 +2773,7 @@ local chaos, gravity, speed = false, true, 100
 
 	menu.action(pidsacam, "Anti Crash Camera On", {"acam"}, "Activates ped regen, invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and blocks all connections", function()
 		notification("Toggling Anti Crash Camera On", colors.blue)
-		util.toast("Note: Your camera is free to fly around :)")
+		notification("Note: Your camera is free to fly around :)")
 		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
 			menu.trigger_commands("mpfemale")
 			menu.trigger_commands("invisibility" .. " On")
@@ -2851,7 +2851,7 @@ if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3)))
  memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
  memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
 else
-    util.toast("You don't currently have a bounty bitch! xD.")
+    notification("You don't currently have a bounty bitch! xD.")
     end
 end)
 
@@ -2879,7 +2879,7 @@ menu.toggle_loop(anti_mugger, "Anti-Mugger", {}, "Prevents you from being mugged
             and NETWORK.NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(memory.read_int(ped_netId))) then
                 local mugger = NETWORK.NET_TO_PED(memory.read_int(ped_netId))
                 entities.delete_by_handle(mugger)
-                util.toast("Blocked mugger from " .. players.get_name(memory.read_int(sender)))
+                notification("Blocked mugger from " .. players.get_name(memory.read_int(sender)))
             end
         end)
     end
@@ -2899,7 +2899,7 @@ menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mu
             and NETWORK.NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(memory.read_int(ped_netId)) then
                 local mugger = NETWORK.NET_TO_PED(memory.read_int(ped_netId))
                 entities.delete_by_handle(mugger)
-                util.toast("Block mugger sent by " .. players.get_name(memory.read_int(sender)) .. " to " .. players.get_name(memory.read_int(target)))
+                notification("Block mugger sent by " .. players.get_name(memory.read_int(sender)) .. " to " .. players.get_name(memory.read_int(target)))
             end
         end)
     end
@@ -2934,7 +2934,7 @@ end)
             for i = 1, 100 do
                 menu.trigger_commands("removeloader")
             end
-            util.toast("It's not my fault the log error if prompted, wait for Stand to fix it")
+            notification("It's not my fault the log error if prompted, wait for Stand to fix it")
         end
     end)
 
@@ -2951,7 +2951,7 @@ menu.toggle_loop(protexx, "Clear All Notifications & Transaction Errors", {"togg
         for i = 1, 100 do
             menu.trigger_commands("removeloader")
         end
-        util.toast("It's not my fault the log error if prompted, wait for Stand to fix it")
+        notification("It's not my fault the log error if prompted, wait for Stand to fix it")
     end
 end)
 
@@ -3075,7 +3075,7 @@ end)
 
 			ct = ct + 1
 		end
-		util.toast("Pooped all vehicles!")
+		notification("Pooped all vehicles!")
 		for k,ent in pairs(entities.get_all_peds_as_handles()) do
 			if not PED.IS_PED_A_PLAYER(ent) then
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -3084,7 +3084,7 @@ end)
 			end
 			ct = ct + 1
 		end
-		util.toast("Shagged all peds AUUUUUGGH!!!")
+		notification("Shagged all peds AUUUUUGGH!!!")
 		for k,ent in pairs(entities.get_all_objects_as_handles()) do
 			if ent ~= PLAYER.PLAYER_PED_ID() then
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -3092,8 +3092,8 @@ end)
 				ct = ct + 1
 			end
 		end
-		util.toast("Gobbled all pickups nom nom!")
-		util.toast("Fucked Everything off " .. ct .. " Entities removed. :)")
+		notification("Gobbled all pickups nom nom!")
+		notification("Fucked Everything off " .. ct .. " Entities removed. :)")
 		notification("Shit cleaned nom nom > " .. ct .. "Entities", colors.green)
 			for k,ent in pairs(entities.get_all_pickups_as_handles()) do
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -3105,7 +3105,7 @@ end)
 
 menu.toggle_loop(protex, "Anti-Beast", {}, "Prevents you from being turned into the beast but will also stop the event for others.", function()
     if util.spoof_script("am_hunt_the_beast", SCRIPT.TERMINATE_THIS_THREAD) then
-        util.toast("Hunt the beast script detected. Terminating script...")
+        notification("Hunt the beast script detected. Terminating script...")
     end
 end)
 
@@ -3118,7 +3118,7 @@ menu.toggle_loop(protex, "Block Transaction Error 'Test'", {}, "Likely to lead t
         for i = 1, 100 do
             menu.trigger_commands("removeloader")
         end
-        util.toast("It's not my fault the log error, wait for Stand to fix it")
+        notification("It's not my fault the log error, wait for Stand to fix it")
     end
 end)
 
@@ -3192,7 +3192,7 @@ menu.toggle(protex, "Force Request Control", {"controlall"}, "", function (yoink
                     NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(BigTable[i])
                     wait()
                 end
-                util.toast("Requested control of all")
+                notification("Requested control of all")
                 ----
                 wait()
             end
@@ -4276,11 +4276,11 @@ end
         if on then
             menu.trigger_commands("IGFurry")
             menu.trigger_commands("walkstyle mop")
-            util.toast("Furry On") 
+            notification("Furry On") 
         else
             menu.trigger_commands("outfit1candydinka")
             menu.trigger_commands("walkstyle poshfemale")
-            util.toast("Candy Mode On")
+            notification("Candy Mode On")
             end 
         end)
 
@@ -4288,11 +4288,11 @@ end
         if on then
             menu.trigger_commands("ACRabbit02")
             menu.trigger_commands("walkstyle mop")
-            util.toast("Rabbit Mode On") 
+            notification("Rabbit Mode On") 
         else
             menu.trigger_commands("outfit1candydinka")
             menu.trigger_commands("walkstyle poshfemale")
-            util.toast("Candy Mode On")
+            notification("Candy Mode On")
             end 
         end)
 
@@ -4300,11 +4300,11 @@ end
         if on then
             menu.trigger_commands("UMMYuleMonster")
             menu.trigger_commands("walkstyle mop")
-            util.toast("Yule Monster Mode On") 
+            notification("Yule Monster Mode On") 
         else
             menu.trigger_commands("outfit1candydinka")
             menu.trigger_commands("walkstyle poshfemale")
-            util.toast("Candy Mode On")
+            notification("Candy Mode On")
             end 
         end)
 
@@ -4312,12 +4312,12 @@ menu.toggle(playermode, "Hulk Mode", {"hulkmode"}, "Makes you jump high and very
     if toggle then
         menu.trigger_commands("damagemultiplier 10000")
         menu.trigger_commands("superjump")
-util.toast("Hulk Mode On")
+notification("Hulk Mode On")
     else
     menu.trigger_commands("damagemultiplier 1.01")
     menu.trigger_commands("damagemultiplier 1")
         menu.trigger_commands("superjump")
-util.toast("Hulk Mode Off")
+notification("Hulk Mode Off")
     end 
 end)
 
@@ -4327,14 +4327,14 @@ menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisib
         menu.trigger_commands("reducedcollision" .. " on")
         menu.trigger_commands("otr")
         menu.trigger_commands("quietsteps")
-        util.toast("Sneaky Mode On") 
+        notification("Sneaky Mode On") 
     else
         menu.trigger_commands("tpmazehelipad")
         menu.trigger_commands("invisibility" .. " off")
         menu.trigger_commands("reducedcollision" .. " off")
         menu.trigger_commands("otr")
         menu.trigger_commands("quietsteps")
-        util.toast("Sneaky Mode Off")
+        notification("Sneaky Mode Off")
         end 
 end)
 
@@ -4346,12 +4346,12 @@ menu.toggle(playermode, "Toggle Pidgeon Mode", {"pidgeonmode"}, "Turns you into 
         util.yield(100)
         menu.trigger_commands("noguns")
         menu.trigger_commands("allguns")
-        util.toast("Pidgeon Mode On") 
+        notification("Pidgeon Mode On") 
     else
         menu.trigger_commands("otr")
         menu.trigger_commands("reducedcollision" .. " off")
         menu.trigger_commands("outfit1candydinka")
-        util.toast("Pidgeon Mode Off")
+        notification("Pidgeon Mode Off")
         end 
 end)
 
@@ -4368,11 +4368,11 @@ menu.toggle(playermode, "Toggle Killer Whale Mode", {"killerwhaleonmode"}, "Turn
         util.yield(10)
         menu.trigger_commands("noguns")
         menu.trigger_commands("allguns")
-        util.toast("Killer Whale Mode On") 
+        notification("Killer Whale Mode On") 
     else
         menu.trigger_commands("otr")
         menu.trigger_commands("outfit1candydinka")
-        util.toast("Killer Whale Off")
+        notification("Killer Whale Off")
         end 
 end)
 
@@ -4383,7 +4383,7 @@ if on then
         menu.trigger_commands("superjump")
     menu.trigger_commands("walkstyle verydrunk")
     menu.trigger_commands("otr")
-util.toast("Big Foot Mode On") 
+notification("Big Foot Mode On") 
 else
     menu.trigger_commands("outfit1candydinka")
     menu.trigger_commands("walkstyle poshfemale")
@@ -4391,7 +4391,7 @@ else
     menu.trigger_commands("damagemultiplier 1")
         menu.trigger_commands("superjump")
     menu.trigger_commands("otr")
-util.toast("Candy Mode On")
+notification("Candy Mode On")
     end 
 end)
 
@@ -4400,12 +4400,12 @@ if on then
     menu.trigger_commands("acchimp02")
         menu.trigger_commands("superjump")
     menu.trigger_commands("walkstyle mop")
-util.toast("Stunt Monkey Mode On") 
+notification("Stunt Monkey Mode On") 
 else
     menu.trigger_commands("outfit1candydinka")
     menu.trigger_commands("walkstyle poshfemale")
         menu.trigger_commands("superjump")
-util.toast("Candy Mode On")
+notification("Candy Mode On")
     end 
 end)
 
@@ -4416,12 +4416,12 @@ if on then
     menu.trigger_commands("trevor")
     menu.trigger_commands("walkstyle verydrunk")
     menu.trigger_commands("otr")
-util.toast("Trevor Mode 1 On") 
+notification("Trevor Mode 1 On") 
 else
     menu.trigger_commands("outfit1candydinka")
     menu.trigger_commands("walkstyle poshfemale")
     menu.trigger_commands("otr")
-util.toast("Candy Mode On")
+notification("Candy Mode On")
     end 
 end)
 
@@ -4430,12 +4430,12 @@ if on then
     menu.trigger_commands("outfit1trevor")
     menu.trigger_commands("walkstyle crouched")
     menu.trigger_commands("otr")
-util.toast("Trevor Mode 2 On") 
+notification("Trevor Mode 2 On") 
 else
     menu.trigger_commands("outfit1candydinka")
     menu.trigger_commands("walkstyle poshfemale")
     menu.trigger_commands("otr")
-util.toast("Candy Mode On")
+notification("Candy Mode On")
     end 
 end)
 
@@ -4990,7 +4990,7 @@ GenerateFeatures = function(pid)
                         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(playerVehicle)
                         VEHICLE.SET_VEHICLE_CHEAT_POWER_INCREASE(playerVehicle, player_torque/1000000)
 	      VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, -2147483647)
-                    util.toast("Restart Addict Script To Reset Your Own Speed")
+                    notification("Restart Addict Script To Reset Your Own Speed")
                     end
                     return (player_torques ~= 1000000)
                 end)
@@ -5316,7 +5316,7 @@ local usingRape = false
     menu.action(griefingtp, "TP All Players to me", {"tpallplayers"}, "Teleports all players to you.", function()
         menu.trigger_commands("say " .. " Get on the bike :)")
         menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " manchez")
-        util.toast("Give them a second to get on...")
+        notification("Give them a second to get on...")
         util.yield(10000)
         excludeselected = true
         menu.trigger_commands("tpplayers")
@@ -5358,7 +5358,7 @@ local usingRape = false
                     end
                     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
                     if not players.exists(pid) then
-                        util.toast(aatoast)
+                        notification(aatoast)
                         util.stop_thread()
                     else
                     end
@@ -5369,13 +5369,13 @@ local usingRape = false
 
         function request_control_of_entity(ent)
             if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(ent) and util.is_session_started() then
-                util.toast("Requesting entity control of " .. ent)
+                notification("Requesting entity control of " .. ent)
                 local netid = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent)
                 NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netid, true)
                 local st_time = os.time()
                 while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(ent) do
                     if os.time() - st_time >= 5 then
-                        util.toast("Failed to request entity control in 5 seconds (entity " .. ent .. ")")
+                        notification("Failed to request entity control in 5 seconds (entity " .. ent .. ")")
                         break
                     end
                     NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ent)
@@ -5631,7 +5631,7 @@ menu.action(attachoptions, "Clear Vehicles", {"clearvehicles"}, "", function()
 end)
 
     menu.action(attachoptions, "Custom Object Model", {"customattmodel"}, "", function(on_click)
-        util.toast("Please input the model name")
+        notification("Please input the model name")
         menu.show_command_box("customattmodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, function(on_command)
         local hash = util.joaat(on_command)
@@ -5640,7 +5640,7 @@ end)
     end)
     
     menu.action(attachoptions, "Custom Vehicle Model", {"customvemodel"}, "", function(on_click)
-        util.toast("Please input the model name")
+        notification("Please input the model name")
         menu.show_command_box("customvemodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, function(on_command)
         local hash = util.joaat(on_command)
@@ -5688,14 +5688,14 @@ end)
             menu.trigger_commands("reducedcollision" .. " on")
             menu.trigger_commands("otr")
             menu.trigger_commands("quietsteps")
-            util.toast("Sneaky Mode On") 
+            notification("Sneaky Mode On") 
         else
             menu.trigger_commands("tpmazehelipad")
             menu.trigger_commands("invisibility" .. " off")
             menu.trigger_commands("reducedcollision" .. " off")
             menu.trigger_commands("otr")
             menu.trigger_commands("quietsteps")
-            util.toast("Sneaky Mode Off")
+            notification("Sneaky Mode Off")
             end 
     end)
 
@@ -5708,13 +5708,13 @@ end)
             util.yield(100)
             menu.trigger_commands("noguns")
             menu.trigger_commands("allguns")
-            util.toast("Pidgeon Mode On") 
+            notification("Pidgeon Mode On") 
         else
             menu.trigger_commands("otr")
             menu.trigger_commands("tpmazehelipad")
             menu.trigger_commands("reducedcollision" .. " off")
             menu.trigger_commands("outfit1candydinka")
-            util.toast("Pidgeon Mode Off")
+            notification("Pidgeon Mode Off")
             end 
     end)
 
@@ -6416,7 +6416,7 @@ menu.toggle(DeerArmy, "Deer Fuck Player", {"deerfuck"}, "", function(on_toggle)
         menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.toast("Wait 5 Seconds to turn off please.")
+        notification("Wait 5 Seconds to turn off please.")
     else
         menu.trigger_commands("cleardeers" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6460,7 +6460,7 @@ menu.toggle(BoarArmy, "Boar/Pig Fuck Player", {"boarfuck"}, "Restart the script 
         menu.trigger_commands("boararmy" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.toast("Wait 5 Seconds to turn off please.")
+        notification("Wait 5 Seconds to turn off please.")
     else
         menu.trigger_commands("clearboars" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6521,7 +6521,7 @@ menu.toggle(RabbitArmy, "Rabbit Fuck Player", {"togglerabbit"}, "", function(on_
         menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.toast("Wait 5 Seconds to turn off please.")
+        notification("Wait 5 Seconds to turn off please.")
     else
         menu.trigger_commands("clearrabbits" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6569,7 +6569,7 @@ menu.toggle(YuleArmy, "Yule Monster Fuck Player", {"toggleyulemonster"}, "Will C
         menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.toast("Wait 5 Seconds to turn off please.")
+        notification("Wait 5 Seconds to turn off please.")
     else
         menu.trigger_commands("clearyules" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6617,7 +6617,7 @@ menu.toggle(FurryArmy, "Furry Fuck Player", {"furryfuck"}, "Spawns IG Furry the 
         menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.toast("Wait 5 Seconds to turn off please.")
+        notification("Wait 5 Seconds to turn off please.")
     else
         menu.trigger_commands("clearfurrys" .. PLAYER.GET_PLAYER_NAME(pid))
         menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6664,7 +6664,7 @@ end)
             menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            util.toast("Wait 5 Seconds to turn off please.")
+            notification("Wait 5 Seconds to turn off please.")
         else
             menu.trigger_commands("clearpussys" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -6709,7 +6709,7 @@ end)
             menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            util.toast("Wait 5 Seconds to turn off please.")
+            notification("Wait 5 Seconds to turn off please.")
         else
             menu.trigger_commands("clearfathoes" .. PLAYER.GET_PLAYER_NAME(pid))
             menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -7535,17 +7535,17 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
                     bk[U] = entities.create_ped(28, pedhash, bf, bj)
                     util.yield(100)
                 end
-                    util.toast("Done sending")
+                    notification("Done sending")
                 util.yield(10)
-                    util.toast("Cleaning up")
+                    notification("Cleaning up")
                 for U = 1, 10 do
                     entities.delete_by_handle(bk[U])
                     util.yield(0)
                 end
                 util.yield(0)
                 if not players.exists(pid) then
-                    util.toast(a0[math.random(1, 13)], TOAST_ABOVE_MAP)
-                    util.toast("Player left")
+                    notification(a0[math.random(1, 13)], TOAST_ABOVE_MAP)
+                    notification("Player left")
                 end
                 util.yield(0)
                 aU = false
@@ -8640,7 +8640,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
 
-            --util.toast(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
+            --notification(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
         end
 	end)
 
@@ -8703,7 +8703,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
 
-            --util.toast(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
+            --notification(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
 
         end
 	end)
@@ -9125,13 +9125,13 @@ function spawn_buzzard(pid, gunner_weapon, collision)
   
 --[[
 menu.action(frienm, "Send Message", {"Sendmessage"}, "Input the text for your private message.", function(on_click)
-    util.toast("Please input your message.")
+    notification("Please input your message.")
     menu.show_command_box("Sendmessage " .. players.get_name(pid) .. " ")
     end, function(on_command)
         if #on_command > 140 then
         else
             chat.send_targeted_message(pid, players.user(), on_command, false)
-            util.toast("Message Sent!")
+            notification("Message Sent!")
         end
 end)
 ]]
@@ -9457,7 +9457,7 @@ menu.toggle(protectcrash, "Join Player's Crash Protections", {"joinprotect"}, "T
         menu.trigger_command(BlockNetEvents)
         menu.trigger_command(ShowNotis)
         menu.trigger_command(BlockRaw)
-        util.toast("Activated, now enter your session and prepare the kick/crash.")
+        notification("Activated, now enter your session and prepare the kick/crash.")
         util.yield(100)
     else
         menu.trigger_commands("anticrashcamera")
@@ -9468,7 +9468,7 @@ menu.toggle(protectcrash, "Join Player's Crash Protections", {"joinprotect"}, "T
         menu.trigger_command(UnblockNetEvents)
         menu.trigger_command(UnShowNotis)
         menu.trigger_command(UnBlockRaw)
-        util.toast("Done, all off")
+        notification("Done, all off")
         util.yield(100)
         end
     end)
@@ -9575,14 +9575,14 @@ end
 function RqModel(hash)
     STREAMING.REQUEST_MODEL(hash)
     local count = 0
-    util.toast("Requesting model...")
+    notification("Requesting model...")
     while not STREAMING.HAS_MODEL_LOADED(hash) and count < 100 do
         STREAMING.REQUEST_MODEL(hash)
         count = count + 1
         util.yield(10)
     end
     if not STREAMING.HAS_MODEL_LOADED(hash) then
-        util.toast("Tried for 1 second, couldn't load this specified model!")
+        notification("Tried for 1 second, couldn't load this specified model!")
     end
 end
 
@@ -9631,7 +9631,7 @@ menu.toggle_loop(craftcrash, "Start Loop 1", {"craftloop1"}, "Hold down enter...
     while not STREAMING.HAS_MODEL_LOADED(modelHash) do
         util.yield_once()
     end
-    util.toast("Incoming Vehicles o.o")
+    notification("Incoming Vehicles o.o")
     while util.current_time_millis() - startTime < 20000 do
         local pos = playerposition(playerPed, spawnDistance1)
         pos.z = pos.z + 30.0
@@ -9682,7 +9682,7 @@ menu.toggle_loop(craftcrash, "Start Loop 2", {"craftloop2"}, "Hold down enter...
     while not STREAMING.HAS_MODEL_LOADED(modelHash) do
         util.yield_once()
     end
-    util.toast("Incoming Vehicles o.o")
+    notification("Incoming Vehicles o.o")
     while util.current_time_millis() - startTime < 20000 do
         local pos = playerposition(playerPed, spawnDistance2)
         pos.z = pos.z + 30.0
@@ -9732,7 +9732,7 @@ menu.toggle_loop(craftcrash, "Start Loop 3", {"craftloop3"}, "Hold down enter...
     while not STREAMING.HAS_MODEL_LOADED(modelHash) do
         util.yield_once()
     end
-    util.toast("Incoming Vehicles o.o")
+    notification("Incoming Vehicles o.o")
     while util.current_time_millis() - startTime < 20000 do
         local pos = playerposition(playerPed, spawnDistance3)
         pos.z = pos.z + 30.0
@@ -9782,7 +9782,7 @@ menu.toggle_loop(craftcrash, "Start Loop 4", {"craftloop4"}, "Hold down enter...
     while not STREAMING.HAS_MODEL_LOADED(modelHash) do
         util.yield_once()
     end
-    util.toast("Incoming Vehicles o.o")
+    notification("Incoming Vehicles o.o")
     while util.current_time_millis() - startTime < 20000 do
         local pos = playerposition(playerPed, spawnDistance4)
         pos.z = pos.z + 30.0
@@ -9832,7 +9832,7 @@ menu.toggle_loop(craftcrash, "Start Loop 5", {"craftloop5"}, "Hold down enter...
     while not STREAMING.HAS_MODEL_LOADED(modelHash) do
         util.yield_once()
     end
-    util.toast("Incoming Vehicles o.o")
+    notification("Incoming Vehicles o.o")
     while util.current_time_millis() - startTime < 20000 do
         local pos = playerposition(playerPed, spawnDistance5)
         pos.z = pos.z + 30.0
@@ -10151,7 +10151,7 @@ menu.toggle_loop(objectc, "Send Objects", {}, "", function()
     end
     util.yield(50)
     
-    util.toast("[Object Crash] Finished.")
+    notification("[Object Crash] Finished.")
 end)
 
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
@@ -10183,7 +10183,7 @@ menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on a
     util.yield(100)
     menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
     util.yield(3000)
-    util.toast("Wait For TP Loop to finish or restart the script...")
+    notification("Wait For TP Loop to finish or restart the script...")
     menu.trigger_commands("tpspread" .. players.get_name(pid))
     util.yield(100)
     menu.trigger_commands("anticrashcamera")
@@ -10247,7 +10247,7 @@ menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on 
         menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
         util.yield(200)
     else
-        util.toast("Wait For TP Loop to finish or restart the script...")
+        notification("Wait For TP Loop to finish or restart the script...")
         menu.trigger_commands("anticrashcamera")
         util.yield(200)
         menu.trigger_commands("tpspread" .. players.get_name(pid))
@@ -10808,7 +10808,7 @@ local weedcrash = menu.list(crash, "Weed Crash", {}, "")
             util.request_model(-930879665)
             util.yield(10)
         end
-        util.toast("Finished.")
+        notification("Finished.")
     end)
 
     menu.toggle_loop(weedcrash, "Weed Pot Crash", {"toggleweedcrash"}, "", function(on_toggle)
@@ -10923,7 +10923,7 @@ local clothescrash = menu.list(lobbycrash, "Component Crash", {}, "")
 
 menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
         if pid ~= players.user() then
-            util.toast("Wait 20 Seconds...")
+            notification("Wait 20 Seconds...")
             local math_random = math.random
             local joaat = util.joaat
             util.yield(100)
@@ -12012,9 +12012,9 @@ menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle 
                 util.yield(5)					
             end
             util.yield(100)
-            util.toast("Done")
+            notification("Done")
         else
-            util.toast("You can't use it on yourself")
+            notification("You can't use it on yourself")
         end
 end)
 
@@ -12104,7 +12104,7 @@ menu.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", 
                 entities.delete_by_handle(ped1)
                 util.yield(1)
         else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
 notification("Worth it HAHA!!!", colors.red)
         end
     end)
@@ -12130,7 +12130,7 @@ menu.toggle_loop(poodlecrash, "Poodle Bomb Crash", {"togglepoodle"}, "Skidded fr
                 entities.delete_by_handle(ped1)
                 util.yield(1)
         else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
 notification("Worth it HAHA!!!", colors.red)
         end
     end)
@@ -12675,7 +12675,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -12700,7 +12700,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -12725,7 +12725,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -12750,7 +12750,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12777,7 +12777,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12803,7 +12803,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12829,7 +12829,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12855,7 +12855,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12881,7 +12881,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12907,7 +12907,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12933,7 +12933,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -12959,7 +12959,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13045,7 +13045,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -13070,7 +13070,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -13095,7 +13095,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                     entities.delete_by_handle(ped1)
                     util.yield(1)
             else
-                    util.toast("Failed to load model. :/")
+                    notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             end)
@@ -13120,7 +13120,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13147,7 +13147,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13173,7 +13173,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13199,7 +13199,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13225,7 +13225,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13251,7 +13251,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13277,7 +13277,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13303,7 +13303,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13329,7 +13329,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                 entities.delete_by_handle(ped1)
                 util.yield(1)
             else
-                util.toast("Failed to load model. :/")
+                notification("Failed to load model. :/")
             notification("Worth it HAHA!!!", colors.red)
             end
             
@@ -13408,7 +13408,7 @@ end
 
 	menu.action(acams, "Anti Crash Camera On", {"acam"}, "Activates ped regen, invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and blocks all connections", function()
 		notification("Toggling Anti Crash Camera On", colors.blue)
-		util.toast("Note: Your camera is free to fly around :)")
+		notification("Note: Your camera is free to fly around :)")
 		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
 			menu.trigger_commands("mpfemale")
 
@@ -13634,7 +13634,7 @@ menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is b
         menu.trigger_command(BlockNetEvents)
         menu.trigger_command(ShowNotis)
         menu.trigger_command(BlockRaw)
-        util.toast("Activated, now enter your session and prepare the kick/crash.")
+        notification("Activated, now enter your session and prepare the kick/crash.")
         util.yield(100)
     else
         menu.trigger_commands("anticrashcamera")
@@ -13645,7 +13645,7 @@ menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is b
         menu.trigger_command(UnblockNetEvents)
         menu.trigger_command(UnShowNotis)
         menu.trigger_command(UnBlockRaw)
-        util.toast("Done, all off")
+        notification("Done, all off")
         util.yield(100)
         end
     end)
@@ -13683,12 +13683,12 @@ menu.toggle(bypasskick, "Method V1", {}, "It gives you a limited time for you to
         menu.trigger_commands("nobgscript on")
         menu.trigger_command(BlockIncSyncs)
         menu.trigger_command(BlockNetEvents)
-        util.toast("Activated, now enter your session and prepare the kick")
+        notification("Activated, now enter your session and prepare the kick")
     else
         menu.trigger_commands("nobgscript off")
         menu.trigger_command(UnblockIncSyncs)
         menu.trigger_command(UnblockNetEvents)
-        util.toast("Done, all off")
+        notification("Done, all off")
     end
 end)
 
@@ -13709,13 +13709,13 @@ menu.toggle(bypasskick, "Method V2", {}, "A little more functional but also with
         menu.trigger_command(BlockBailing2, "on")
         menu.trigger_command(BlockBailing3, "on")
         menu.trigger_command(BlockBailing4, "on")
-        util.toast("Activated, now enter your session and prepare the kick")
+        notification("Activated, now enter your session and prepare the kick")
     else
         menu.trigger_commands("nobgscript off")
         menu.trigger_command(UnblockIncSyncs)
         menu.trigger_command(UnblockNetEvents)
         menu.trigger_command(BlockBailing3, "off")
-        util.toast("Done, all off")
+        notification("Done, all off")
     end
 end)
 
@@ -13742,7 +13742,7 @@ if on_toggle then
     menu.trigger_command(BlockBailing4, "on")
     menu.trigger_command(ShowNotis)
     menu.trigger_command(BlockRaw)
-    util.toast("Activated, now enter your session and prepare the kick")
+    notification("Activated, now enter your session and prepare the kick")
 else
     menu.trigger_commands("nobgscript off")
     menu.trigger_command(UnblockIncSyncs)
@@ -13750,7 +13750,7 @@ else
     menu.trigger_command(BlockBailing3, "off")
     menu.trigger_command(UnShowNotis)
     menu.trigger_command(UnBlockRaw)
-    util.toast("Done, all off")
+    notification("Done, all off")
 end
 end)
 
@@ -13785,7 +13785,7 @@ menu.toggle(bypasskick, "Method V4", {}, "Probably break the game, use at your o
         menu.trigger_commands("skipbroadcast on")
         menu.trigger_command(DontAsk, "on")
         menu.trigger_commands("skipswoopdown on")
-        util.toast("Activated, now enter your session and prepare the kick")
+        notification("Activated, now enter your session and prepare the kick")
     else
         menu.trigger_commands("nobgscript off")
 		menu.trigger_commands("skipbroadcast off")
@@ -13800,7 +13800,7 @@ menu.toggle(bypasskick, "Method V4", {}, "Probably break the game, use at your o
         menu.trigger_commands("skipbroadcast off")
         menu.trigger_command(DontAsk, "off")
         menu.trigger_commands("skipswoopdown off")
-        util.toast("Done, all off")
+        notification("Done, all off")
     end
     end)
 
@@ -13824,7 +13824,7 @@ end)
 
 if bailOnAdminJoin then
     if players.is_marked_as_admin(player_id) then
-        util.toast(players.get_name(player_id) .. " If there is an admin, for another session.")
+        notification(players.get_name(player_id) .. " If there is an admin, for another session.")
         menu.trigger_commands("quickbail")
         return
     end
@@ -13897,7 +13897,7 @@ menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by
         menu.trigger_commands("autoenter")
         ENTITY.APPLY_FORCE_TO_ENTITY(0, 1, 0, 0, 0, 0, 0, 0, 0, true, true, true, true, true)
     else
-        util.toast("Lucky Bastard ;)")
+        notification("Lucky Bastard ;)")
 		menu.show_command_box("say " .. "I got lucky ;)")
         menu.trigger_commands("autoenter")
         util.yield(200)
@@ -13942,7 +13942,7 @@ menu.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using
             if (players.is_godmode(pid) or not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(ped)) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
             menu.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is In Godmode")
-                util.toast(players.get_name(pid) .. "Is In Godmode")
+                notification(players.get_name(pid) .. "Is In Godmode")
                 break
             end
         end
@@ -13976,7 +13976,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
                 menu.trigger_commands("blast" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
-                    util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
+                    notification(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
                 end
             end
@@ -13994,7 +13994,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Slingshot", {}, "Detects if someo
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
                 menu.trigger_commands("slingshot" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
-                    util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
+                    notification(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
                 end
             end
@@ -14012,7 +14012,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick Them Out", {}, "Detects if s
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
                 menu.trigger_commands("vehkick" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
-                    util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
+                    notification(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
                 end
             end
@@ -14039,7 +14039,7 @@ menu.toggle_loop(unrelveh, "Unreleased Vehicle Auto Kick", {}, "Detects if someo
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
             end
         end
     end
@@ -14052,7 +14052,7 @@ menu.toggle_loop(unrelveh, "Unreleased Car Auto Slingshot", {}, "Detects if some
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("slingshot" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
             end
         end
     end
@@ -14065,7 +14065,7 @@ menu.toggle_loop(unrelveh, "Unreleased Car Auto Kick Them Out", {}, "Detects if 
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("vehkick" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
             end
         end
     end
@@ -14078,7 +14078,7 @@ menu.toggle_loop(modhack, "It's a hacker", {}, "Detects if the player is about t
         local reason = NETWORK.NETWORK_PLAYER_GET_CHEATER_REASON(player_id)
         if NETWORK.NETWORK_PLAYER_IS_CHEATER(player_id) then
             util.draw_debug_text(players.get_name(player_id) .. " They are about to ban him :u, reason:", reason)
-                util.toast(players.get_name(pid) .. " Is a hacker!" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is a hacker!" .. "(" .. name .. ")")
             break
         end
     end
@@ -14091,7 +14091,7 @@ menu.toggle_loop(modhack, "It's a hacker Auto Kick", {}, "Detects if the player 
         if NETWORK.NETWORK_PLAYER_IS_CHEATER(player_id) then
                 menu.trigger_commands("blast" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " They are about to ban him :u, reason:", reason)
-                util.toast(players.get_name(pid) .. " Is a hacker is being kicked now!" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is a hacker is being kicked now!" .. "(" .. name .. ")")
             break
         end
     end
@@ -14105,7 +14105,7 @@ menu.toggle_loop(modhack, "It's a hacker Auto Crash", {}, "Detects if the player
                 menu.trigger_commands("attachcrash" .. players.get_name(pid))
                 menu.trigger_commands("historyblock" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " They are about to ban him :u, reason:", reason)
-                util.toast(players.get_name(pid) .. " Is a hacker and is being Attach Crashed!" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is a hacker and is being Attach Crashed!" .. "(" .. name .. ")")
             break
         end
     end
@@ -14129,7 +14129,7 @@ menu.toggle_loop(modweps, "Weapon In Interior Auto Kick", {}, "Detects if you us
         if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
                 menu.trigger_commands("blast" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " Has a gun indoors")
-                util.toast(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
             break
         end
     end
@@ -14141,7 +14141,7 @@ menu.toggle_loop(modweps, "Weapon In Interior Auto Disarm", {}, "Detects if you 
         if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
                 menu.trigger_commands("disarm" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " Has a gun indoors")
-                util.toast(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
             break
         end
     end
@@ -14170,7 +14170,7 @@ menu.toggle_loop(modwep, "Modded Weapon Auto Kick", {}, "Detects if someone is u
             if WEAPON.HAS_PED_GOT_WEAPON(ped, weapon_hash, false) and (WEAPON.IS_PED_ARMED(ped, 7) or TASK.GET_IS_TASK_ACTIVE(ped, 8) or TASK.GET_IS_TASK_ACTIVE(ped, 9)) then
                 menu.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
-                util.toast(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
+                notification(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 break
             end
         end
@@ -14185,7 +14185,7 @@ menu.toggle_loop(modwep, "Modded Weapon Auto Disarm", {}, "Detects if someone is
             if WEAPON.HAS_PED_GOT_WEAPON(ped, weapon_hash, false) and (WEAPON.IS_PED_ARMED(ped, 7) or TASK.GET_IS_TASK_ACTIVE(ped, 8) or TASK.GET_IS_TASK_ACTIVE(ped, 9)) then
                 menu.trigger_commands("disarm" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
-                util.toast(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
+                notification(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 break
             end
         end
@@ -14212,7 +14212,7 @@ menu.toggle_loop(modveh, "Modded Vehicle Auto Kick", {}, "Detects if someone is 
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 break
             end
         end
@@ -14226,7 +14226,7 @@ menu.toggle_loop(modveh, "Modded Vehicle Auto Slingshot", {}, "Detects if someon
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("slingshot" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 break
             end
         end
@@ -14240,7 +14240,7 @@ menu.toggle_loop(modveh, "Modded Vehicle Auto Kick Them Out", {}, "Detects if so
             if modelHash == util.joaat(name) then
                 menu.trigger_commands("vehkick" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
+                notification(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 break
             end
         end
@@ -14271,7 +14271,7 @@ menu.toggle_loop(detsuperd, "Super Drive Auto Kick", {}, "Detects if the player 
         if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
         menu.trigger_commands("blast" .. players.get_name(pid))
         util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
-            util.toast(players.get_name(pid) .. " Is Using Super Drive")
+            notification(players.get_name(pid) .. " Is Using Super Drive")
             break
         end
     end
@@ -14286,7 +14286,7 @@ menu.toggle_loop(detsuperd, "Super Drive Auto Slingshot", {}, "Detects if the pl
         if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
         menu.trigger_commands("slingshot" .. players.get_name(pid))
         util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
-            util.toast(players.get_name(pid) .. " Is Using Super Drive")
+            notification(players.get_name(pid) .. " Is Using Super Drive")
             break
         end
     end
@@ -14301,7 +14301,7 @@ menu.toggle_loop(detsuperd, "Super Drive Auto Kick Them Out", {}, "Detects if th
         if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
         menu.trigger_commands("vehkick" .. players.get_name(pid))
         util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
-            util.toast(players.get_name(pid) .. " Is Using Super Drive")
+            notification(players.get_name(pid) .. " Is Using Super Drive")
             break
         end
     end
@@ -14439,14 +14439,14 @@ local maxpl = menu.list(protex, "Max Players To 32")
 menu.slider(maxpl, "Max Players To 32", {"maxplayers"}, "Set the maximum number of players in a session (only works when you are the host)", 1, 32, 32, 1, function (value)
     if Stand_internal_script_can_run then
         NETWORK.NETWORK_SESSION_SET_MATCHMAKING_GROUP_MAX(0, value)
-       util.toast("Slots are now free :)")
+       notification("Slots are now free :)")
     end
 end)
 
 menu.slider(maxpl, "Max Spectators", {"maxSpectators"}, "Set the maximum number of observers (only works when you are the host)", 0, 2, 2, 1, function (value)
     if Stand_internal_script_can_run then
         NETWORK.NETWORK_SESSION_SET_MATCHMAKING_GROUP_MAX(4, value)
-        util.toast("Slots are now free :)")
+        notification("Slots are now free :)")
     end
 end)
 
@@ -14559,7 +14559,7 @@ finallangmenu = menu.slider_text(traductmymessage, "Final Language", {"finallang
 end)
 
 menu.action(traductmymessage, "Send Message", {"Sendmessage"}, "Input the text For your message", function(on_click)
-    util.toast("Please input your message")
+    notification("Please input your message")
     menu.show_command_box("Sendmessage ")
 end, function(on_command)
     mytext = on_command
@@ -14607,7 +14607,7 @@ chat.on_message(function(packet_sender, message_sender, text, team_chat)
 								chat.send_message(players.get_name(packet_sender).." : "..decode(translation), false, false, true)
 								sfchat.ADD_MESSAGE(sender, translationtext, allchatlabel, false, colorfinal)
 							end if (Tradloca == 5) then
-								util.toast(players.get_name(packet_sender).." : "..decode(translation), TOAST_ALL)
+								notification(players.get_name(packet_sender).." : "..decode(translation), TOAST_ALL)
 							end
 						end
 					end
@@ -15106,10 +15106,10 @@ menu.toggle(protex, "Rejoin Failed Joins", {"rejoinfail"}, "Joins previously fai
             NETWORK.NETWORK_JOIN_PREVIOUSLY_FAILED_SESSION(0, true)
 
             wait_session_transition()
-            util.toast("Rejoining :)")
+            notification("Rejoining :)")
             menu.trigger_commands("rejoin ")
         else
-            util.toast("Failed to join :/")
+            notification("Failed to join :/")
             menu.trigger_commands("go newpublic")
         end
     end
@@ -15443,30 +15443,30 @@ function download_resources_update(filepath, destOverwritePath)
     end
     local lock = io.open(lockPath, "w")
     if lock == nil then
-        util.toast(SCRIPT_NAME .. ": Could not create lockfile, skipping update", TOAST_ALL)
+        notification(SCRIPT_NAME .. ": Could not create lockfile, skipping update", TOAST_ALL)
         return
     end
     lock:close()
     async_http.init("jackz.me", "/stand/get-lua.php?script=resources/" .. filepath .. "&source=" .. SCRIPT_SOURCE .. "&branch=" .. (SCRIPT_BRANCH or "master"), function(result, res_headers, status_code)
         os.remove(lockPath)
         if status_code ~= 200 or result:startswith("<") then
-            util.toast("Resource returned invalid response for \"" .. filepath .. "\"\nSee logs for details")
+            notification("Resource returned invalid response for \"" .. filepath .. "\"\nSee logs for details")
             util.log(string.format("%s: Resource \"%s\" returned: %s", SCRIPT_NAME, filepath, result))
             return
         end
         local file = io.open(filesystem.resources_dir() .. (destOverwritePath or filepath), "w")
         if file == nil then
-            util.toast("Could not write resource file for: " .. filepath .. "\nSee logs for details")
+            notification("Could not write resource file for: " .. filepath .. "\nSee logs for details")
             util.log(string.format("%s: Resource \"%s\" file could not be created.", SCRIPT_NAME, filepath))
             return
         end
         Log.log("Updated resource ", filepath, "for", SCRIPT_NAME, "to branch", SCRIPT_BRANCH or "master")
         file:write(result:gsub("\r", "") .. "\n")
         file:close()
-        util.toast(SCRIPT .. ": Automatically updated resource '" .. filepath .. "'")
+        notification(SCRIPT .. ": Automatically updated resource '" .. filepath .. "'")
     end, function(e)
         os.remove(lockPath)
-        util.toast(SCRIPT .. " cannot load: Library files are missing. (" .. filepath .. ")", 10)
+        notification(SCRIPT .. " cannot load: Library files are missing. (" .. filepath .. ")", 10)
         util.stop_script()
     end)
     async_http.dispatch()
@@ -15522,7 +15522,7 @@ if SCRIPT_BRANCH and SCRIPT_BRANCH == "release" then
         if versions[SCRIPT_NAME] == nil or compare_version(VERSION, versions[SCRIPT_NAME]) == 1 then
             if versions[SCRIPT_NAME] ~= nil then
                 async_http.init("jackz.me", "/stand/changelog.php?raw=1&script=" .. SCRIPT_NAME .. "&since=" .. versions[SCRIPT_NAME] .. "&branch=" .. (SCRIPT_BRANCH or "master"), function(result)
-                    util.toast("Changelog for " .. SCRIPT_NAME .. " version " .. VERSION .. ":\n" .. result)
+                    notification("Changelog for " .. SCRIPT_NAME .. " version " .. VERSION .. ":\n" .. result)
                 end, function() util.log(SCRIPT_NAME ..": Could not get changelog") end)
                 async_http.dispatch()
             end
@@ -15554,9 +15554,9 @@ if SCRIPT_SOURCE == "MANUAL" then
         download_script_update(SCRIPT_BRANCH_IDS[index], function()
             HUD.BUSYSPINNER_OFF()
             util.log(SCRIPT_NAME .. ": Released channel changed to " .. SCRIPT_BRANCH_IDS[index])
-            util.toast("Release channel changed to " .. name .. " (" .. SCRIPT_BRANCH_IDS[index] .. ")\nReload to apply changes")
+            notification("Release channel changed to " .. name .. " (" .. SCRIPT_BRANCH_IDS[index] .. ")\nReload to apply changes")
         end, function()
-            util.toast("Failed to download latest version for release channel.")
+            notification("Failed to download latest version for release channel.")
         end)
     end)
 else
@@ -15574,10 +15574,10 @@ menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of 
         async_http.init("hastebin.com", "/documents", function(body)
             HUD.BUSYSPINNER_OFF()
             local url = "https://hastebin.com/" .. body:sub(9, -3)
-            util.toast("Uploaded: " .. url)
+            notification("Uploaded: " .. url)
             menu.hyperlink(SCRIPT_META_LIST, "Open Uploaded Log", url)
         end, function()
-            util.toast("Failed to submit logs, network error")
+            notification("Failed to submit logs, network error")
             HUD.BUSYSPINNER_OFF() 
         end)
         logs:seek("end", -3072)
@@ -15588,7 +15588,7 @@ menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of 
         async_http.dispatch()
         logs:close()
     else
-        util.toast("Could not read your stand log file")
+        notification("Could not read your stand log file")
     end
 end)
 
@@ -15600,13 +15600,13 @@ function try_require(name, isOptional)
         return data
     else
         if data then
-            util.toast(name .. ": " .. data, TOAST_ALL)
+            notification(name .. ": " .. data, TOAST_ALL)
         end
         if SCRIPT_SOURCE == "REPO" then
             if isOptional then
                 Log.debug("Missing optional dependency: " .. name)
             else
-                util.toast("Missing a required depencency (\"" .. name .. "\"). Please install this from the repo > dependencies list")
+                notification("Missing a required depencency (\"" .. name .. "\"). Please install this from the repo > dependencies list")
                 Log.severe("Missing required dependency:", name)
             end
         elseif download_lib_update then
@@ -15649,15 +15649,15 @@ function pairsByKeys(t, f)
  end
 local status = pcall(require, 'resources/jackz_actions/actions_data')
 if not status then
-    util.toast("Failed to load resource file: jackz_actions/actions_data.lua")
+    notification("Failed to load resource file: jackz_actions/actions_data.lua")
     util.stop_script()
 end
 if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
     if SCRIPT_SOURCE == "MANUAL" then
         download_resources_update("jackz_actions/actions_data.min.lua", "jackz_actions/actions_data.lua")
-        util.toast("Restart script to use updated resource file")
+        notification("Restart script to use updated resource file")
     else
-        util.toast("jackz_actions: Warn: Outdated or missing actions_data. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
+        notification("jackz_actions: Warn: Outdated or missing actions_data. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
         util.stop_script()
     end
 end
@@ -15713,7 +15713,7 @@ function onControllablePress(value)
 end
 function generateAnimationAction(key, data)
     return function()
-        util.toast("Playing anim: " .. data[3] or key)
+        notification("Playing anim: " .. data[3] or key)
         util.log(string.format("dict=%s anim=%s name=%s", data[1], data[2], data[3]))
         play_animation(data[1], data[2], false, data)
     end
@@ -15772,7 +15772,7 @@ local cloud_loading = false
 function cloudvehicle_fetch_error(code)
     return function()
         cloud_loading = false
-        util.toast("An error occurred fetching cloud data. Code: " .. code, TOAST_ALL)
+        notification("An error occurred fetching cloud data. Code: " .. code, TOAST_ALL)
         HUD.BUSYSPINNER_OFF()
     end
 end
@@ -15790,11 +15790,11 @@ function upload_animation(group, animation, alias)
         ),
         function(body)
             if body == "OK" then
-                util.toast("Upload successful for " .. group .. "/" .. animation)
+                notification("Upload successful for " .. group .. "/" .. animation)
             elseif body == "Conflict" then
-                util.toast("Animation already uploaded")
+                notification("Animation already uploaded")
             else
-                util.toast("Upload failed for " .. group .. "/" .. animation .. ": " .. body)
+                notification("Upload failed for " .. group .. "/" .. animation .. ": " .. body)
             end
             HUD.BUSYSPINNER_OFF()
         end
@@ -15829,7 +15829,7 @@ function populate_user_dict(user, dictionary)
     async_http.init('jackz.me', '/stand/cloud/actions/list?method=actions&scname=' .. user .. "&dict=" .. dictionary, function(body)
         cloud_loading = false
         if body:sub(1, 1) == "<" then
-            util.toast("Ratelimited, try again in a few seconds.")
+            notification("Ratelimited, try again in a few seconds.")
             menu.divider(cloudUsers[user].categories[dictionary].menu, "Ratelimited, try again in a few seconds")
             return
         end
@@ -15956,7 +15956,7 @@ end, function(args)
         else
             local version = line:sub(2)
             if version ~= ANIMATIONS_DATA_FILE_VERSION then
-                util.toast("Animation data out of date, updating...")
+                notification("Animation data out of date, updating...")
                 download_animation_data()
             end
             isHeaderRead = true
@@ -15978,7 +15978,7 @@ end)
 local browseMenu = menu.list(animationsMenu, "Browse Animations", {}, "WARNING: Will cause a freeze when exiting, stand does not like unloading 15,000 animations. Use search if your pc cannot handle.", function() setup_animation_list() end)
 menu.on_focus(browseMenu, function()
     if animLoaded then
-        util.toast("WARN: Unloading animation browse list, prepare for lag.")
+        notification("WARN: Unloading animation browse list, prepare for lag.")
         util.yield(100)
         destroy_animations_data()
     end
@@ -16083,7 +16083,7 @@ function download_animation_data()
         HUD.BUSYSPINNER_OFF()
         loading = false
     end, function()
-        util.toast(SCRIPT .. ": Failed to automatically download animations data file. Please download latest file manually.")
+        notification(SCRIPT .. ": Failed to automatically download animations data file. Please download latest file manually.")
         util.stop_script()
         loading = false
     end)
@@ -16149,7 +16149,7 @@ function setup_animation_list()
         else
             local version = line:sub(2)
             if version ~= ANIMATIONS_DATA_FILE_VERSION then
-                util.toast("Animation data out of date, updating...")
+                notification("Animation data out of date, updating...")
                 download_animation_data()
             end
             isHeaderRead = true
@@ -16185,14 +16185,14 @@ function play_animation(group, anim, doNotAddRecent, data, remove)
                 table.remove(favorites, i)
                 populate_favorites()
                 save_favorites()
-                util.toast("Removed " .. group .. "\n" .. anim .. " from favorites")
+                notification("Removed " .. group .. "\n" .. anim .. " from favorites")
                 return
             end
         end
         table.insert(favorites, { group, anim })
         populate_favorites()
         save_favorites()
-        util.toast("Added " .. group .. "\n" .. anim .. " to favorites")
+        notification("Added " .. group .. "\n" .. anim .. " to favorites")
     else
         clear_anim_props()
         STREAMING.REQUEST_ANIM_DICT(group)
