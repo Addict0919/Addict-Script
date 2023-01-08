@@ -37,7 +37,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.2;if not dev_mode then 
+local a=0.3;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -45,7 +45,7 @@ local a=0.2;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.0\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4206,7 +4206,52 @@ end)
 end
 drawScriptMenu()
 
+function attach_to_player(hash, bone, x, y, z, xrot, yrot, zrot)           --attach object to player ped
+    local user_ped = PLAYER.PLAYER_PED_ID()
+    hash = util.joaat(hash)
+
+    STREAMING.REQUEST_MODEL(hash)
+    while not STREAMING.HAS_MODEL_LOADED(hash) do		
+        util.yield()
+    end
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+
+    local object = OBJECT.CREATE_OBJECT(hash, 0.0,0.0,0, true, true, false)
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, user_ped, PED.GET_PED_BONE_INDEX(PLAYER.PLAYER_PED_ID(), bone), x, y, z, xrot, yrot, zrot, false, false, false, false, 2, true) 
+end
+function delete_object(model)
+    local hash = util.joaat(model)
+    for k, object in pairs(entities.get_all_objects_as_handles()) do
+        if ENTITY.GET_ENTITY_MODEL(object) == hash then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(object, false, false) 
+            entities.delete_by_handle(object)
+        end
+    end
+end
+
 	playermode = menu.list(funfun, "Player Modes", {}, "", function(); end)
+    
+    local obj_pp = {"prop_cs_dildo_01", "prop_ld_bomb_01", "prop_sam_01"}
+    local opt_pp = {"Small", "Big", "Bigger", "Delete"}
+
+    menu.list_action(playermode, "Attach Dildo", {}, "This only works on yourself.", opt_pp, function(index, value, click_type)
+        pluto_switch index do
+            case 1:
+                attach_to_player("prop_cs_dildo_01", 57597, -0.1, 0.15, 0, 0, 90, 90)
+                break
+            case 2:
+                attach_to_player("prop_ld_bomb_01", 57597, -0.1, 0.6, 0, 0, 180, 180)
+                break
+            case 3:
+                attach_to_player("prop_sam_01", 57597, -0.1, 1.7, 0, 0, 180, 180)
+                break
+            case 4:
+                for k, model in pairs(obj_pp) do 
+                    delete_object(model)
+                end
+                break
+            end
+    end)
 
 
     menu.toggle_loop(playermode, "Front Flip", {"frontflip"}, "WARNING! Do not click change outfit. Do a front flip.", function(on)
@@ -5211,22 +5256,6 @@ local usingRape = false
 		end
 	end)
 
-    menu.toggle_loop(playermode, "Front Flip", {"frontflip"}, "WARNING! Do not click change outfit. Do a front flip.", function(on)
-        local hash = util.joaat("prop_ecola_can")
-        request_model_load(hash)
-        local prop = entities.create_object(hash, players.get_position(players.user()))
-        ENTITY.FREEZE_ENTITY_POSITION(prop)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(players.user_ped(), prop, 0, 0, 0, 0, 0, 0, 0, true, false, false, false, 0, true)
-        local hdg = CAM.GET_GAMEPLAY_CAM_ROT(0).z
-        ENTITY.SET_ENTITY_ROTATION(prop, 0, 0, hdg, 1)
-        for i=1, -360, -8 do
-            ENTITY.SET_ENTITY_ROTATION(prop, i, 0, hdg, 1)
-            util.yield()
-        end
-        ENTITY.DETACH_ENTITY(players.user_ped())
-        entities.delete_by_handle(prop)
-    end)
-
 
     menu.action(griefing, "Make Player Explode All", {"makethemexplodeall"}, "", function()
 		menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " explodeall")
@@ -5529,7 +5558,7 @@ local usingRape = false
         attachto(0.0, -0.15, 0.0, pid, 0.0, 0.0, 0.0, 4208448709, false, false)
     end)
 
-    menu.action(attachoptions, "Attach Candy Cane", {"attachcandycane"}, "Works best on vehicles", function()
+    menu.action(attachoptions, "Attach Candy Cane", {"attachcandycane"}, "", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -5544,7 +5573,6 @@ local usingRape = false
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
         util.yield(100)
     end)
-
     
 menu.action(attachoptions, "Attach A Ramp", {"attachramp"}, "Works best on vehicles", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
