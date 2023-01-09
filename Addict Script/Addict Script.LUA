@@ -35,9 +35,10 @@ util.require_natives("natives-1663599433-uno")
 util.require_natives("natives-1640181023")
 util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
+require("ToxTool")
 guidedMissile = require("guided_missile")
 
-local a=0.3;if not dev_mode then 
+local a=0.4;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -45,7 +46,7 @@ local a=0.3;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.2\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -400,8 +401,99 @@ local fake_pickup_types <const> = {
 
 	funfun = menu.list(menu.my_root(), "Fun Shit", {}, "", function(); end)
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	menu.divider(funfun, "Fun Shit")
+    menu.divider(funfun, "Fun Shit")
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+menyoo_root = menu.list(funfun, "Menyoo", {"menyoo"}, "Menyoo support!")
+menyoovmain_root = menu.list(menyoo_root, "Vehicles", {"menyoovehicles"}, "Menyoo vehicle support!")
+menyoom1_root = menu.list(menyoo_root, "Maps", {"menyoomapsroot"}, "Menyoo maps support!")
+menyoom_root = menu.list(menyoom1_root, "Maps", {"menyooallmaps"}, "All maps in your directory")
+menyoomloaded_root = menu.list(menyoom1_root, "Currently loaded maps", {"menyooloadedmaps"}, "Maps you have loaded")
+menyoov_root = menu.list(menyoovmain_root, "All vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
+menyoovloaded_root = menu.list(menyoovmain_root, "Currently loaded vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
+
+--           __  ___   ______   _   __   __  __   ____     ____              _  __    __  ___   __
+--          /  |/  /  / ____/  / | / /  / / / /  / __ \   / __ \            | |/ /   /  |/  /  / /
+--         / /|_/ /  / __/    /  |/ /  / / / /  / / / /  / / / /  ______    |   /   / /|_/ /  / /
+--        / /  / /  / /___   / /|  /  / /_/ /  / /_/ /  / /_/ /  /_____/   /   |   / /  / /  / /___ 
+--       /_/  /_/  /_____/  /_/ |_/   \____/   \____/   \____/            /_/|_|  /_/  /_/  /_____/  
+
+function setup_menyoo_vehicles_list(mainroot, player, allplayers, dotp)
+   for i, path in ipairs(filesystem.list_files(vehicles_dir)) do
+       root = mainroot
+       local ours = false
+       if player == players.user() then
+           ours = true 
+       end
+       if filesystem.is_dir(path) then
+           root = menu.list(root, path:gsub(vehicles_dir, ''), {}, "")
+           for i,path in ipairs(filesystem.list_files(path)) do
+               if not allplayers then
+                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                       log("Click type was " .. on_click)
+                       menyoo_load_vehicle(path, player, dotp, ours)
+                   end)
+               else
+                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                       for k,v in pairs(players.list(true, true, true)) do
+                           log("Click type was " .. on_click)
+                           menyoo_load_vehicle(path, v, dotp, false)
+                       end
+                   end)
+               end
+           end
+       else
+           if string.match(path:gsub(vehicles_dir, ''), '.xml') then
+               if not allplayers then
+                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                       toast("Click type was " .. on_click)
+                       menyoo_load_vehicle(path, player, dotp, ours)
+                   end)
+               else
+                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                       for k,v in pairs(players.list(true, true, true)) do
+                           toast("Click type was " .. on_click)
+                           menyoo_load_vehicle(path, v, dotp, false)
+                       end
+                   end)
+               end
+           end
+       end
+   end
+end
+
+function setup_menyoo_maps_list()
+   for i, path in ipairs(filesystem.list_files(maps_dir)) do
+       if filesystem.is_dir(path) then
+           root = menu.list(menyoom_root, path:gsub(maps_dir, ''), {}, "")
+           for i,path in ipairs(filesystem.list_files(path)) do
+               menu.action(root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
+                   menyoo_load_map(path)
+               end)
+           end
+       else
+           if string.match(path:gsub(maps_dir, ''), '.xml') then
+               menu.action(menyoom_root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
+                   menyoo_load_map(path)
+               end)
+           end
+       end
+   end
+end
+
+setup_menyoo_vehicles_list(menyoov_root, players.user(), false, true)
+setup_menyoo_maps_list()
+
+Effect = {asset = "", name = ""}
+Effect.__index = Effect
+
+function Effect.new(asset, name)
+   local inst = setmetatable({}, Effect) 
+   inst.name = name
+   inst.asset = asset
+   return inst
+end
+
 
     menu.toggle(funfun, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the weapons everytime you join a new session.", function(state)
         if state then
@@ -6365,9 +6457,7 @@ menu.toggle_loop(ptfxloop, "Water Mist", {"ptfxwatermist"}, "", function(on_togg
                 "ent_anim_bm_water_mist", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function request_model_load(hash)
-    util.request_model(hash, 2000)
-end
+
 
 
 menu.toggle_loop(tormentplayer, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function(on_toggle)
@@ -7900,6 +7990,8 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
         util.yield(100)
         menu.trigger_commands("stuntcage" .. players.get_name(pid))
         util.yield(100)
+        menu.trigger_commands("basketcage" .. players.get_name(pid))
+        util.yield(100)
     else
         menu.trigger_commands("cage" .. players.get_name(pid))
         util.yield(100)
@@ -7921,9 +8013,11 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
         util.yield(100)
         menu.trigger_commands("stuntcage" .. players.get_name(pid))
         util.yield(100)
+        menu.trigger_commands("basketcage" .. players.get_name(pid))
+        util.yield(100)
         end
     end)
-
+    
 	menu.action(cage_options, "Simple", {"cage"}, "", function()
 		local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		local pos = ENTITY.GET_ENTITY_COORDS(player_ped) 
@@ -8027,13 +8121,8 @@ menu.action(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 end)
 
-
-
-
-
 ---------------------------------------------------------------------------------------------------------------------------------
 
-	
 menu.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_03a")
@@ -8056,13 +8145,8 @@ menu.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 end)
 
-
-
-
-
 ---------------------------------------------------------------------------------------------------------------------------------
 
-	
 menu.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 1089807209
@@ -8090,13 +8174,8 @@ menu.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 end)
 
-
-
-
-
 ---------------------------------------------------------------------------------------------------------------------------------
 
-	
 menu.action(cage_options, "Average X-Force User", {"trashcage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 684586828
@@ -8146,7 +8225,6 @@ menu.action(cage_options, "money cage", {"moneycage"}, "", function()
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 end)
 
-
 ----------------------------------------------------------------------------------------------------------------------------------
 
 	menu.action(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
@@ -8157,6 +8235,22 @@ end)
 			util.yield()
 		end
 		local cage_object = OBJECT.CREATE_OBJECT(2081936690, pos.x, pos.y, pos.z, true, true, false)
+		cages[#cages + 1] = cage_object
+		util.yield(15)
+		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
+		rot.y = 90
+		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
+		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+	end)
+
+	menu.action(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
+		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+		STREAMING.REQUEST_MODEL(2769149392)
+
+		while not STREAMING.HAS_MODEL_LOADED(2769149392) do		
+			util.yield()
+		end
+		local cage_object = OBJECT.CREATE_OBJECT(2769149392, pos.x, pos.y, pos.z, true, true, false)
 		cages[#cages + 1] = cage_object
 		util.yield(15)
 		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
@@ -9586,9 +9680,6 @@ function RqModel(hash)
     end
 end
 
-
-
-
 local lobbycrash = menu.list(crash, "Lobby Crashes", {}, "")
 
 local craftcrash = menu.list(crash, "Vehicle Crashes", {}, "")
@@ -10157,9 +10248,13 @@ end)
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
 
 menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on anticam for you, Warning! This is OP...", function()
-    menu.trigger_commands("tpspread" .. players.get_name(pid))
-    util.yield(100)
     menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
     util.yield(100)
     menu.trigger_commands("attachallnearby" .. players.get_name(pid))
     util.yield(100)
@@ -10181,11 +10276,9 @@ menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on a
     util.yield(100)
     menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
-    util.yield(3000)
+    menu.trigger_commands("vehcrash" .. players.get_name(pid))
+    util.yield(100)
     util.toast("Wait For TP Loop to finish or restart the script...")
-    menu.trigger_commands("tpspread" .. players.get_name(pid))
-    util.yield(100)
     menu.trigger_commands("anticrashcamera")
     util.yield(100)
     menu.trigger_commands("attachallnearby" .. players.get_name(pid))
@@ -10207,8 +10300,6 @@ menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on a
     menu.trigger_commands("togglefragv3" .. players.get_name(pid))
     util.yield(100)
     menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
-    util.yield(100)
-    menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
     util.yield(100)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
@@ -10222,7 +10313,11 @@ menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on 
     if on_toggle then
         menu.trigger_commands("anticrashcamera")
         util.yield(200)
-        menu.trigger_commands("tpspread" .. players.get_name(pid))
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
         util.yield(200)
         menu.trigger_commands("attachallnearby" .. players.get_name(pid))
         util.yield(200)
@@ -10244,14 +10339,12 @@ menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on 
         util.yield(200)
         menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
+        menu.trigger_commands("vehcrash" .. players.get_name(pid))
         util.yield(200)
     else
         util.toast("Wait For TP Loop to finish or restart the script...")
         menu.trigger_commands("anticrashcamera")
         util.yield(200)
-        menu.trigger_commands("tpspread" .. players.get_name(pid))
-        util.yield(200)
         menu.trigger_commands("attachallnearby" .. players.get_name(pid))
         util.yield(200)
         menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
@@ -10271,8 +10364,6 @@ menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on 
         menu.trigger_commands("togglefragv3" .. players.get_name(pid))
         util.yield(200)
         menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
-        util.yield(200)
-        menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
         util.yield(200)
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
