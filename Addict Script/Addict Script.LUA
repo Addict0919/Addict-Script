@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.9;if not dev_mode then 
+local a=1.0;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=0.9;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.7\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4384,10 +4384,12 @@ escort_root = menu.list(playermode, "Escort services", {"sexluaescorts"}, "")
 
 menu.toggle_loop(escort_root, "Female Moan", {"fsexmoan"}, "", function(on_click)
     moan(players.get_position(players.user()), 'f')
+    util.yield(1500)
 end)
 
 menu.toggle_loop(escort_root, "Male Moan", {"msexmoan"}, "", function(on_click)
     moan(players.get_position(players.user()), 'm')
+    util.yield(1500)
 end)
 
 local custom_hooker_model = 'ig_lestercrest'
@@ -9596,6 +9598,8 @@ end)
 		end
 	end)
 
+    --[[
+
     local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea.")
 
     tpf_units = 1
@@ -9621,6 +9625,8 @@ end)
         local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
 	end)
+
+    ]]
 
     local drops = menu.list(frienm, "Addict Drops", {}, "")
 
@@ -9970,13 +9976,13 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     util.yield(10)
     menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
-    menu.trigger_commands("spawntopless" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("dancingtopless" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(10)
-    menu.trigger_commands("fsexmoan" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("fsexmoan")
     util.yield(10)
-    menu.trigger_commands("msexmoan" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("msexmoan")
     util.yield(10)
-    menu.trigger_commands("playanimlapdance")
+    menu.trigger_commands("animlapdance1")
     menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(3000)
     menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -10001,58 +10007,88 @@ end)
 
 local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
 
-menu.action(MenuCrashes,"Any Menu Crash", {"anycrash"}, "", function()
+menu.action(MenuCrashes,"Any Menu Crash", {"anycrash"}, "Not coded Yet.", function()
     util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
     util.log("Any Menu Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"Stand Crash", {"standcrash"}, "", function()
+menu.action(MenuCrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
     util.toast("Stand Crash Sent to " .. players.get_name(pid))
     util.log("Stand Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "", function()
+menu.action(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
     util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
     util.log("2Take1 Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "", function()
-    util.toast("Rebound Crash Sent to " .. players.get_name(pid))
-    util.log("Rebound Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-end)
-
-menu.action(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "", function()
+menu.action(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
     util.toast("X-Force Crash Sent to " .. players.get_name(pid))
     util.log("X-Force Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "", function()
-    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
-    util.log("Cherax Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+menu.action(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "Working.", function()
+    if pid ~= players.user() then
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = players.get_position(pid)
+        local mdl = util.joaat("mp_m_freemode_01")
+        local veh_mdl = util.joaat("taxi")
+        util.request_model(veh_mdl)
+        util.request_model(mdl)
+            for i = 1, 10 do
+                if not players.exists(pid) then
+                    return
+                end
+                local veh = entities.create_vehicle(veh_mdl, pos, 0)
+                local jesus = entities.create_ped(2, mdl, pos, 0)
+                PED.SET_PED_INTO_VEHICLE(jesus, veh, -1)
+                util.yield(100)
+                TASK.TASK_VEHICLE_HELI_PROTECT(jesus, veh, ped, 10.0, 0, 10, 0, 0)
+                util.yield(1000)
+                entities.delete_by_handle(jesus)
+                entities.delete_by_handle(veh)
+            end  
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+    util.toast("Rebound Crash Sent to " .. players.get_name(pid))
+    util.log("Rebound Crash Sent to " .. players.get_name(pid))
+    end
 end)
 
-menu.action(MenuCrashes,"North Crash", {"northcrash"}, "", function()
+menu.toggle_loop(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
+        if pid ~= players.user() then
+            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield()
+        end
+    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
+    util.log("Cherax Crash Sent to " .. players.get_name(pid))
+end)
+
+menu.action(MenuCrashes,"North Crash", {"northcrash"}, "Not coded Yet.", function()
     util.toast("North Crash Sent to " .. players.get_name(pid))
     util.log("North Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "", function()
+menu.action(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
+    
     util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
     util.log("Nightfall Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
 end)
 
-menu.action(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "LMFAO", function()
+menu.action(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
+    if pid ~= players.user() then
     menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
+    end
 end)
 
 
@@ -16114,21 +16150,22 @@ function pairsByKeys(t, f)
     end
     return iter
  end
-local status = pcall(require, 'resources/jackz_actions/actions_data')
+ --[[
+local status = pcall(require, 'resources/addict_actions/addict_action')
 if not status then
-    util.toast("Failed to load resource file: jackz_actions/actions_data.lua")
+    util.toast("Failed to load resource file: addict_actions/addict_action.lua")
     util.stop_script()
 end
 if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
     if SCRIPT_SOURCE == "MANUAL" then
-        download_resources_update("jackz_actions/actions_data.min.lua", "jackz_actions/actions_data.lua")
+        download_resources_update("addict_actions/addict_action.min.lua", "addict_actions/addict_action.lua")
         util.toast("Restart script to use updated resource file")
     else
-        util.toast("jackz_actions: Warn: Outdated or missing actions_data. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
+        util.toast("addict_actions: Warn: Outdated or missing addict_action. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
         util.stop_script()
     end
 end
-
+]]
 -- Messy Globals
 local scenarioCount = 0
 
@@ -16136,7 +16173,7 @@ local clearActionImmediately = true
 local favorites = {}
 local favoritesActions = {}
 local recents = {}
-local animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
+-- local animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
 local allowControl = true
 local affectType = 0
 -----------------------
@@ -16171,6 +16208,8 @@ end, clearActionImmediately)
 menu.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities that will play this action.\n0 = Only yourself\n1 = Only NPCs\n2 = Both you and NPCS", { { "Only yourself" }, { "Only NPCs" }, {"Both"} }, 1, function(index)
     affectType = index - 1
 end)
+
+--[[
 function onControllablePress(value)
     if value then
         animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
@@ -16178,6 +16217,8 @@ function onControllablePress(value)
         animFlags = AnimationFlags.ANIM_FLAG_REPEAT
     end
 end
+]]
+
 function generateAnimationAction(key, data)
     return function()
         util.toast("Playing anim: " .. data[3] or key)
@@ -16187,12 +16228,12 @@ function generateAnimationAction(key, data)
 end
 
 menu.divider(sexscript, "Stuff")
-local specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
-menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+--local specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
+--menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 local animationsMenu = menu.list(sexscript, "Animations", {}, "List of animations you can play")
-menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+--menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 
-
+--[[
 for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
     local catmenu = menu.list(specialAnimationsMenu, category, {})
     for key, data in pairsByKeys(rows) do
@@ -16205,6 +16246,8 @@ for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
         )
     end
 end
+]]
+
 -----------------------
 -- ANIMATIONS
 ----------------------
@@ -16452,7 +16495,7 @@ menu.on_focus(browseMenu, function()
 end)
 show_busyspinner("Loading Menus...")
 
-
+--[[
 local scenariosMenu = menu.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
 for group, scenarios in pairs(SCENARIOS) do
     local submenu = menu.list(scenariosMenu, group, {}, "All " .. group .. " scenarios")
@@ -16491,7 +16534,7 @@ local selfSpeechPed = {
     lastUsed = os.millis(),
     model = util.joaat("a_f_m_bevhills_01")
 }
-
+]]
 -----------------------
 -- Animation Functions
 ----------------------
