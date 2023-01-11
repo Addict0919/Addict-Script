@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.7;if not dev_mode then 
+local a=0.8;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -12497,18 +12497,18 @@ else
 end)
 
 
-local krustykrab = menu.list(crash, "Spatchula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
+local krustykrab = menu.list(crash, "Spatula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
 
 local peds = 5
-menu.slider(krustykrab, "Number Of Spatchulas", {"nospat"}, "Sends spatchula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
-notification("Spatchula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+menu.slider(krustykrab, "Number Of Spatulas", {"nospat"}, "Sends Spatula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
+notification("Spatula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(krustykrab, "Spatchula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
-notification("Sending Spatchula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+menu.toggle(krustykrab, "Spatula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
+notification("Sending Spatula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     crash_toggle = val
     BlockSyncs(pid, function()
         if val then
