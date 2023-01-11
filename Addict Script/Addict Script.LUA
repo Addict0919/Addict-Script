@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.6;if not dev_mode then 
+local a=0.7;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=0.6;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.4\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.5\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -12497,18 +12497,18 @@ else
 end)
 
 
-local krustykrab = menu.list(crash, "2take1 Special", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
+local krustykrab = menu.list(crash, "Spatchula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
 
 local peds = 5
-menu.slider(krustykrab, "Number Of Spatchulas", {"nos2t1"}, "Sends spatchula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
-notification("2take1 Special sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+menu.slider(krustykrab, "Number Of Spatchulas", {"nospat"}, "Sends spatchula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
+notification("Spatchula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(krustykrab, "2take1 Special", {"2t1spec"}, "It's risky to spectate using this but your call", function(val)
-notification("Sending 2take1 Special to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+menu.toggle(krustykrab, "Spatchula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
+notification("Sending Spatchula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     crash_toggle = val
     BlockSyncs(pid, function()
         if val then
@@ -12601,14 +12601,14 @@ menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("2t1spec"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 1")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 1")
+menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
     util.yield(100)
 menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("2t1spec" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             end)
 
 
@@ -12643,14 +12643,14 @@ menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
 menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("2t1spec"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 1")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nos2t1".. players.get_name(pid) .. " 1")
+menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
     util.yield(100)
 menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("2t1spec" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             end)
 
 
