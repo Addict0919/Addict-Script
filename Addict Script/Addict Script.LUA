@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.5;if not dev_mode then 
+local a=0.6;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=0.5;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.3\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.4\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -72,6 +72,7 @@ menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking
 menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
 menu.action(Credits, "Library", {}, "Always been there to help :).", function() end)
 menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
+menu.action(Credits, "Charlie", {}, "Legy's girlfriend :).", function() end)
 menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
 
     local translations = {}
@@ -3634,7 +3635,7 @@ end)
 
 menu.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
     chat.send_message(
-        "If u wunna make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
+        "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -3642,9 +3643,9 @@ menu.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
     util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function(on_toggle)
+menu.toggle_loop(casinohelp1, "Roulette Method", {"togglecasinohelp1"}, "", function(on_toggle)
     chat.send_message(
-        "If u wunna make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
+        "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -3656,7 +3657,7 @@ end)
 
 menu.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
     chat.send_message(
-        "If u wunna make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
+        "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -3664,9 +3665,9 @@ menu.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
     util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function(on_toggle)
+menu.toggle_loop(casinohelp2, "Blackjack Method", {"togglecasinohelp2"}, "", function(on_toggle)
     chat.send_message(
-        "If u wunna make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
+        "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -5332,19 +5333,19 @@ local usingRape = false
 	menu.toggle(griefing, "Rape", {"rape"}, "The player won't see you attached to them", function (on)
 		usingRape = on
 		-- Otherwise the game would crash
-		if pId == players.user() then
+		if pid == players.user() then
 			return
 		end
 		if usingRape then
 			usingPiggyback = false
-			local target = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pId)
+			local target = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.GET_PLAYER_NAME(pid))
 			STREAMING.REQUEST_ANIM_DICT("rcmpaparazzo_2")
 			while not STREAMING.HAS_ANIM_DICT_LOADED("rcmpaparazzo_2") do
 				util.yield_once()
 			end
 			TASK.TASK_PLAY_ANIM(players.user_ped(), "rcmpaparazzo_2", "shag_loop_a", 8.0, -8.0, -1, 1, 0.0, false, false, false)
 			ENTITY.ATTACH_ENTITY_TO_ENTITY(players.user_ped(), target, 0, 0, -0.3, 0, 0.0, 0.0, 0.0, false, true, false, false, 0, true, 0)
-			while usingRape and is_player_active(pId, false, true) and
+			while usingRape and is_player_active(pid, false, true) and
 			not util.is_session_transition_active() do
 				util.yield_once()
 			end
@@ -6502,8 +6503,10 @@ local function request_model(hash, timeout)
     return STREAMING.HAS_MODEL_LOADED(hash)
 end
 
+local Armys = menu.list(griefing, "Armys")
+
 local player_deer_army = {}
-local DeerArmy = menu.list(griefing, "Deer Army")
+local DeerArmy = menu.list(Armys, "Deer Army")
 
 menu.divider(DeerArmy, "__________________bruh__________________")
 
@@ -6547,7 +6550,7 @@ menu.action(DeerArmy, "Clear Deer's", {"cleardeers"}, "", function()
 end)
 
 local player_boar_army = {}
-local BoarArmy = menu.list(griefing, "Boar/Pig Army")
+local BoarArmy = menu.list(Armys, "Boar/Pig Army")
 
 menu.divider(BoarArmy, "__________________bruh__________________")
 
@@ -6608,7 +6611,7 @@ end)
 
 
 local player_Rabbit_army = {}
-local RabbitArmy = menu.list(griefing, "Rabbit Army", {}, "")
+local RabbitArmy = menu.list(Armys, "Rabbit Army", {}, "")
 
 menu.divider(RabbitArmy, "__________________bruh__________________")
 
@@ -6656,7 +6659,7 @@ end)
 
 
 local player_Yule_army = {}
-local YuleArmy = menu.list(griefing, "Yule Army", {}, "")
+local YuleArmy = menu.list(Armys, "Yule Army", {}, "")
 
 menu.divider(YuleArmy, "__________________bruh__________________")
 
@@ -6704,7 +6707,7 @@ end)
 
 
 local player_furry_army = {}
-local FurryArmy = menu.list(griefing, "Furry Army", {}, "")
+local FurryArmy = menu.list(Armys, "Furry Army", {}, "")
 
 menu.divider(FurryArmy, "__________________bruh__________________")
 
@@ -6751,7 +6754,7 @@ menu.action(FurryArmy, "Clear Furry's", {"clearfurrys"}, "", function()
 end)
 
     local player_pussy_army = {}
-    local PussyArmy = menu.list(griefing, "Pussy Army", {}, "")
+    local PussyArmy = menu.list(Armys, "Pussy Army", {}, "")
 
     menu.divider(PussyArmy, "__________________bruh__________________")
 
@@ -6796,7 +6799,7 @@ end)
 
     
     local player_fathoes_army = {}
-    local FathoesArmy = menu.list(griefing, "Fathoe Army", {}, "")
+    local FathoesArmy = menu.list(Armys, "Fathoe Army", {}, "")
 
     menu.divider(FathoesArmy, "__________________bruh__________________")
 
@@ -8260,7 +8263,7 @@ end)
 		cages[#cages + 1] = cage_object
 		util.yield(15)
 		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
-		rot.y = 90
+		rot.y = 0
 		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 	end)
@@ -9324,9 +9327,10 @@ end)
 		end
 	end)
 
-    local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea and <3")
+    local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea.")
+
     tpf_units = 1
-    menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea and <3", function()
+    menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea.", function()
         menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(200)
         menu.trigger_commands("nocollision" .. " on")
@@ -9338,7 +9342,7 @@ end)
 	end)
     
     tpf_units = -0.7
-    menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kaliya for idea and <3", function()
+    menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kaliya for idea.", function()
         menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(200)
         menu.trigger_commands("nocollision" .. " on")
@@ -9451,6 +9455,8 @@ end)
             menu.trigger_commands("rigroulette ".. "1")
             util.yield(1500)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1132.2958, 263.93478, -51.035763)
+            menu.trigger_commands("casinohelp1")
+            menu.trigger_commands("casinohelp2")
         else
             menu.trigger_commands("rigblackjack")
             menu.trigger_commands("rigroulette ".. "-1")
@@ -9685,6 +9691,95 @@ function RqModel(hash)
         util.toast("Tried for 1 second, couldn't load this specified model!")
     end
 end
+
+local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
+
+menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stood still if you think freezing wont work. Credits to Legy for idea.", function()
+    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(200)
+    menu.trigger_commands("playanimlapdance")
+    menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("smash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("footlettuce" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(50000)
+    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("stopself")
+end)
+
+local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
+
+menu.action(MenuCrashes,"Any Menu Crash", {"anycrash"}, "", function()
+    util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
+    util.log("Any Menu Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"Stand Crash", {"standcrash"}, "", function()
+    util.toast("Stand Crash Sent to " .. players.get_name(pid))
+    util.log("Stand Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "", function()
+    util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
+    util.log("2Take1 Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "", function()
+    util.toast("Rebound Crash Sent to " .. players.get_name(pid))
+    util.log("Rebound Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "", function()
+    util.toast("X-Force Crash Sent to " .. players.get_name(pid))
+    util.log("X-Force Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "", function()
+    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
+    util.log("Cherax Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"North Crash", {"northcrash"}, "", function()
+    util.toast("North Crash Sent to " .. players.get_name(pid))
+    util.log("North Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "", function()
+    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
+    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+end)
+
+menu.action(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "LMFAO", function()
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
+    util.log("Kiddions Crash Sent to " .. players.get_name(pid))
+end)
+
 
 local lobbycrash = menu.list(crash, "Lobby Crashes", {}, "")
 
