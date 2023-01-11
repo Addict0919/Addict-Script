@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.0;if not dev_mode then 
+local a=1.1;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.0;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.7\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.8\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -10007,31 +10007,39 @@ end)
 
 local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
 
-menu.action(MenuCrashes,"Any Menu Crash", {"anycrash"}, "Not coded Yet.", function()
+menu.toggle_loop(MenuCrashes,"Any Menu Crash", {"anycrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
     util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
     util.log("Any Menu Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
 end)
 
-menu.action(MenuCrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
+menu.toggle_loop(MenuCrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
     util.toast("Stand Crash Sent to " .. players.get_name(pid))
     util.log("Stand Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
 end)
 
-menu.action(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
+menu.toggle_loop(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
     util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
     util.log("2Take1 Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
 end)
 
-menu.action(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
+menu.toggle_loop(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
     util.toast("X-Force Crash Sent to " .. players.get_name(pid))
     util.log("X-Force Crash Sent to " .. players.get_name(pid))
     util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
 end)
 
-menu.action(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "Working.", function()
+menu.toggle_loop(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "Working.", function()
     if pid ~= players.user() then
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = players.get_position(pid)
@@ -10060,32 +10068,48 @@ menu.action(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "Working.", function(
 end)
 
 menu.toggle_loop(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
-        if pid ~= players.user() then
-            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-            util.yield()
-        end
-    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
-    util.log("Cherax Crash Sent to " .. players.get_name(pid))
-end)
-
-menu.action(MenuCrashes,"North Crash", {"northcrash"}, "Not coded Yet.", function()
-    util.toast("North Crash Sent to " .. players.get_name(pid))
-    util.log("North Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-end)
-
-menu.action(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
-    
-    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
-    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
-end)
-
-menu.action(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
     if pid ~= players.user() then
     menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield()
+    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
+    util.log("Cherax Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"North Crash", {"northcrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+    local michael = util.joaat("player_zero")
+    while not STREAMING.HAS_MODEL_LOADED(michael) do
+        STREAMING.REQUEST_MODEL(michael)
+        util.yield()
+    end
+    local ped = entities.create_ped(0, michael, pos, 0)
+    PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 6, 0)
+    PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 7, 0)
+    util.yield()
+    ENTITY.SET_ENTITY_COORDS(ped, pos.x, pos.y, pos.z, true, false, false, true)
+    util.yield(500)
+    entities.delete_by_handle(ped)
+    util.toast("North Crash Sent to " .. players.get_name(pid))
+    util.log("North Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
+    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
+    if pid ~= players.user() then
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield()
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
     end
