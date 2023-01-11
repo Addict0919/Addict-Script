@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=0.8;if not dev_mode then 
+local a=0.9;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=0.8;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.5\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4328,7 +4328,117 @@ function delete_object(model)
     end
 end
 
+
+all_female_sex_voicenames = {
+    "S_F_Y_HOOKER_01_WHITE_FULL_01",
+    "S_F_Y_HOOKER_01_WHITE_FULL_02",
+    "S_F_Y_HOOKER_01_WHITE_FULL_03",
+    "S_F_Y_HOOKER_02_WHITE_FULL_01",
+    "S_F_Y_HOOKER_02_WHITE_FULL_02",
+    "S_F_Y_HOOKER_02_WHITE_FULL_03",
+    "S_F_Y_HOOKER_03_BLACK_FULL_01",
+    "S_F_Y_HOOKER_03_BLACK_FULL_03",
+}
+
+local female_speeches = {
+    "SEX_GENERIC_FEM",
+    "SEX_HJ",
+    "SEX_ORAL_FEM",
+    "SEX_CLIMAX",
+    "SEX_GENERIC"
+}
+
+function moan(pos, gender)
+    util.create_thread(function()
+        local hash = util.joaat('s_f_y_hooker_01')
+        request_model_load(hash)
+        local new_ped = entities.create_ped(28, hash, pos, 0)
+        ENTITY.SET_ENTITY_VISIBLE(new_ped, false, 0)
+        ENTITY.SET_ENTITY_INVINCIBLE(new_ped, true)
+        local voice_name
+        local speech_nam
+        if gender == 'f' then
+            voice_name = all_female_sex_voicenames[math.random(#all_female_sex_voicenames)]
+            speech_name = female_speeches[math.random(#female_speeches)]
+        else
+            voice_name = "MICHAEL_NORMAL"
+            speech_name = "SEX_GENERIC"
+        end
+        AUDIO.PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(new_ped, speech_name, voice_name, "SPEECH_PARAMS_FORCE", 0)
+        local st_time = os.time()
+        while true do 
+            if os.time() - st_time >= 5 then 
+                entities.delete(new_ped)
+                util.stop_thread()
+            end
+            local c = players.get_position(players.user())
+            ENTITY.SET_ENTITY_COORDS(new_ped, c.x, c.y, c.z+3, false, false, false, false)
+            util.yield()
+        end
+    end)
+end
+
 	playermode = menu.list(funfun, "Player Modes", {}, "", function(); end)
+    
+escort_root = menu.list(playermode, "Escort services", {"sexluaescorts"}, "")
+
+menu.toggle_loop(escort_root, "Female Moan", {"fsexmoan"}, "", function(on_click)
+    moan(players.get_position(players.user()), 'f')
+end)
+
+menu.toggle_loop(escort_root, "Male Moan", {"msexmoan"}, "", function(on_click)
+    moan(players.get_position(players.user()), 'm')
+end)
+
+local custom_hooker_model = 'ig_lestercrest'
+menu.text_input(escort_root, "Custom escort model", {"customescortmdl"}, "Enter the model, then go to request escort > custom.", function(on_input)
+    custom_hooker_model = on_input
+end, 'ig_lestercrest')
+
+local custom_hooker_options = {"Topless", "Tracy", "Paige", "Bartender", "Clone of me", "Femboy", "Custom"}
+menu.list_action(escort_root, "Request escort", {"requestescort"}, "Request the most high-end escorts in Los Santos", custom_hooker_options, function(index)
+    local hooker
+    local c
+    pluto_switch index do
+        case 1:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat('a_f_y_topless_01'))
+            hooker = entities.create_ped(28, util.joaat('a_f_y_topless_01'), c, math.random(270))
+            break
+        case 2:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat('cs_tracydisanto'))
+            hooker = entities.create_ped(28, util.joaat('cs_tracydisanto'), c, math.random(270))
+            break
+        case 3:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat('ig_paige'))
+            hooker = entities.create_ped(28, util.joaat('ig_paige'), c, math.random(270))
+            break
+        case 4:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat('s_f_y_bartender_01'))
+            hooker = entities.create_ped(28, util.joaat('s_f_y_bartender_01'), c, math.random(270))
+            break
+        case 5:
+            hooker = PED.CLONE_PED(players.user_ped(), true, true, true)
+            break
+        case 6:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat('u_m_y_staggrm_01'))
+            hooker = entities.create_ped(28, util.joaat('u_m_y_staggrm_01'), c, math.random(270))
+            break
+        case 7:
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+            request_model_load(util.joaat(custom_hooker_model))
+            hooker = entities.create_ped(28, util.joaat(custom_hooker_model), c, math.random(270))
+            break
+    end
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -5.0, 0.0, 0.0)
+    ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+    TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+    util.toast("Your escort has arrived to your left.")
+end)
     
     local obj_pp = {"prop_cs_dildo_01", "prop_ld_bomb_01", "prop_sam_01"}
     local opt_pp = {"Small", "Big", "Bigger", "Delete"}
@@ -6002,22 +6112,6 @@ menu.action(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the pla
             end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
---[[
-
-    menu.toggle_loop(ControlEntities, "Revive Peds", {"revivepeds"}, "", function()
-        local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-        local c = ENTITY.GET_ENTITY_COORDS(p)
-                all_peds = entities.get_all_peds_as_handles()
-                player_ped = PLAYER.PLAYER_PED_ID()
-                for k,ped in pairs(all_peds) do
-                    if not PED.IS_PED_A_PLAYER(ped) then
-                        PED.REVIVE_INJURED_PED(ped)
-                    end
-            end
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-]]
-
     menu.toggle_loop(ControlEntities, "Writher Peds", {"writherpeds"}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
@@ -6676,6 +6770,39 @@ menu.toggle(YuleArmy, "Yule Monster Fuck Player", {"toggleyulemonster"}, "Will C
         menu.trigger_commands("superc")
         end        
     end)
+    
+    menu.action(YuleArmy, "Yule Dancing Army", {"dancingyule"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
+        local hooker
+        local c
+        -- Infront
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+        request_model_load(util.joaat('U_M_M_YuleMonster'))
+        hooker = entities.create_ped(28, util.joaat('U_M_M_YuleMonster'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Left
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+        request_model_load(util.joaat('U_M_M_YuleMonster'))
+        hooker = entities.create_ped(28, util.joaat('U_M_M_YuleMonster'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Right
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+        request_model_load(util.joaat('U_M_M_YuleMonster'))
+        hooker = entities.create_ped(28, util.joaat('U_M_M_YuleMonster'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Behind
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+        request_model_load(util.joaat('U_M_M_YuleMonster'))
+        hooker = entities.create_ped(28, util.joaat('U_M_M_YuleMonster'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 menu.click_slider(YuleArmy, "Spawn Yule Monster Army", {"yulearmy"}, "", 1, 48, 48, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -6724,6 +6851,39 @@ menu.toggle(FurryArmy, "Furry Fuck Player", {"furryfuck"}, "Spawns IG Furry the 
         menu.trigger_commands("superc")
         end        
     end)
+
+    menu.action(FurryArmy, "Furry Dancing Army", {"dancingfurry"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
+        local hooker
+        local c
+        -- Infront
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+        request_model_load(util.joaat('IG_Furry'))
+        hooker = entities.create_ped(28, util.joaat('IG_Furry'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Left
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+        request_model_load(util.joaat('IG_Furry'))
+        hooker = entities.create_ped(28, util.joaat('IG_Furry'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Right
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+        request_model_load(util.joaat('IG_Furry'))
+        hooker = entities.create_ped(28, util.joaat('IG_Furry'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        -- Behind
+        c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+        request_model_load(util.joaat('IG_Furry'))
+        hooker = entities.create_ped(28, util.joaat('IG_Furry'), c, math.random(270))
+        local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+        ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+        TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+        end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 menu.click_slider(FurryArmy, "Spawn Furry Army", {"furryarmy"}, "", 1, 48, 48, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -6817,6 +6977,39 @@ end)
             end        
         end)
 
+        menu.action(FathoesArmy, "Fathoe Dancing Army", {"dancingfathoe"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
+            local hooker
+            local c
+            -- Infront
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+            request_model_load(util.joaat('IG_Fooliganz_01'))
+            hooker = entities.create_ped(28, util.joaat('IG_Fooliganz_01'), c, math.random(270))
+            local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+            ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+            TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+            -- Left
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+            request_model_load(util.joaat('IG_Fooliganz_01'))
+            hooker = entities.create_ped(28, util.joaat('IG_Fooliganz_01'), c, math.random(270))
+            local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+            ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+            TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+            -- Right
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+            request_model_load(util.joaat('IG_Fooliganz_01'))
+            hooker = entities.create_ped(28, util.joaat('IG_Fooliganz_01'), c, math.random(270))
+            local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+            ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+            TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+            -- Behind
+            c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+            request_model_load(util.joaat('IG_Fooliganz_01'))
+            hooker = entities.create_ped(28, util.joaat('IG_Fooliganz_01'), c, math.random(270))
+            local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+            ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+            TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+            end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
     menu.click_slider(FathoesArmy, "Spawn Fathoes Army", {"fathoesarmy"}, "", 1, 50, 49, 1, function(val)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -6837,6 +7030,82 @@ end)
     menu.action(FathoesArmy, "Clear Fathoe's", {"clearfathoes"}, "", function()
         for i, ped in ipairs(entities.get_all_peds_as_handles()) do
             if PED.IS_PED_MODEL(ped, util.joaat("IG_Fooliganz_01")) then
+                entities.delete_by_handle(ped)
+            end
+        end
+    end)
+
+    local ToplessArmy = menu.list(Armys, "Topless Army", {}, "")
+
+    menu.divider(ToplessArmy, "__________________bruh__________________")
+
+    menu.toggle(ToplessArmy, "Topless Fuck Player", {"toplessfuck"}, "May cause crash event (A0:335) if spammed.", function(on_toggle)
+        if on_toggle then
+            menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.toast("Wait 5 Seconds to turn off please.")
+        else
+            menu.trigger_commands("cleartoplesshoes" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            menu.trigger_commands("superc")
+            end        
+        end)
+    
+menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
+    local hooker
+    local c
+    -- Infront
+    c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+    request_model_load(util.joaat('a_f_y_topless_01'))
+    hooker = entities.create_ped(28, util.joaat('a_f_y_topless_01'), c, math.random(270))
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0)
+    ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+    TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+    -- Left
+    c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+    request_model_load(util.joaat('a_f_y_topless_01'))
+    hooker = entities.create_ped(28, util.joaat('a_f_y_topless_01'), c, math.random(270))
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), -1, 0, 0.0)
+    ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+    TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+    -- Right
+    c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+    request_model_load(util.joaat('a_f_y_topless_01'))
+    hooker = entities.create_ped(28, util.joaat('a_f_y_topless_01'), c, math.random(270))
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 1, 0, 0.0)
+    ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+    TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+    -- Behind
+    c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+    request_model_load(util.joaat('a_f_y_topless_01'))
+    hooker = entities.create_ped(28, util.joaat('a_f_y_topless_01'), c, math.random(270))
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, -1, 0.0)
+    ENTITY.SET_ENTITY_COORDS(hooker, c.x, c.y, c.z)
+    TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+    menu.click_slider(ToplessArmy, "Spawn Topless Army", {"toplessarmy"}, "", 1, 50, 49, 1, function(val)
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
+        pos.y = pos.y - 5
+        pos.z = pos.z + 1
+        local fathoes = util.joaat("a_f_y_topless_01")
+        request_model(fathoes)
+        for i = 1, val do
+            player_fathoes_army[i] = entities.create_ped(28, fathoes, pos, 0)
+            ENTITY.SET_ENTITY_INVINCIBLE(player_fathoes_army[i], true)
+            PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(player_fathoes_army[i], true)
+            PED.SET_PED_COMPONENT_VARIATION(player_fathoes_army[i], 0, 0, 1, 0)
+            TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(player_fathoes_army[i], ped, 0, -0.3, 0, 7.0, -1, 10, true)
+            util.yield()
+        end 
+    end)
+
+    menu.action(ToplessArmy, "Clear Topless Hoes", {"cleartoplesshoes"}, "", function()
+        for i, ped in ipairs(entities.get_all_peds_as_handles()) do
+            if PED.IS_PED_MODEL(ped, util.joaat("a_f_y_topless_01")) then
                 entities.delete_by_handle(ped)
             end
         end
@@ -9701,6 +9970,12 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     util.yield(10)
     menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
+    menu.trigger_commands("spawntopless" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("fsexmoan" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("msexmoan" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
     menu.trigger_commands("playanimlapdance")
     menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(3000)
