@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.4;if not dev_mode then 
+local a=1.5;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.4;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.2\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -2591,7 +2591,7 @@ end
 
 custselc = menu.list(menu.my_root(), "Select Pussies", {}, "", function(); end)
 
-menu.toggle(custselc, "Exclude Selected", {}, "", function(on_toggle)
+menu.toggle(custselc, "Exclude Selected", {"excludepussies"}, "", function(on_toggle)
     if on_toggle then
         excludeselected = true
     else
@@ -2634,6 +2634,27 @@ local chaos, gravity, speed = false, true, 100
 		end
 	end)
 
+    menu.action(custselc, "Rank Everyone", {"rankall"}, "", function()
+        menu.trigger_commands("excludepussies")
+        util.yield(1500)
+    	notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+		for pids = 0, 31 do
+			if excludeselected then
+				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                    menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+					notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+				end
+			else
+				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                    menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+					notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+				end
+			end
+		end
+	end)
+    
     menu.action(custselc, "Give Bounty Loop", {"bountyloopto"}, "", function()
 		for pids = 0, 31 do
 			if excludeselected then
@@ -9686,29 +9707,27 @@ end)
 
     menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("givecollectibles" .. players.get_name(pid))
-            util.yield(10)
             menu.trigger_commands("bountyloop" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
         else
             menu.trigger_commands("bountyloop" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
         end
     end)
 
@@ -9743,8 +9762,6 @@ end)
 		util.trigger_script_event(1 << pid, {0x2994068E, 1, 8, i, 1, 1, 1})
         end
     end)
-
-
 
     menu.toggle_loop(drops, "{Jrukii's}RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
         for i = 1, 20 do
@@ -9799,7 +9816,6 @@ end)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
         util.yield(50)
-        menu.trigger_commands("tppickups" .. players.get_name(pid))
     end)
 
     menu.toggle_loop(drops, "Drop All Figures Fast (Attach)", {"figures"}, "", function()
