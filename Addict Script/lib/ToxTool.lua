@@ -850,9 +850,9 @@ local function split_str(inputstr, sep)
     return t
 end
 
-local function nil_handler(val, default)
+local function nil_handler(val, defaults)
     if val == nil then
-        val = default
+        val = defaults
     end
     return val
 end
@@ -1303,7 +1303,7 @@ function draw_box(x, y, width, height, opacity)
     directx.draw_rect(x, y - 0.0015, width, height + 0.0015, color)
 end
 
-default = {
+defaults = {
 	["r"] = 255/255,
 	["g"] = 255/255,
 	["b"] = 255/255,
