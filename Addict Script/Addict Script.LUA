@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.1;if not dev_mode then 
+local a=1.2;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.1;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.4.8\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.4.9\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -9194,7 +9194,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
            menu.toggle_loop(kick, "Invalid Apartment Kick V2", {"invkick2"}, "Invalid Apartment Invite.", function(on_toggle)
                local int_min = -2147483647
                local int_max = 2147483647
-               for i = 1, 15 do
+               for i = 1, 5 do
                    util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085, math.random(int_min, int_max), math.random(int_min, int_max), 
                    math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                    math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
@@ -9202,10 +9202,11 @@ function spawn_buzzard(pid, gunner_weapon, collision)
                end
                menu.trigger_commands("givesh" .. players.get_name(pid))
                util.yield()
-               for i = 1, 15 do
+               for i = 1, 5 do
                    util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085, pid, math.random(int_min, int_max)})
                    util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085})
                    util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085})
+                   util.yield(300)
                end
             end, nil, nil, COMMANDPERM_AGGRESSIVE)
         
@@ -9632,6 +9633,29 @@ end)
 
     menu.action(drops, "Give All Collectibles", {"collects"}, "", function()
         menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+    end)
+
+    recovery = menu.list(drops, "Bounty Recovery", {"bountyrecovery"}, "", function(); end)
+
+    local next_loop_time
+    local has_bounty = false
+    menu.toggle_loop(recovery, "Bounty Loop", {"bountyloop"}, "Still experimental", function(on)
+        if next_loop_time == nil or util.current_time_millis() > next_loop_time then
+            local delay
+            if not has_bounty then
+                local command = "bounty "..players.get_name(players.user()).." 10000"
+                notification("set bounty..", "~b~")
+                menu.trigger_commands(command)
+                has_bounty = true
+                delay = 10000
+            else
+                notification("removing bounty...", "~b~")
+                menu.trigger_commands("removebounty")
+                has_bounty = false
+                delay = 1000
+            end
+            next_loop_time = util.current_time_millis() + delay
+        end
     end)
 
     menu.toggle_loop(drops, "Drop RP", {"giverp"}, "", function()
@@ -10490,7 +10514,18 @@ local all_objects = {
 168901740,
 303280717,
 725259233,
-2064599526
+2064599526,
+4204303756,
+3185604174,
+1046958884,
+81317377,
+2539784170,
+795367207,
+2684668286,
+827574655,
+617299305,
+3999634798
+
 } 
 
 local object_names = {
@@ -10591,7 +10626,17 @@ local object_names = {
 "prop_cctv_cam_06a",
 "prop_till_01",
 "prop_chair_02",
-"prop_chair_04a"
+"prop_chair_04a",
+"xs_prop_arena_flipper_large_01a",
+"xs_prop_arena_flipper_small_01a",
+"xs_prop_arena_flipper_xl_01a",
+"xs_prop_arena_flipper_large_01a_sf",
+"xs_prop_arena_flipper_small_01a_sf",
+"xs_prop_arena_flipper_xl_01a_sf",
+"xs_prop_arena_flipper_large_01a_wl",
+"xs_prop_arena_flipper_small_01a_wl",
+"xs_prop_arena_flipper_xl_01a_wl",
+"xs_prop_trophy_flipper_01a"
 
 }
 
