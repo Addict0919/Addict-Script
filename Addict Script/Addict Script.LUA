@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.3;if not dev_mode then 
+local a=1.4;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.3;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.0\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.1\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -2634,6 +2634,22 @@ local chaos, gravity, speed = false, true, 100
 		end
 	end)
 
+    menu.action(custselc, "Give Bounty Loop", {"bountyloopto"}, "", function()
+		for pids = 0, 31 do
+			if excludeselected then
+				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+					menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+					notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+				end
+			else
+				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+					menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+					notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+				end
+			end
+		end
+	end)
+
     menu.action(custselc, "Give Crazy Rank", {"crazyrankto"}, "", function()
 		for pids = 0, 31 do
 			if excludeselected then
@@ -2649,7 +2665,6 @@ local chaos, gravity, speed = false, true, 100
 			end
 		end
 	end)
-
     
 	menu.action(custselc, "Give RP Steadily", {"giverpstedto"}, "", function()
 		for pids = 0, 31 do
@@ -9672,7 +9687,7 @@ end)
     menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
         if on_toggle then
             menu.trigger_commands("givecollectibles" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("bountyloop" .. players.get_name(pid))
             util.yield(0)
             menu.trigger_commands("giverp" .. players.get_name(pid))
@@ -9681,18 +9696,18 @@ end)
             util.yield(0)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
             util.yield(0)
-            menu.trigger_commands("figures" .. players.get_name(pid))
+            menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(0)
         else
             menu.trigger_commands("bountyloop" .. players.get_name(pid))
-            util.yield(0)
+            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(0)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
             util.yield(0)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
             util.yield(0)
-            menu.trigger_commands("figures" .. players.get_name(pid))
+            menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(0)
         end
     end)
@@ -9731,7 +9746,7 @@ end)
 
 
 
-    menu.toggle_loop(drops, "{Jrukii's}RP Loop", {"givebigrp"}, "Gives Players RP", function(toggle)  --Credit to Jrukii for making this
+    menu.toggle_loop(drops, "{Jrukii's}RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
         for i = 1, 20 do
         util.yield(0)
         util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i})
@@ -9756,7 +9771,38 @@ end)
                 util.yield(500)
     end)
 
-    menu.toggle_loop(drops, "Drop All Figures Fast", {"figures"}, "", function()
+    menu.toggle_loop(drops, "Drop All Figures (No Attach)", {"dropfigures"}, "", function()
+        local coords = players.get_position(pid)
+        coords.z = coords.z + 1.5
+        local random_hash = 0x4D6514A3
+        local random_int = math.random(1, 8)
+        if random_int == 1 then
+            random_hash = 0x4D6514A3
+        elseif random_int == 2 then
+            random_hash = 0x748F3A2A
+        elseif random_int == 3 then
+            random_hash = 0x1A9736DA
+        elseif random_int == 4 then
+            random_hash = 0x3D1B7A2F
+        elseif random_int == 5 then
+            random_hash = 0x1A126315
+        elseif random_int == 6 then
+            random_hash = 0xD937A5E9
+        elseif random_int == 7 then
+            random_hash = 0x23DDE6DB
+        elseif random_int == 8 then
+            random_hash = 0x991F8C36
+        end
+        STREAMING.REQUEST_MODEL(random_hash)
+        if STREAMING.HAS_MODEL_LOADED(random_hash) == false then  
+            STREAMING.REQUEST_MODEL(random_hash)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
+        util.yield(50)
+        menu.trigger_commands("tppickups" .. players.get_name(pid))
+    end)
+
+    menu.toggle_loop(drops, "Drop All Figures Fast (Attach)", {"figures"}, "", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
