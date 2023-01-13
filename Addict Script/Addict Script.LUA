@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.8;if not dev_mode then 
+local a=1.9;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.8;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.5\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -276,73 +276,6 @@ local entity_types <const> = {
     [42] = {"Big Soccerball", name = "stt_prop_stunt_soccer_ball"}
 }
 
-local cage_types <const> = {
-    [0] = {
-        "Standard Cage",
-        objects = {
-            {
-                name = "prop_gold_cont_01",
-                offset = v3.new(0, 0, 0),
-                rot = v3.new(0, 0, 0)
-            }
-        },
-        max_distance = 2
-    },
-    [1] = {
-        "Tall Cage",
-        objects = {
-            {
-                name = "prop_rub_cage01a",
-                offset = v3.new(0, 0, -1),
-                rot = v3.new(0, 0, 0)
-            },
-            {
-                name = "prop_rub_cage01a",
-                offset = v3.new(0, 0, 1.2),
-                rot = v3.new(-180, 0, 90)
-            }
-        },
-        max_distance = 1.5
-    },
-    [2] = {
-        "Box Cage",
-        objects = {
-            {
-                name = "prop_ld_crate_01",
-                offset = v3.new(0, 0, 0),
-                rot = v3.new(-180, 90, 0)
-            },
-            {
-                name = "prop_ld_crate_01",
-                offset = v3.new(0, 0, 0),
-                rot = v3.new(0, 90, 0)
-            }
-        },
-        max_distance = 1.5
-    },
-    [3] = {
-        "Pipe Cage",
-        objects = {
-            {
-                name = "prop_pipes_conc_01",
-                offset = v3.new(0, 0, 0),
-                rot = v3.new(90, 0, 0)
-            }
-        },
-        max_distance = 1.5
-    },
-    [4] = {
-        "Stunt Tube Cage",
-        objects = {
-            {
-                name = "stt_prop_stunt_tube_end",
-                offset = v3.new(0, 0, 0),
-                rot = v3.new(0, -90, 0)
-            }
-        },
-        max_distance = 13
-    }
-}
 
 local vehicle_types <const> = {
     [0] = {"Faggio", name = "faggio"},
@@ -4145,6 +4078,220 @@ menu.toggle(funfun, "Upgrade firewerk launcher to ATGM", {"ATGM"}, "Firework upg
 		end
 	end
 end)
+
+local objtab = {}
+local vsh
+local psh
+local obj_shot
+local function vshot(hash, camcoords, CV, rot)
+    if not ENTITY.DOES_ENTITY_EXIST(vsh) then
+        vsh = entities.create_vehicle(hash, camcoords, CV)
+        ENTITY.SET_ENTITY_ROTATION(vsh, rot.x, rot.y, rot.z, 0, true)
+        VEHICLE.SET_VEHICLE_FORWARD_SPEED(vsh, 1000)
+        VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vsh, true)
+        VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_NON_SCRIPT_PLAYERS(vsh, true)
+        table.insert(objtab, vsh)
+    else
+            local veh_sec = entities.create_vehicle(hash, camcoords, CV)
+            ENTITY.SET_ENTITY_ROTATION(veh_sec, rot.x, rot.y, rot.z, 0, true)
+            VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh_sec, 1000)
+            VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vsh, true)
+            VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_NON_SCRIPT_PLAYERS(vsh, true)
+            table.insert(objtab, veh_sec)
+    end
+end
+
+local function objshots(hash, obj, camcoords)
+    local CV = CAM.GET_GAMEPLAY_CAM_RELATIVE_HEADING()
+    local rot = CAM.GET_GAMEPLAY_CAM_ROT(0)
+    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+        vshot(hash, camcoords, CV, rot)
+        
+        for i, car in ipairs(objtab) do
+            if obj.expl then
+                if ENTITY.HAS_ENTITY_COLLIDED_WITH_ANYTHING(car) then
+                    local expcoor = ENTITY.GET_ENTITY_COORDS(car)
+                    FIRE.ADD_EXPLOSION(expcoor.x, expcoor.y, expcoor.z, 81, 5000, true, false, 0.0, false)
+                    entities.delete_by_handle(car)
+                end
+
+
+            end
+            if i >= 150 then
+                for index, vehs in ipairs(objtab) do
+                    entities.delete_by_handle(vehs)
+                    objtab ={}
+                end
+            end
+            local carc = ENTITY.GET_ENTITY_COORDS(car)
+            local tar2 = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+            local disbet = SYSTEM.VDIST2(tar2.x, tar2.y, tar2.z, carc.x, carc.y, carc.z)
+            if disbet > 15000 then
+                entities.delete_by_handle(car)
+            end
+        end
+
+    elseif STREAMING.IS_MODEL_A_PED(hash) then
+       pshot(hash, camcoords, CV, rot)
+
+    
+        for i, psho in ipairs(objtab) do
+        if obj.expl then
+            if ENTITY.HAS_ENTITY_COLLIDED_WITH_ANYTHING(psho) then
+                local expcoor = ENTITY.GET_ENTITY_COORDS(psho)
+                FIRE.ADD_EXPLOSION(expcoor.x, expcoor.y, expcoor.z, 81, 5000, true, false, 0.0, false)
+                entities.delete_by_handle(psho)
+            end
+                
+                    local pedc = ENTITY.GET_ENTITY_COORDS(psh)
+                    local tar2 = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+                    local disbet = SYSTEM.VDIST2(tar2.x, tar2.y, tar2.z, pedc.x, pedc.y, pedc.z)
+                    if disbet > 15000 then
+                        entities.delete_by_handle(psh)
+                    end
+        end
+        if i >= 40 then
+            for index, p_shot in ipairs(objtab) do
+                entities.delete_by_handle(p_shot)
+                objtab ={}
+            end
+        end
+    end
+    elseif STREAMING.IS_MODEL_VALID(hash) then
+       oshot(hash, camcoords, rot)
+
+
+
+       for i, objs in ipairs(objtab) do
+       if obj.expl then
+        if ENTITY.HAS_ENTITY_COLLIDED_WITH_ANYTHING(objs) then
+            local expcoor = ENTITY.GET_ENTITY_COORDS(objs)
+            FIRE.ADD_EXPLOSION(expcoor.x, expcoor.y, expcoor.z, 81, 5000, true, false, 0.0, false)
+            entities.delete_by_handle(objs)
+        end
+
+                local objc = ENTITY.GET_ENTITY_COORDS(objs)
+                local tar2 = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+                local disbet = SYSTEM.VDIST2(tar2.x, tar2.y, tar2.z, objc.x, objc.y, objc.z)
+
+                if disbet > 15000 then
+                    entities.delete_by_handle(objs)
+                end
+            end
+            if i >= 40 then
+                for index, p_shot in ipairs(objtab) do
+                    entities.delete_by_handle(p_shot)
+                    objtab ={}
+                end
+            end
+        end
+    end
+   
+end
+
+function Streament(hash) --Streaming Model
+    STREAMING.REQUEST_MODEL(hash)
+    while STREAMING.HAS_MODEL_LOADED(hash) ==false do
+    util.yield()
+    end
+end
+
+local next_preview
+local image_preview
+local function rotation_to_direction(rotation)
+    local adjusted_rotation =
+    {
+        x = (math.pi / 180) * rotation.x,
+        y = (math.pi / 180) * rotation.y,
+        z = (math.pi / 180) * rotation.z
+    }
+    local direction =
+    {
+        x = -math.sin(adjusted_rotation.z) * math.abs(math.cos(adjusted_rotation.x)),
+        y =  math.cos(adjusted_rotation.z) * math.abs(math.cos(adjusted_rotation.x)),
+        z =  math.sin(adjusted_rotation.x)
+    }
+    return direction
+end
+local function get_offset_from_camera(distance)
+    local cam_rot = CAM.GET_FINAL_RENDERED_CAM_ROT(0)
+    local cam_pos = CAM.GET_FINAL_RENDERED_CAM_COORD()
+    local direction = rotation_to_direction(cam_rot)
+    local destination =
+    {
+        x = cam_pos.x + direction.x * distance,
+        y = cam_pos.y + direction.y * distance,
+        z = cam_pos.z + direction.z * distance
+    }
+    return destination
+end
+
+local function objams(obj_hash, obj, camcoords)
+    local CV = CAM.GET_GAMEPLAY_CAM_RELATIVE_HEADING()
+    if STREAMING.IS_MODEL_A_VEHICLE(obj_hash) then
+        obj.prev = VEHICLE.CREATE_VEHICLE(obj_hash, camcoords.x, camcoords.y, camcoords.z, CV, true, true, false)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(obj.prev, players.user_ped(), false)
+      elseif STREAMING.IS_MODEL_A_PED(obj_hash) then
+        obj.prev = entities.create_ped(1, obj_hash, camcoords, CV)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(obj.prev, players.user_ped(), false)
+      elseif STREAMING.IS_MODEL_VALID(obj_hash) then
+        obj.prev = OBJECT.CREATE_OBJECT(obj_hash, camcoords.x, camcoords.y, camcoords.z, true, true, true)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(obj.prev, players.user_ped(), false)
+    end
+end
+
+SEC = ENTITY.SET_ENTITY_COORDS
+
+local obj_hash = 'hydra'
+local objgun = menu.list(funfun, 'Custom Object Gun', {}, '')
+
+local obj = {expl = false}
+OBJgun = menu.toggle_loop(objgun, 'Custom Object Gun', {'objgun'}, 'Fires the object you have selected', function ()
+     
+   local hash = util.joaat(obj_hash)
+    Streament(hash)
+    if PLAYER.IS_PLAYER_FREE_AIMING(players.user()) and not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) then
+        local rot = CAM.GET_GAMEPLAY_CAM_ROT(0)
+        local camcoords = get_offset_from_camera(10)
+        if not ENTITY.DOES_ENTITY_EXIST(obj.prev) then
+            objams(hash, obj, camcoords)
+        else
+            SEC(obj.prev, camcoords.x, camcoords.y, camcoords.z, false, true, true, false)
+        end
+        ENTITY.SET_ENTITY_ROTATION(obj.prev, rot.x, rot.y, rot.z, 0, true)
+        
+    elseif ENTITY.DOES_ENTITY_EXIST(obj.prev) and not PLAYER.IS_PLAYER_FREE_AIMING(players.user()) then
+        entities.delete_by_handle(obj.prev)
+    end
+    if PED.IS_PED_SHOOTING(players.user_ped()) and not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) then
+        local camcoords = get_offset_from_camera(15)
+        objshots(hash, obj, camcoords)
+        entities.delete_by_handle(obj.prev)
+        util.yield(20)
+    end
+end)
+
+
+
+menu.toggle(objgun, 'Make Objects Explosive', {}, 'Makes the objects you shoot explosive when hitting something', function (on)
+    obj.expl =  on
+  end)
+
+
+  menu.text_input(objgun, 'Custom Object', {'customobj'}, 'Enter the model name of an object to change the object you shoot example "prop_keg_01"', function(cusobj)
+
+    if STREAMING.IS_MODEL_A_VEHICLE(util.joaat(cusobj)) then
+        obj_hash = cusobj
+      elseif STREAMING.IS_MODEL_A_PED(util.joaat(cusobj)) then
+        obj_hash = cusobj
+      elseif STREAMING.IS_MODEL_VALID(util.joaat(cusobj)) then
+        obj_hash = cusobj
+    else
+       if set.alert then
+           util.toast('Improper Object Name (check the spelling)')
+       end
+    end
+end, 'hydra')
 
 
 local fire_wings_list = menu.list(funfun, "Fire wings")
@@ -14526,29 +14673,8 @@ menu.toggle_loop(self, "Stealth Vehicle Godmode Off", {}, "Turns off Godmode for
     end, function() ENTITY.SET_ENTITY_PROOFS(PED.GET_VEHICLE_PED_IS_IN(players.user(), true), true, true, true, true, true, 0, 0, true)
 end)
 
+
 local detections = menu.list(menu.my_root(), "Modder Detections", {}, "")
-
-menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
-    local pick = math.random(6)
-    if pick == 4 then 
-        util.log("You loose.")
-        menu.show_command_box("say " .. "I loose.")
-        menu.trigger_commands("autoenter")
-        util.yield(200)
-        menu.trigger_commands("autoenter")
-        ENTITY.APPLY_FORCE_TO_ENTITY(0, 1, 0, 0, 0, 0, 0, 0, 0, true, true, true, true, true)
-    else
-        util.toast("Lucky Bastard ;)")
-		menu.show_command_box("say " .. "I got lucky ;)")
-        menu.trigger_commands("autoenter")
-        util.yield(200)
-        menu.trigger_commands("autoenter")
-    end
-end)
-
-menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game in singleplayer, closes it in Online. You will need to reinject (duh).", function(on_click)
-    MISC.RESTART_GAME("E574A662ACAEFBB1")
-end)
 
 local autohost = menu.list(detections, "Host Detection", {}, "")
 
@@ -14949,6 +15075,33 @@ menu.toggle_loop(detsuperd, "Super Drive Auto Kick Them Out", {}, "Detects if th
 end)
 
 --------------------------------------
+
+menu.action(menu.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
+    util.restart_script()
+end)
+
+menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
+    local pick = math.random(6)
+    if pick == 4 then 
+        util.log("You loose.")
+        menu.show_command_box("say " .. "I loose.")
+        menu.trigger_commands("autoenter")
+        util.yield(200)
+        menu.trigger_commands("autoenter")
+        ENTITY.APPLY_FORCE_TO_ENTITY(0, 1, 0, 0, 0, 0, 0, 0, 0, true, true, true, true, true)
+    else
+        util.toast("Lucky Bastard ;)")
+		menu.show_command_box("say " .. "I got lucky ;)")
+        menu.trigger_commands("autoenter")
+        util.yield(200)
+        menu.trigger_commands("autoenter")
+    end
+end)
+
+menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game in singleplayer, closes it in Online. You will need to reinject (duh).", function(on_click)
+    MISC.RESTART_GAME("E574A662ACAEFBB1")
+end)
+
 
 focusref = {}
 isfocused = false
