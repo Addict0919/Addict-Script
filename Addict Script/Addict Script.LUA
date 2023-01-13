@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.6;if not dev_mode then 
+local a=1.7;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.6;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.3\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.4\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -9706,6 +9706,7 @@ end)
     end)
 
     menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
+        if pid ~= players.user() then
         if on_toggle then
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(10)
@@ -9724,10 +9725,12 @@ end)
             util.yield(10)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(10)
+            end
         end
     end)
 
     menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
+        if pid ~= players.user() then
 	    for i = 1, 20 do
         util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i})
 		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
@@ -9735,10 +9738,12 @@ end)
 		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
 		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
 		util.trigger_script_event(1 << pid, {0x2994068E, 1, 8, i, 1, 1, 1})
+            end
         end
     end)
 
     menu.toggle_loop(drops, "{Jrukii's}RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
+        if pid ~= players.user() then
         for i = 1, 20 do
         util.yield(0)
         util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i})
@@ -9748,10 +9753,12 @@ end)
         util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 1, i, i, i})
         util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 8, -4, 1, 1, 1})
         util.yield(1)
+        end
     end
 end)
 
     menu.toggle_loop(drops, "Drop Figures Steadily", {"giverpsted"}, "", function()
+        if pid ~= players.user() then
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local card = MISC.GET_HASH_KEY("vw_prop_vw_colle_prbubble")
@@ -9761,9 +9768,11 @@ end)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
                 util.yield(500)
+        end
     end)
 
     menu.toggle_loop(drops, "Drop All Figures (No Attach)", {"dropfigures"}, "", function()
+        if pid ~= players.user() then
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -9791,9 +9800,11 @@ end)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
         util.yield(50)
+        end
     end)
 
     menu.toggle_loop(drops, "Drop All Figures Fast (Attach)", {"figures"}, "", function()
+        if pid ~= players.user() then
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -9823,6 +9834,7 @@ end)
         util.yield(50)
         menu.trigger_commands("attachto" .. players.get_name(pid))
         menu.trigger_commands("tppickups" .. players.get_name(pid))
+        end
     end)
 
 
@@ -9839,6 +9851,7 @@ end)
 
 --[[
     menu.toggle_loop(drops, "Drop Cards", {}, "Players can only pickup 54 cards per session, Note: this hasn't been tested for bans but it should be safe", function()
+        if pid ~= players.user() then
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local card = MISC.GET_HASH_KEY("vw_prop_vw_lux_card_01a")
@@ -9847,6 +9860,7 @@ end)
             STREAMING.REQUEST_MODEL(card)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
+        end
     end)
 ]]
 
