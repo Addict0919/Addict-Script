@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.5;if not dev_mode then 
+local a=1.6;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.5;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.2\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.3\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -9707,8 +9707,6 @@ end)
 
     menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("bountyloop" .. players.get_name(pid))
-            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
@@ -9718,8 +9716,6 @@ end)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(10)
         else
-            menu.trigger_commands("bountyloop" .. players.get_name(pid))
-            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
@@ -9728,27 +9724,6 @@ end)
             util.yield(10)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(10)
-        end
-    end)
-
-    local next_loop_time
-    local has_bounty = false
-    menu.toggle_loop(drops, "Bounty Loop", {"bountyloop"}, "Still experimental", function(on)
-        if next_loop_time == nil or util.current_time_millis() > next_loop_time then
-            local delay
-            if not has_bounty then
-                local command = "bounty "..players.get_name(players.user()).." 10000"
-                notification("set bounty..", "~b~")
-                menu.trigger_commands(command)
-                has_bounty = true
-                delay = 10000
-            else
-                notification("removing bounty...", "~b~")
-                menu.trigger_commands("removebounty")
-                has_bounty = false
-                delay = 1000
-            end
-            next_loop_time = util.current_time_millis() + delay
         end
     end)
 
@@ -17084,6 +17059,27 @@ local randomamount = 10000
 
 --Header
 menu.divider(bountyloop, "Bounty Loops")
+
+local next_loop_time
+local has_bounty = false
+menu.toggle_loop(bountyloop, "Bounty Loop", {"bountyloop"}, "Still experimental", function(on)
+    if next_loop_time == nil or util.current_time_millis() > next_loop_time then
+        local delay
+        if not has_bounty then
+            local command = "bounty "..players.get_name(players.user()).." 10000"
+            notification("set bounty..", "~b~")
+            menu.trigger_commands(command)
+            has_bounty = true
+            delay = 10000
+        else
+            notification("removing bounty...", "~b~")
+            menu.trigger_commands("removebounty")
+            has_bounty = false
+            delay = 1000
+        end
+        next_loop_time = util.current_time_millis() + delay
+    end
+end)
 
 --Waiting time
 delay = 30
