@@ -7462,7 +7462,7 @@ menu.toggle(DeerArmy, "Deer Fuck Player", {"deerfuck"}, "", function(on_toggle)
         end        
     end)
 
-menu.click_slider(DeerArmy, "Spawn A Deer Army", {"deerarmy"}, "They will follow you like lost...", 1, 49, 49, 1, function(val)
+menu.click_slider(DeerArmy, "Spawn A Deer Army", {"deerarmy"}, "They will follow you like lost...", 1, 48, 48, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -7506,7 +7506,7 @@ menu.toggle(BoarArmy, "Boar/Pig Fuck Player", {"boarfuck"}, "Restart the script 
         end        
     end)
 
-menu.click_slider(BoarArmy, "Spawn A Boar/Pig Army", {"boararmy"}, "They will follow you like lost...", 1, 49, 49, 1, function(val)
+menu.click_slider(BoarArmy, "Spawn A Boar/Pig Army", {"boararmy"}, "They will follow you like lost...", 1, 48, 48, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -7710,7 +7710,7 @@ end)
             end        
         end)
 
-    menu.click_slider(PussyArmy, "Spawn Pussy Army", {"pussyarmy"}, "", 1, 50, 49, 1, function(val)
+    menu.click_slider(PussyArmy, "Spawn Pussy Army", {"pussyarmy"}, "", 1, 48, 48, 1, function(val)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
         pos.y = pos.y - 5
@@ -11576,6 +11576,11 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     if pid ~= players.user() then
     menu.trigger_commands("anticrashcamera")
     util.yield(100)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2699.9976)
     menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -11608,13 +11613,7 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     util.yield(100)
     menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1500)
-    menu.trigger_commands("rainveh" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("laughter" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
     menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("boararmy" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1500)
     menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1500)
@@ -11666,7 +11665,6 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     util.yield(100)
     menu.trigger_commands("anticrashcamera")
     util.yield(100)
-    menu.trigger_commands("attachcrash".. players.get_name(pid))
     util.toast("Addict Fuck Sent to " .. players.get_name(pid))
     util.log("Addict Fuck Sent to " .. players.get_name(pid))
     end
