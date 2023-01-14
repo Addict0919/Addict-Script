@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=2.8;if not dev_mode then 
+local a=2.9;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=2.8;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.6.3\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.6.4\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4541,6 +4541,43 @@ local function vshot(hash, camcoords, CV, rot)
     end
 end
 
+local function pshot(hash, camcoords, CV, rot)
+    if not ENTITY.DOES_ENTITY_EXIST(psh) then
+        psh = entities.create_ped(1, hash, camcoords, CV)
+        ENTITY.SET_ENTITY_INVINCIBLE(psh, true)
+        util.yield(30)
+        ENTITY.SET_ENTITY_ROTATION(psh, rot.x, rot.y, rot.z, 0, true)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(psh, 1, 0, 5000, 0, 0, true, true, true, true)
+        table.insert(objtab, psh)
+    else
+        local sped = entities.create_ped(1, hash, camcoords, CV)
+        ENTITY.SET_ENTITY_INVINCIBLE(sped, true)
+        util.yield(30)
+        ENTITY.SET_ENTITY_ROTATION(sped, rot.x, rot.y, rot.z, 0, true)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(sped, 1, 0, 5000, 0, 0, true, true, true, true)
+        table.insert(objtab, sped)
+    end
+end
+local function oshot(hash, camcoords, rot)
+    if not ENTITY.DOES_ENTITY_EXIST(obj_shot) then
+        local objs = OBJECT.CREATE_OBJECT(hash, camcoords.x, camcoords.y, camcoords.z, true, true, true)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objs, players.user_ped(), false)
+        util.yield(20)
+        ENTITY.SET_ENTITY_ROTATION(objs, rot.x, rot.y, rot.z, 0, true)
+        
+        ENTITY.APPLY_FORCE_TO_ENTITY(objs, 2, camcoords.x ,  15000, camcoords.z , 0, 0, 0, 0,  true, false, true, false, true)
+        table.insert(objtab, objs)
+        else
+            local sobjs = OBJECT.CREATE_OBJECT(hash, camcoords.x, camcoords.y, camcoords.z, true, true, true)
+            ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(sobjs, players.user_ped(), false)
+            util.yield(20)
+            ENTITY.SET_ENTITY_ROTATION(sobjs, rot.x, rot.y, rot.z, 0, true)
+            ENTITY.APPLY_FORCE_TO_ENTITY(sobjs, 2, camcoords.x ,  15000, camcoords.z , 0, 0, 0, 0,  true, false, true, false, true)
+            table.insert(objtab, sobjs)
+    end
+
+end
+
 local function objshots(hash, obj, camcoords)
     local CV = CAM.GET_GAMEPLAY_CAM_RELATIVE_HEADING()
     local rot = CAM.GET_GAMEPLAY_CAM_ROT(0)
@@ -4682,11 +4719,11 @@ end
 
 SEC = ENTITY.SET_ENTITY_COORDS
 
-local obj_hash = 'hydra'
-local objgun = menu.list(weapons, 'Custom Object Gun', {}, '')
+local obj_hash = 'A_C_KillerWhale'
+local objgun = menu.list(weapons, 'Custom Model Gun', {}, '')
 
 local obj = {expl = false}
-OBJgun = menu.toggle_loop(objgun, 'Custom Object Gun', {'objgun'}, 'Fires the object you have selected', function ()
+OBJgun = menu.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function ()
      
    local hash = util.joaat(obj_hash)
     Streament(hash)
@@ -4713,12 +4750,12 @@ end)
 
 
 
-menu.toggle(objgun, 'Make Objects Explosive', {}, 'Makes the objects you shoot explosive when hitting something', function (on)
+menu.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
     obj.expl =  on
   end)
 
 
-  menu.text_input(objgun, 'Custom Object', {'customobj'}, 'Enter the model name of an object to change the object you shoot example "prop_keg_01"', function(cusobj)
+  menu.text_input(objgun, 'Custom Model Gun', {'customgun'}, 'Enter the model name of a model to change the object you shoot example "prop_keg_01"', function(cusobj)
 
     if STREAMING.IS_MODEL_A_VEHICLE(util.joaat(cusobj)) then
         obj_hash = cusobj
@@ -4728,10 +4765,12 @@ menu.toggle(objgun, 'Make Objects Explosive', {}, 'Makes the objects you shoot e
         obj_hash = cusobj
     else
        if set.alert then
-           util.toast('Improper Object Name (check the spelling)')
+           util.toast('Improper Model Name (check the spelling)')
        end
     end
-end, 'hydra')
+end, 'A_C_KillerWhale')
+
+menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
 
 local function getgroupsize(group)
     local unkPtr, sizePtr = memory.alloc(1), memory.alloc(1)
@@ -14819,46 +14858,55 @@ end
         menu.toggle_loop(standcrash, "Elegant", {"togglecrash"}, "Blocked by most menus.", function()
             notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("crash" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Pipebomb", {"togglepipebomb"}, "", function()
             notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("pipebomb" .. players.get_name(pid))
+            util.yield()
         end)
 
         menu.toggle_loop(standcrash, "Irresponsible Disclosure", {"togglesmash"}, "Note: Use Panic Mode.", function(on_loop)
             notification("Irresponsible Disclosure sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("smash" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular menus.", function(on_loop)
             notification("BDSM sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("choke" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Indecent Exposure", {"toggleflashcrash"}, "Blocked by popular menus.", function(on_loop)
             notification("Indecent Exposure sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("flashcrash" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Next-Gen", {"togglengcrash"}, "Blocked by popular menus.", function(on_loop)
             notification("Next-Gen sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("ngcrash" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Steamroller", {"togglesteamroll"}, "Note: This crash will also affect other players close to your target.", function(on_loop)
             notification("Steamroller sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("steamroll" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Burger King Foot Lettuce", {"togglefootlettuce"}, "Can't be blocked without consequences, but the target might karma you for using it.", function(on_loop)
             notification("Burger King Foot Lettuce sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("footlettuce" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Vehicular Manslaughter", {"toggleslaughter"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function(on_loop)
             notification("Vehicular Manslaughter sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("slaughter" .. players.get_name(pid))
+            util.yield(1000)
         end)
 
 
