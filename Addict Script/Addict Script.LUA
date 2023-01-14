@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=2.2;if not dev_mode then 
+local a=2.3;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=2.2;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.8\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.9\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -8579,6 +8579,7 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
     end)
 
     menu.toggle_loop(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
+        if pid ~= players.user() then
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2769149392)
 
@@ -8592,6 +8593,7 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
 		rot.y = 0
 		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+        end
 	end)
     
 	menu.toggle_loop(cage_options, "Simple", {"simplecage"}, "", function()
@@ -11133,28 +11135,26 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     util.yield(100)
     menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
-    menu.trigger_commands("seizurev3" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("toggleallcages" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
+    util.yield(1500)
     menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -11166,6 +11166,8 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
     util.yield(100)
     menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
+    util.yield(100)
+    menu.trigger_commands("stopall".. players.get_name(pid))
     util.yield(100)
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
