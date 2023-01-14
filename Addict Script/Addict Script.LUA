@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=2.6;if not dev_mode then 
+local a=2.7;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=2.6;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.6.2\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.6.3\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -872,6 +872,7 @@ for key, value in pairs(attachments_table) do
     end
 end
 
+
 menu.toggle(weapons, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the weapons everytime you join a new session.", function(state)
     if state then
         players.on_join(function(player_id)
@@ -889,41 +890,6 @@ menu.toggle(weapons, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the 
 end)
 
 players.on_join(function(player_id)
-
-while true do
-    if menu.is_open() == true then
-        local current_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
-        if current_equipped_weapon == last_equipped_weapon then
-        else
-            last_equipped_weapon = current_equipped_weapon
-            menu.delete(attachment_tab)
-            attachment_tab =
-            menu.list(weapons, "Attachments", {"attachments"}, "See available attachments for your equipped weapon")
-            for key, value in pairs(attachments_table) do
-                local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
-                if WEAPON.DOES_WEAPON_TAKE_WEAPON_COMPONENT(curr_equipped_weapon, key) == true then --done
-                    --util.toast(curr_equipped_weapon .. " takes " .. key .. " as attachment") --done
-                    menu.action(
-                        attachment_tab,
-                        value, --done
-                        {value}, --done
-                        "Attach " .. value .. "to your current weapon", --done
-                        function(on_click)
-                            WEAPON.GIVE_WEAPON_COMPONENT_TO_PED(
-                                PLAYER.GET_PLAYER_PED(players.user()),
-                                curr_equipped_weapon,
-                                key
-                            ) --done
-                            --util.toast(
-                            --    "Your Weapon '" .. curr_equipped_weapon .. "' should now have the attachment '" .. key
-                            --) --done
-                        end)
-                end
-            end
-        end
-    end
-    util.yield()
-end
 
 	menu.divider(menu.player_root(player_id), "Addict Script")
 
