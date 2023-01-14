@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=1.9;if not dev_mode then 
+local a=2.0;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=1.9;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.7\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -5656,41 +5656,8 @@ read_global = {
 
 	griefing = menu.list(menu.player_root(pid), "Griefing", {}, "", function(); end)
 
-local usingPiggyback = false
-local usingRape = false
-
-	menu.toggle(griefing, "Rape", {"rape"}, "The player won't see you attached to them", function (on)
-		usingRape = on
-		-- Otherwise the game would crash
-		if pid == players.user() then
-			return
-		end
-		if usingRape then
-			usingPiggyback = false
-			local target = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.GET_PLAYER_NAME(pid))
-			STREAMING.REQUEST_ANIM_DICT("rcmpaparazzo_2")
-			while not STREAMING.HAS_ANIM_DICT_LOADED("rcmpaparazzo_2") do
-				util.yield_once()
-			end
-			TASK.TASK_PLAY_ANIM(players.user_ped(), "rcmpaparazzo_2", "shag_loop_a", 8.0, -8.0, -1, 1, 0.0, false, false, false)
-			ENTITY.ATTACH_ENTITY_TO_ENTITY(players.user_ped(), target, 0, 0, -0.3, 0, 0.0, 0.0, 0.0, false, true, false, false, 0, true, 0)
-			while usingRape and is_player_active(pid, false, true) and
-			not util.is_session_transition_active() do
-				util.yield_once()
-			end
-			usingRape = false
-			TASK.CLEAR_PED_TASKS_IMMEDIATELY(players.user_ped())
-			ENTITY.DETACH_ENTITY(players.user_ped(), true, false)
-		end
-	end)
-
-
     menu.action(griefing, "Make Player Explode All", {"makethemexplodeall"}, "", function()
 		menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " explodeall")
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-    menu.action(griefing, "Make Player Bounty All", {"makethembountyall"}, "", function()
-		menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " bountyall 10000")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     tpoptions = menu.list(griefing, "TP Options", {}, "", function(); end)
@@ -5919,52 +5886,6 @@ local usingRape = false
         util.yield(10)
     end)
 
-    --[[
-    menu.toggle_loop(windmilling, "Attach Windmills", {"attachmills"}, "", function()
-        local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
-        playerpos.z = playerpos.z + 3
-        local khanjali1 = util.joaat("dubsta")
-        STREAMING.REQUEST_MODEL(khanjali1)
-        while not STREAMING.HAS_MODEL_LOADED(khanjali1) do
-            util.yield()
-        end
-        local vehicle1 = entities.create_vehicle(khanjali1, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-            local khanjali2 = util.joaat("akula")
-            STREAMING.REQUEST_MODEL(khanjali2)
-            while not STREAMING.HAS_MODEL_LOADED(khanjali2) do
-                util.yield()
-            end
-        local vehicle2 = entities.create_vehicle(khanjali2, playerpos, 0)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-            local khanjali3 = util.joaat("cargobob")
-            STREAMING.REQUEST_MODEL(khanjali3)
-            while not STREAMING.HAS_MODEL_LOADED(khanjali3) do
-                util.yield()
-            end
-        local vehicle3 = entities.create_vehicle(khanjali3, playerpos, 0)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-            local khanjali4 = util.joaat("freight")
-            STREAMING.REQUEST_MODEL(khanjali4)
-            while not STREAMING.HAS_MODEL_LOADED(khanjali4) do
-                util.yield()
-            end
-        local vehicle4 = entities.create_vehicle(khanjali4, playerpos, 0)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle2)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle2, vehicle1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, vehicle2, 0, 3, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-        util.yield(10)
-    end)
-    ]]
-
-
     menu.divider(windmilling, "__________________bruh__________________")
 
     menu.action(windmilling, "Clear Windmill's", {"clearwindmills"}, "", function()
@@ -6108,6 +6029,34 @@ end)
                 ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
             end
         end)
+
+        local usingPiggyback = false
+local usingRape = false
+
+	menu.toggle(attachoptions, "Rape Player", {"rape"}, "The player won't see you attached to them", function (on)
+		usingRape = on
+		-- Otherwise the game would crash
+		if pid == players.user() then
+			return
+		end
+		if usingRape then
+			usingPiggyback = false
+			local target = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.GET_PLAYER_NAME(pid))
+			STREAMING.REQUEST_ANIM_DICT("rcmpaparazzo_2")
+			while not STREAMING.HAS_ANIM_DICT_LOADED("rcmpaparazzo_2") do
+				util.yield_once()
+			end
+			TASK.TASK_PLAY_ANIM(players.user_ped(), "rcmpaparazzo_2", "shag_loop_a", 8.0, -8.0, -1, 1, 0.0, false, false, false)
+			ENTITY.ATTACH_ENTITY_TO_ENTITY(players.user_ped(), target, 0, 0, -0.3, 0, 0.0, 0.0, 0.0, false, true, false, false, 0, true, 0)
+			while usingRape and is_player_active(pid, false, true) and
+			not util.is_session_transition_active() do
+				util.yield_once()
+			end
+			usingRape = false
+			TASK.CLEAR_PED_TASKS_IMMEDIATELY(players.user_ped())
+			ENTITY.DETACH_ENTITY(players.user_ped(), true, false)
+		end
+	end)
 
     menu.toggle(griefing, "Toggle Sneaky Mode", {"sneakymode"}, "Teleports you to player then turns you invisible, off radar and no collisions...", function(on_toggle)
         if on_toggle then
@@ -8361,7 +8310,7 @@ local function playerActionsSetup(pid)
            -- AUDIO.PLAY_SOUND_FROM_COORD(-1, snd, playerPos.x, playerPos.y, playerPos.z, aud, true, 50, true)
            AUDIO.PLAY_SOUND_FROM_ENTITY(-1, snd, playerPed, aud, true, true)
         end)
-        menu.toggle_loop(playerMain, SoundAnnoy[i][1], {}, "", function ()
+        menu.toggle_loop(playerMain, SoundAnnoy[i][1], {""}, "", function ()
             local snd, aud
             snd = tostring(SoundAnnoy[i][1])
             aud = tostring(SoundAnnoy[i][2])
@@ -8371,9 +8320,9 @@ local function playerActionsSetup(pid)
     end
 end
 
-local soundsList = menu.list(griefing, "Play Sounds throughout the map.", {"Ksounds", "soundslist", "soundannoy"}, "A list of sounds that can be played throughout the entire freemode lobby. Sounds provided by Moist through his MoistScript.")
+local soundsList = menu.list(griefing, "Play Sounds throughout the map.", {"sounds", "soundslist", "soundannoy"}, "A list of sounds that can be played throughout the entire freemode lobby. Sounds provided by Moist through his MoistScript.")
 
-menu.action(soundsList, "Stop all sounds", {"kstopall", "kstopallsounds"}, "Stops all sounds. Credit to [hungwy] on the Stand discord for telling me the method.", function ()
+menu.action(soundsList, "Stop all sounds", {"stopall", "stopallsounds"}, "Stops all sounds. Credit to [hungwy] on the Stand discord for telling me the method.", function ()
     for i=0,99 do
        AUDIO.STOP_SOUND(i)
        AUDIO.RELEASE_SOUND_ID(i)
@@ -8381,7 +8330,7 @@ menu.action(soundsList, "Stop all sounds", {"kstopall", "kstopallsounds"}, "Stop
     end
 end)
 for i = 1, #SoundAnnoy do
-    menu.action(soundsList, SoundAnnoy[i][1], {}, "", function()
+    menu.action(soundsList, SoundAnnoy[i][1], {"allsounds"}, "", function()
         local snd, aud
         snd = tostring(SoundAnnoy[i][1])
         aud = tostring(SoundAnnoy[i][2])
@@ -8389,7 +8338,7 @@ for i = 1, #SoundAnnoy do
     end)
 
 
-    menu.toggle_loop(soundsList, SoundAnnoy[i][1], {}, "", function ()
+    menu.toggle_loop(soundsList, SoundAnnoy[i][1], {"toggleallsounds"}, "", function ()
         local snd, aud
         snd = tostring(SoundAnnoy[i][1])
         aud = tostring(SoundAnnoy[i][2])
@@ -8397,9 +8346,11 @@ for i = 1, #SoundAnnoy do
     end)
 end
 
-menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_toggle)
+menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("cage" .. players.get_name(pid))
+        menu.trigger_commands("basketcage" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("simplecage" .. players.get_name(pid))
         util.yield(100)
         menu.trigger_commands("foodtruckcage" .. players.get_name(pid))
         util.yield(100)
@@ -8419,10 +8370,11 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
         util.yield(100)
         menu.trigger_commands("stuntcage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("basketcage" .. players.get_name(pid))
-        util.yield(100)
+
     else
-        menu.trigger_commands("cage" .. players.get_name(pid))
+        menu.trigger_commands("basketcage" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("simplecage" .. players.get_name(pid))
         util.yield(100)
         menu.trigger_commands("foodtruckcage" .. players.get_name(pid))
         util.yield(100)
@@ -8441,13 +8393,27 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
         menu.trigger_commands("moneycage" .. players.get_name(pid))
         util.yield(100)
         menu.trigger_commands("stuntcage" .. players.get_name(pid))
-        util.yield(100)
-        menu.trigger_commands("basketcage" .. players.get_name(pid))
         util.yield(100)
         end
     end)
+
+    menu.toggle_loop(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
+		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+		STREAMING.REQUEST_MODEL(2769149392)
+
+		while not STREAMING.HAS_MODEL_LOADED(2769149392) do		
+			util.yield()
+		end
+		local cage_object = OBJECT.CREATE_OBJECT(2769149392, pos.x, pos.y, pos.z, true, true, false)
+		cages[#cages + 1] = cage_object
+		util.yield(15)
+		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
+		rot.y = 0
+		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
+		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+	end)
     
-	menu.action(cage_options, "Simple", {"cage"}, "", function()
+	menu.toggle_loop(cage_options, "Simple", {"simplecage"}, "", function()
 		local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		local pos = ENTITY.GET_ENTITY_COORDS(player_ped) 
 		if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
@@ -8466,7 +8432,7 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
 
 ---------------------------------------------------------------------------------------------------------------------------------
 	
-	menu.action(cage_options, "First Job", {"foodtruckcage"}, "", function()
+	menu.toggle_loop(cage_options, "First Job", {"foodtruckcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		local hash = 4022605402
 		STREAMING.REQUEST_MODEL(hash)
@@ -8486,7 +8452,7 @@ menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on
 
 ---------------------------------------------------------------------------------------------------------------------------------
 	
-menu.action(cage_options, "Married Simulator", {"doghousecage"}, "", function()
+menu.toggle_loop(cage_options, "Married Simulator", {"doghousecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = -1782242710
 	STREAMING.REQUEST_MODEL(hash)
@@ -8507,7 +8473,7 @@ end)
 ---------------------------------------------------------------------------------------------------------------------------------
 
 	
-menu.action(cage_options, "Christmas Time", {"jollycage"}, "", function()
+menu.toggle_loop(cage_options, "Christmas Time", {"jollycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 238789712
 	STREAMING.REQUEST_MODEL(hash)
@@ -8528,7 +8494,7 @@ end)
 ---------------------------------------------------------------------------------------------------------------------------------
 
 	
-menu.action(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
+menu.toggle_loop(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_02a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -8552,7 +8518,7 @@ end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
+menu.toggle_loop(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -8576,7 +8542,7 @@ end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
+menu.toggle_loop(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 1089807209
 	STREAMING.REQUEST_MODEL(hash)
@@ -8605,7 +8571,7 @@ end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.action(cage_options, "Average X-Force User", {"trashcage"}, "", function()
+menu.toggle_loop(cage_options, "Average X-Force User", {"trashcage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 684586828
 	STREAMING.REQUEST_MODEL(hash)
@@ -8626,7 +8592,7 @@ end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.action(cage_options, "money cage", {"moneycage"}, "", function()
+menu.toggle_loop(cage_options, "money cage", {"moneycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("bkr_prop_moneypack_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -8656,7 +8622,7 @@ end)
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-	menu.action(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
+	menu.toggle_loop(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2081936690)
 
@@ -8668,22 +8634,6 @@ end)
 		util.yield(15)
 		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
 		rot.y = 90
-		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
-		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-	end)
-
-	menu.action(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
-		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
-		STREAMING.REQUEST_MODEL(2769149392)
-
-		while not STREAMING.HAS_MODEL_LOADED(2769149392) do		
-			util.yield()
-		end
-		local cage_object = OBJECT.CREATE_OBJECT(2769149392, pos.x, pos.y, pos.z, true, true, false)
-		cages[#cages + 1] = cage_object
-		util.yield(15)
-		local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
-		rot.y = 0
 		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 	end)
@@ -8912,11 +8862,11 @@ end)
 		end
 	end)
 
-	menu.toggle(trolly_vehicles, "Invincible", {}, "", function(on)
+	menu.toggle(trolly_vehicles, "Invincible", {"invincbandito"}, "", function(on)
 		bandito_godmode = on
 	end, false)
 
-	menu.action(trolly_vehicles, "Delete Banditos", {}, "", function()
+	menu.action(trolly_vehicles, "Delete Banditos", {"deletebandito"}, "", function()
 		delete_entities_by_model("rcbandito")
 	end)
 
@@ -8951,11 +8901,11 @@ end)
 
     end)
 
-	menu.toggle(trolly_vehicles, 'Invincible Go-Kart', {}, '', function(toggle)
+	menu.toggle(trolly_vehicles, 'Invincible Go-Kart', {"invinckart"}, '', function(toggle)
 		gokart_godmode = toggle
 	end)
 
-	menu.action(trolly_vehicles, 'Delete Go-Karts', {}, '', function()
+	menu.action(trolly_vehicles, 'Delete Go-Karts', {"deletekart"}, '', function()
 		delete_entities_by_model('veto2')
 	end)
 
@@ -9058,7 +9008,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 	buzzard_visible = true
 	local gunner_weapon = "weapon_combatmg"
 	
-	menu.action(buzzard_options, "Spawn Buzzard", {}, "", function()
+	menu.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
 		local pilot, heli = spawn_buzzard(pid, gunner_weapon, collision)
 
 		while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -9076,7 +9026,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 
 	menu.divider(buzzard_options, "Settings")
 
-	menu.toggle(buzzard_options, "Invincible", {}, "", function(on)
+	menu.toggle(buzzard_options, "Invincible", {"invincbuzzard"}, "", function(on)
 		buzzard_godmode = on
 	end, false)
 	
@@ -9090,21 +9040,21 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 		end)
 	end
 
-	menu.toggle(buzzard_options, "Visible", {}, "You shouldn't be that toxic to turn this off", function(on)
+	menu.toggle(buzzard_options, "Visible", {"visablebuzzard"}, "You shouldn't be that toxic to turn this off", function(on)
 		buzzard_visible = on
 	end, true)
 
-	menu.toggle(buzzard_options, "Collision", {}, "When it's turned off disables world collision for Buzzard. Playes can still destroy the vehicle", function(on)
+	menu.toggle(buzzard_options, "Collision", {"collisionbuzzard"}, "When it's turned off disables world collision for Buzzard. Playes can still destroy the vehicle", function(on)
 		collision = on
 	end, false)
 
-	menu.action(buzzard_options, "Delete All", {}, "Deletes all Buzzards you've spawned", function()
+	menu.action(buzzard_options, "Delete All", {"deletebuzzard"}, "Deletes all Buzzards you've spawned", function()
 		for key, value in pairs(buzzard_entities) do
 			entities.delete_by_handle(value)
 		end
 	end)
 
-	menu.action(griefing,"Spawn Attacker Tank", {}, "", function()
+	menu.action(griefing,"Spawn Attacker Tank", {"sendtank"}, "", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		if table_kidnap == nil then
 			table_kidnap = {}
@@ -9475,7 +9425,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 		"Please close your game, please please please please please",
 	}
 
-    menu.toggle_loop(spams, "SmS Spam", {}, "Might Work On Pussy's Fam", function(on_toggle)
+    menu.toggle_loop(spams, "SmS Spam", {"smsspam"}, "Might Work On Pussy's Fam", function(on_toggle)
 		menu.trigger_commands("smstext" .. PLAYER.GET_PLAYER_NAME(pid).. " " .. WeakCrash[math.random(1, #WeakCrash)])
 		util.yield()
 		menu.trigger_commands("smssend" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -10242,7 +10192,7 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(50000)
     menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("stopself")
+    menu.trigger_commands("cancelanim")
 end)
 
 local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
@@ -10941,6 +10891,101 @@ menu.toggle_loop(objectc, "Send Objects", {}, "", function()
     
     util.toast("[Object Crash] Finished.")
 end)
+
+local addictcrash = menu.list(lobbycrash, "Addict Fuck", {}, "")
+
+menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes.", function()
+    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
+    util.yield(100)
+    menu.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
+    util.yield(100)
+    menu.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("rainveh" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("bendknees" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("laughter" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("boararmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("seizurev3" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("toggleallcages" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
+    util.yield(100)
+    menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
+    util.yield(100)
+    menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("explode" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("explodeloop" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
+    util.yield(100)
+    menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
+    util.yield(100)
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
 
@@ -13369,7 +13414,7 @@ menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
                                 util.yield(100)
                                 menu.trigger_commands("explodeloop" .. players.get_name(pid))
                                 util.yield(100)
-                                menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 50")
+                                menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
                                 menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
                                 util.yield(100)
                                 menu.trigger_commands("givesh" .. players.get_name(pid))
