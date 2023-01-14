@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=3.0;if not dev_mode then 
+local a=3.1;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=3.0;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.6.5\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.6.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4718,7 +4718,7 @@ local function objams(obj_hash, obj, camcoords)
 end
 
 SEC = ENTITY.SET_ENTITY_COORDS
-local set = {alert = true}
+local set = {alert = false}
 local obj_hash = 'A_C_KillerWhale'
 local objgun = menu.list(weapons, 'Custom Model Gun', {}, '')
 
@@ -6578,6 +6578,22 @@ read_global = {
         end
         local cane1 = entities.create_object(candyattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
         ENTITY.ATTACH_ENTITY_TO_ENTITY(cane1, id, playerpos, 0, 0, 1, 0, 0, 0, -180, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_VISIBLE(cane1, true, 0)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
+        util.yield(100)
+    end)
+
+    menu.action(attachoptions, "Attach Dunce Hat", {"attachduncehat"}, "", function()
+        local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+        playerpos.z = playerpos.z + 3
+        local candyattach = util.joaat("prop_mk_cone")
+        STREAMING.REQUEST_MODEL(candyattach)
+        while not STREAMING.HAS_MODEL_LOADED(candyattach) do
+            util.yield()
+        end
+        local cane1 = entities.create_object(candyattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(cane1, id, playerpos, 0, 0, 1.5, 0, 180, 0, -180, 0, true, true, false, 0, true)
         ENTITY.SET_ENTITY_VISIBLE(cane1, true, 0)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
         util.yield(100)
@@ -11556,7 +11572,7 @@ end)
 
 local addictcrash = menu.list(lobbycrash, "Addict Fuck", {}, "")
 
-menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself.", function()
+menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
     if pid ~= players.user() then
     menu.trigger_commands("anticrashcamera")
     util.yield(100)
@@ -11649,6 +11665,8 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     menu.trigger_commands("stopall".. players.get_name(pid))
     util.yield(100)
     menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    menu.trigger_commands("attachcrash".. players.get_name(pid))
     util.toast("Addict Fuck Sent to " .. players.get_name(pid))
     util.log("Addict Fuck Sent to " .. players.get_name(pid))
     end
