@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=2.0;if not dev_mode then 
+local a=2.1;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -22,7 +22,7 @@ local a=2.0;if not dev_mode then
                     local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
                         util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
 
-util.toast("Welcome To Addict Script 1.5.7\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script 1.5.8\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -4292,6 +4292,187 @@ menu.toggle(objgun, 'Make Objects Explosive', {}, 'Makes the objects you shoot e
        end
     end
 end, 'hydra')
+
+local function getgroupsize(group)
+    local unkPtr, sizePtr = memory.alloc(1), memory.alloc(1)
+    PED.GET_GROUP_SIZE(group, unkPtr, sizePtr)
+    return memory.read_int(sizePtr)
+end
+
+local mygroup = PLAYER.GET_PLAYER_GROUP(players.user())
+
+local dogs <const> = table.freeze({
+    "Rottweiler",
+    "Husky",
+    "Poodle",
+    "Pug",
+    "Retriever",
+    "Westy",
+    "Shepherd",
+    "Cat_01",
+})
+
+local doganimations = {
+    "WORLD_DOG_SITTING_ROTTWEILER",
+    "WORLD_DOG_SITTING_RETRIEVER",
+    "WORLD_DOG_SITTING_SHEPHERD",
+    "WORLD_DOG_SITTING_SMALL",
+}
+
+local activedogs = {}
+
+local function GenerateNametagOnPed(ped, nametag)
+    util.create_thread(function()
+        while ENTITY.DOES_ENTITY_EXIST(ped) do
+            local headpos = PED.GET_PED_BONE_COORDS(ped, 0x796e, 0,0,0)
+            GRAPHICS.SET_DRAW_ORIGIN(headpos.x, headpos.y, headpos.z+0.4, 0)
+
+            HUD.SET_TEXT_COLOUR(200,200,200,220)
+            HUD.SET_TEXT_SCALE(1, 0.5)
+            HUD.SET_TEXT_CENTRE(true)
+            HUD.SET_TEXT_FONT(4)
+            HUD.SET_TEXT_OUTLINE()
+
+            HUD.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING")
+            HUD.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(nametag)
+            HUD.END_TEXT_COMMAND_DISPLAY_TEXT(0,0,0)
+            GRAPHICS.CLEAR_DRAW_ORIGIN()
+            util.yield()
+        end
+        HUD.END_TEXT_COMMAND_DISPLAY_TEXT(0,0,0)
+        GRAPHICS.CLEAR_DRAW_ORIGIN()
+    end)
+end
+
+local myroot = menu.list(funfun, "Spawn Pets", {}, "These are your active pets.")
+
+local header = menu.divider(myroot, "PetScript BETA")
+local allpetsroot = menu.list(myroot, "All Pets", {}, "")
+local activepet = menu.list(myroot, "Active Pets", {}, "These are your active pets.")
+
+        menu.toggle(allpetsroot, "Immortal", {}, "Make all your pets immortal", function(on)
+            if on then
+                for k,v in pairs(activedogs) do
+                    ENTITY.SET_ENTITY_INVINCIBLE(v, true)
+                end
+            else
+                for k,v in pairs(activedogs) do
+                    ENTITY.SET_ENTITY_INVINCIBLE(v, false)
+                end
+            end
+        end)
+
+        menu.action(allpetsroot, "Delete All Pets", {}, "", function()
+            for k,v in pairs(activedogs) do
+                entities.delete_by_handle(v)
+            end
+        end)
+        
+menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that will follow and defend you.", dogs, function(opt, breeds)
+    local hash = util.joaat("A_C_" .. breeds)
+    STREAMING.REQUEST_MODEL(hash)
+    while not STREAMING.HAS_MODEL_LOADED(hash) do
+        util.yield()
+    end
+    local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, math.random(1,4), 0)
+    if getgroupsize(mygroup) >= 7 then
+        util.toast("You have exceeded the maximum number of pets.")
+    else
+        local dog_ped = entities.create_ped(26, hash, coords, 0)
+        activedogs[#activedogs+1] = dog_ped
+        PED.SET_PED_AS_GROUP_MEMBER(dog_ped, mygroup)
+        PED.SET_PED_AS_GROUP_MEMBER(dog_ped, mygroup)
+        PED.SET_PED_NEVER_LEAVES_GROUP(dog_ped, true)
+        PED.SET_GROUP_SEPARATION_RANGE(mygroup, 99999)
+
+        local thispet = menu.list(activepet, breeds, {}, "")
+
+        --ANIMAL FUNCTIONS BEGIN--
+
+        menu.text_input(thispet, "Set Name", {"setname"}, "", function(name)
+            GenerateNametagOnPed(dog_ped, name)
+        end)
+
+        menu.toggle(thispet, "Immortal", {}, "", function(on)
+            if on then
+                ENTITY.SET_ENTITY_INVINCIBLE(dog_ped, true)
+            else
+                ENTITY.SET_ENTITY_INVINCIBLE(dog_ped, false)
+            end
+        end)
+
+        --DOG SPECIFIC FUNCTIONS--
+
+        if breeds ~= "Cat_01" then
+
+            menu.toggle(thispet, "Sit", {}, "Makes your pet sit.", function(on)
+                if on then
+                    if breeds == "Rottweiler" then
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, doganimations[1], 0, true)
+                    elseif breeds == "Retriever" then
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, doganimations[2], 0, true)
+                    elseif breeds == "Shepherd" then
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, doganimations[3], 0, true)
+                    elseif breeds == "Husky" then
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, doganimations[3], 0, true)
+                    else
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, doganimations[4], 0, true)
+
+                    end
+                else
+                    TASK.CLEAR_PED_TASKS(dog_ped)
+                end
+            end)
+
+            --Make Ped Bark
+
+            menu.action(thispet, "Bark", {}, "Bark! Sometimes it may not bark.", function()
+                if breeds == "Rottweiler" then
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_ROTWEILER", 0, true)
+                elseif breeds == "Retriever" then
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_RETRIEVER", 0, true)
+                elseif breeds == "Shepherd" then
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_SHEPHERD", 0, true)
+                elseif breeds == "Husky" then
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_SHEPHERD", 0, true)
+                else
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_SMALL", 0, true)
+                end
+                util.yield(5000)
+                TASK.CLEAR_PED_TASKS(dog_ped)
+            end)
+        end
+
+        --CAT SPECIFIC FUNCTIONS--
+
+        if breeds == "Cat_01" then 
+            menu.toggle(thispet, "Lie Down and Chill", {}, "", function(on)
+                if on then
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_CAT_SLEEPING_GROUND", 0, true)
+                else
+                    TASK.CLEAR_PED_TASKS(dog_ped)
+                end
+            end)
+        end
+
+        --DELETE PED
+        menu.action(thispet, "Delete Pet", {}, "RIP in Peace, my furry friend.", function()
+            entities.delete_by_handle(dog_ped)
+            menu.delete(thispet)
+        end)
+    end
+end)
 
 
 local fire_wings_list = menu.list(funfun, "Fire wings")
