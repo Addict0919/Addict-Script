@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=2.1;if not dev_mode then 
+local a=2.2;if not dev_mode then 
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)response=true;if a~=currentVer then 
             menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
@@ -11075,7 +11075,8 @@ end)
 
 local addictcrash = menu.list(lobbycrash, "Addict Fuck", {}, "")
 
-menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes.", function()
+menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself.", function()
+    if pid ~= players.user() then
     menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(100)
     menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -11166,6 +11167,7 @@ menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton 
     util.yield(100)
     menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
     util.yield(100)
+    end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
