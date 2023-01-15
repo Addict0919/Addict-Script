@@ -14,15 +14,36 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local a=3.1;if not dev_mode then 
-    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
-        currentVer=tonumber(b)response=true;if a~=currentVer then 
-            menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
-                    local d=select(2,load(c))if d then util.toast("Update failed to download")return end;local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")e:write(c)e:close()
-                        util.toast("Update finished")util.stop_script()end)async_http.dispatch()end)end end,function()response=true end)async_http.dispatch()repeat util.yield()until response end
+local local_menu_version = "1.6.7"
 
-util.toast("Welcome To Addict Script 1.6.6\n" .. "\n" .. "Keep your eyes peeled for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+local a=local_menu_version;
+    if not dev_mode then 
+        async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
+            currentVer=tonumber(b)response=true;if a~=currentVer then 
+                menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says update when its been updated just ignore it until you see my change logs in my server.",function()
+                    util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
+                        local d=select(2,load(c))if d then util.toast("Update failed to download")
+                        return 
+                    end;
+                    local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
+                        e:write(c)
+                        e:close()
+                        util.toast("Update Done!")
+                        util.restart_script()
+                    end)
+                    async_http.dispatch()
+                end)
+            end 
+        end,
+    function()
+        response=true 
+    end)
+    async_http.dispatch()
+    repeat util.yield()
+    until response 
+end
+
+util.toast("Welcome To Addicted! v" .. local_menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -48,7 +69,7 @@ local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
 menu.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
 menu.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-menu.action(Credits, "Return 1337", {}, "Great coder helped with security and testing :).", function() end)
+menu.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
 menu.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
 menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
 menu.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
@@ -103,7 +124,6 @@ if not filesystem.is_dir(resources_dir) then
     notification("If Addict Script is not installed properly. Some things will fail to load or break.")
 end
 
-
 if not SCRIPT_SILENT_START then
     logo_alpha = 0
     logo_alpha_incr = 0.02
@@ -115,7 +135,7 @@ if not SCRIPT_SILENT_START then
             elseif logo_alpha < 0 then 
                 logo_alpha = 0	
             end
-            util.yield()
+        util.yield()
     end
 end)
 
@@ -134,7 +154,7 @@ end)
         end
     end)
     PlaySound(resources_dir .. "\\bruh.wav", SND_FILENAME | SND_ASYNC)
-        end
+end
 
 --------------------------------------------------------------------------------------
 local script_dir <const> = filesystem.scripts_dir() .. "/lib/smilescript"
@@ -359,48 +379,48 @@ menyoovloaded_root = menu.list(menyoovmain_root, "Currently loaded vehicles", {"
 --        / /  / /  / /___   / /|  /  / /_/ /  / /_/ /  / /_/ /  /_____/   /   |   / /  / /  / /___ 
 --       /_/  /_/  /_____/  /_/ |_/   \____/   \____/   \____/            /_/|_|  /_/  /_/  /_____/  
 
-function setup_menyoo_vehicles_list(mainroot, player, allplayers, dotp)
-   for i, path in ipairs(filesystem.list_files(vehicles_dir)) do
-       root = mainroot
-       local ours = false
-       if player == players.user() then
-           ours = true 
-       end
-       if filesystem.is_dir(path) then
-           root = menu.list(root, path:gsub(vehicles_dir, ''), {}, "")
-           for i,path in ipairs(filesystem.list_files(path)) do
-               if not allplayers then
-                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
-                       log("Click type was " .. on_click)
-                       menyoo_load_vehicle(path, player, dotp, ours)
-                   end)
-               else
-                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
-                       for k,v in pairs(players.list(true, true, true)) do
-                           log("Click type was " .. on_click)
-                           menyoo_load_vehicle(path, v, dotp, false)
-                       end
-                   end)
-               end
-           end
-       else
-           if string.match(path:gsub(vehicles_dir, ''), '.xml') then
-               if not allplayers then
-                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
-                       toast("Click type was " .. on_click)
-                       menyoo_load_vehicle(path, player, dotp, ours)
-                   end)
-               else
-                   menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
-                       for k,v in pairs(players.list(true, true, true)) do
-                           toast("Click type was " .. on_click)
-                           menyoo_load_vehicle(path, v, dotp, false)
-                       end
-                   end)
-               end
-           end
-       end
-   end
+function setup_menyoo_vehicles_list(mainroot, player, allplayers, dotp, dir)
+    for i, path in ipairs(filesystem.list_files(vehicles_dir)) do
+        root = mainroot
+        local ours = false
+        if player == players.user() then
+            ours = true 
+        end
+        if filesystem.is_dir(path) then
+            root = menu.list(root, path:gsub(vehicles_dir, ''), {}, "")
+            for i,path in ipairs(filesystem.list_files(path)) do
+                if not allplayers then
+                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                        log("Click type was " .. on_click)
+                        menyoo_load_vehicle(path, player, dotp, ours)
+                    end)
+                else
+                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                        for k,v in pairs(players.list(true, true, true)) do
+                            log("Click type was " .. on_click)
+                            menyoo_load_vehicle(path, v, dotp, false)
+                        end
+                    end)
+                end
+            end
+        else
+            if string.match(path:gsub(vehicles_dir, ''), '.xml') then
+                if not allplayers then
+                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                        toast("Click type was " .. on_click)
+                        menyoo_load_vehicle(path, player, dotp, ours)
+                    end)
+                else
+                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                        for k,v in pairs(players.list(true, true, true)) do
+                            toast("Click type was " .. on_click)
+                            menyoo_load_vehicle(path, v, dotp, false)
+                        end
+                    end)
+                end
+            end
+        end
+    end
 end
 
 function setup_menyoo_maps_list()
