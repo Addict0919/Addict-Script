@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local local_menu_version = 3.4
+local local_menu_version = 3.5
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
@@ -99,12 +99,13 @@ menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function(
 menu.action(Credits, "Charlie", {}, "Legy's girlfriend :).", function() end)
 menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
 
-    local translations = {}
-    setmetatable(translations, {
-        __index = function (self, key)
-            return key
-        end
-    })
+
+local translations = {}
+setmetatable(translations, {
+    __index = function (self, key)
+        return key
+    end
+})
 
 local festive_div = menu.divider(menu.my_root(), "Addict Script")
 local loading_frames = {'!', '! !', '! ! !', '! ! ! !', '! ! ! ! ! ! ! ! ! ', '! ! ! !', '! ! !', '! !', '!'}
@@ -2946,7 +2947,6 @@ local candycrashes = {
 897248694
 }
 
-
 function Addictcrash(pid) 
 	for i,v in ipairs(crash) do
 		par1 = math.random(-100000, 99999999)
@@ -3006,408 +3006,339 @@ for i = 0, 31 do
 	cmd_id[i] = 0
 end
 
-
 local chaos, gravity, speed = false, true, 100
 
-	menu.divider(custselc, "Slap Man")
+menu.action(custselc, "Go to Players List", {"gotopl"}, "Shotcut for players list.", function()
+    menu.trigger_commands("playerlist")
+end)
 
-	menu.action(custselc, "Vehicle Kick", {}, "", function()
-    	notification("Ooopsy vehicle kicked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-					menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-					menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
+menu.divider(custselc, "Slap Man")
 
-    menu.action(custselc, "Rank Everyone", {"rankall"}, "", function()
-        menu.trigger_commands("excludepussies")
-        util.yield(1500)
-    	notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                    menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                    menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
-    
-    menu.action(custselc, "Give Bounty Loop", {"bountyloopto"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
+menu.action(custselc, "Vehicle Kick", {}, "", function()
+    notification("Ooopsy vehicle kicked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
 
-    menu.action(custselc, "Give Crazy Rank", {"crazyrankto"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
-    
-	menu.action(custselc, "Give RP Steadily", {"giverpstedto"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
+menu.action(custselc, "Rank Everyone", {"rankall"}, "", function()
+    menu.trigger_commands("excludepussies")
+    util.yield(1500)
+    notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
 
-	menu.action(custselc, "Give RP Loop", {"giverpto"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
+menu.action(custselc, "Give Bounty Loop", {"bountyloopto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
-    
-    menu.action(custselc, "Infinity Ammo", {"infintyammoto"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
+menu.action(custselc, "Give Crazy Rank", {"crazyrankto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
-    menu.action(custselc, "Send Friend Request", {"sendfriend"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-				end
-			end
-		end
-	end)
-    
-	menu.action(custselc, "Give Wanted", {}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
+menu.action(custselc, "Give RP Steadily", {"giverpstedto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
-    menu.action(custselc, "TP Players", {"tpplayers"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
-
-    menu.action(custselc, "TP Players To Casino", {"autocasinoall"}, "It will send your player to the table if selected on you to.", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("autocasino" .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("autocasino" .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			end
-		end
-	end)
-
-    menu.action(custselc, "TP Players To Their Waypoint", {"sendtowaypoints"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			end
-		end
-	end)
-
-    menu.action(custselc, "TP Player To MazeBank", {"tpplayersmazebank"}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                    util.yield(100)
-					menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                    util.yield(100)
-					menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
-                    util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-				end
-			end
-		end
-	end)
-
-	menu.action(custselc, "Next Gen Crash", {}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
-
-	menu.action(custselc, "Steamroller Crash", {}, "", function()
-    	notification("Sending Steamroller Crash crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Ha Addict Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Steamroller Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
-
-    	menu.action(custselc, "Desync Kick", {desynckick}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-					menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
-					notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-				end
-			end
-		end
-	end)
-
-	menu.action(custselc, "Blast Kick", {}, "Blocks Joins And Kicks Them.", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                    menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
-					util.yield()
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                    menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
-					util.yield()
-				end
-			end
-		end
-	end)
-
-	menu.action(custselc, "Block Player", {}, "", function()
-		for pids = 0, 31 do
-			if excludeselected then
-				if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                    menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
-					util.yield()
-				end
-			else
-				if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                    menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
-					util.yield()
-				end
-			end
-		end
-	end)
-
-	menu.divider(custselc, "GG's")
-
-	for pids = 0, 31 do
-		if players.exists(pids) then
-			cmd_id[pids] = menu.toggle(custselc, tostring(PLAYER.GET_PLAYER_NAME(pids)), {}, "PID - ".. pids, function(on_toggle)
-				if on_toggle then
-					selectedplayer[pids] = true
-				else
-					selectedplayer[pids] = false
-				end
-			end)
-		end
-	end
+menu.action(custselc, "Give RP Loop", {"giverpto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
 
-	protex = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
+menu.action(custselc, "Infinity Ammo", {"infintyammoto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
-    	local pidsacam = menu.list(protex, "Anti Crash Camera", {}, "")
+menu.action(custselc, "Send Friend Request", {"sendfriend"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
 
+menu.action(custselc, "Give Wanted", {}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
 
-	local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-	local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-	local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-	local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+menu.action(custselc, "TP Players", {"tpplayers"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
 
-	menu.action(pidsacam, "Anti Crash Camera On", {"acam"}, "Activates ped regen, invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and blocks all connections", function()
-		notification("Toggling Anti Crash Camera On", colors.blue)
-		util.toast("Note: Your camera is free to fly around :)")
-		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
-			menu.trigger_commands("mpfemale")
-			menu.trigger_commands("invisibility" .. " On")
-			menu.trigger_commands("levitate" .. " On")
-			menu.trigger_commands("freecam" .. " On")
-			menu.trigger_commands("potatomode on")
-    			menu.trigger_commands("nosky on")
-			menu.trigger_commands("reducedcollision" .. " On")
-			menu.trigger_commands("nocollision" .. " On")
-			menu.trigger_commands("showcamall" .. " On")
-			menu.trigger_commands("confuseall" .. " On")
-			menu.trigger_commands("desyncall on")
-			menu.trigger_command(BlockIncSyncs)
-			menu.trigger_command(BlockNetEvents)
-			menu.trigger_commands("superc")
-			menu.trigger_commands("clean")
-    	local player_ped = PLAYER.PLAYER_PED_ID()    
-    	local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-    	local pld = PLAYER.GET_PLAYER_PED(pid)
-    	local pos = ENTITY.GET_ENTITY_COORDS(pld)
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2698.8700)
-    			util.yield(1000)
-    		for i=1,4  do
-        			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2698.8700)
-        			util.yield(1000)
-    			end
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-		end
-	
-	end)
+menu.action(custselc, "TP Players To Casino", {"autocasinoall"}, "It will send your player to the table if selected on you to.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autocasino" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autocasino" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
 
-	menu.action(pidsacam, "Anti Crash Camera Off", {"acamoff"}, "Deactivates ped regen,invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and unblocks all connections", function()
-		notification("Toggling Anti Crash Camera Off", colors.blue)
-		for i=-1,100 do
-			AUDIO.STOP_SOUND(i)
-			AUDIO.RELEASE_SOUND_ID(i)
-			end
-		notification("Force Stopped All Sound Events", colors.green)
-		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
-		notification("Removed Attachments", colors.green)
-			menu.trigger_commands("mpfemale")
-    	local player_ped = PLAYER.PLAYER_PED_ID()    
-    	local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-    	local pld = PLAYER.GET_PLAYER_PED(pid)
-    	local pos = ENTITY.GET_ENTITY_COORDS(pld)
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.40393, -819.56366, 326.17517)
-    			util.yield(1000)
-    		for i=1,4  do
-        			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.40393, -819.56366, 326.17517)
-        			util.yield(1000)
-    			end
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-			menu.trigger_commands("invisibility" .. " Off")
-			menu.trigger_commands("levitate" .. " Off")
-			menu.trigger_commands("freecam" .. " Off")
-			menu.trigger_commands("potatomode off")
-    		menu.trigger_commands("nosky Off")
-			menu.trigger_commands("reducedcollision" .. " Off")
-			menu.trigger_commands("nocollision" .. " Off")
-			menu.trigger_commands("showcamall" .. " Off")
-			menu.trigger_commands("confuseall" .. " Off")
-			menu.trigger_commands("desyncall off")
-			menu.trigger_command(UnblockIncSyncs)
-			menu.trigger_command(UnblockNetEvents)
-			menu.trigger_commands("superc")
-			menu.trigger_commands("clean")
-		end
-	end)
+menu.action(custselc, "TP Players To Their Waypoint", {"sendtowaypoints"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("wptp" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
 
+menu.action(custselc, "TP Player To MazeBank", {"tpplayersmazebank"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                util.yield(100)
+                menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                util.yield(100)
+                menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Next Gen Crash", {}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Steamroller Crash", {}, "", function()
+    notification("Sending Steamroller Crash crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Ha Addict Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Steamroller Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Desync Kick", {desynckick}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Blast Kick", {}, "Blocks Joins And Kicks Them.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Block Player", {}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        end
+    end
+end)
+
+menu.divider(custselc, "GG's")
+
+for pids = 0, 31 do
+    if players.exists(pids) then
+        cmd_id[pids] = menu.toggle(custselc, tostring(PLAYER.GET_PLAYER_NAME(pids)), {}, "PID - ".. pids, function(on_toggle)
+            if on_toggle then
+                selectedplayer[pids] = true
+            else
+                selectedplayer[pids] = false
+            end
+        end)
+    end
+end
+
+protex = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
+
+local pidsacam = menu.list(protex, "Anti Crash Camera", {}, "")
+local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+
+menu.action(pidsacam, "[ON/OFF] Anti Crash Camera", {"acamoff"}, "Deactivates ped regen,invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and unblocks all connections", function()
+    menu.trigger_commands("anticrashcam")
+end)
 
 local anti_bounty = menu.list(protex, "Anti-Bounty's")
 
@@ -3427,7 +3358,6 @@ if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3)))
 else
     end
 end)
-
 
 local anti_mugger = menu.list(protex, "Block Muggers")
 
@@ -3450,7 +3380,6 @@ menu.toggle_loop(anti_mugger, "Anti-Mugger", {}, "Prevents you from being mugged
     end
 end)
 
-
 menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mugged.", function()
     if NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_gang_call", 0, true, 0) then
         local ped_netId = memory.script_local("am_gang_call", 63 + 10 + (0 * 7 + 1))
@@ -3470,38 +3399,38 @@ menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mu
     end
 end)
 
-	protexx = menu.list(protex, "Clear All Notifications", {}, "", function(); end)
+protexx = menu.list(protex, "Clear All Notifications", {}, "", function(); end)
 
-	menu.action(protexx, "Clear All Notifications", {"clearnotifs"}, "Clears stand notifs and above mini map", function()
-			menu.trigger_commands("clearnotifications")
-			menu.trigger_commands("clearstandnotifys")
-	end)
+menu.action(protexx, "Clear All Notifications", {"clearnotifs"}, "Clears stand notifs and above mini map", function()
+        menu.trigger_commands("clearnotifications")
+        menu.trigger_commands("clearstandnotifys")
+end)
 
 
 
-	menu.toggle_loop(protexx, "Clear All Notifications Toggled", {"toggleclearnotifs"}, "Clears stand notifs and above mini map", function(on_toggle)
-		if on then
-			menu.trigger_commands("clearnotifications")
-			menu.trigger_commands("clearstandnotifys")
-			util.yield(1000)
-		else
-			menu.trigger_commands("clearnotifications")
-			menu.trigger_commands("clearstandnotifys")
-		end
-	end)
+menu.toggle_loop(protexx, "Clear All Notifications Toggled", {"toggleclearnotifs"}, "Clears stand notifs and above mini map", function(on_toggle)
+    if on then
+        menu.trigger_commands("clearnotifications")
+        menu.trigger_commands("clearstandnotifys")
+        util.yield(1000)
+    else
+        menu.trigger_commands("clearnotifications")
+        menu.trigger_commands("clearstandnotifys")
+    end
+end)
 
-    menu.toggle_loop(protexx, "Clear All Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
-        local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
-        local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Notification")
-        if on_toggle then
-            menu.trigger_command(TransactionError, "on")
-            menu.trigger_command(TransactionErrorV, "on")
-            for i = 1, 100 do
-                menu.trigger_commands("removeloader")
-            end
-            util.toast("It's not my fault the log error if prompted, wait for Stand to fix it")
+menu.toggle_loop(protexx, "Clear All Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
+    local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
+    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Notification")
+    if on_toggle then
+        menu.trigger_command(TransactionError, "on")
+        menu.trigger_command(TransactionErrorV, "on")
+        for i = 1, 100 do
+            menu.trigger_commands("removeloader")
         end
-    end)
+        util.toast("It's not my fault the log error if prompted, wait for Stand to fix it")
+    end
+end)
 
 menu.toggle_loop(protexx, "Clear All Notifications & Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
     local clearnotifts = menu.ref_by_path("Game > Remove Notifications Above Minimap")
@@ -6277,23 +6206,6 @@ GenerateFeatures = function(pid)
 	menu.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2sea"}, "Tries to teleport player's vehicle to the ocean",function()	
 		tp_veh_to(pid, -15000, -15000,0)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-
-	menu.action(vehopts, "Spectate", {"spec"}, "", function()
-    	notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
-		local hash = util.joaat("baller")
-		local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-		if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-			STREAMING.REQUEST_MODEL(hash)
-			while not STREAMING.HAS_MODEL_LOADED(hash) do
-				util.yield()
-			end
-			local Coords1 = PlayerCoords.y + 10
-			local Coords2 = PlayerCoords.y - 10
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
-		end
-	end)
 
     local function spawn_object_in_front_of_ped(ped, hash, ang, room, zoff, setonground)
         coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.0, room, zoff)
@@ -10140,24 +10052,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 		end
 	end)
 
-	menu.action(griefing, "Spectate", {"spec"}, "", function()
-    	notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
-		local hash = util.joaat("baller")
-		local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-		if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-			STREAMING.REQUEST_MODEL(hash)
-			while not STREAMING.HAS_MODEL_LOADED(hash) do
-				util.yield()
-			end
-			local Coords1 = PlayerCoords.y + 10
-			local Coords2 = PlayerCoords.y - 10
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
-		end
-	end)
-
-
-    		local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
+    local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
 	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once", function ()
     	notification("Maxing " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
@@ -10594,83 +10489,70 @@ end)
     end)
 ]]
 
-    local yoinkpickup = menu.list(drops, "Pickup Yoinker", {}, "")
+local yoinkpickup = menu.list(drops, "Pickup Yoinker", {}, "")
 
-    menu.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
-        TpAllPickups(pid)
-    end, nil, nil, COMMANDPERM_FRIENDLY)
-    
-    menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", function (on_toggle)
-            if on_toggle then
-                TpAllPickups(pid)
-            else
-                TpAllPickups(pid)
-            end
-    end)
+menu.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
+    TpAllPickups(pid)
+end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.toggle(drops, "Auto Casino Rig", {"autocasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
+menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", function (on_toggle)
         if on_toggle then
-            local player_ped = PLAYER.PLAYER_PED_ID()    
-            local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-            local pld = PLAYER.GET_PLAYER_PED(pid)
-            local pos = ENTITY.GET_ENTITY_COORDS(pld)
-            menu.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
-            util.trigger_script_event(1 << pid, {1268038438, 4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
-            util.yield(1500)
-            menu.trigger_commands("rigblackjack")
-            menu.trigger_commands("rigroulette ".. "1")
-            util.yield(1500)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1132.2958, 263.93478, -51.035763)
-            menu.trigger_commands("casinohelp1")
-            menu.trigger_commands("casinohelp2")
+            TpAllPickups(pid)
         else
-            menu.trigger_commands("rigblackjack")
-            menu.trigger_commands("rigroulette ".. "-1")
-            local player_ped = PLAYER.PLAYER_PED_ID()    
-            local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-            local pld = PLAYER.GET_PLAYER_PED(pid)
-            local pos = ENTITY.GET_ENTITY_COORDS(pld)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 924.2497, 46.7545, 81.0961)
-            end
-        end)
-        
+            TpAllPickups(pid)
+        end
+end)
 
-    menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
-        menu.show_command_box("historybefriend " .. PLAYER.GET_PLAYER_NAME(pid))
-    end, nil, nil, COMMANDPERM_FRIENDLY)
+menu.toggle(drops, "Auto Casino Rig", {"autocasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
+    if on_toggle then
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        menu.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.trigger_script_event(1 << pid, {1268038438, 4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
+        util.yield(1500)
+        menu.trigger_commands("rigblackjack")
+        menu.trigger_commands("rigroulette ".. "1")
+        util.yield(1500)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1132.2958, 263.93478, -51.035763)
+        menu.trigger_commands("casinohelp1")
+        menu.trigger_commands("casinohelp2")
+    else
+        menu.trigger_commands("rigblackjack")
+        menu.trigger_commands("rigroulette ".. "-1")
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 924.2497, 46.7545, 81.0961)
+    end
+end)
+    
+menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
+    menu.show_command_box("historybefriend " .. PLAYER.GET_PLAYER_NAME(pid))
+end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(frienm, "Spectate", {"spec"}, "", function()
-    	notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
-		local hash = util.joaat("baller")
-		local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-		if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-			STREAMING.REQUEST_MODEL(hash)
-			while not STREAMING.HAS_MODEL_LOADED(hash) do
-				util.yield()
-			end
-			local Coords1 = PlayerCoords.y + 10
-			local Coords2 = PlayerCoords.y - 10
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
-		end
-	end)
-
-	menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
-    	notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
-		local hash = util.joaat("baller")
-		local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-		if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-			STREAMING.REQUEST_MODEL(hash)
-			while not STREAMING.HAS_MODEL_LOADED(hash) do
-				util.yield()
-			end
-			local Coords1 = PlayerCoords.y + 10
-			local Coords2 = PlayerCoords.y - 10
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
-		end
-	end)
-
+menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
+    if pids == PLAYER.PLAYER_ID() then
+        notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        return
+    else
+        notification("Can't Spectate yourself?", colors.blue)
+    end
+    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
+    local hash = util.joaat("baller")
+    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            util.yield()
+        end
+        local Coords1 = PlayerCoords.y + 10
+        local Coords2 = PlayerCoords.y - 10
+    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
+    end
+end)
 
 local function bitTest(addr, offset)
     return (memory.read_int(addr) & (1 << offset)) ~= 0
@@ -14952,81 +14834,11 @@ end
 
 	menu.divider(crash, "Before Crashes")
 
-    	local acams = menu.list(crash, "Anti Crash Camera's", {}, "")
+    local acams = menu.list(crash, "Anti Crash Cam", {}, "")
 
-	menu.action(acams, "Anti Crash Camera On", {"acam"}, "Activates ped regen, invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and blocks all connections", function()
-		notification("Toggling Anti Crash Camera On", colors.blue)
-		util.toast("Note: Your camera is free to fly around :)")
-		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
-			menu.trigger_commands("mpfemale")
-
-			menu.trigger_commands("invisibility" .. " On")
-			menu.trigger_commands("levitate" .. " On")
-			menu.trigger_commands("freecam" .. " On")
-			menu.trigger_commands("potatomode on")
-    			menu.trigger_commands("nosky on")
-			menu.trigger_commands("reducedcollision" .. " On")
-			menu.trigger_commands("nocollision" .. " On")
-			menu.trigger_commands("showcamall" .. " On")
-			menu.trigger_commands("confuseall" .. " On")
-			menu.trigger_commands("desyncall on")
-			menu.trigger_command(BlockIncSyncs)
-			menu.trigger_command(BlockNetEvents)
-			menu.trigger_commands("superc")
-			menu.trigger_commands("clean")
-    	local player_ped = PLAYER.PLAYER_PED_ID()    
-    	local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-    	local pld = PLAYER.GET_PLAYER_PED(pid)
-    	local pos = ENTITY.GET_ENTITY_COORDS(pld)
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2698.8700)
-    			util.yield(1000)
-    		for i=1,4  do
-        			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2698.8700)
-        			util.yield(1000)
-    			end
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-		end
-	
-	end)
-
-	menu.action(acams, "Anti Crash Camera Off", {"acamoff"}, "Deactivates ped regen,invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and unblocks all connections", function()
-		notification("Toggling Anti Crash Camera Off", colors.blue)
-		for i=-1,100 do
-			AUDIO.STOP_SOUND(i)
-			AUDIO.RELEASE_SOUND_ID(i)
-			end
-		notification("Force Stopped All Sound Events", colors.green)
-		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
-		notification("Removed Attachments", colors.green)
-			menu.trigger_commands("mpfemale")
-    	local player_ped = PLAYER.PLAYER_PED_ID()    
-    	local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-    	local pld = PLAYER.GET_PLAYER_PED(pid)
-    	local pos = ENTITY.GET_ENTITY_COORDS(pld)
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.40393, -819.56366, 326.17517)
-    			util.yield(1000)
-    		for i=1,4  do
-        			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.40393, -819.56366, 326.17517)
-        			util.yield(1000)
-    			end
-    			ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-			menu.trigger_commands("invisibility" .. " Off")
-			menu.trigger_commands("levitate" .. " Off")
-			menu.trigger_commands("freecam" .. " Off")
-			menu.trigger_commands("potatomode off")
-    			menu.trigger_commands("nosky Off")
-			menu.trigger_commands("reducedcollision" .. " Off")
-			menu.trigger_commands("nocollision" .. " Off")
-			menu.trigger_commands("showcamall" .. " Off")
-			menu.trigger_commands("confuseall" .. " Off")
-			menu.trigger_commands("desyncall off")
-			menu.trigger_command(UnblockIncSyncs)
-			menu.trigger_command(UnblockNetEvents)
-			menu.trigger_commands("superc")
-			menu.trigger_commands("clean")
-		end
-	
-	end)
+	menu.action(acams, "[ON/OFF] Anti Crash Camera", {"acamoff"}, "Deactivates ped regen,invisibility, levitate, freecam, reducedcollision, nocollision, showcamall, confusecamall, potatomode, stops all sound events and unblocks all connections", function()
+        menu.trigger_commands("anticrashcam")
+    end)
 
 	menu.toggle(acams, "Panic Mode", {"panicmode"}, "This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
 		local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
@@ -15048,27 +14860,10 @@ end
 		end
 	end)
 
-
-        	menu.toggle(crash, "Block Player", {"block"}, "Shortcut to blocking the player join reaction ", function()
-        	notification("Blocked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            	menu.trigger_commands("historyblock" .. players.get_name(pid))
-    			end)
-
-	menu.action(crash, "Spectate", {"spec"}, "", function()
-    	notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
-		local hash = util.joaat("baller")
-		local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-		if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-			STREAMING.REQUEST_MODEL(hash)
-			while not STREAMING.HAS_MODEL_LOADED(hash) do
-				util.yield()
-			end
-			local Coords1 = PlayerCoords.y + 10
-			local Coords2 = PlayerCoords.y - 10
-		end
-		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
-		end)
+    menu.toggle(crash, "Block Player", {"block"}, "Shortcut to blocking the player join reaction ", function()
+        notification("Blocked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        menu.trigger_commands("historyblock" .. players.get_name(pid))
+    end)
 
 	menu.action(troll_sub_vehicle_tab, "Car Ram", {"ram"}, "Don't drink and drive, folks", function()
     	notification("Ram that bitch!!! " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
