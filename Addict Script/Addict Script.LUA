@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local local_menu_version = 3.5
+local local_menu_version = 3.6
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
@@ -1091,11 +1091,15 @@ end)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	cargoloops = menu.list(menu.my_root(), "Cargo Loop", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
 
-	cargoloo = menu.list(cargoloops, "Open Musiness Banager First", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
 
-	menu.hyperlink(cargoloops, "How to Use Tutorial", "https://drive.google.com/file/d/1GTggKA5O1Tl2IHvrH-WeV83XoAw26Y-s/view?usp=sharing")
+	cashloops = menu.list(menu.my_root(), "Cash Loops", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
+
+
+	cargoloo = menu.list(cashloops, "Cargo Loop (Open MB First)", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
+
+
+	menu.hyperlink(cargoloo, "How to Use Tutorial", "https://drive.google.com/file/d/1GTggKA5O1Tl2IHvrH-WeV83XoAw26Y-s/view?usp=sharing")
 
 local main_menu = menu.list(cargoloo, "Options", {}, "")
 
@@ -1482,6 +1486,39 @@ function parse_all_timer_files()
         end
     end
 end
+
+    
+        function SET_INT_GLOBAL(global, value)
+            memory.write_int(memory.script_global(global), value)
+        end
+
+function STEALTH_LOOP_COMBINED()
+    SET_INT_GLOBAL(1968313, 1)
+ util.log("$ 500K Added")
+  util.yield(1)
+    SET_INT_GLOBAL(1968313, 2)
+    util.log("$ 750K Added")
+  util.yield(1)
+ end
+ function timer(timer)
+     i = timer * 1400
+     x = 0
+     while(x < i)
+     do
+         wait()
+         x = x + 1
+     end
+ end
+
+menu.divider(cashloops, "Start $$$ Loop")
+
+cashloop = menu.list(cashloops, "500k + 750k Loop", {}, "$$$ Loop", function(); end)
+
+menu.toggle_loop(cashloop, 'Start $$$ Loop', {""}, '500k + 750k Loop Every 10 Seconds.', function()
+    STEALTH_LOOP_COMBINED()
+    util.yield(10000)
+end)
+
 
 local create_timer_root = menu.list(menu.my_root(), "Create new timer", {'Addictcreate'}, "")
 ----
