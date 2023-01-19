@@ -1,4 +1,4 @@
-name: test
+name: ci
 
 on: [push]
 
@@ -13,11 +13,6 @@ jobs:
       with:
         lua-version: "5.1.5"
 
-    - name: build
-      run: |
-        luarocks install busted
-        luarocks make
-
-    - name: test
+    - name: ci
       run: |
         busted -o utfTerminal
