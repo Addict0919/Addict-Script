@@ -13,8 +13,8 @@ Made on Stand's Lua Engine
 
 Incomplete List of Features that our Lua offers you :)
 
- - x
+ - Unqiue & Remade Crashes
 
 ## Contributing
 
-You're free to contribute to Addicted as long as the features are useful.
+You're free to contribute to Addicted as long as the Deatures are useful.
