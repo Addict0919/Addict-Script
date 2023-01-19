@@ -9,15 +9,16 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - uses: leafo/gh-actions-lua@v5
+    - uses: xpol/setup-lua@v1
       with:
-        luaVersion: "5.4"
+        lua-version: "5.1.5"
 
     - uses: leafo/gh-actions-luarocks@v2
 
-    - name: setup 
+    - name: build
       run: |
         luarocks install busted
+        luarocks make
 
     - name: test
       run: |
