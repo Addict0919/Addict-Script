@@ -14,14 +14,29 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local local_menu_version = 3.9
+local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
+
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
+    response=true;
+    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
+        async_http.dispatch()
+    end)
+end,
+function()
+    response=true 
+end)
+async_http.dispatch()
+repeat util.yield()
+until response 
+
+local local_menu_version = 4.0
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+            menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
@@ -4411,12 +4426,13 @@ else
     end
 end)
 
-local popularity_loop_command_ref = menu.ref_by_path("Online>Quick Progress>Set Nightclub Popularity", 38)
-
-menu.toggle_loop(protex, "Nightclub Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100%", function()
+menu.toggle_loop(protex, "Popularity Loop", {"popularityloop"}, "", function()
     menu.trigger_command(popularity_loop_command_ref, 100)
+    util.toast("Popularity set")
     util.yield(1000)
 end)
+
+
 
 local anti_mugger = menu.list(protex, "Block Muggers")
 
