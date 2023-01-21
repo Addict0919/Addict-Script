@@ -2,7 +2,7 @@
 
 Strictly for educational purposes!
 
-Made on Stand's Lua Engine
+Made for Stand's Lua Engine 
 
 ## Table of contents
 
@@ -14,7 +14,9 @@ Made on Stand's Lua Engine
 Incomplete List of Features that our Lua offers you :)
 
  - Unqiue & Remade Crashes
+ - Many Fun Options
+ - Recoveries
 
 ## Contributing
 
-You're free to contribute to Addicted as long as the Deatures are useful.
+You're free to contribute to Addicted as long as the Features are useful..
