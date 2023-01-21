@@ -14,7 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local local_menu_version = 3.7
+local local_menu_version = 3.8
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
@@ -4100,7 +4100,7 @@ menu.action(custselc, "Vehicle Kick", {}, "", function()
     end
 end)
 
-menu.action(custselc, "Rank Everyone", {"rankall"}, "", function()
+menu.action(custselc, "{Jrukii's} RP Loop", {"rankall"}, "", function()
     menu.trigger_commands("excludepussies")
     util.yield(1500)
     notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
@@ -4108,34 +4108,19 @@ menu.action(custselc, "Rank Everyone", {"rankall"}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("givebigrp" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("crazyrank" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("givebigrp" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
 end)
 
-menu.action(custselc, "Give Bounty Loop", {"bountyloopto"}, "", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("bountyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Bounty Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-            end
-        end
-    end
-end)
 
 menu.action(custselc, "Give Crazy Rank", {"crazyrankto"}, "", function()
     for pids = 0, 31 do
@@ -4425,6 +4410,14 @@ if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3)))
 else
     end
 end)
+
+menu.toggle_loop(protex, "Popularity Loop", {"popularityloop"}, "", function()
+    menu.trigger_command(popularity_loop_command_ref, 100)
+    util.toast("Popularity set")
+    util.yield(1000)
+end)
+
+
 
 local anti_mugger = menu.list(protex, "Block Muggers")
 
@@ -11430,7 +11423,7 @@ end)
         end
     end)
 
-    menu.toggle_loop(drops, "{Jrukii's}RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
+    menu.toggle_loop(drops, "{Jrukii's} RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
         if pid ~= players.user() then
         for i = 1, 20 do
         util.yield(0)
@@ -11908,7 +11901,7 @@ menu.toggle_loop(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "Working.", functi
     end
 end)
 
-menu.toggle_loop(MenuCrashes,"North Crash", {"northcrash"}, "Not coded Yet.", function()
+menu.toggle_loop(MenuCrashes,"North Crash", {"northcrash"}, "Working.", function()
     if pid ~= players.user() then
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local michael = util.joaat("player_zero")
