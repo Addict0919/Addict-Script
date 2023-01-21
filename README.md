@@ -17,4 +17,4 @@ Incomplete List of Features that our Lua offers you :)
 
 ## Contributing
 
-You're free to contribute to Addicted as long as the Deatures are useful.
+You're free to contribute to Addicted as long as the features are useful.
