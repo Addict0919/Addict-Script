@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 4.0
+local local_menu_version = 4.1
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
@@ -7345,7 +7345,33 @@ read_global = {
         return true
     end
 
+    function get_random_ped()
+        peds = entities.get_all_peds_as_handles()
+        npcs = {}
+        valid = 0
+        for k,p in pairs(peds) do
+            if p ~= nil and not is_ped_player(p) then
+                table.insert(npcs, p)
+                valid = valid + 1
+            end
+        end
+        return npcs[math.random(valid)]
+    end
+
 	griefing = menu.list(menu.player_root(pid), "Griefing", {}, "", function(); end)
+
+    menu.toggle_loop(griefing, "Owned snipe", {"snipe"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
+        owner = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+        target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        target = ENTITY.GET_ENTITY_COORDS(target_ped)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, owner, true, false, 100.0)
+    end)
+    menu.toggle_loop(griefing, "Anon snipe", {"selfsnipe"}, "Snipes the player anonymously, as if a random ped did it [The randomly selected ped needs to have LOS, I think]", function(on_click)
+        target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        target = ENTITY.GET_ENTITY_COORDS(target_ped)
+        random_ped = get_random_ped()
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, random_ped, true, false, 100.0)
+    end)
 
     menu.action(griefing, "Make Player Explode All", {"makethemexplodeall"}, "", function()
 		menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " explodeall")
