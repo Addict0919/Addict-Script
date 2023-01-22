@@ -1,2 +1,3 @@
-- added Owned Snipe in - Players>Player NAMER [MS]>Griefing>Owned snipe
-- added Anon Snipe in - Players>Player NAMER [MS]>Griefing>Anon snipe
+- added support for more version variables
+- added discord tags to credits
+- added open github repo
