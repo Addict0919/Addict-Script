@@ -20,7 +20,7 @@ guidedMissile = require("guided_missile")
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
 if not dev_mode then
-    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.txt",function(b)
         ver=tonumber(b)
         local_ver=tonumber(local_menu_version)
         response=true;
