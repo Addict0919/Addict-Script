@@ -8,6 +8,9 @@ WE HAVE TAKEN OVER░ \☻/\☻/
 ]]
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 util.keep_running()
+
+local_menu_version = "1.6.8"
+
 util.require_natives("natives-1663599433-uno")
 util.require_natives("natives-1640181023")
 util.require_natives("natives-1651208000")
@@ -16,26 +19,12 @@ guidedMissile = require("guided_missile")
 
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
-    response=true;
-    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
-        async_http.dispatch()
-    end)
-end,
-function()
-    response=true 
-end)
-async_http.dispatch()
-repeat util.yield()
-until response 
-
-local local_menu_version = 4.1
-
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
-        currentVer=tonumber(b)
+        ver=tonumber(b)
+        local_ver=tonumber(local_menu_version)
         response=true;
-        if local_menu_version~=currentVer then 
+        if ver~=local_ver then 
             menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
@@ -60,6 +49,18 @@ if not dev_mode then
     repeat util.yield()
     until response 
 end
+
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
+    response=true;
+    menu.action(github, "Changelog", {"addictchangelog"}, b, function() end)
+    menu.hyperlink(github, "Open Repo", "https://github.com/Addict0919/Addict-Script")
+end,
+function()
+    response=true 
+end)
+async_http.dispatch()
+repeat util.yield()
+until response
 
 util.toast("Welcome To Addicted! v" .. local_menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
@@ -86,26 +87,26 @@ local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
-menu.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-menu.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
-menu.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
-menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
-menu.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
-menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
+menu.action(Credits, "UnseemlyV3#1120", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
+menu.action(Credits, "Not_DerPaul#6118", {}, "Great coder helped with security and testing :).", function() end)
+menu.action(Credits, ".Crystal#8066", {}, "Very smart coder helped with mods I gave up on.", function() end)
+menu.action(Credits, "ChaosFlixz#1537", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
+menu.action(Credits, "D̷e̷a̷t̷h̷B̷r̷i̷n̷g̷e̷r#7739", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
+menu.action(Credits, "Wigger#2525", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
-menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-menu.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions and testing :)", function() end)
+menu.action(Credits, "Nosa#6485", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
+menu.action(Credits, "0xDEADBEEF#0001", {}, "Helped with tons of suggestions and testing :)", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
 menu.action(Credits, "Mr's Candy <3", {}, "(Candy's Girlfriend) Great morel support kept me smiling, happy and aloud me to code without a bother <3.", function() end)
-menu.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
+menu.action(Credits, "Yumin3k#3333", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
 menu.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
 menu.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
 menu.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
-menu.action(Credits, "Masi", {}, "Known long time :)", function() end)
+menu.action(Credits, "masi#4655", {}, "Known long time :)", function() end)
 menu.action(Credits, "Jonash", {}, "Provided great suggestions along the way :).", function() end)
-menu.action(Credits, "Uncle", {}, "Nice guy always there to help <3.", function() end)
+menu.action(Credits, "UnclePK#2925", {}, "Nice guy always there to help <3.", function() end)
 menu.action(Credits, "Presidente", {}, "Fun guy to play with known a long time :).", function() end)
 menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking stoner <3.", function() end)
 menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
@@ -18899,3 +18900,2781 @@ end
 util.on_stop(function()
 	notification("Later pussy (Yawn)", colors.red)
 end)
+"nocollision" .. " off")
+        local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
+	end)
+
+    ]]
+
+    local drops = menu.list(frienm, "Addict Drops", {}, "")
+
+    menu.action(drops, "Give All Collectibles", {"collects"}, "", function()
+        menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+    end)
+
+    menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
+        if pid ~= players.user() then
+        if on_toggle then
+            menu.trigger_commands("giverp" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("givebigrp" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("giverpsted" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("dropfigures" .. players.get_name(pid))
+            util.yield(10)
+        else
+            menu.trigger_commands("giverp" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("givebigrp" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("giverpsted" .. players.get_name(pid))
+            util.yield(10)
+            menu.trigger_commands("dropfigures" .. players.get_name(pid))
+            util.yield(10)
+            end
+        end
+    end)
+
+    menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
+        if pid ~= players.user() then
+	    for i = 1, 20 do
+        util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i})
+		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
+		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
+		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
+		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
+		util.trigger_script_event(1 << pid, {0x2994068E, 1, 8, i, 1, 1, 1})
+            end
+        end
+    end)
+
+    menu.toggle_loop(drops, "{Jrukii's} RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
+        if pid ~= players.user() then
+        for i = 1, 20 do
+        util.yield(0)
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i})
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i, i, i})
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 8, i, i, i})
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 9, i, i, i})
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 1, i, i, i})
+        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 8, -4, 1, 1, 1})
+        util.yield(1)
+        end
+    end
+end)
+
+    menu.toggle_loop(drops, "Drop Figures Steadily", {"giverpsted"}, "", function()
+        if pid ~= players.user() then
+        local coords = players.get_position(pid)
+        coords.z = coords.z + 1.5
+        local card = MISC.GET_HASH_KEY("vw_prop_vw_colle_prbubble")
+        STREAMING.REQUEST_MODEL(card)
+        if STREAMING.HAS_MODEL_LOADED(card) == false then  
+            STREAMING.REQUEST_MODEL(card)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
+                util.yield(500)
+        end
+    end)
+
+    menu.toggle_loop(drops, "Drop All Figures (No Attach)", {"dropfigures"}, "", function()
+        if pid ~= players.user() then
+        local coords = players.get_position(pid)
+        coords.z = coords.z + 1.5
+        local random_hash = 0x4D6514A3
+        local random_int = math.random(1, 8)
+        if random_int == 1 then
+            random_hash = 0x4D6514A3
+        elseif random_int == 2 then
+            random_hash = 0x748F3A2A
+        elseif random_int == 3 then
+            random_hash = 0x1A9736DA
+        elseif random_int == 4 then
+            random_hash = 0x3D1B7A2F
+        elseif random_int == 5 then
+            random_hash = 0x1A126315
+        elseif random_int == 6 then
+            random_hash = 0xD937A5E9
+        elseif random_int == 7 then
+            random_hash = 0x23DDE6DB
+        elseif random_int == 8 then
+            random_hash = 0x991F8C36
+        end
+        STREAMING.REQUEST_MODEL(random_hash)
+        if STREAMING.HAS_MODEL_LOADED(random_hash) == false then  
+            STREAMING.REQUEST_MODEL(random_hash)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
+        util.yield(50)
+        end
+    end)
+
+    menu.toggle_loop(drops, "Drop All Figures Fast (Attach)", {"figures"}, "", function()
+        if pid ~= players.user() then
+        local coords = players.get_position(pid)
+        coords.z = coords.z + 1.5
+        local random_hash = 0x4D6514A3
+        local random_int = math.random(1, 8)
+        if random_int == 1 then
+            random_hash = 0x4D6514A3
+        elseif random_int == 2 then
+            random_hash = 0x748F3A2A
+        elseif random_int == 3 then
+            random_hash = 0x1A9736DA
+        elseif random_int == 4 then
+            random_hash = 0x3D1B7A2F
+        elseif random_int == 5 then
+            random_hash = 0x1A126315
+        elseif random_int == 6 then
+            random_hash = 0xD937A5E9
+        elseif random_int == 7 then
+            random_hash = 0x23DDE6DB
+        elseif random_int == 8 then
+            random_hash = 0x991F8C36
+        end
+        STREAMING.REQUEST_MODEL(random_hash)
+        if STREAMING.HAS_MODEL_LOADED(random_hash) == false then  
+            STREAMING.REQUEST_MODEL(random_hash)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
+        util.yield(50)
+        menu.trigger_commands("attachto" .. players.get_name(pid))
+        menu.trigger_commands("tppickups" .. players.get_name(pid))
+        end
+    end)
+
+
+    menu.toggle(drops, "Detach/Attach Player", {"attachplayer"}, "", function(on)
+        if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid) == players.user_ped() then 
+            return
+        end
+        if on then
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(players.user_ped(), PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+        else
+            ENTITY.DETACH_ENTITY(players.user_ped(), false, false)
+            end
+        end)
+
+--[[
+    menu.toggle_loop(drops, "Drop Cards", {}, "Players can only pickup 54 cards per session, Note: this hasn't been tested for bans but it should be safe", function()
+        if pid ~= players.user() then
+        local coords = players.get_position(pid)
+        coords.z = coords.z + 1.5
+        local card = MISC.GET_HASH_KEY("vw_prop_vw_lux_card_01a")
+        STREAMING.REQUEST_MODEL(card)
+        if STREAMING.HAS_MODEL_LOADED(card) == false then  
+            STREAMING.REQUEST_MODEL(card)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
+        end
+    end)
+]]
+
+local yoinkpickup = menu.list(drops, "Pickup Yoinker", {}, "")
+
+menu.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
+    TpAllPickups(pid)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", function (on_toggle)
+        if on_toggle then
+            TpAllPickups(pid)
+        else
+            TpAllPickups(pid)
+        end
+end)
+
+menu.toggle(drops, "Auto Casino Rig", {"autocasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
+    if on_toggle then
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        menu.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.trigger_script_event(1 << pid, {1268038438, 4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
+        util.yield(1500)
+        menu.trigger_commands("rigblackjack")
+        menu.trigger_commands("rigroulette ".. "1")
+        util.yield(1500)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1132.2958, 263.93478, -51.035763)
+        menu.trigger_commands("casinohelp1")
+        menu.trigger_commands("casinohelp2")
+    else
+        menu.trigger_commands("rigblackjack")
+        menu.trigger_commands("rigroulette ".. "-1")
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 924.2497, 46.7545, 81.0961)
+    end
+end)
+    
+menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
+    menu.show_command_box("historybefriend " .. PLAYER.GET_PLAYER_NAME(pid))
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
+    if pids == PLAYER.PLAYER_ID() then
+        notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        return
+    else
+        notification("Can't Spectate yourself?", colors.blue)
+    end
+    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
+    local hash = util.joaat("baller")
+    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            util.yield()
+        end
+        local Coords1 = PlayerCoords.y + 10
+        local Coords2 = PlayerCoords.y - 10
+    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
+    end
+end)
+
+local function bitTest(addr, offset)
+    return (memory.read_int(addr) & (1 << offset)) ~= 0
+end
+
+local include_friends = false
+menu.toggle(crash, "Exclude friends", {}, "Save friends ass from being crashed if close (Turns off sync to friends using timeout).", function(on)
+    include_friends = on
+    for k, id in pairs(players.list(false, true, false)) do
+        name = players.get_name(id)
+        if include_friends then
+            menu.trigger_commands("timeout"..name.." on")
+        else
+            menu.trigger_commands("timeout"..name.." off")
+        end
+    end
+end, false)
+
+
+local function BlockSyncs(pid, callback)
+    for _, i in ipairs(players.list(false, true, true)) do
+        if i ~= pid then
+            local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
+            menu.trigger_command(outSync, "on")
+        end
+    end
+    util.yield(10)
+    callback()
+    for _, i in ipairs(players.list(false, true, true)) do
+        if i ~= pid then
+            local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
+            menu.trigger_command(outSync, "off")
+        end
+    end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local protectcrash = menu.list(crash, "Join Player's Crash Protections", {}, "")
+
+menu.toggle(protectcrash, "Join Player's Crash Protections", {"joinprotect"}, "This is best for when joining people that are crashing as session. Stops your position being updated for other players and can even prevent other players from knowing that you're in the session if joining with this enabled.", function(on_toggle)
+    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
+    local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+    local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+    if on_toggle then
+        menu.trigger_commands("anticrashcamera")
+        menu.trigger_commands("desyncall")
+        menu.trigger_commands("fpsnsboost")
+--      menu.trigger_commands("noentities")
+        menu.trigger_command(BlockIncSyncs)
+        menu.trigger_command(BlockNetEvents)
+        menu.trigger_command(ShowNotis)
+        menu.trigger_command(BlockRaw)
+        util.toast("Activated, now enter your session and prepare the kick/crash.")
+        util.yield(100)
+    else
+        menu.trigger_commands("anticrashcamera")
+        menu.trigger_commands("desyncall")
+        menu.trigger_commands("fpsnsboost")
+--      menu.trigger_commands("noentities")
+        menu.trigger_command(UnblockIncSyncs)
+        menu.trigger_command(UnblockNetEvents)
+        menu.trigger_command(UnShowNotis)
+        menu.trigger_command(UnBlockRaw)
+        util.toast("Done, all off")
+        util.yield(100)
+        end
+    end)
+
+    menu.toggle(protectcrash, "Hide RAW Notifications", {"hiderawnotifs"}, "", function(on_toggle)
+        local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
+        local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+        if on_toggle then
+            menu.trigger_command(UnShowNotis)
+			menu.trigger_commands("clearnotifs")
+            util.yield(100)
+        else
+            menu.trigger_command(ShowNotis)
+            end
+        end)
+
+    menu.action(protectcrash, "Turn On/Off Anti-Crash Camera", {""}, "Shortcut if needed.", function(on_toggle)
+        if on_toggle then
+            menu.trigger_commands("anticrashcamera")
+            util.yield(100)
+        else
+            menu.trigger_commands("anticrashcamera")
+            util.yield(100)
+            end
+        end)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+playerposition = function(entity, distance)
+	if not ENTITY.DOES_ENTITY_EXIST(entity) then
+    end
+	local coords = ENTITY.GET_ENTITY_FORWARD_VECTOR(entity)
+	coords:mul(distance)
+	coords:add(ENTITY.GET_ENTITY_COORDS(entity, true))
+	return coords
+end
+
+function GetLocalPed()
+    return PLAYER.PLAYER_PED_ID()
+end
+
+NetworkControl = function(entity, timeOut)
+	timeOut = timeOut or 1000
+	local start = util.current_time_millis()
+	while not NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity) and
+	util.current_time_millis() - start < timeOut do
+		util.yield_once()
+	end
+	return util.current_time_millis() - start < timeOut
+end
+
+local function deletehandlers(list)
+    for _, entity in pairs(list) do
+        if ENTITY.DOES_ENTITY_EXIST(entity) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
+            NetworkControl(entity)
+            entities.delete_by_handle(entity)
+        end
+    end
+end
+
+function attach_ladder(hash, aY, aZ, a_, b0, b1, b2, b3, pid)
+    while not STREAMING.HAS_MODEL_LOADED(hash) do
+        STREAMING.REQUEST_MODEL(hash)
+        util.yield()
+    end
+    playerped3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    table_ladder[attach] = OBJECT.CREATE_OBJECT(hash, 1.55, 3.35, 0, true, true)
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(
+        table_ladder[attach],
+        playerped3,
+        0,
+        aY,
+        aZ,
+        a_,
+        b0,
+        b2,
+        b1,
+        false,
+        true,
+        true,
+        false,
+        0,
+        false
+    )
+    ENTITY.SET_ENTITY_VISIBLE(table_ladder[attach], b3)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+    attach = attach + 1
+end
+
+--         _____ ________________ ________  _   __
+--        / ___// ____/ ___/ ___//  _/ __ \/ | / /
+--        \__ \/ __/  \__ \\__ \ / // / / /  |/ / 
+--       ___/ / /___ ___/ /__/ // // /_/ / /|  /  
+--      /____/_____//____/____/___/\____/_/ |_/   
+
+--         __________  ___   _____ __  __
+--        / ____/ __ \/   | / ___// / / /
+--       / /   / /_/ / /| | \__ \/ /_/ /
+--      / /___/ _, _/ ___ |___/ / __  /
+--      \____/_/ |_/_/  |_/____/_/ /_/   
+
+
+function RqModel(hash)
+    STREAMING.REQUEST_MODEL(hash)
+    local count = 0
+    util.toast("Requesting model...")
+    while not STREAMING.HAS_MODEL_LOADED(hash) and count < 100 do
+        STREAMING.REQUEST_MODEL(hash)
+        count = count + 1
+        util.yield(10)
+    end
+    if not STREAMING.HAS_MODEL_LOADED(hash) then
+        util.toast("Tried for 1 second, couldn't load this specified model!")
+    end
+end
+
+local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
+
+menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stood still if you think freezing wont work. Credits to Legy for idea.", function()
+    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(200)
+    menu.trigger_commands("dancingtopless" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(10)
+    menu.trigger_commands("fsexmoan")
+    util.yield(10)
+    menu.trigger_commands("msexmoan")
+    util.yield(10)
+    menu.trigger_commands("animlapdance1")
+    menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("smash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("footlettuce" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(3000)
+    menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(50000)
+    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("cancelanim")
+end)
+
+local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
+
+
+menu.toggle_loop(MenuCrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    util.toast("Stand Crash Sent to " .. players.get_name(pid))
+    util.log("Stand Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
+    util.log("2Take1 Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    util.toast("X-Force Crash Sent to " .. players.get_name(pid))
+    util.log("X-Force Crash Sent to " .. players.get_name(pid))
+    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Rebound Crash", {"reboundcrash"}, "Working.", function()
+    if pid ~= players.user() then
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = players.get_position(pid)
+        local mdl = util.joaat("mp_m_freemode_01")
+        local veh_mdl = util.joaat("taxi")
+        util.request_model(veh_mdl)
+        util.request_model(mdl)
+            for i = 1, 10 do
+                if not players.exists(pid) then
+                    return
+                end
+                local veh = entities.create_vehicle(veh_mdl, pos, 0)
+                local jesus = entities.create_ped(2, mdl, pos, 0)
+                PED.SET_PED_INTO_VEHICLE(jesus, veh, -1)
+                util.yield(100)
+                TASK.TASK_VEHICLE_HELI_PROTECT(jesus, veh, ped, 10.0, 0, 10, 0, 0)
+                util.yield(1000)
+                entities.delete_by_handle(jesus)
+                entities.delete_by_handle(veh)
+            end  
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+    util.toast("Rebound Crash Sent to " .. players.get_name(pid))
+    util.log("Rebound Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
+    if pid ~= players.user() then
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield()
+    util.toast("Cherax Crash Sent to " .. players.get_name(pid))
+    util.log("Cherax Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"North Crash", {"northcrash"}, "Working.", function()
+    if pid ~= players.user() then
+    local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+    local michael = util.joaat("player_zero")
+    while not STREAMING.HAS_MODEL_LOADED(michael) do
+        STREAMING.REQUEST_MODEL(michael)
+        util.yield()
+    end
+    local ped = entities.create_ped(0, michael, pos, 0)
+    PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 6, 0)
+    PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 7, 0)
+    util.yield()
+    ENTITY.SET_ENTITY_COORDS(ped, pos.x, pos.y, pos.z, true, false, false, true)
+    util.yield(500)
+    entities.delete_by_handle(ped)
+    util.toast("North Crash Sent to " .. players.get_name(pid))
+    util.log("North Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
+    if pid ~= players.user() then
+    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
+    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
+    if pid ~= players.user() then
+    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield()
+    util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
+    util.log("Kiddions Crash Sent to " .. players.get_name(pid))
+    end
+end)
+
+menu.toggle_loop(MenuCrashes, "Any Menu Crash", {"anymenucrash"}, "", function()
+    util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
+    util.log("Any Menu Crash Sent to " .. players.get_name(pid))
+    end)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local lobbycrash = menu.list(crash, "Lobby Crashes", {}, "")
+
+local craftcrash = menu.list(crash, "Vehicle Crashes", {}, "")
+
+menu.toggle_loop(craftcrash, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
+	if on_toggle then
+        menu.trigger_commands("tppeds" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tpvehs" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tpobjs" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tppickups" .. players.get_name(pid))
+    else
+        menu.trigger_commands("tppeds" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tpvehs" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tpobjs" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("tppickups" .. players.get_name(pid))
+    end
+end)
+
+local spawnDistance1 = 0
+local vehicleType1 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "freightcar", 'blista', 'issi8', 'virtue', 'towtruck', 'towtruck2', 'bombushka', 'volatol', 'kosatka', 'seabreeze', 'tula', 'avenger2',
+'armytrailer2', 'buzzard', 'savage', 'seasparrow', 'frogger2', 'bulldozer', 'flatbed',
+'proptrailer', 'tr4', 'tug', 'cargobob', 'cargobob2', 'luxor2'}
+
+local selected1 = 1
+local spawnedPlanes1 = {}
+
+menu.toggle_loop(craftcrash, "Start Loop 1", {"craftloop1"}, "Hold down enter...", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local modelHash <const> = util.joaat(vehicleType1[selected1])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    STREAMING.REQUEST_MODEL(modelHash)
+    while not STREAMING.HAS_MODEL_LOADED(modelHash) do
+        util.yield_once()
+    end
+    util.toast("Incoming Vehicles o.o")
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance1)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes1, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not lastExplosion or util.current_time_millis() - lastExplosion > 1000 then
+            FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, false, 0.0, false)
+            lastExplosion = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes1)
+    spawnedPlanes1 = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType1, 1, function (opt)
+    selected1 = opt
+end)
+
+menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance1, 25, function(distance)
+    spawnDistance1 = distance
+end)
+
+
+local spawnDistance2 = 0
+local vehicleType2 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "freightcar", 'blista', 'issi8', 'virtue', 'towtruck', 'towtruck2', 'bombushka', 'volatol', 'kosatka', 'seabreeze', 'tula', 'avenger2',
+'armytrailer2', 'buzzard', 'savage', 'seasparrow', 'frogger2', 'bulldozer', 'flatbed',
+'proptrailer', 'tr4', 'tug', 'cargobob', 'cargobob2', 'luxor2'}
+
+local selected2 = 1
+local spawnedPlanes2 = {}
+
+menu.toggle_loop(craftcrash, "Start Loop 2", {"craftloop2"}, "Hold down enter...", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local modelHash <const> = util.joaat(vehicleType2[selected2])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    STREAMING.REQUEST_MODEL(modelHash)
+    while not STREAMING.HAS_MODEL_LOADED(modelHash) do
+        util.yield_once()
+    end
+    util.toast("Incoming Vehicles o.o")
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance2)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes2, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not lastExplosion or util.current_time_millis() - lastExplosion > 1000 then
+            FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, false, 0.0, false)
+            lastExplosion = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes2)
+    spawnedPlanes2 = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType2, 1, function (opt)
+    selected2 = opt
+end)
+
+menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance2, 25, function(distance)
+    spawnDistance2 = distance
+end)
+
+local spawnDistance3 = 0
+local vehicleType3 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "freightcar", 'blista', 'issi8', 'virtue', 'towtruck', 'towtruck2', 'bombushka', 'volatol', 'kosatka', 'seabreeze', 'tula', 'avenger2',
+'armytrailer2', 'buzzard', 'savage', 'seasparrow', 'frogger2', 'bulldozer', 'flatbed',
+'proptrailer', 'tr4', 'tug', 'cargobob', 'cargobob2', 'luxor2'}
+
+local selected3 = 1
+local spawnedPlanes3 = {}
+
+menu.toggle_loop(craftcrash, "Start Loop 3", {"craftloop3"}, "Hold down enter...", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local modelHash <const> = util.joaat(vehicleType3[selected3])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    STREAMING.REQUEST_MODEL(modelHash)
+    while not STREAMING.HAS_MODEL_LOADED(modelHash) do
+        util.yield_once()
+    end
+    util.toast("Incoming Vehicles o.o")
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance3)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes3, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not lastExplosion or util.current_time_millis() - lastExplosion > 1000 then
+            FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, false, 0.0, false)
+            lastExplosion = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes3)
+    spawnedPlanes3 = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType3, 1, function (opt)
+    selected3 = opt
+end)
+
+menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance3, 25, function(distance)
+    spawnDistance3 = distance
+end)
+
+local spawnDistance4 = 0
+local vehicleType4 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "freightcar", 'blista', 'issi8', 'virtue', 'towtruck', 'towtruck2', 'bombushka', 'volatol', 'kosatka', 'seabreeze', 'tula', 'avenger2',
+'armytrailer2', 'buzzard', 'savage', 'seasparrow', 'frogger2', 'bulldozer', 'flatbed',
+'proptrailer', 'tr4', 'tug', 'cargobob', 'cargobob2', 'luxor2'}
+
+local selected4 = 1
+local spawnedPlanes4 = {}
+
+menu.toggle_loop(craftcrash, "Start Loop 4", {"craftloop4"}, "Hold down enter...", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local modelHash <const> = util.joaat(vehicleType4[selected4])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    STREAMING.REQUEST_MODEL(modelHash)
+    while not STREAMING.HAS_MODEL_LOADED(modelHash) do
+        util.yield_once()
+    end
+    util.toast("Incoming Vehicles o.o")
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance4)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes4, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not lastExplosion or util.current_time_millis() - lastExplosion > 1000 then
+            FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, false, 0.0, false)
+            lastExplosion = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes4)
+    spawnedPlanes4 = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType4, 1, function (opt)
+    selected4 = opt
+end)
+
+menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance4, 25, function(distance)
+    spawnDistance4 = distance
+end)
+
+local spawnDistance5 = 0
+local vehicleType5 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "freightcar", 'blista', 'issi8', 'virtue', 'towtruck', 'towtruck2', 'bombushka', 'volatol', 'kosatka', 'seabreeze', 'tula', 'avenger2',
+ 'armytrailer2', 'buzzard', 'savage', 'seasparrow', 'frogger2', 'bulldozer', 'flatbed',
+ 'proptrailer', 'tr4', 'tug', 'cargobob', 'cargobob2', 'luxor2'}
+
+local selected5 = 1
+local spawnedPlanes5 = {}
+
+menu.toggle_loop(craftcrash, "Start Loop 5", {"craftloop5"}, "Hold down enter...", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local modelHash <const> = util.joaat(vehicleType5[selected5])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    STREAMING.REQUEST_MODEL(modelHash)
+    while not STREAMING.HAS_MODEL_LOADED(modelHash) do
+        util.yield_once()
+    end
+    util.toast("Incoming Vehicles o.o")
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance5)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes5, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not lastExplosion or util.current_time_millis() - lastExplosion > 1000 then
+            FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, false, 0.0, false)
+            lastExplosion = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes5)
+    spawnedPlanes5 = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType5, 1, function (opt)
+    selected5 = opt
+end)
+
+menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance5, 25, function(distance)
+    spawnDistance5 = distance
+end)
+
+
+local selectedobject = 1268884662
+local all_objects = {
+-1268884662,
+1085274000,
+1729911864,
+2166988379,
+3702106121,
+1398809829,
+1043035044,
+3639322914,
+464329140,
+4046278932,
+3785611910,
+388197031,
+2977746558,
+659187150,
+420170064,
+2436749075,
+1193854962,
+476379176,
+630616933,
+3945660640,
+1565925668,
+175309727,
+3196461136,
+3251728163,
+176008245,
+2112015640,
+993120320,
+865627822,
+266130508,
+3762892718,
+3854180205,
+2804199464,
+523317885,
+1327834842,
+1321190118,
+29828513,
+-1026778664,
+310817095,
+4130089803,
+148511758,
+3087007557,
+2969831089,
+3533371316,
+2024855755,
+2450168807,
+297107423,
+2017086435,
+3553022755,
+4046278932,
+3639322914,
+3231494328,
+3271283456,
+386059801,
+202070568,
+1971657777,
+2005313754,
+3859048180,
+866394777,
+740404217,
+2409855828,
+286298615,
+795984016,
+2374537677,
+3161612443,
+1165195353,
+2450522579,
+4260070095,
+974883178,
+3965551402,
+3854180205,
+3696781377,
+4124467285,
+2684801972,
+3449848423,
+118627012,
+1565925668,
+1924419321,
+2201918560,
+3762892718,
+266130508,
+1193854962, 
+630616933,
+476379176,
+2436749075,
+2154892897,
+1369811908,
+2420804668,
+1948561556,
+356462018,
+462203053,
+3552768664,
+2057223314,
+3290378943,
+168901740,
+303280717,
+725259233,
+2064599526,
+4204303756,
+3185604174,
+1046958884,
+81317377,
+2539784170,
+795367207,
+2684668286,
+827574655,
+617299305,
+3999634798
+
+} 
+
+local object_names = {
+
+"Bricks",
+"Pizza's",
+"prop_boombox_01",
+"xm3_prop_xm3_boombox_01a",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10",
+"11",
+"12",
+"13",
+"14",
+"15",
+"16",
+"17",
+"18",
+"19",
+"20",
+"21",
+"22",
+"23",
+"24",
+"25",
+"26",
+"27",
+"28",
+"29",
+"Dandy's",
+"Keypad's",
+"Brittle Bush",
+"Saplin",
+"Fragment",
+"Gas",
+"Ball",
+"Flagpole",
+"Combat MG",
+"Mag1",
+"Barrel",
+"40mm",
+"Corp Rope",
+"prop_amb_ciggy_01",
+"prop_table_03_chr",
+"prop_parasol_03",
+"prop_traffic_01d",
+"prop_streetlight_01",
+"v_serv_bs_gelx3",
+"prop_table_03",
+"v_serv_bs_foam1",
+"v_ret_ta_paproll2",
+"v_serv_bs_razor",
+"prop_tv_05",
+"v_ret_gc_box2",
+"prop_rub_stool",
+"prop_speaker_05",
+"v_serv_bs_shvbrush",
+"v_serv_bs_shampoo",
+"v_ret_ta_spray",
+"v_serv_bs_cond",
+"v_serv_bs_clutter",
+"v_ilev_bs_door",
+"prop_ld_purse_01",
+"prop_amb_phone",
+"prop_bin_10b",
+"prop_amb_40oz_02",
+"p_amb_coffeecup_01",
+"prop_coffee_mac_02",
+"prop_fire_exting_2a",
+"prop_wall_light_06a",
+"prop_xmas_ext",
+"xm_prop_x17_osphatch_col",
+"reh_prop_reh_sign_jk_01a",
+"reh_prop_reh_bag_para_01a",
+"tr_prop_tr_meet_coll_01",
+"vw_prop_vw_garage_coll_01a",
+"prop_forsale_dyn_01",
+"xm_prop_base_cabinet_door_01",
+"xm_prop_x17dlc_rep_sign_01a",
+"gr_prop_gr_bunkeddoor_col",
+"v_ret_ta_firstaid",
+"prop_aircon_m_01",
+"prop_wall_light_02a",
+"v_ret_gc_calc",
+"prop_micro_04",
+"prop_gumball_02",
+"prop_watercooler",
+"prop_radio_01",
+"prop_game_clock_01",
+"prop_cctv_cam_06a",
+"prop_till_01",
+"prop_chair_02",
+"prop_chair_04a",
+"xs_prop_arena_flipper_large_01a",
+"xs_prop_arena_flipper_small_01a",
+"xs_prop_arena_flipper_xl_01a",
+"xs_prop_arena_flipper_large_01a_sf",
+"xs_prop_arena_flipper_small_01a_sf",
+"xs_prop_arena_flipper_xl_01a_sf",
+"xs_prop_arena_flipper_large_01a_wl",
+"xs_prop_arena_flipper_small_01a_wl",
+"xs_prop_arena_flipper_xl_01a_wl",
+"xs_prop_trophy_flipper_01a"
+}
+
+local AntiCrashCam <const> = menu.ref_by_path("Game>Camera>Anti-Crash Camera", 38)
+local function RequestModel(Hash, timeout)
+    STREAMING.REQUEST_MODEL(Hash)
+    local time = util.current_time_millis() + (timeout or 1000)
+    while time > util.current_time_millis() and not STREAMING.HAS_MODEL_LOADED(Hash) do
+        util.yield()
+    end
+    return STREAMING.HAS_MODEL_LOADED(Hash)
+end
+local function RequestControl(Entity, timeout)
+    local time = util.current_time_millis() + (timeout or 1000)
+    while time > util.current_time_millis() and not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(Entity) do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(Entity)
+        util.yield()
+    end
+    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(Entity)
+end
+local function ClearEntities(list)
+    for _, entity in pairs(list) do
+        if ENTITY.DOES_ENTITY_EXIST(entity) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
+            RequestControl(entity)
+            entities.delete_by_handle(entity)
+        end
+    end
+end
+local function CreateObject(Hash, Pos, static)
+    RequestModel(Hash)
+    local Object = entities.create_object(Hash, Pos)
+    ENTITY.FREEZE_ENTITY_POSITION(Object, (static or false))
+    return Object
+end
+
+
+local objectc = menu.list(crash, "Object Crashes", {}, "")
+
+local amount = 200
+local delay = 100
+menu.slider(objectc, "Spawn Amount", {}, "", 0, 2500, amount, 50, function(val)
+    amount = val
+end)
+
+menu.slider(objectc, "Spawn Delay", {}, "", 0, 500, delay, 10, function(val)
+    delay = val
+end)
+
+menu.list_select(objectc, "Object Model", {}, "", object_names, 1, function(val)
+    selectedobject = all_objects[val]
+end)
+
+menu.toggle_loop(objectc, "Send Objects", {}, "", function()
+    
+    local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
+    local myped = PLAYER.PLAYER_PED_ID()
+    local mypos = ENTITY.GET_ENTITY_COORDS(myped, true)
+    local objects = {}
+    for i = 1, amount do
+        if not players.exists(pid) then
+            break
+        end
+        ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
+        ppos.x = ppos.x + math.random(-1, 1)
+        ppos.y = ppos.y + math.random(-1, 1)
+        objects[#objects+1] = CreateObject(selectedobject, ppos)
+        FIRE.ADD_EXPLOSION(ppos.x, ppos.y, ppos.z, 0, 1.0, false, true, 0.0, false)
+        util.yield(delay)
+    end
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(selectedobject)
+    if players.exists(pid) then
+        util.yield(2500)
+    end
+    ClearEntities(objects)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(myped, mypos.x, mypos.y, mypos.z, false, false, false)
+    util.yield(50)
+    local allobjs = entities.get_all_objects_as_handles()
+    for i, object in ipairs(allobjs) do
+        if ENTITY.GET_ENTITY_MODEL(object) == 3026082634 or ENTITY.GET_ENTITY_MODEL(object) == selectedobject then
+            entities.delete_by_handle(object)
+        end
+    end
+    util.yield(50)
+    
+    util.toast("[Object Crash] Finished.")
+end)
+
+local addictcrash = menu.list(lobbycrash, "Addict Fuck", {}, "")
+
+
+menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
+    if pid ~= players.user() then
+    menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2699.9976)
+    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
+    util.yield(100)
+    menu.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
+    util.yield(100)
+    menu.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
+    util.yield(1500)
+    menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
+    util.yield(1500)
+    menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(1500)
+    menu.trigger_commands("explode" .. players.get_name(pid))
+    util.yield(1500)
+    menu.trigger_commands("explodeloop" .. players.get_name(pid))
+    util.yield(1500)
+    menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
+    util.yield(1500)
+    menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
+    util.yield(1500)
+    menu.trigger_commands("stopall".. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    util.toast("Addict Fuck Sent to " .. players.get_name(pid))
+    util.log("Addict Fuck Sent to " .. players.get_name(pid))
+    end
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
+
+menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on anticam for you, Warning! This is OP...", function()
+    menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
+    util.yield(100)
+    menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop1" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop2" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop3" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop4" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop5" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("badnet" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("vehcrash" .. players.get_name(pid))
+    util.yield(100)
+    util.toast("Wait For TP Loop to finish or restart the script...")
+    menu.trigger_commands("anticrashcamera")
+    util.yield(100)
+    menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop1" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop2" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop3" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop4" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("craftloop5" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("badnet" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+    util.yield(100)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
+    util.yield(100)
+end)
+
+menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
+    if on_toggle then
+        menu.trigger_commands("anticrashcamera")
+        util.yield(200)
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
+        util.yield(200)
+        menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop2" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop3" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop4" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop5" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("badnet" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("vehcrash" .. players.get_name(pid))
+        util.yield(200)
+    else
+        util.toast("Wait For TP Loop to finish or restart the script...")
+        menu.trigger_commands("anticrashcamera")
+        util.yield(200)
+        menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop2" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop3" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop4" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("craftloop5" .. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("badnet" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+        util.yield(200)
+        menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+        util.yield(200)
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
+        util.yield(200)
+        end
+    end)
+
+local chunguscrashes = menu.list(lobbycrash, "Big Chungus Crashes", {}, "")
+
+menu.action(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+        local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+        local mdl = util.joaat("A_C_Cat_01")
+        local mdl2 = util.joaat("U_M_Y_Zombie_01")
+        local mdl3 = util.joaat("A_F_M_ProlHost_01")
+        local mdl4 = util.joaat("A_M_M_SouCent_01")
+        local veh_mdl = util.joaat("insurgent2")
+        local veh_mdl2 = util.joaat("brawler")
+        util.request_model(veh_mdl)
+        util.request_model(veh_mdl2)
+        util.request_model(mdl)
+        util.request_model(mdl2)
+        util.request_model(mdl3)
+        util.request_model(mdl4)
+        for i = 1, 250 do
+            local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
+            local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
+            local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
+            local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
+            local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
+            local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
+            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+            util.yield(100)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
+            
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
+    
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
+    
+            ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
+            PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
+            ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
+            ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
+        entities.delete_by_handle(mdl)
+        entities.delete_by_handle(mdl2)
+        entities.delete_by_handle(mdl3)
+        entities.delete_by_handle(mdl4)
+        entities.delete_by_handle(veh_mdl)
+        entities.delete_by_handle(veh_mdl2)
+        util.yield(1000)
+    end)
+
+menu.toggle(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+if on_toggle then
+    menu.trigger_commands("tploopon" .. players.get_name(pid))
+    menu.trigger_commands("anticrashcamera On")
+    menu.trigger_commands("invisibility On")
+    menu.trigger_commands("levitate On")
+    menu.trigger_commands("potatomode On")
+    menu.trigger_commands("nosky On")
+    menu.trigger_commands("reducedcollision On")
+    menu.trigger_commands("nocollision On")
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+    local mdl = util.joaat("A_C_Cat_01")
+    local mdl2 = util.joaat("U_M_Y_Zombie_01")
+    local mdl3 = util.joaat("A_F_M_ProlHost_01")
+    local mdl4 = util.joaat("A_M_M_SouCent_01")
+    local veh_mdl = util.joaat("insurgent2")
+    local veh_mdl2 = util.joaat("brawler")
+    util.request_model(veh_mdl)
+    util.request_model(veh_mdl2)
+    util.request_model(mdl)
+    util.request_model(mdl2)
+    util.request_model(mdl3)
+    util.request_model(mdl4)
+    for i = 1, 250 do
+        local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
+        local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
+        local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
+        local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
+        local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
+        local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
+        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+        util.yield(100)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
+        
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
+
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
+
+        ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
+        PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
+        ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
+        ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
+    end
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
+    entities.delete_by_handle(mdl)
+    entities.delete_by_handle(mdl2)
+    entities.delete_by_handle(mdl3)
+    entities.delete_by_handle(mdl4)
+    entities.delete_by_handle(veh_mdl)
+    entities.delete_by_handle(veh_mdl2)
+    util.yield(1000)
+else
+    menu.trigger_commands("tploopon" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("anticrashcamera Off")
+    menu.trigger_commands("tpmazehelipad")
+    menu.trigger_commands("invisibility Off")
+    menu.trigger_commands("levitate Off")
+    menu.trigger_commands("potatomode Off")
+    menu.trigger_commands("nosky Off")
+    menu.trigger_commands("reducedcollision Off")
+    menu.trigger_commands("nocollision Off")
+    end
+end)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+local keramicrash = menu.list(lobbycrash, "Kerami Crashes", {}, "")
+
+menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami script.", function(on_toggle)
+    local hashes = {1492612435, 3517794615, 3889340782, 3253274834}
+    local vehicles = {}
+    for i = 1, 4 do
+        util.create_thread(function()
+            request_model(hashes[i])
+            local pcoords = getEntityCoords(getPlayerPed(pid))
+            local veh =  VEHICLE.CREATE_VEHICLE(hashes[i], pcoords.x, pcoords.y, pcoords.z, math.random(0, 360), true, true, false)
+            for a = 1, 20 do NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh) end
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+            for j = 0, 49 do
+                local mod = VEHICLE.GET_NUM_VEHICLE_MODS(veh, j) - 1 
+                VEHICLE.SET_VEHICLE_MOD(veh, j, mod, true)
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod, true)
+            end
+            for j = 0, 20 do
+                if VEHICLE.DOES_EXTRA_EXIST(veh, j) then VEHICLE.SET_VEHICLE_EXTRA(veh, j, true) end
+            end
+            VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+            VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+            VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(veh, 1)
+            VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(veh, " ")
+            for ai = 1, 50 do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                pcoords = getEntityCoords(getPlayerPed(pid))
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(veh, pcoords.x, pcoords.y, pcoords.z, false, false, false)
+                util.yield()
+            end
+            vehicles[#vehicles+1] = veh
+        end)
+    end
+    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    util.yield(100)
+    for _, v in pairs(vehicles) do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(v)
+        entities.delete_by_handle(v)
+		end
+	end)
+
+    menu.toggle_loop(keramicrash, "Bad Net Crash V2", {"badnetv2"}, "", function(on_toggle)
+        local hashes = {970385471, 2336777441, 184361638, 1030400667, 920453016, 240201337, 642617954, 586013744, 868868440, 1550581940, 3334677549, 3186376089}
+        local vehicles = {}
+        for i = 1, 4 do
+            util.create_thread(function()
+                request_model(hashes[i])
+                local pcoords = getEntityCoords(getPlayerPed(pid))
+                local veh =  VEHICLE.CREATE_VEHICLE(hashes[i], pcoords.x, pcoords.y, pcoords.z, math.random(0, 360), true, true, false)
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(hashes[i], veh, pcoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+                for a = 1, 20 do NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh) end
+                VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+                for j = 0, 49 do
+                    local mod = VEHICLE.GET_NUM_VEHICLE_MODS(veh, j) - 1 
+                    VEHICLE.SET_VEHICLE_MOD(veh, j, mod, true)
+                    VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod, true)
+                end
+                for j = 0, 20 do
+                    if VEHICLE.DOES_EXTRA_EXIST(veh, j) then VEHICLE.SET_VEHICLE_EXTRA(veh, j, true) end
+                end
+                VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+                VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+                VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(veh, 1)
+                VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(veh, " ")
+                for ai = 1, 50 do
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                    pcoords = getEntityCoords(getPlayerPed(pid))
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(veh, pcoords.x, pcoords.y, pcoords.z, false, false, false)
+    
+                    util.yield()
+                end
+                vehicles[#vehicles+1] = veh
+            end)
+        end
+        util.yield(100)
+        for _, v in pairs(vehicles) do
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(v)
+            entities.delete_by_handle(v)
+            end
+        end)
+
+menu.toggle_loop(keramicrash, "Rope Crash Lobby", {"ropecrash"}, "", function(on_loop)
+    notification("Rope Crash Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    PHYSICS.ROPE_LOAD_TEXTURES()
+    local hashes = {2132890591, 2727244247}
+    local pc = getEntityCoords(getPlayerPed(pid))
+    local veh = VEHICLE.CREATE_VEHICLE(hashes[i], pc.x + 5, pc.y, pc.z, 0, true, true, false)
+    local ped = PED.CREATE_PED(26, hashes[2], pc.x, pc.y, pc.z + 1, 0, true, false)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+    ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
+    ENTITY.SET_ENTITY_VISIBLE(veh, false, 0)
+    local rope = PHYSICS.ADD_ROPE(pc.x + 5, pc.y, pc.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1, true, 0)
+    local vehc = getEntityCoords(veh); local pedc = getEntityCoords(ped)
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(rope, veh, ped, vehc.x, vehc.y, vehc.z, pedc.x, pedc.y, pedc.z, 2, 0, 0, "Center", "Center")
+    util.yield(1000)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    entities.delete_by_handle(veh); entities.delete_by_handle(ped)
+    PHYSICS.DELETE_CHILD_ROPE(rope)
+    PHYSICS.ROPE_UNLOAD_TEXTURES()
+    end)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local bigyachtycrash = menu.list(crash, "Big Yatchy Crashes", {}, "")
+
+menu.action(bigyachtycrash, "Big Yatchy V1", {"bigyachtyv1"}, "Causes Crash Event (A1:EA0FF6AD) by sending a prop yacht.", function()
+    local user = PLAYER.GET_PLAYER_PED(players.user())
+    local model = util.joaat("h4_yacht_refproxy")
+    local pos = players.get_position(pid)
+    local oldPos = players.get_position(players.user())
+    BlockSyncs(pid, function()
+        util.yield(100)
+        ENTITY.SET_ENTITY_VISIBLE(user, false)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(user, pos.x, pos.y, pos.z, false, false, false)
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user(), model)
+        PED.SET_PED_COMPONENT_VARIATION(user, 5, 8, 0, 0)
+        util.yield(500)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user())
+        util.yield(2500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(user)
+        for i = 1, 5 do
+            util.spoof_script("freemode", SYSTEM.WAIT)
+        end
+        ENTITY.SET_ENTITY_HEALTH(user, 0)
+        NETWORK.NETWORK_RESURRECT_LOCAL_PLAYER(oldPos.x, oldPos.y, oldPos.z, 0, false, false, 0)
+        ENTITY.SET_ENTITY_VISIBLE(user, true)
+    end)
+end)
+
+menu.action(bigyachtycrash, "Big Yatchy V2", {"bigyachtyv2"}, "Causes Crash Event (A1:E8958704) by sending a prop yacht001.", function()
+    local user = PLAYER.GET_PLAYER_PED(players.user())
+    local model = util.joaat("h4_yacht_refproxy001")
+    local pos = players.get_position(pid)
+    local oldPos = players.get_position(players.user())
+    BlockSyncs(pid, function()
+        util.yield(100)
+        ENTITY.SET_ENTITY_VISIBLE(user, false)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(user, pos.x, pos.y, pos.z, false, false, false)
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user(), model)
+        PED.SET_PED_COMPONENT_VARIATION(user, 5, 8, 0, 0)
+        util.yield(500)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user())
+        util.yield(2500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(user)
+        for i = 1, 5 do
+            util.spoof_script("freemode", SYSTEM.WAIT)
+        end
+        ENTITY.SET_ENTITY_HEALTH(user, 0)
+        NETWORK.NETWORK_RESURRECT_LOCAL_PLAYER(oldPos.x, oldPos.y, oldPos.z, 0, false, false, 0)
+        ENTITY.SET_ENTITY_VISIBLE(user, true)
+    end)
+end)
+
+menu.action(bigyachtycrash, "Big Yatchy V3", {"bigyachtyv3"}, "Causes Crash Event (A1:1A7AEACE) by sending a prop yacht002.", function()
+    local user = PLAYER.GET_PLAYER_PED(players.user())
+    local model = util.joaat("h4_yacht_refproxy002")
+    local pos = players.get_position(pid)
+    local oldPos = players.get_position(players.user())
+    BlockSyncs(pid, function()
+        util.yield(100)
+        ENTITY.SET_ENTITY_VISIBLE(user, false)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(user, pos.x, pos.y, pos.z, false, false, false)
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user(), model)
+        PED.SET_PED_COMPONENT_VARIATION(user, 5, 8, 0, 0)
+        util.yield(500)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user())
+        util.yield(2500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(user)
+        for i = 1, 5 do
+            util.spoof_script("freemode", SYSTEM.WAIT)
+        end
+        ENTITY.SET_ENTITY_HEALTH(user, 0)
+        NETWORK.NETWORK_RESURRECT_LOCAL_PLAYER(oldPos.x, oldPos.y, oldPos.z, 0, false, false, 0)
+        ENTITY.SET_ENTITY_VISIBLE(user, true)
+    end)
+end)
+
+menu.action(bigyachtycrash, "Big Yatchy V4", {"bigyachtyv4"}, "Causes Crash Event (A1:408D3AA0) by sending a prop apayacht.", function()
+    local user = PLAYER.GET_PLAYER_PED(players.user())
+    local model = util.joaat("h4_mp_apa_yacht")
+    local pos = players.get_position(pid)
+    local oldPos = players.get_position(players.user())
+    BlockSyncs(pid, function()
+        util.yield(100)
+        ENTITY.SET_ENTITY_VISIBLE(user, false)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(user, pos.x, pos.y, pos.z, false, false, false)
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user(), model)
+        PED.SET_PED_COMPONENT_VARIATION(user, 5, 8, 0, 0)
+        util.yield(500)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user())
+        util.yield(2500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(user)
+        for i = 1, 5 do
+            util.spoof_script("freemode", SYSTEM.WAIT)
+        end
+        ENTITY.SET_ENTITY_HEALTH(user, 0)
+        NETWORK.NETWORK_RESURRECT_LOCAL_PLAYER(oldPos.x, oldPos.y, oldPos.z, 0, false, false, 0)
+        ENTITY.SET_ENTITY_VISIBLE(user, true)
+    end)
+end)
+
+menu.action(bigyachtycrash, "Big Yatchy V5", {"bigyachtyv5"}, "Causes Crash Event (A1:B36122B5) by sending a prop yachtwin.", function()
+    local user = PLAYER.GET_PLAYER_PED(players.user())
+    local model = util.joaat("h4_mp_apa_yacht_win")
+    local pos = players.get_position(pid)
+    local oldPos = players.get_position(players.user())
+    BlockSyncs(pid, function()
+        util.yield(100)
+        ENTITY.SET_ENTITY_VISIBLE(user, false)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(user, pos.x, pos.y, pos.z, false, false, false)
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user(), model)
+        PED.SET_PED_COMPONENT_VARIATION(user, 5, 8, 0, 0)
+        util.yield(500)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(players.user())
+        util.yield(2500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(user)
+        for i = 1, 5 do
+            util.spoof_script("freemode", SYSTEM.WAIT)
+        end
+        ENTITY.SET_ENTITY_HEALTH(user, 0)
+        NETWORK.NETWORK_RESURRECT_LOCAL_PLAYER(oldPos.x, oldPos.y, oldPos.z, 0, false, false, 0)
+        ENTITY.SET_ENTITY_VISIBLE(user, true)
+    end)
+end)
+
+local weedcrash = menu.list(crash, "Weed Crash", {}, "")
+
+    menu.action(weedcrash, "Weed Pot Crash", {"weedcrash"}, "", function()
+        local cord = getEntityCoords(getPlayerPed(pid))
+        local a1 = entities.create_object(-930879665, cord)
+        local a2 = entities.create_object(3613262246, cord)
+        local b1 = entities.create_object(452618762, cord)
+        local b2 = entities.create_object(3613262246, cord)
+        for i = 1, 10 do
+            util.request_model(-930879665)
+            util.yield(10)
+            util.request_model(3613262246)
+            util.yield(10)
+            util.request_model(452618762)
+            util.yield(300)
+            entities.delete_by_handle(a1)
+            entities.delete_by_handle(a2)
+            entities.delete_by_handle(b1)
+            entities.delete_by_handle(b2)
+            util.request_model(452618762)
+            util.yield(10)
+            util.request_model(3613262246)
+            util.yield(10)
+            util.request_model(-930879665)
+            util.yield(10)
+        end
+        util.toast("Finished.")
+    end)
+
+    menu.toggle_loop(weedcrash, "Weed Pot Crash", {"toggleweedcrash"}, "", function(on_toggle)
+        notification("Weed Pot Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        local cord = getEntityCoords(getPlayerPed(pid))
+        local a1 = entities.create_object(-930879665, cord)
+        local a2 = entities.create_object(3613262246, cord)
+        local b1 = entities.create_object(452618762, cord)
+        local b2 = entities.create_object(3613262246, cord)
+        for i = 1, 10 do
+            util.request_model(-930879665)
+            util.yield(10)
+            util.request_model(3613262246)
+            util.yield(10)
+            util.request_model(452618762)
+            util.yield(300)
+            entities.delete_by_handle(a1)
+            entities.delete_by_handle(a2)
+            entities.delete_by_handle(b1)
+            entities.delete_by_handle(b2)
+            util.request_model(452618762)
+            util.yield(10)
+            util.request_model(3613262246)
+            util.yield(10)
+            util.request_model(-930879665)
+            util.yield(10)
+            return
+        end
+    end)
+
+    local mathcrash = menu.list(lobbycrash, "Math Crash", {}, "")
+
+menu.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of rope crash.", function()
+    notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+    local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+    pos.x = pos.x+5
+    ppos.z = ppos.z+1
+    Utillitruck3 = entities.create_vehicle(2132890591, pos, 0)
+    Utillitruck3_pos = ENTITY.GET_ENTITY_COORDS(Utillitruck3)
+    kur = entities.create_ped(26, 2727244247, ppos, 0)
+    kur_pos = ENTITY.GET_ENTITY_COORDS(kur)
+
+    ENTITY.SET_ENTITY_INVINCIBLE(kur, true)
+    newRope = PHYSICS.ADD_ROPE(pos.x, pos.y, pos.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1.0, true, "Center")
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(newRope, Utillitruck3, kur, Utillitruck3_pos.x, Utillitruck3_pos.y, Utillitruck3_pos.z, kur_pos.x, kur_pos.y, kur_pos.z, 2, 0, 0, "Center", "Center")
+    util.yield(100)
+    ENTITY.SET_ENTITY_INVINCIBLE(kur, true)
+    newRope = PHYSICS.ADD_ROPE(pos.x, pos.y, pos.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1.0, true, "Center")
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(newRope, Utillitruck3, kur, Utillitruck3_pos.x, Utillitruck3_pos.y, Utillitruck3_pos.z, kur_pos.x, kur_pos.y, kur_pos.z, 2, 0, 0, "Center", "Center") 
+    util.yield(100)
+
+    PHYSICS.ROPE_LOAD_TEXTURES()
+    local hashes = {2132890591, 2727244247}
+    local pc = getEntityCoords(getPlayerPed(pid))
+    local veh = VEHICLE.CREATE_VEHICLE(hashes[i], pc.x + 5, pc.y, pc.z, 0, true, true, false)
+    local ped = PED.CREATE_PED(26, hashes[2], pc.x, pc.y, pc.z + 1, 0, true, false)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+    ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
+    ENTITY.SET_ENTITY_VISIBLE(veh, false, 0)
+    local rope = PHYSICS.ADD_ROPE(pc.x + 5, pc.y, pc.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1, true, 0)
+    local vehc = getEntityCoords(veh); local pedc = getEntityCoords(ped)
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(rope, veh, ped, vehc.x, vehc.y, vehc.z, pedc.x, pedc.y, pedc.z, 2, 0, 0, "Center", "Center")
+    util.yield(1000)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    PHYSICS.DELETE_CHILD_ROPE(rope)
+    PHYSICS.ROPE_UNLOAD_TEXTURES()
+end)
+
+menu.toggle_loop(mathcrash, "Math Crash x3 Lobby", {"togglemath"}, "One of the versions of rope crash.", function(on_toggle)
+    notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+    local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
+    pos.x = pos.x+5
+    ppos.z = ppos.z+1
+    Utillitruck3 = entities.create_vehicle(2132890591, pos, 0)
+    Utillitruck3_pos = ENTITY.GET_ENTITY_COORDS(Utillitruck3)
+    kur = entities.create_ped(26, 2727244247, ppos, 0)
+    kur_pos = ENTITY.GET_ENTITY_COORDS(kur)
+
+    ENTITY.SET_ENTITY_INVINCIBLE(kur, true)
+    newRope = PHYSICS.ADD_ROPE(pos.x, pos.y, pos.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1.0, true, "Center")
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(newRope, Utillitruck3, kur, Utillitruck3_pos.x, Utillitruck3_pos.y, Utillitruck3_pos.z, kur_pos.x, kur_pos.y, kur_pos.z, 2, 0, 0, "Center", "Center")
+    util.yield(100)
+    ENTITY.SET_ENTITY_INVINCIBLE(kur, true)
+    newRope = PHYSICS.ADD_ROPE(pos.x, pos.y, pos.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1.0, true, "Center")
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(newRope, Utillitruck3, kur, Utillitruck3_pos.x, Utillitruck3_pos.y, Utillitruck3_pos.z, kur_pos.x, kur_pos.y, kur_pos.z, 2, 0, 0, "Center", "Center") 
+    util.yield(100)
+
+    PHYSICS.ROPE_LOAD_TEXTURES()
+    local hashes = {2132890591, 2727244247}
+    local pc = getEntityCoords(getPlayerPed(pid))
+    local veh = VEHICLE.CREATE_VEHICLE(hashes[i], pc.x + 5, pc.y, pc.z, 0, true, true, false)
+    local ped = PED.CREATE_PED(26, hashes[2], pc.x, pc.y, pc.z + 1, 0, true, false)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+    ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
+    ENTITY.SET_ENTITY_VISIBLE(veh, false, 0)
+    local rope = PHYSICS.ADD_ROPE(pc.x + 5, pc.y, pc.z, 0, 0, 0, 1, 1, 0.0000000000000000000000000000000000001, 1, 1, true, true, true, 1, true, 0)
+    local vehc = getEntityCoords(veh); local pedc = getEntityCoords(ped)
+    PHYSICS.ATTACH_ENTITIES_TO_ROPE(rope, veh, ped, vehc.x, vehc.y, vehc.z, pedc.x, pedc.y, pedc.z, 2, 0, 0, "Center", "Center")
+    util.yield(1000)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+    PHYSICS.DELETE_CHILD_ROPE(rope)
+    PHYSICS.ROPE_UNLOAD_TEXTURES()
+end)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local clothescrash = menu.list(lobbycrash, "Component Crash", {}, "")
+
+menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
+        if pid ~= players.user() then
+            util.toast("Wait 20 Seconds...")
+            local math_random = math.random
+            local joaat = util.joaat
+            util.yield(100)
+            local pedhash = util.joaat("P_franklin_02")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds1 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds1[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_lazlow")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds2 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 3, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds2[i])
+                util.yield(5)
+            end
+            util.yield(5)
+            local pedhash = util.joaat("cs_taocheng")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 2, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds3[i])
+                util.yield(5)
+            end
+            util.yield(5)
+            local pedhash = util.joaat("cs_solomon")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds4 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds4[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds4[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds4[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds4[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds4[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds4[i])
+                util.yield(5)
+            end
+            util.yield(5)
+            local pedhash = util.joaat("cs_stevehains")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds5 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds5[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds5[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds5[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds5[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds5[i], 3, 1, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds5[i])
+                util.yield(5)
+            end
+            
+            local pedhash = util.joaat("cs_taostranslator")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds6 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds6[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds6[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds6[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds6[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds6[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds6[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_debra")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds7 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds7[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds7[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds7[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds7[i], 4, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds7[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_devin")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds8 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds8[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds8[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds8[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds8[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds8[i], 3, 1, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds8[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_guadalope")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds9 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds9[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds9[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds9[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds9[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds9[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds9[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_gurk")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds10 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds10[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds10[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds10[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds10[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds10[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds10[i])
+                util.yield(5)
+            end
+            
+            local pedhash = util.joaat("cs_jimmydisanto")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds11 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds11[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds11[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds11[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds11[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds11[i], 3, 2, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds11[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_josh")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds12 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds12[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds12[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds12[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds12[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds12[i], 3, 0, 1, 0)
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds12[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_lamardavis")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds13 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds13[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds13[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds13[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds13[i], true)
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], false)
+                util.yield(5)
+            end
+            for i = 1, ped_amount do
+                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], true)
+                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds13[i], 3, 2, 3, 0 )
+                util.yield()
+            end
+            util.yield(500)
+            for i = 1, ped_amount do
+                entities.delete(SpawnedPeds13[i])
+                util.yield(5)
+            end
+            local pedhash = util.joaat("cs_lestercrest")
+            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                STREAMING.REQUEST_MODEL(pedhash)
+                util.yield(10)
+            end
+            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+            SpawnedPeds14 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+                SpawnedPeds14[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds14[i], true, true)
+                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds14[i], "Walk_Facility", 0, false)
+                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds14[i], true)
+            
