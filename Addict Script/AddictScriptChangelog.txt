@@ -1,1 +1,2 @@
-- added Github List Submenu => view changelog & moved update in it
+- added Owned Snipe in - Players>Player NAMER [MS]>Griefing>Owned snipe
+- added Anon Snipe in - Players>Player NAMER [MS]>Griefing>Anon snipe
