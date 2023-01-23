@@ -14,20 +14,6 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
-
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
-    response=true;
-    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
-        async_http.dispatch()
-    end)
-end,
-function()
-    response=true 
-end)
-async_http.dispatch()
-repeat util.yield()
-until response 
 
 local local_menu_version = 4.7
 
@@ -60,6 +46,21 @@ if not dev_mode then
     repeat util.yield()
     until response 
 end
+
+local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
+
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
+    response=true;
+    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
+        async_http.dispatch()
+    end)
+end,
+function()
+    response=true 
+end)
+async_http.dispatch()
+repeat util.yield()
+until response 
 
 util.toast("Welcome To Addicted! v" .. local_menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
