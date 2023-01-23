@@ -1,2 +1,1 @@
-- added discord tags to credits
-- added open github repo
+- added array kick
