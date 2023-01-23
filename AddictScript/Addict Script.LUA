@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 4.8
+local local_menu_version = 4.9
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
@@ -4426,13 +4426,12 @@ else
     end
 end)
 
-menu.toggle_loop(protex, "Popularity Loop", {"popularityloop"}, "", function()
+local popularity_loop_command_ref = menu.ref_by_path("Online>Quick Progress>Set Nightclub Popularity", 38)
+
+menu.toggle_loop(protex, "Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100% every second.",function()
     menu.trigger_command(popularity_loop_command_ref, 100)
-    util.toast("Popularity set")
     util.yield(1000)
 end)
-
-
 
 local anti_mugger = menu.list(protex, "Block Muggers")
 
