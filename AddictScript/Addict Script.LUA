@@ -36,7 +36,7 @@ if not dev_mode then
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+            menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
