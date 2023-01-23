@@ -8,9 +8,6 @@ WE HAVE TAKEN OVER░ \☻/\☻/
 ]]
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 util.keep_running()
-
-menu_version = 4.2
-
 util.require_natives("natives-1663599433-uno")
 util.require_natives("natives-1640181023")
 util.require_natives("natives-1651208000")
@@ -19,11 +16,26 @@ guidedMissile = require("guided_missile")
 
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
+    response=true;
+    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
+        async_http.dispatch()
+    end)
+end,
+function()
+    response=true 
+end)
+async_http.dispatch()
+repeat util.yield()
+until response 
+
+local local_menu_version = 4.2
+
 if not dev_mode then
-    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.txt",function(b)
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)
         response=true;
-        if menu_version~=currentVer then 
+        if local_menu_version~=currentVer then 
             menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
@@ -49,19 +61,7 @@ if not dev_mode then
     until response 
 end
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
-    response=true;
-    menu.action(github, "Changelog", {"addictchangelog"}, b, function() end)
-    menu.hyperlink(github, "Open Repo", "https://github.com/Addict0919/Addict-Script")
-end,
-function()
-    response=true 
-end)
-async_http.dispatch()
-repeat util.yield()
-until response
-
-util.toast("Welcome To Addicted! v" .. menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addicted! v" .. local_menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -86,26 +86,26 @@ local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
-menu.action(Credits, "UnseemlyV3#1120", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-menu.action(Credits, "Not_DerPaul#6118", {}, "Great coder helped with security and testing :).", function() end)
-menu.action(Credits, ".Crystal#8066", {}, "Very smart coder helped with mods I gave up on.", function() end)
-menu.action(Credits, "ChaosFlixz#1537", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
-menu.action(Credits, "D̷e̷a̷t̷h̷B̷r̷i̷n̷g̷e̷r#7739", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
-menu.action(Credits, "Wigger#2525", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
+menu.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
+menu.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
+menu.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
+menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
+menu.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
+menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
-menu.action(Credits, "Nosa#6485", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-menu.action(Credits, "0xDEADBEEF#0001", {}, "Helped with tons of suggestions and testing :)", function() end)
+menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
+menu.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions and testing :)", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
 menu.action(Credits, "Mr's Candy <3", {}, "(Candy's Girlfriend) Great morel support kept me smiling, happy and aloud me to code without a bother <3.", function() end)
-menu.action(Credits, "Yumin3k#3333", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
+menu.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
 menu.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
 menu.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
 menu.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
-menu.action(Credits, "masi#4655", {}, "Known long time :)", function() end)
+menu.action(Credits, "Masi", {}, "Known long time :)", function() end)
 menu.action(Credits, "Jonash", {}, "Provided great suggestions along the way :).", function() end)
-menu.action(Credits, "UnclePK#2925", {}, "Nice guy always there to help <3.", function() end)
+menu.action(Credits, "Uncle", {}, "Nice guy always there to help <3.", function() end)
 menu.action(Credits, "Presidente", {}, "Fun guy to play with known a long time :).", function() end)
 menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking stoner <3.", function() end)
 menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
@@ -10969,18 +10969,13 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 
         menu.action(kick, "Desync Kick", {"desynckick"}, "Desyncs the player from the session", function()
         notification("Desycn kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            util.trigger_script_event(1 << pid, {0x63D4BFB1, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
-            end, nil, nil, COMMANDPERM_AGGRESSIVE)
+        util.trigger_script_event(1 << pid, {0x63D4BFB1, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
+        end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
         menu.action(kick, "Storymode Kick", {"storymode"}, "Sends them to storymode", function()
         notification("Storymode kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            util.trigger_script_event(1 << pid, {111242367, pid, memory.script_global(2689235 + 1 + (pid * 453) + 318 + 7)})
-            end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-            
-        menu.toggle_loop(kick, "Invalid Figure Kick", {"figurekick"}, "Drops invalid figures on player causing them to be kicked, also gives them rp and a lot of notifications with errors.", function(on_toggle)
-            util.trigger_script_event(1 << pid, {0xB9BA4D30, pid, 0x4, -1, 1, 1, 1})
-        end)
+        util.trigger_script_event(1 << pid, {111242367, pid, memory.script_global(2689235 + 1 + (pid * 453) + 318 + 7)})
+        end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
             menu.toggle_loop(kick, "Invalid Apartment Kick V1", {"invkick1"}, "Invalid Apartment Invite.", function(on_toggle)
                local int_min = -2147483647
@@ -11018,33 +11013,24 @@ function spawn_buzzard(pid, gunner_weapon, collision)
                    util.yield(300)
                end
             end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
         
-        menu.action(kick, "SE kick v1", {"kickv1"}, "", function()
+        menu.toggle_loop(kick, "Array Kick", {"arraykick"}, "", function(on_toggle)
             local int_min = -2147483647
             local int_max = 2147483647
-                for i = 1, 15 do
-                    util.trigger_script_event(1 << pid, {931221602, 24, 5, 1136816377, -1030212813, 1116101738, 1136772026, -1030205106, 1116101738, 1136852936, -1030108099, 1116101738, 1136724220, -1030340490, 1116101738, 1136907662, -1030087652, 1116101738, 5, 1126325289, 1126325289, 1126325289, 1126325289, 1126325289, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 471761608, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
-                    math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-                    math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                    util.trigger_script_event(1 << pid, {931221602, 24, 5, 1136816377, -1030212813, 1116101738, 1136772026, -1030205106, 1116101738, 1136852936, -1030108099, 1116101738, 1136724220, -1030340490, 1116101738, 1136907662, -1030087652, 1116101738, 5, 1126325289, 1126325289, 1126325289, 1126325289, 1126325289, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 471761608, 0, 0, 0})
-                end
-                util.yield()
-                for i = 1, 15 do
-                    util.trigger_script_event(1 << pid, {931221602, 24, 5, 1136816377, -1030212813, 1116101738, 1136772026, -1030205106, 1116101738, 1136852936, -1030108099, 1116101738, 1136724220, -1030340490, 1116101738, 1136907662, -1030087652, 1116101738, 5, 1126325289, 1126325289, 1126325289, 1126325289, 1126325289, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 471761608, 0, 0, 0, pid, math.random(int_min, int_max)})
-                    util.trigger_script_event(1 << pid, {931221602, 24, 5, 1136816377, -1030212813, 1116101738, 1136772026, -1030205106, 1116101738, 1136852936, -1030108099, 1116101738, 1136724220, -1030340490, 1116101738, 1136907662, -1030087652, 1116101738, 5, 1126325289, 1126325289, 1126325289, 1126325289, 1126325289, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 471761608, 0, 0, 0})
-                end
-
-        menu.trigger_commands("givesh" .. players.get_name(pid))
-            util.trigger_script_event(1 << pid, {931221602, 24, 5, 1136816377, -1030212813, 1116101738, 1136772026, -1030205106, 1116101738, 1136852936, -1030108099, 1116101738, 1136724220, -1030340490, 1116101738, 1136907662, -1030087652, 1116101738, 5, 1126325289, 1126325289, 1126325289, 1126325289, 1126325289, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 471761608, 0, 0, 0})
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-        menu.action(kick, "SE kick v2", {"kickv2"}, "", function()
-            util.trigger_script_event(1 << pid, {0xB9BA4D30, PlayerID, 0x4, -1, 1, 1, 1})
-    	end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-        menu.action(kick, "SE kick v3", {"kickv3"}, "", function()
-            util.trigger_script_event(1 << pid, {1368055548, pid, math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256), math.random(-12988, 2112408256)}) 
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {1279059857, math.random(int_min, int_max), math.random(int_min, int_max), 
+                math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+                math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {1279059857})
+            end
+            menu.trigger_commands("givesh" .. players.get_name(pid))
+            util.yield()
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {1279059857, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {1279059857})
+            end
+        end)
 
 
 
@@ -14723,263 +14709,263 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
                 entities.delete_by_handle(ped2)
                 util.yield(0)
-end
-    end)
-end)
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    end
+                end)
+            end)
+                ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local function BlockSyncs(pid, callback)
-for _, i in ipairs(players.list(false, true, true)) do
-    if i ~= pid then
-        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-        menu.trigger_command(outSync, "on")
-    end
-end
-util.yield(10)
-callback()
-for _, i in ipairs(players.list(false, true, true)) do
-    if i ~= pid then
-        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-        menu.trigger_command(outSync, "off")
-    end
-end
-end
-
-local fragcrash = menu.list(crash, "Fragment Crash", {}, "")
-
-menu.toggle_loop(fragcrash, "Fragment Crash V1", {"togglefragv1"}, "Skidded From 2take1", function(on_toggle)
-BlockSyncs(pid, function()
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        entities.delete_by_handle(object)
-        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-        util.yield(1000)
-        entities.delete_by_handle(object)
-    end)
-end)
-
-menu.toggle_loop(fragcrash, "Fragment Crash V2", {"togglefragv2"}, "", function(on_toggle)
-    local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
-    local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
-    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-    for i = 0, 100 do 
-        local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true);
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-    util.yield(10)
-    entities.delete_by_handle(Object_pizza2)
-    entities.delete_by_handle(Object_pizza2)
-    entities.delete_by_handle(Object_pizza2)
-    entities.delete_by_handle(Object_pizza2)
-    return
-end
-end)
-
-menu.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
-    notification("Fragment Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-if on_toggle then
-        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
-        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
-else
-        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
-        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
-        menu.trigger_commands("superc")
-    end
-
-end)
-
-
-local krustykrab = menu.list(crash, "Spatula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
-
-local peds = 5
-menu.slider(krustykrab, "Number Of Spatulas", {"nospat"}, "Sends Spatula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
-notification("Spatula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-    peds = amount
-end)
-
-local crash_ents = {}
-local crash_toggle = false
-menu.toggle(krustykrab, "Spatula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
-notification("Sending Spatula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-    crash_toggle = val
-    BlockSyncs(pid, function()
-        if val then
-            local number_of_peds = peds
-            local ped_mdl = util.joaat("ig_siemonyetarian")
-            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local ped_pos = players.get_position(pid)
-            ped_pos.z += 3
-            request_model(ped_mdl)
-            for i = 1, number_of_peds do
-                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
-                crash_ents[i] = ped
-                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
-                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
-                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
-                ENTITY.SET_ENTITY_VISIBLE(ped, false)
-            end
-            repeat
-                for k, ped in crash_ents do
-                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "PROP_HUMAN_BBQ", 0, false)
-                end
-                for k, v in entities.get_all_objects_as_pointers() do
-                    if entities.get_model_hash(v) == util.joaat("prop_fish_slice_01") then
-                        entities.delete_by_pointer(v)
+                local function BlockSyncs(pid, callback)
+                for _, i in ipairs(players.list(false, true, true)) do
+                    if i ~= pid then
+                        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
+                        menu.trigger_command(outSync, "on")
                     end
                 end
-                util.yield_once()
-                util.yield_once()
-            until not (crash_toggle and players.exists(pid))
-            crash_toggle = false
-            for k, obj in crash_ents do
-                entities.delete_by_handle(obj)
-            end
-            crash_ents = {}
-        else
-            for k, obj in crash_ents do
-                entities.delete_by_handle(obj)
-            end
-            crash_ents = {}
-        end
-    end)
-end)
+                util.yield(10)
+                callback()
+                for _, i in ipairs(players.list(false, true, true)) do
+                    if i ~= pid then
+                        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
+                        menu.trigger_command(outSync, "off")
+                    end
+                end
+                end
+
+                local fragcrash = menu.list(crash, "Fragment Crash", {}, "")
+
+                menu.toggle_loop(fragcrash, "Fragment Crash V1", {"togglefragv1"}, "Skidded From 2take1", function(on_toggle)
+                BlockSyncs(pid, function()
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        entities.delete_by_handle(object)
+                        local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                        util.yield(1000)
+                        entities.delete_by_handle(object)
+                    end)
+                end)
+
+                menu.toggle_loop(fragcrash, "Fragment Crash V2", {"togglefragv2"}, "", function(on_toggle)
+                    local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
+                    local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
+                    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+                        OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    for i = 0, 100 do 
+                        local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true);
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(Object_pizza2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                    util.yield(10)
+                    entities.delete_by_handle(Object_pizza2)
+                    entities.delete_by_handle(Object_pizza2)
+                    entities.delete_by_handle(Object_pizza2)
+                    entities.delete_by_handle(Object_pizza2)
+                    return
+                end
+                end)
+
+                menu.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
+                    notification("Fragment Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                if on_toggle then
+                        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
+                        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
+                else
+                        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
+                        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
+                        menu.trigger_commands("superc")
+                    end
+
+                end)
 
 
-local vehcrash = menu.list(crash, "Vehicle Crash", {}, "")
+        local krustykrab = menu.list(crash, "Spatula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
 
-    menu.action(vehcrash, "Vehicle Crash", {"vehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function()
-    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-    util.yield(1500)
-    local hash = util.joaat("baller")
-    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-        STREAMING.REQUEST_MODEL(hash)
-        while not STREAMING.HAS_MODEL_LOADED(hash) do
-            util.yield()
-        end
-        local Coords1 = PlayerCoords.y + 10
-        local Coords2 = PlayerCoords.y - 10
-        local veh1 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords1, PlayerCoords.z, 180, true, false, true)
-        local veh2 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords2, PlayerCoords.z, 0, true, false, true)
-        -- Do stuff with veh ...
-        ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
-        ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
-    end
-menu.trigger_commands("killveh" .. players.get_name(pid))
-menu.trigger_commands("poptires" .. players.get_name(pid))
-menu.trigger_commands("removedoors" .. players.get_name(pid))
-menu.trigger_commands("slingshot" .. players.get_name(pid))
-menu.trigger_commands("igniteveh" .. players.get_name(pid))
-menu.trigger_commands("vehkick" .. players.get_name(pid))
-menu.trigger_commands("novehs" .. players.get_name(pid))
-menu.trigger_commands("delveh" .. players.get_name(pid))
-menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
-    util.yield(100)
-menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+        local peds = 5
+        menu.slider(krustykrab, "Number Of Spatulas", {"nospat"}, "Sends Spatula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
+        notification("Spatula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            peds = amount
+        end)
+
+        local crash_ents = {}
+        local crash_toggle = false
+        menu.toggle(krustykrab, "Spatula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
+        notification("Sending Spatula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            crash_toggle = val
+            BlockSyncs(pid, function()
+                if val then
+                    local number_of_peds = peds
+                    local ped_mdl = util.joaat("ig_siemonyetarian")
+                    local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                    local ped_pos = players.get_position(pid)
+                    ped_pos.z += 3
+                    request_model(ped_mdl)
+                    for i = 1, number_of_peds do
+                        local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                        crash_ents[i] = ped
+                        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                        TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                        ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                        ENTITY.SET_ENTITY_VISIBLE(ped, false)
+                    end
+                    repeat
+                        for k, ped in crash_ents do
+                            TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(ped, "PROP_HUMAN_BBQ", 0, false)
+                        end
+                        for k, v in entities.get_all_objects_as_pointers() do
+                            if entities.get_model_hash(v) == util.joaat("prop_fish_slice_01") then
+                                entities.delete_by_pointer(v)
+                            end
+                        end
+                        util.yield_once()
+                        util.yield_once()
+                    until not (crash_toggle and players.exists(pid))
+                    crash_toggle = false
+                    for k, obj in crash_ents do
+                        entities.delete_by_handle(obj)
+                    end
+                    crash_ents = {}
+                else
+                    for k, obj in crash_ents do
+                        entities.delete_by_handle(obj)
+                    end
+                    crash_ents = {}
+                end
             end)
+        end)
 
 
-    menu.toggle_loop(vehcrash, "Vehicle Crash", {"togglevehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function(on_toggle)
-    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-    util.yield(1500)
-    local hash = util.joaat("baller")
-    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-        STREAMING.REQUEST_MODEL(hash)
-        while not STREAMING.HAS_MODEL_LOADED(hash) do
-            util.yield()
-        end
-        local Coords1 = PlayerCoords.y + 10
-        local Coords2 = PlayerCoords.y - 10
-        local veh1 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords1, PlayerCoords.z, 180, true, false, true)
-        local veh2 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords2, PlayerCoords.z, 0, true, false, true)
-        -- Do stuff with veh ...
-        ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
-        ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
-    end
-menu.trigger_commands("killveh" .. players.get_name(pid))
-menu.trigger_commands("poptires" .. players.get_name(pid))
-menu.trigger_commands("removedoors" .. players.get_name(pid))
-menu.trigger_commands("slingshot" .. players.get_name(pid))
-menu.trigger_commands("igniteveh" .. players.get_name(pid))
-menu.trigger_commands("vehkick" .. players.get_name(pid))
-menu.trigger_commands("novehs" .. players.get_name(pid))
-menu.trigger_commands("delveh" .. players.get_name(pid))
-menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
-menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
-    util.yield(100)
-menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-            end)
+        local vehcrash = menu.list(crash, "Vehicle Crash", {}, "")
+
+            menu.action(vehcrash, "Vehicle Crash", {"vehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function()
+                    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    util.yield(1500)
+                    local hash = util.joaat("baller")
+                    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+                        STREAMING.REQUEST_MODEL(hash)
+                        while not STREAMING.HAS_MODEL_LOADED(hash) do
+                            util.yield()
+                        end
+                        local Coords1 = PlayerCoords.y + 10
+                        local Coords2 = PlayerCoords.y - 10
+                        local veh1 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords1, PlayerCoords.z, 180, true, false, true)
+                        local veh2 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords2, PlayerCoords.z, 0, true, false, true)
+                        -- Do stuff with veh ...
+                        ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
+                        ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
+                    end
+                    menu.trigger_commands("killveh" .. players.get_name(pid))
+                    menu.trigger_commands("poptires" .. players.get_name(pid))
+                    menu.trigger_commands("removedoors" .. players.get_name(pid))
+                    menu.trigger_commands("slingshot" .. players.get_name(pid))
+                    menu.trigger_commands("igniteveh" .. players.get_name(pid))
+                    menu.trigger_commands("vehkick" .. players.get_name(pid))
+                    menu.trigger_commands("novehs" .. players.get_name(pid))
+                    menu.trigger_commands("delveh" .. players.get_name(pid))
+                    menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+                    menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+                    menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+                    menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+                    util.yield(100)
+                    menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                    end)
 
 
+                menu.toggle_loop(vehcrash, "Vehicle Crash", {"togglevehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function(on_toggle)
+                    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    util.yield(1500)
+                    local hash = util.joaat("baller")
+                    local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+                        STREAMING.REQUEST_MODEL(hash)
+                        while not STREAMING.HAS_MODEL_LOADED(hash) do
+                            util.yield()
+                        end
+                        local Coords1 = PlayerCoords.y + 10
+                        local Coords2 = PlayerCoords.y - 10
+                        local veh1 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords1, PlayerCoords.z, 180, true, false, true)
+                        local veh2 = VEHICLE.CREATE_VEHICLE(hash, PlayerCoords.x, Coords2, PlayerCoords.z, 0, true, false, true)
+                        -- Do stuff with veh ...
+                        ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
+                        ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
+                        end
+                        menu.trigger_commands("killveh" .. players.get_name(pid))
+                        menu.trigger_commands("poptires" .. players.get_name(pid))
+                        menu.trigger_commands("removedoors" .. players.get_name(pid))
+                        menu.trigger_commands("slingshot" .. players.get_name(pid))
+                        menu.trigger_commands("igniteveh" .. players.get_name(pid))
+                        menu.trigger_commands("vehkick" .. players.get_name(pid))
+                        menu.trigger_commands("novehs" .. players.get_name(pid))
+                        menu.trigger_commands("delveh" .. players.get_name(pid))
+                        menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+                        menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+                        menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
+                        menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
+                        util.yield(100)
+                        menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                        end)
+
+            
             local scrash = menu.list(crash, "Script Event Crashes", {}, "Won't work on yourself report any not working at all please.")
 
             menu.toggle_loop(scrash, "SE Crash (S0)", {"crashs0"}, "A very strong SE/SH crash.", function(on_toggle)
