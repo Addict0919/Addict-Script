@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "4.4"
+local local_menu_version = "4.5"
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(output)
     if tonumber(local_menu_version) < tonumber(output) then
