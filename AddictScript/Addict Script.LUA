@@ -14,9 +14,9 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require("guided_missile")
 
-github = menu.list(menu.my_root(), "Github", {"addictgithub"})
+local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
     response=true;
     menu.action(github, "Changelog", {"addictchangelog"}, b, function()
         async_http.dispatch()
@@ -29,31 +29,37 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "4.5"
+local local_menu_version = 4.5
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(output)
-    if tonumber(local_menu_version) < tonumber(output) then
-        update_available = true
-        util.toast("Version".." "..string.gsub(output,"\n","",1).." ".."available.\nPress Update to get it.")
-        update_button = menu.action(menu.my_root(),"Update to".." "..output,{},"",function()
-            async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict Script.LUA',function(a)
-                if select(2,load(a)) then
-                    util.toast("Script failed to download. Please try again later. If this continues to happen then manually update via gitlab.")
-                    return
-                end
-                local f = io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
-                f:write(a)
-                f:close()
-                util.restart_script()
+if not dev_mode then
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
+        currentVer=tonumber(b)
+        response=true;
+        if local_menu_version~=currentVer then 
+            menu.action(menu.my_root(),"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
+                    local d=select(2,load(c))
+                    if d then 
+                        util.toast("Update failed to Download")
+                        return 
+                    end;
+                    local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
+                    e:write(c)
+                    e:close()
+                    util.toast("Update Done!")
+                    util.restart_script()
+                end)
+                async_http.dispatch()
             end)
-            async_http.dispatch()
-        end)
-        menu.attach_after(github,menu.detach(update_button))
-    elseif tonumber(local_menu_version)>tonumber(output) then
-        private_build = menu.divider(menu.my_root(), "Private Build",{},"",function() end)
-    end
+        end 
+    end,
+    function()
+        response=true 
     end)
     async_http.dispatch()
+    repeat util.yield()
+    until response 
+end
 
 util.toast("Welcome To Addicted! v" .. local_menu_version .. "\n" .. "\n" .. "Keep your eyes peeled for updates..\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
 
