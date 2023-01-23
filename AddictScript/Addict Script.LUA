@@ -16,7 +16,7 @@ guidedMissile = require("guided_missile")
 
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptChangelog.txt",function(b)
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
     response=true;
     menu.action(github, "Changelog", {"addictchangelog"}, b, function()
         async_http.dispatch()
@@ -32,12 +32,12 @@ until response
 local local_menu_version = 4.7
 
 if not dev_mode then
-    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addict Script/AddictScriptVersion.LUA",function(b)
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
             menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/Addict Script/Addict Script.LUA',function(c)
+                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
                         util.toast("Update failed to Download")
