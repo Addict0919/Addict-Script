@@ -29,10 +29,10 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local version = "4.4"
+local local_menu_version = "4.4"
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(output)
-    if tonumber(version) < tonumber(output) then
+    if tonumber(local_menu_version) < tonumber(output) then
         update_available = true
         util.toast("Version".." "..string.gsub(output,"\n","",1).." ".."available.\nPress Update to get it.")
         update_button = menu.action(menu.my_root(),"Update to".." "..output,{},"",function()
@@ -49,7 +49,7 @@ async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/Addi
             async_http.dispatch()
         end)
         menu.attach_after(github,menu.detach(update_button))
-    elseif tonumber(version)>tonumber(output) then
+    elseif tonumber(local_menu_version)>tonumber(output) then
         private_build = menu.divider(menu.my_root(), "Private Build",{},"",function() end)
     end
     end)
