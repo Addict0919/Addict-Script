@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 4.9
+local local_menu_version = 5.0
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
@@ -111,7 +111,7 @@ menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking
 menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
 menu.action(Credits, "Library", {}, "Always been there to help :).", function() end)
 menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
-menu.action(Credits, "Charlie", {}, "Legy's girlfriend :).", function() end)
+menu.action(Credits, "Charlie", {}, "", function() end)
 menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
 
 
@@ -2886,7 +2886,7 @@ end
 
 notification("Addict Script has been successfully loaded!", colors.green)
 
---[[local kicks_fast_legacy = {
+    local kicks = {
     0x493fc6bb,
     1228916411,
     1256866538,
@@ -2895,36 +2895,417 @@ notification("Addict Script has been successfully loaded!", colors.green)
     -1813981910,
     -892744477,
     -859672259,
-    -898207315
-}]]
-local crashes = {
-	69874647,
-                    924535804,
-	1494472464,
-	-1991317864,
-	1902624891,
-	127278285,
-	-195247709,
-	-1322571352,
-	704979198,
-	-1970125962,
-	2112408256,
-	677240627,
-	-2113023004,
-	-1704141512,
-	962740265,
-	-1386010354,
-	603406648,
-	-1715193475,
-	1258808115,
-	998716537,
-	163598572,
-	-1056683619,
-	-393294520
+    -898207315,
+    548471420,
+    -30654421,
+    -2113865699,
+    1681920018,
+    1096448327,
+    113023613,
+    42967925,
+    1746765664,
+    538193013,
+    1163337421,
+    1110452930,
+    -596760615,
+    -140109523,
+    1398154308,
+    181375724,
+    672437644,
+    -1765092612,
+    -338166051,
+    2100923829,
+    -1822401313,
+    1242664595,
+    -1962062913,
+    -2085699648,
+    -1185502051,
+    -193885642,
+    1401157001,
+    -459327862,
+    -2001677186,
+    -419652151,
+    85920017,
+    -1891171016,
+    1227699211,
+    414506075,
+    1519903406,
+    871267300,
+    -2029579257,
+    -1453392398,
+    1192608757,
+    2067191610,
+    1694464420,
+    -1518599654,
+    1397900875,
+    -1548871816,
+    -852914485,
+    -333917558,
+    -644115601,
+    1875524648,
+    1765085190,
+    -91833327,
+    886761285,
+    1900384925,
+    -1328646658,
+    134199208,
+    -1392241127,
+    -795380017,
+    1804829460,
+    1370461707,
+    1813766002,
+    -964882004,
+    2080651008,
+    -860929776,
+    1999063780,
+    1456052554,
+    1167971813,
+    -1963501380,
+    -162943635,
+    -1047334626,
+    -580709734,
+    448968075,
+    -672300651,
+    1009548335,
+    2034045540,
+    217196385,
+    1607508898,
+    1368347173,
+    1772461754,
+    -492741651,
+    -1230153214,
+    2092740896,
+    -876146989,
+    477242315,
+    1903858674,
+    1128918904,
+    -519597839,
+    1077951879,
+    285546291,
+    857538507,
+    -328486618,
+    2118577282,
+    1810679938,
+    -1322082704,
+    518811989,
+    -1578682814,
+    1807254743,
+    2144693378,
+    1200439149,
+    -513394492,
+    2041060862,
+    -1472351847,
+    -484141204,
+    -141450727,
+    -1575137150,
+    854806881,
+    -839043921,
+    -2105209800,
+    -1001891935,
+    -1593201907,
+    -851885842,
+    -970362313,
+    -382052039,
+    -871545888,
+    2060563275,
+    309814753,
+    -285454749,
+    755923450,
+    1304332204,
+    -381818092,
+    1819411281,
+    1250480109,
+    -766974585,
+    1264221127,
+    1541446437,
+    -2044863341,
+    -1424012222,
+    -1127353498,
+    2005059642,
+    167413139,
+    669039275,
+    -507112185,
+    -1479027099,
+    -1090858280,
+    186548319,
+    -1878484856,
+    -16793987,
+    1322812076,
+    898343266,
+    -438023591,
+    -2048374263,
+    -1609136786,
+    434570842,
+    937151636,
+    1272793301,
+    988586503,
+    -1173163558,
+    -1714789749,
+    1589823260,
+    -23082252,
+    1041200857,
+    -1555358611,
+    127955867,
+    375962343,
+    1001517091,
+    1345672987,
+    -1168208444,
+    -730912208,
+    2084633812,
+    792153085,
+    1473913668,
+    -343495611,
+    1491806827,
+    1039282949,
+    -1460955723,
+    317177044,
+    -1834446996,
+    1552900972,
+    -2028335784,
+    -241418449,
+    -1653861842,
+    -259156293,
+    1594928808,
+    -1556962447,
+    1640286562,
+    -1139254401,
+    -949018811,
+    1803131174,
+    -71273283,
+    -119249570,
+    -53458173,
+    -1003348271,
+    -1123400822,
+    1772495870,
+    -1701192924,
+    -1218087738,
+    -10982782,
+    814496833,
+    -1094380288,
+    319685114,
+    -323171360,
+    820416549,
+    1835182208,
+    337732417,
+    -124020592,
+    1221375594,
+    2144481042,
+    -749491288,
+    -882028108,
+    -1370028781,
+    -1261736727,
+    1037705593,
+    1377857852,
+    1168623138,
+    -310617732,
+    908767058,
+    1409556665,
+    -1387723751,
+    -1492841786,
+    1674476795,
+    232443159,
+    178524407,
+    986260144,
+    653628905,
+    -168599209,
+    474413179,
+    -2051844999,
+    1560973005,
+    -904555865,
+    879177392,
+    -2060526162,
+    -994591791,
+    388881138,
+    1674317759,
+    1486774330,
+    489739448,
+    -398684455,
+    -841455067,
+    1379379239,
+    2046296859,
+    1311159119,
+    -760942281,
+    -1831959078,
+    1848110702,
+    -364713137,
+    -1643482755,
+    -1464365333,
+    1327169001,
+    1620260542,
+    245065909,
+    -1597942809,
+    1071490035,
+    1920583171,
+    265836764,
+    1303606785,
+    267489225,
+    1569236577,
+    -469493996,
+    360244585,
+    1134514966,
+    -2139562045,
+    279717272,
+    10138018,
+    -725780952,
+    396538098,
+    -1029914669,
+    -1296375264,
+    -805921310,
+    -468188833,
+    1923972962,
+    -444617715,
+    -248680084,
+    -1419450740,
+    1279059857,
+    -150763833,
+    -720665383,
+    -278036454,
+    -1389482213,
+    -1954654708,
+    -204643402,
+    -1496673706,
+    1292306623,
+    1950531948,
+    -1990614866,
+    1124104301,
+    -646004404,
+    -1216295492,
+    -859612223,
+    -1781653678,
+    1083015459,
+    -933673939,
+    434937615,
+    -957260626,
+    -975458684,
+    -1640403704,
+    -1322731185,
+    -1129868216,
+    316066012,
+    1454834612,
+    700267046,
+    -1730284249,
+    1074803562,
+    178476176,
+    -509252369,
+    1304577008,
+    -102043551,
+    -1526561203,
+    -1612608404,
+    895397362,
+    1802646519,
+    1268038438,
+    1927489513,
+    1046014587,
+    549145155,
+    -1237225255,
+    1500075603,
+    81880333,
+    -1484508675,
+    -2059117919,
+    1332590686,
+    -910497748,
+    -1141914502,
+    -1582289420,
+    -76043076,
+    2144523214,
+    243072129,
+    2064487849,
+    435675531,
+    -500923695,
+    1336084487,
+    323981539,
+    567662973,
+    -1571441360,
+    -1054040893,
+    843316754,
+    169410705,
+    491906476,
+    796658339,
+    974054812,
+    508339812,
+    431653434,
+    1341265547,
+    -1168222636,
+    -715264067,
+    1121720242,
+    931417473,
+    -583098065,
+    1586286277,
+    -1330848029,
+    -1448015548,
+    561154955,
+    -1471373324,
+    1306214888,
+    -91898414,
+    90440793,
+    914476312,
+    815640525,
+    -394088790,
+    1858712297,
+    -1743542712,
+    49863291,
+    1025036241,
+    -508465573,
+    1810531023,
+    2119903152,
+    507886635,
+    -1057685265,
+    915462795,
+    -1069140561,
+    1491410017,
+    -1601139550,
+    -290401917,
+    -1357080740,
+    -299190545,
+    -1443768844,
+    1354970087,
+    1796894334,
+    392606458,
+    697566862,
+    1402665684,
+    -1694531511,
+    393633835,
+    1292973690,
+    1605689751,
+    1883636994,
+    1814318034,
+    -50961790,
+    -93722397,
+    1775863255,
+    125899875,
+    -1217949151,
 }
 
-local newcrashes = {
-153488394, -- Moist Events Added :)
+
+local Addictcrashes = {
+-877478386,
+-442313018,
+-877478386,
+2099682835,
+69874647,
+924535804,
+1494472464,
+-1991317864,
+1902624891,
+127278285,
+-195247709,
+-1322571352,
+704979198,
+-1970125962,
+2112408256,
+677240627,
+-2113023004,
+-1704141512,
+962740265,
+-1386010354,
+603406648,
+-1715193475,
+1258808115,
+998716537,
+163598572,
+-1056683619,
+-393294520,
+153488394,
 1723452001,
 210491663,
 -1780858740,
@@ -3282,11 +3663,8 @@ local newcrashes = {
 1889984715,
 1166958622,
 -1912844061,
-897248694
-}
-
-local candycrashes = {
-69874647, -- Addict Events Added :)
+897248694,
+69874647,
 924535804,
 1494472464,
 -1991317864,
@@ -4029,16 +4407,28 @@ local candycrashes = {
 897248694
 }
 
-function Addictcrash(pid) 
-	for i,v in ipairs(crash) do
-		par1 = math.random(-100000, 99999999)
-		par2 = math.random(-4827432, 3231229)
-		par3 = math.random(46190868, 999999999)
-		par4 = math.random(-133223, 42746729)
-		par5 = math.random(-999999999, 428747628)
-		send_script_event(v, pid, {pid, par1, par2, par3, par4, par5})
-		util.yield()
-	end
+array_kick = function(pid)
+    for i, v in pairs(kicks) do
+        arg1 = math.random(-2147483647, 2147483647)
+        arg2 = math.random(-1987543, 1987543)
+        arg3 = math.random(-19, 19)
+        util.trigger_script_event(1 << pid, {v, pid, arg1, arg3, arg2, arg2, arg1, arg1, arg3, arg3, arg1, arg3, arg2, arg3, arg1, arg1, arg2, arg3, arg1, arg2, arg2, arg3, arg3})
+        util.yield()
+    end
+    util.toast("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
+    util.log("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
+end
+
+Addictcrashes = function(pid)
+    for i, v in pairs(kicks) do
+        arg1 = math.random(-2147483647, 2147483647)
+        arg2 = math.random(-1987543, 1987543)
+        arg3 = math.random(-19, 19)
+        util.trigger_script_event(1 << pid, {v, pid, arg1, arg3, arg2, arg2, arg1, arg1, arg3, arg3, arg1, arg3, arg2, arg3, arg1, arg1, arg2, arg3, arg1, arg2, arg2, arg3, arg3})
+        util.yield()
+    end
+    util.toast("Crashed " .. PLAYER.GET_PLAYER_NAME(pid))
+    util.log("Crashed " .. PLAYER.GET_PLAYER_NAME(pid))
 end
 
 local resolves = {
@@ -4049,7 +4439,6 @@ local resolves = {
 
 drift = false
 function drift(toggle)
-
 	if drift then
 		while true do
 			local veh = entities.get_user_vehicle_as_handle()
@@ -4344,6 +4733,22 @@ menu.action(custselc, "Desync Kick", {desynckick}, "", function()
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
+menu.action(custselc, "Breakup Kick", {"break"}, "Kicks Them.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
             end
         end
     end
@@ -6859,12 +7264,6 @@ GenerateFeatures = function(pid)
 		notification("now type the name of the vehicle in the command box", colors.red)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	for i = 1, #newcrashes do
-		if checkbruhmoment == newcrashes[i] then
-			while true do end
-		end
-	end
-    
 
 	local dont_stop = false
 	menu.toggle_loop(troll_sub_vehicle_tab,"Vehicle Blackhole", {"blackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
@@ -7786,6 +8185,116 @@ read_global = {
 			ENTITY.DETACH_ENTITY(players.user_ped(), true, false)
 		end
 	end)
+
+
+    local crash_ents = {}
+    local crash_toggle = false
+    menu.toggle(griefing, "Constructipede", {"constructipede"}, "", function(val)
+        crash_toggle = val
+            if val then
+                local ped_mdl = util.joaat("s_m_y_construct_01")
+                local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                local ped_pos = players.get_position(pid)
+                ped_pos.z += 3
+                request_model(ped_mdl)
+                for i = 1, 49 do
+                    local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                    crash_ents[i] = ped
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                    ENTITY.SET_ENTITY_VISIBLE(ped, true)
+
+                    local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                    all_peds = entities.get_all_peds_as_handles()
+                    local last_ped = 0
+                    local last_ped_ht = 0
+                    for k,ped in pairs(all_peds) do
+                        if not PED.IS_PED_A_PLAYER(ped) and not PED.IS_PED_FATALLY_INJURED(ped) then
+                            get_control_request(ped)
+                            if PED.IS_PED_IN_ANY_VEHICLE(ped, true) then
+                                TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                                TASK.TASK_LEAVE_ANY_VEHICLE(ped, 0, 16)
+                            end
+                
+                            ENTITY.DETACH_ENTITY(ped, false, false)
+                            if last_ped ~= 0 then
+                                ENTITY.ATTACH_ENTITY_TO_ENTITY(ped, last_ped, 0, 0, 0, last_ped_ht, 1, 05, 0, 0, false, false, false, false, 0, false)
+                            else
+                                ENTITY.SET_ENTITY_COORDS(ped, c.x, c.y, c.z)
+                            end
+                            last_ped = ped
+                        end
+                    end
+                end
+                repeat
+                    for k, ped in crash_ents do
+                        TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    end
+                    for k, v in entities.get_all_objects_as_pointers() do
+                        if entities.get_model_hash(v) == util.joaat("prop_tool_jackham") then
+                            entities.delete_by_pointer(v)
+                        end
+                    end
+                    util.yield_once()
+                until not (crash_toggle and players.exists(pid))
+                crash_toggle = false
+                for k, obj in crash_ents do
+                    entities.delete_by_handle(obj)
+                end
+                crash_ents = {}
+            else
+                for k, obj in crash_ents do
+                    entities.delete_by_handle(obj)
+                end
+                crash_ents = {}
+            end
+    end)
+    
+    
+    local crash_ents = {}
+    local crash_toggle = false
+    menu.toggle(griefing, "Jack Hammmer Noise", {"jacknoise"}, "Sends Jack Hammmers to cause noise.", function(val)
+        crash_toggle = val
+            if val then
+                local ped_mdl = util.joaat("s_m_y_construct_01")
+                local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                local ped_pos = players.get_position(pid)
+                ped_pos.z += 3
+                request_model(ped_mdl)
+                for i = 1, 48 do
+                    local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                    crash_ents[i] = ped
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                    ENTITY.SET_ENTITY_VISIBLE(ped, false)
+                end
+                repeat
+                    for k, ped in crash_ents do
+                        TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                        TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_CONST_DRILL", 0, false)
+                    end
+                    for k, v in entities.get_all_objects_as_pointers() do
+                        if entities.get_model_hash(v) == util.joaat("prop_tool_jackham") then
+                            entities.delete_by_pointer(v)
+                        end
+                    end
+                    util.yield_once()
+                    util.yield_once()
+                until not (crash_toggle and players.exists(pid))
+                crash_toggle = false
+                for k, obj in crash_ents do
+                    entities.delete_by_handle(obj)
+                end
+                crash_ents = {}
+            else
+                for k, obj in crash_ents do
+                    entities.delete_by_handle(obj)
+                end
+                crash_ents = {}
+            end
+    end)
 
     stopato = true
 
@@ -10966,15 +11475,6 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1894573 + 1 + (pid * 608) + 510))})
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.action(kick, "Desync Kick", {"desynckick"}, "Desyncs the player from the session", function()
-        notification("Desycn kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-        util.trigger_script_event(1 << pid, {0x63D4BFB1, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-        menu.action(kick, "Storymode Kick", {"storymode"}, "Sends them to storymode", function()
-        notification("Storymode kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-        util.trigger_script_event(1 << pid, {111242367, pid, memory.script_global(2689235 + 1 + (pid * 453) + 318 + 7)})
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
             menu.toggle_loop(kick, "Invalid Apartment Kick V1", {"invkick1"}, "Invalid Apartment Invite.", function(on_toggle)
                local int_min = -2147483647
@@ -11014,7 +11514,7 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
         
-        menu.toggle_loop(kick, "Array Kick", {"arraykick"}, "", function(on_toggle)
+            menu.toggle_loop(kick, "Array Kick V1", {"arraykickv1"}, "", function(on_toggle)
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
@@ -11031,7 +11531,9 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             end
         end)
 
-
+        menu.toggle_loop(kick, "Array Kick V2", {"arraykickv2"}, "", function(on_toggle)
+            array_kick(pid)
+        end)
 
 	menu.divider(kick, "Stand Kicks")
 
@@ -11415,6 +11917,8 @@ end)
     menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
         if pid ~= players.user() then
         if on_toggle then
+            menu.trigger_commands("cards" .. players.get_name(pid))
+            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
@@ -11424,6 +11928,8 @@ end)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(10)
         else
+            menu.trigger_commands("cards" .. players.get_name(pid))
+            util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
@@ -11846,7 +12352,7 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     util.yield(3000)
     menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(3000)
-    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(3000)
     menu.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(3000)
@@ -12555,8 +13061,631 @@ menu.toggle_loop(objectc, "Send Objects", {}, "", function()
     util.toast("[Object Crash] Finished.")
 end)
 
-local addictcrash = menu.list(lobbycrash, "Addict Fuck", {}, "")
 
+local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
+
+
+       menu.divider(TaskCrashes, "_________________________________________")
+
+       menu.toggle(TaskCrashes, "All Scenario Crashes", {"togglescenariocrashes"}, "It's risky to spectate using this but your call", function(on_toggle)
+        if on_toggle then
+            util.yield()
+            menu.trigger_commands("anticrashcamera")
+            util.yield()
+            menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+        else
+            util.yield()
+            menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("noentities")
+            util.yield(200)
+            menu.trigger_commands("noentities")
+            util.yield()
+            menu.trigger_commands("anticrashcamera")
+            end
+        end)
+       
+       menu.divider(TaskCrashes, "_________________________________________")
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Spatulas", {"nospatulars"}, "Sends Spatula crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Spatula Crash", {"spatularcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("ig_siemonyetarian")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "PROP_HUMAN_BBQ", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_fish_slice_01") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Barbell", {"nobarbell"}, "Sends Barbell crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Barbell Crash", {"barbellcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("A_F_M_BodyBuild_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_MUSCLE_FREE_WEIGHTS", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_barbell_02") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Hammers", {"nohammers"}, "Sends Hammers crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Hammers Crash", {"hammercrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_y_construct_02")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_HAMMERING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_tool_hammer") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Fishing Rods", {"norods"}, "Sends Fishing crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Fishing Crash", {"fishingcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_m_cntrybar_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_STAND_FISHING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_fishing_rod_02") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Jack Hammmers", {"nojacks"}, "Sends Jack Hammmer crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Jack Hammmer Crash", {"jackhammercrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_y_construct_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_CONST_DRILL", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_tool_jackham") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Brooms", {"nobrooms"}, "Sends Broom crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Broom Crash", {"broomcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("csb_janitor")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_JANITOR", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_tool_broom") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Russian Drunks", {"nodrunks"}, "Sends Russian Drunk crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Russian Drunk Crash", {"drunkcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("ig_russiandrunk")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_DRINKING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_amb_40oz_02") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Trowels", {"notrowels"}, "Sends Trowel crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Trowel Crash", {"trowelcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_m_gardener_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_GARDENER_PLANT", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_cs_trowel") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Window Cleans", {"nowincleans"}, "Sends Window Clean crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Window Clean Crash", {"wincleancrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_y_winclean_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_MAID_CLEAN", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_rag_01") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Torches", {"notorches"}, "Sends Torch crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Torch Crash", {"torchcrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_y_chef_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_WELDING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_weld_torch") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local peds = 5
+menu.slider(TaskCrashes, "Number Of Coffee Cups", {"nocoffeecups"}, "Sends Coffee crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("s_m_y_chef_01")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_DRINKING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("p_amb_coffeecup_01") then
+ --                       entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+ --               entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+local addictcrash = menu.list(lobbycrash, "Addict Crashes", {"addictcrashes"}, "")
+
+menu.toggle_loop(addictcrash, "Addict Crashing", {"addictcrashing"}, "", function(on_toggle)
+    Addictcrashes(pid)
+end)
 
 menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
     if pid ~= players.user() then
@@ -14804,66 +15933,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         menu.trigger_commands("togglefragv2" .. players.get_name(pid))
                         menu.trigger_commands("superc")
                     end
-
                 end)
-
-
-        local krustykrab = menu.list(crash, "Spatula Crash", {}, "It's risky to spectate using this but your call, works best on 2take1 users")
-
-        local peds = 5
-        menu.slider(krustykrab, "Number Of Spatulas", {"nospat"}, "Sends Spatula crash. Note: Flick it to 45 click to crash then flick back to 1 and click again for best results", 1, 45, 1, 1, function(amount)
-        notification("Spatula Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            peds = amount
-        end)
-
-        local crash_ents = {}
-        local crash_toggle = false
-        menu.toggle(krustykrab, "Spatula Crash", {"spatcrash"}, "It's risky to spectate using this but your call", function(val)
-        notification("Sending Spatula Crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            crash_toggle = val
-            BlockSyncs(pid, function()
-                if val then
-                    local number_of_peds = peds
-                    local ped_mdl = util.joaat("ig_siemonyetarian")
-                    local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                    local ped_pos = players.get_position(pid)
-                    ped_pos.z += 3
-                    request_model(ped_mdl)
-                    for i = 1, number_of_peds do
-                        local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
-                        crash_ents[i] = ped
-                        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
-                        TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
-                        ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
-                        ENTITY.SET_ENTITY_VISIBLE(ped, false)
-                    end
-                    repeat
-                        for k, ped in crash_ents do
-                            TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
-                            TASK.TASK_START_SCENARIO_IN_PLACE(ped, "PROP_HUMAN_BBQ", 0, false)
-                        end
-                        for k, v in entities.get_all_objects_as_pointers() do
-                            if entities.get_model_hash(v) == util.joaat("prop_fish_slice_01") then
-                                entities.delete_by_pointer(v)
-                            end
-                        end
-                        util.yield_once()
-                        util.yield_once()
-                    until not (crash_toggle and players.exists(pid))
-                    crash_toggle = false
-                    for k, obj in crash_ents do
-                        entities.delete_by_handle(obj)
-                    end
-                    crash_ents = {}
-                else
-                    for k, obj in crash_ents do
-                        entities.delete_by_handle(obj)
-                    end
-                    crash_ents = {}
-                end
-            end)
-        end)
-
 
         local vehcrash = menu.list(crash, "Vehicle Crash", {}, "")
 
