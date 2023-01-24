@@ -1,6 +1,6 @@
 **v5.0**
 
-`removed some broken `
+`removed some broken features`
 
 `added array kick v2`
 
