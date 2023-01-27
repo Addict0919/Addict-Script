@@ -1,4 +1,4 @@
-v5.3
+v5.4
 ________________________
 
 Added Anti-Try Hard Shit In - Stand>Lua Scripts>Addict Script>Chaos Shit>Anti-Oppressor
@@ -14,3 +14,5 @@ Added Asteroid Shower - Stand>Lua Scripts>Addict Script>Chaos Shit>Asteroid Show
 Added Ped blackhole
 
 Added Object Blackhole
+
+Rejected Dev Fixed Auto Updater
