@@ -29,14 +29,14 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.1
+local local_menu_version = 5.2
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+            menu.action(github,"Check For Updates",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict Script.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
@@ -11891,7 +11891,7 @@ end)
 			end
 			util.yield()
 		end
-	end)
+	end, nil, nil, COMMANDPERM_FRIENDLY)
 
     --[[
 
@@ -11927,11 +11927,10 @@ end)
 
     menu.action(drops, "Give All Collectibles", {"collects"}, "", function()
         menu.trigger_commands("givecollectibles" .. players.get_name(pid))
-    end)
+	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.toggle(drops, "Crazy Rank Up", {"crazyrank"}, "", function(on_toggle)
+    menu.action(drops, "Crazy Rank Up", {"crazyrank"}, "", function()
         if pid ~= players.user() then
-        if on_toggle then
             menu.trigger_commands("cards" .. players.get_name(pid))
             util.yield(10)
             menu.trigger_commands("giverp" .. players.get_name(pid))
@@ -11942,20 +11941,8 @@ end)
             util.yield(10)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(10)
-        else
-            menu.trigger_commands("cards" .. players.get_name(pid))
-            util.yield(10)
-            menu.trigger_commands("giverp" .. players.get_name(pid))
-            util.yield(10)
-            menu.trigger_commands("givebigrp" .. players.get_name(pid))
-            util.yield(10)
-            menu.trigger_commands("giverpsted" .. players.get_name(pid))
-            util.yield(10)
-            menu.trigger_commands("dropfigures" .. players.get_name(pid))
-            util.yield(10)
-            end
         end
-    end)
+	end, nil, nil, COMMANDPERM_FRIENDLY)
 
     menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
         if pid ~= players.user() then
