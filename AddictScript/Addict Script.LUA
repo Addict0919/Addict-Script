@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.0
+local local_menu_version = 5.1
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
@@ -4828,6 +4828,19 @@ if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3)))
  memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
  memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
 else
+    end
+end)
+
+menu.action(protex, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local pld = PLAYER.GET_PLAYER_PED(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(pld)
+    for i=1,3  do
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1112.384, 225.92778, -48.758114)
+        menu.trigger_commands("levitate")
+        util.yield(1000)
+        menu.trigger_commands("levitate")
     end
 end)
 
@@ -11638,13 +11651,15 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
-	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once", function ()
+	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, vehiclegodmode, vehicle boost, fastrun, explosive ammo, never wanted, gives all weapons, ammo/infinite and parachute all at once", function ()
     	notification("Maxing " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         		menu.trigger_commands("bail".. players.get_name(pid))
         		menu.trigger_commands("arm".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
+                menu.trigger_commands("givefastrun".. players.get_name(pid))
+                menu.trigger_commands("explosiveammo".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
 	    notification("MAXED!!! GANG SHIT!!!", colors.red)
