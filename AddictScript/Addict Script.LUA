@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.2
+local local_menu_version = 5.3
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
@@ -6397,7 +6397,6 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
     end
 end)
 
-
 local fire_wings_list = menu.list(funfun, "Fire wings")
 
 ----------------------------------------
@@ -6475,21 +6474,6 @@ menu.rainbow(menu.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsCol
     fireWingsSettings.fireColour = colour
 end))
 
-local max_health
-undead_otr = menu.toggle(funfun, "Undead OTR", {"undead"}, "Turn you off the radar without notifying other players.\nNote: Trigger Modded Health detection.", function(on_toggle)
-    if on_toggle then
-        max_health = ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped())
-        while menu.get_state(undead_otr) == "On" do
-            if ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped()) ~= 0 then
-                ENTITY.SET_ENTITY_MAX_HEALTH(players.user_ped(),0)
-            end
-            util.yield()
-        end
-    else
-        ENTITY.SET_ENTITY_MAX_HEALTH(players.user_ped(),max_health)
-    end
-end)
-
 
 menu.toggle(funfun, "Quiet footsteps", {"quietsteps"}, "Disables the sound of your footsteps.", function(toggle)
     AUDIO.SET_PED_FOOTSTEPS_EVENTS_ENABLED(players.user_ped(), not toggle)
@@ -6536,7 +6520,6 @@ menu.toggle_loop(funfun,"Horn boost", {"hornboost"}, "Gives you the ability to s
         ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 1.0, 0.0, true, true, true, true)
     end
 end)
-
 
 menu.slider(funfun, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 2, -1, 1, function(seatnumber)
 	local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
@@ -6762,6 +6745,21 @@ menu.list_action(escort_root, "Request escort", {"requestescort"}, "Request the 
     TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
     util.toast("Your escort has arrived to your left.")
 end)
+
+local max_health
+undead_otr = menu.toggle(playermode, "Undead OTR", {"undead"}, "Turn you off the radar without notifying other players.\nNote: Trigger Modded Health detection.", function(on_toggle)
+    if on_toggle then
+        max_health = ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped())
+        while menu.get_state(undead_otr) == "On" do
+            if ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped()) ~= 0 then
+                ENTITY.SET_ENTITY_MAX_HEALTH(players.user_ped(),0)
+            end
+            util.yield()
+        end
+    else
+        ENTITY.SET_ENTITY_MAX_HEALTH(players.user_ped(),max_health)
+    end
+end)
     
     local obj_pp = {"prop_cs_dildo_01", "prop_ld_bomb_01", "prop_sam_01"}
     local opt_pp = {"Small", "Big", "Bigger", "Delete"}
@@ -6978,6 +6976,34 @@ end)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function start_asteroid_shower()
+    meteor_thr = util.create_thread(function(thr)
+        while true do
+            if not asteroids then
+                util.stop_thread()
+            end
+            local rand_1 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.PLAYER_PED_ID(), math.random(-500, 500), math.random(-500, 500), 300.0)
+            local rand_2 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.PLAYER_PED_ID(), math.random(-500, 500), math.random(-500, 500), 0.0)
+            local diff = {}
+            local speed = 200
+            diff.x = (rand_2['x'] - rand_1['x'])*speed
+            diff.y = (rand_2['y'] - rand_1['y'])*speed
+            diff.z = (rand_2['z'] - rand_1['z'])*speed
+            local h = 3751297495
+            request_model_load(h)
+            rand_1.x = rand_1['x']
+            rand_1.y = rand_1['y']
+            rand_1.z = rand_1['z']
+            local asteroid = OBJECT.CREATE_OBJECT_NO_OFFSET(h, rand_1['x'], rand_1['y'], rand_1['z'], true, false, false)
+            ENTITY.SET_ENTITY_HAS_GRAVITY(asteroid, true)
+            --ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(asteroid, 4, diff.x, diff.y, diff.z, true, false, true, true)
+            ENTITY.APPLY_FORCE_TO_ENTITY(asteroid, 2, diff.x, diff.y, diff.z, 0, 0, 0, 0, true, false, true, false, true)
+            OBJECT.SET_OBJECT_PHYSICS_PARAMS(asteroid, 100000, 5, 1, 0, 0, .5, 0, 0, 0, 0, 0)
+            util.yield(1000)
+        end
+    end)
+end
+
 	worldchaos = menu.list(menu.my_root(), "Chaos Shit", {}, "", function(); end)
 	menu.divider(worldchaos, "Chaos mode")
 
@@ -6988,6 +7014,16 @@ end)
 			chaos = false
 		end
 	end, false)
+
+    asteroids = false
+menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
+    if on then
+        asteroids = true
+        start_asteroid_shower()
+    else
+        asteroids = false
+    end
+end, false)
 
 	drift = false
 	menu.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
@@ -7055,9 +7091,54 @@ end)
 		end
 	end)
 
+
 	local dont_stop = false
-	menu.toggle_loop(worldchaos,"Vehicle Blackhole", {"blackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+	menu.toggle_loop(worldchaos,"Vehicle Blackhole", {"vehicleblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
+			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+			local locspeed2 = speed
+        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+			if not PED.IS_PED_A_PLAYER(PedInSeat) then
+				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                        speed = 100
+                        local x_vec = (holecoords['x']-vcoords['x'])*speed
+                        local y_vec = (holecoords['y']-vcoords['y'])*speed
+                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+				end
+			end
+		end
+	end)
+
+    menu.toggle_loop(worldchaos,"Ped Blackhole", {"pedblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+		for k, veh in pairs(entities.get_all_peds_as_handles()) do
+			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+			local locspeed2 = speed
+        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+			if not PED.IS_PED_A_PLAYER(PedInSeat) then
+				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                        speed = 100
+                        local x_vec = (holecoords['x']-vcoords['x'])*speed
+                        local y_vec = (holecoords['y']-vcoords['y'])*speed
+                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+				end
+			end
+		end
+	end)
+
+    menu.toggle_loop(worldchaos,"Object Blackhole", {"objectblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+		for k, veh in pairs(entities.get_all_objects_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
         			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -7173,10 +7254,26 @@ end)
 	end)
 
 
-	menu.divider(worldchaos, "Oppressor blacklisting")
-	kick_players = false
-	menu.toggle(worldchaos, "On", {"Antioppressor"}, "Automatically kicks players off oppressor mkii's", function(on)
-		kick_players = on
+	menu.divider(worldchaos, "Anti-Try Hard Shit")
+
+	oppressor_kick_players = false
+	menu.toggle(worldchaos, "Anti-Oppressor", {"antioppressor"}, "Automatically kicks players off oppressor mkii's", function(on)
+		oppressor_kick_players = on
+	end, false)
+    
+	lazer_kick_players = false
+	menu.toggle(worldchaos, "Anti-Lazer", {"antilazer"}, "Automatically kicks players out lazers", function(on)
+		lazer_kick_players = on
+	end, false)
+
+    kosatka_kick_players = false
+	menu.toggle(worldchaos, "Anti-Kosatka", {"antikosatka"}, "Automatically kicks players out kosatka", function(on)
+		kosatka_kick_players = on
+	end, false)
+
+    hydra_kick_players = false
+	menu.toggle(worldchaos, "Anti-Hydra", {"antihydra"}, "Automatically kicks players out hydra", function(on)
+		hydra_kick_players = on
 	end, false)
 
 	lock_vehicle = false
@@ -7279,7 +7376,7 @@ GenerateFeatures = function(pid)
 
 
 	local dont_stop = false
-	menu.toggle_loop(troll_sub_vehicle_tab,"Vehicle Blackhole", {"blackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+	menu.toggle_loop(troll_sub_vehicle_tab,"Vehicle Blackhole", {"vehicleblackholes"}, "Basically 'impulse like sport mode. but applied to every vehicle.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -8151,7 +8248,7 @@ read_global = {
             end
         end)
     
-    menu.action(attachoptions, "Attach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
+    menu.toggle_loop(attachoptions, "Attach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
         local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         objects = entities.get_all_objects_as_handles()
         vehicles = entities.get_all_vehicles_as_handles()
@@ -8518,6 +8615,55 @@ menu.action(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the pla
             end
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+    menu.toggle_loop(griefing,"Object Blackhole", {"objectblackholes"}, "Basically 'impulse like sport mode. but applied to every object.", function(on)
+		for k, veh in pairs(entities.get_all_objects_as_handles()) do
+			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+			local locspeed2 = speed
+        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+			if not PED.IS_PED_A_PLAYER(PedInSeat) then
+				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                        speed = 100
+                        local x_vec = (holecoords['x']-vcoords['x'])*speed
+                        local y_vec = (holecoords['y']-vcoords['y'])*speed
+                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+				end
+			end
+		end
+	end)
+
+    menu.toggle_loop(griefing,"Ped Blackhole", {"pedblackholes"}, "Turn on undead to not effect you. Basically 'impulse like sport mode. but applied to every ped.", function(on)
+		for k, veh in pairs(entities.get_all_peds_as_handles()) do
+			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+			local locspeed2 = speed
+        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+			if not PED.IS_PED_A_PLAYER(PedInSeat) then
+				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                        speed = 100
+                        local x_vec = (holecoords['x']-vcoords['x'])*speed
+                        local y_vec = (holecoords['y']-vcoords['y'])*speed
+                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+				    end
+			    end
+            end
+        end)
+
+    hole_zoff = 50
+    menu.slider(griefing, "Blackhole Z-offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
+    hole_zoff = s
+    end)
 
     local ControlEntities = menu.list(griefing, "Control Entities", {}, "")
     
@@ -11658,8 +11804,8 @@ function spawn_buzzard(pid, gunner_weapon, collision)
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
+                menu.trigger_commands("removestickys".. players.get_name(pid))
                 menu.trigger_commands("givefastrun".. players.get_name(pid))
-                menu.trigger_commands("explosiveammo".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
 	    notification("MAXED!!! GANG SHIT!!!", colors.red)
@@ -11700,6 +11846,11 @@ function spawn_buzzard(pid, gunner_weapon, collision)
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
             givevehicle = menu.list(frienm, "Give Player A vehicle", {}, "", function(); end)
+
+            menu.toggle_loop(frienm, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
+                local car = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
+            end)
 
             menu.action(givevehicle, "Give Player A Deluxo", {"givedeluxo"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
@@ -18706,13 +18857,82 @@ end)
 --for oppressor blacklist
 util.create_thread(function()
 	while true do
-		if kick_players then
+		if oppressor_kick_players then
 			local cur_players = players.list(target_self,target_friends,true)
 			for k,v in pairs(cur_players) do
 				local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(v)
 				local vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, false)
 				if vehicle then
 					local hash = util.joaat("oppressor2")
+					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
+						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						if lock_vehicle then
+							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
+						end
+					end
+				end
+			end
+		end
+		util.yield()
+	end
+end)
+
+--for lazer blacklist
+util.create_thread(function()
+	while true do
+		if lazer_kick_players then
+			local cur_players = players.list(target_self,target_friends,true)
+			for k,v in pairs(cur_players) do
+				local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(v)
+				local vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, false)
+				if vehicle then
+					local hash = util.joaat("lazer")
+					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
+						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						if lock_vehicle then
+							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
+						end
+					end
+				end
+			end
+		end
+		util.yield()
+	end
+end)
+
+--for kosatka blacklist
+util.create_thread(function()
+	while true do
+		if kosatka_kick_players then
+			local cur_players = players.list(target_self,target_friends,true)
+			for k,v in pairs(cur_players) do
+				local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(v)
+				local vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, false)
+				if vehicle then
+					local hash = util.joaat("kosatka")
+					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
+						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						if lock_vehicle then
+							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
+						end
+					end
+				end
+			end
+		end
+		util.yield()
+	end
+end)
+
+--for hydra blacklist
+util.create_thread(function()
+	while true do
+		if hydra_kick_players then
+			local cur_players = players.list(target_self,target_friends,true)
+			for k,v in pairs(cur_players) do
+				local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(v)
+				local vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, false)
+				if vehicle then
+					local hash = util.joaat("hydra")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
 						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
