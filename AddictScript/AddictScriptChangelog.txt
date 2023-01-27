@@ -1,15 +1,5 @@
-**v5.0**
+v5.1
+________________________
 
-`removed some broken features`
-
-`added array kick v2`
-
-`added addict crashes`
-
-`added task crashes`
-
-`added breakup kick to select pussies`
-
-`added Constructipede ` 
-
-`added jack hammer noises`
+Added Tp Casino Faster Alt - In Stand>Lua Scripts>Addict Script>Net Shit>Tp Casino
+Updated Max Player - Now turns on explosive ammo and fastrun
