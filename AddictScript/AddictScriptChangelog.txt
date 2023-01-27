@@ -1,5 +1,7 @@
-v5.1
+v5.2
 ________________________
+
+Added friendly persmisons command to crazyrank
 
 Added Tp Casino Faster Alt - In Stand>Lua Scripts>Addict Script>Net Shit>Tp Casino
 
