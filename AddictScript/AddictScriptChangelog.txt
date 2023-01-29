@@ -3,4 +3,4 @@ ________________________
 
 Fixed bugs with torment loops
 
-Re-added Rain Ped - Fixed from a while ago
+Re-added Rain Peds - Fixed from a while ago
