@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.4
+local local_menu_version = 5.5
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1105,6 +1105,34 @@ end)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	cashloops = menu.list(menu.my_root(), "Cash Loops", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
+
+    acidlabmanager = menu.list(cashloops, "Acid Lab Manager", {}, "", function(); end)
+
+menu.divider(acidlabmanager, "Acid Lab Manager")
+menu.click_slider(acidlabmanager, "Product Capacity", {"productcapacity"}, "", 0, 1000, 160, 1, function(capacity)
+    memory.write_int(memory.script_global(262145 + 18949), capacity) 
+end)
+
+menu.toggle(acidlabmanager, "Make Supplies Free", {"supplycost"}, "", function()
+    memory.write_int(memory.script_global(262145 + 21869), 0)
+end, function()
+    memory.write_int(memory.script_global(262145 + 21869), 60000)
+end)
+
+menu.toggle(acidlabmanager, "Increase Production Speed", {"increaseproductionspeed"}, "", function()
+    memory.write_int(memory.script_global(262145 + 17396), 100) 
+end, function()
+    memory.write_int(memory.script_global(262145 + 17396), 135000) 
+end)
+
+menu.action(acidlabmanager, "Resupply Acid", {"resupplyacid"}, "", function()
+    local time = NETWORK.GET_CLOUD_TIME_AS_INT() - memory.read_int(memory.script_global(262145 + 18954))
+    memory.write_int(memory.script_global(1648637 + 1 + 6), time)
+end)
+
+menu.click_slider(acidlabmanager, "Sell Value Multiplier", {"value"}, "Warning: Tested safe amount is ~2 million. Try not to exceed unless you're bored and don't care about your account.", 0, 10000, 1, 1, function(value)
+    memory.write_int(memory.script_global(262145 + 17425), value * 1485) 
+end)
  
     cashskids = menu.list(cashloops, "Recovery Loops", {}, "Skidded of course.", function(); end)
 
@@ -2551,8 +2579,6 @@ function STEALTH_LOOP_COMBINED()
          x = x + 1
      end
  end
-
-menu.divider(cashloops, "Start $$$ Loop")
 
 cashloop = menu.list(cashloops, "500k + 750k Loop", {}, "$$$ Loop", function(); end)
 
@@ -4542,6 +4568,26 @@ menu.action(custselc, "Give Crazy Rank", {"crazyrankto"}, "", function()
     end
 end)
 
+menu.action(custselc, "Rank 8000", {"rank8000to"}, "Sets rank to 8000.", function()
+    menu.trigger_commands("excludepussies")
+    util.yield(1500)
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("psetrank" .. PLAYER.GET_PLAYER_NAME(pids) .. " 8000")
+                notification("Rank 8000 Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("psetrank" .. PLAYER.GET_PLAYER_NAME(pids) .. " 8000")
+                notification("Rank 8000 Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
 menu.action(custselc, "Give RP Steadily", {"giverpstedto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -5411,7 +5457,7 @@ end)
 
 menu.action(help1, "Commands A", {"help1"}, "", function()
     chat.send_message(
-        "/max NAME - Gives auto heal, ammo guns and ceo pay. /ceopay NAME /givecollectibles NAME /rp NAME",
+        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyrank NAME /rank8000 NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -5421,7 +5467,7 @@ end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
     chat.send_message(
-        "/max NAME - Gives auto heal, ammo guns and ceo pay. /ceopay NAME /givecollectibles NAME /rp NAME",
+        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyrank NAME /rank8000 NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -7015,6 +7061,34 @@ end
 		end
 	end, false)
 
+    function get_entity_player_is_aiming_at(player)
+        if not PLAYER.IS_PLAYER_FREE_AIMING(player) then
+            return NULL
+        end
+        local entity, pEntity = NULL, memory.alloc_int()
+        if PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(player, pEntity) then
+            entity = memory.read_int(pEntity)
+        end
+        if entity ~= NULL and ENTITY.IS_ENTITY_A_PED(entity) and PED.IS_PED_IN_ANY_VEHICLE(entity, false) then
+            entity = PED.GET_VEHICLE_PED_IS_IN(entity, false)
+        end
+        return entity
+    end
+    
+    
+    
+    menu.toggle_loop(worldchaos, "Kick at shoot", {}, "", function()
+        local entity = get_entity_player_is_aiming_at(players.user())
+        if entity ~= 0 and ENTITY.DOES_ENTITY_EXIST(entity) then
+            menu.trigger_commands("lovekick" ..PLAYER.GET_PLAYER_NAME(pid))
+            if PED.IS_PED_SHOOTING(players.user_ped()) and
+            not (shotEntities[1] and shotEntities[1] == entity) then
+                counter = counter + 1
+                shotEntities[counter] = entity
+            end
+        end
+    end)
+
     asteroids = false
 menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
     if on then
@@ -7024,6 +7098,18 @@ menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", fu
         asteroids = false
     end
 end, false)
+
+menu.toggle_loop(worldchaos, "Spinbot", {"spinbot"}, "", function()
+    local vehicle = PED.GET_VEHICLE_PED_IS_USING(players.user_ped())
+    local velocity = ENTITY.GET_ENTITY_VELOCITY(vehicle)
+    local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(vehicle)
+    if height < 5.0 and height > 0.1 then
+       --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(vehicle)
+    end
+    if vehicle ~= 0 and not PED.IS_PED_DEAD_OR_DYING(players.user_ped()) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(vehicle) then
+        ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+    end
+end)
 
 	drift = false
 	menu.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
@@ -7868,6 +7954,7 @@ read_global = {
 
 	griefing = menu.list(menu.player_root(pid), "Griefing", {}, "", function(); end)
 
+
     menu.toggle_loop(griefing, "Owned snipe", {"snipe"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
         owner = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -8018,6 +8105,7 @@ read_global = {
     local windmilling = menu.list(attachoptions, "Spam Windmills", {}, "")
 
     menu.toggle_loop(windmilling, "Spam Windmills", {"togglemills"}, "", function(on_toggle)
+        if pid ~= players.user() then
         local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
         local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
         local Object_pizza2 = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -8040,11 +8128,12 @@ read_global = {
         entities.delete_by_handle(Object_pizza2)
         entities.delete_by_handle(Object_pizza2)
         return
+        end
     end
     end)
 
     menu.toggle_loop(windmilling, "Windmills V2", {"togglemillsv1"}, "", function(on_toggle)
-        BlockSyncs(pid, function()
+        if pid ~= players.user() then
                 local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
                 OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
                 entities.delete_by_handle(object)
@@ -8076,10 +8165,11 @@ read_global = {
                 OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
                 util.yield(1000)
                 entities.delete_by_handle(object)
-            end)
+            end
         end)
 
     menu.toggle_loop(windmilling, "Attach Windmills", {"attachmills"}, "", function()
+        if pid ~= players.user() then
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -8109,6 +8199,7 @@ read_global = {
         ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle4, vehicle1, 0, 3, 0, 0, 0, 0, 0, 0, false, true, false, 0, true)
         ENTITY.SET_ENTITY_VISIBLE(vehicle1, true)
         util.yield(10)
+        end
     end)
 
     menu.divider(windmilling, "__________________bruh__________________")
@@ -8295,7 +8386,6 @@ read_global = {
 			ENTITY.DETACH_ENTITY(players.user_ped(), true, false)
 		end
 	end)
-
 
     local crash_ents = {}
     local crash_toggle = false
@@ -11346,6 +11436,9 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 	PED.SET_PED_INTO_VEHICLE(pilot, heli, -1)
 	PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilot, true)
 
+
+   
+
 	PED.SET_PED_MAX_HEALTH(pilot, 500)
 	ENTITY.SET_ENTITY_HEALTH(pilot, 500)
 	ENTITY.SET_ENTITY_INVINCIBLE(pilot, buzzard_godmode)
@@ -11384,8 +11477,8 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 
 	buzzard_visible = true
 	local gunner_weapon = "weapon_combatmg"
-	
-	menu.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
+
+    menu.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
 		local pilot, heli = spawn_buzzard(pid, gunner_weapon, collision)
 
 		while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -11431,6 +11524,136 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 		end
 	end)
 
+---------------------------------------------- attacker lazer --------------------------------------------------------
+
+local gunner_weapon_lists = { --these are the lazer's gunner weapons 
+{"Combat MG", "weapon_combatmg"},
+{"RPG", "weapon_rpg"}
+}
+
+lazer_entities = {}
+    
+    function spawn_lazer(pid, gunner_weapon, collision)
+        local player_peds =  PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(player_peds)
+        pos.x = pos.x + math.random(-20, 20)
+        pos.y = pos.y + math.random(-20, 20)
+        pos.z = pos.z + math.random(20, 40)
+    
+        PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_peds, util.joaat("PLAYER"))
+    
+        local lazer_hash = util.joaat("lazer")
+        local ped_hash = util.joaat("S_M_Y_ArmyMech_01")
+        STREAMING.REQUEST_MODEL(ped_hash)
+        STREAMING.REQUEST_MODEL(lazer_hash)
+        while not STREAMING.HAS_MODEL_LOADED(ped_hash) or not STREAMING.HAS_MODEL_LOADED(lazer_hash) do
+            util.yield()
+        end
+        local lazer = entities.create_vehicle(lazer_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        lazer_entities[#lazer_entities + 1] = lazer
+        
+        ENTITY.SET_ENTITY_INVINCIBLE(lazer, lazer_godmode)
+        ENTITY.SET_ENTITY_VISIBLE(lazer, lazer_visible, 0)	
+        VEHICLE.SET_VEHICLE_ENGINE_ON(lazer, true, true, true)
+        VEHICLE.SET_HELI_BLADES_FULL_SPEED(lazer)
+        VEHICLE.CONTROL_LANDING_GEAR(lazer, 3)    
+        local pilots = entities.create_ped(5, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        lazer_entities[#lazer_entities + 1] = pilots
+        
+        PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilots, util.joaat("ARMY"))
+        ENTITY.SET_ENTITY_VISIBLE(pilots, lazer_visible, 0)
+        PED.SET_PED_INTO_VEHICLE(pilots, lazer, -1)
+        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilots, true)
+
+        PED.SET_PED_MAX_HEALTH(pilots, 500)
+        ENTITY.SET_ENTITY_HEALTH(pilots, 500)
+        ENTITY.SET_ENTITY_INVINCIBLE(pilots, lazer_godmode)
+        TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(pilots, 500, 0)
+    
+        local gunners = {}
+        for i  = 1, 45 do
+            gunners[i] = entities.create_ped(29, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+            lazer_entities[#lazer_entities + 1] = gunners[i]
+            PED.SET_PED_INTO_VEHICLE(gunners[i], lazer, i)
+            WEAPON.GIVE_WEAPON_TO_PED(gunners[i], util.joaat(gunner_weapon) , 9999, false, true)
+            PED.SET_PED_COMBAT_ATTRIBUTES(gunners[i], 20 --[[ they can shoot from vehicle ]], true)
+            --PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(gunner[i], true)
+            PED.SET_PED_MAX_HEALTH(gunners[i], 500)
+            ENTITY.SET_ENTITY_HEALTH(gunners[i], 500)
+            ENTITY.SET_ENTITY_INVINCIBLE(gunners[i], lazer_godmode)
+            ENTITY.SET_ENTITY_VISIBLE(gunners[i], lazer_visible, 0)
+            PED.SET_PED_SHOOT_RATE(gunners[i], 1000)
+            PED.SET_PED_RELATIONSHIP_GROUP_HASH(gunners[i], util.joaat("ARMY"))
+            TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(gunners[i], 1000, 0)
+        end
+        
+        util.create_tick_handler(function()
+            PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("ARMY"), util.joaat("PLAYER"))
+            PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("PLAYER"), util.joaat("ARMY"))
+            PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
+        end)
+
+        notification("Army Attack sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
+        return pilot, lazer
+        end	
+    
+        local lazer_options = menu.list(griefing, "Army Attack", {}, "")
+    
+        menu.divider(lazer_options, "Army Attack")
+    
+        lazer_visible = true
+        local gunner_weapons = "weapon_combatmg"
+	
+	menu.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
+		local pilot, lazer = spawn_lazer(pid, gunner_weapons, collision)
+        menu.trigger_commands("sendtank " .. players.get_name(pid))
+        menu.trigger_commands("sendbuzzard " .. players.get_name(pid))
+		while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
+			local player_peds = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+			local a = ENTITY.GET_ENTITY_COORDS(player_peds)
+			local b = ENTITY.GET_ENTITY_COORDS(lazer)
+			if MISC.GET_DISTANCE_BETWEEN_COORDS(a.x, a.y, a.z, b.x, b.y, b.z, true) > 90 then
+				TASK.TASK_HELI_CHASE(pilot, player_peds, 0, 0, 50)
+			else
+				TASK.TASK_HELI_MISSION(pilot, lazer, 0, player_peds, a.x, a.y, a.z, 23, 30, -1, -1, 10, 10, 5, 0)
+			end
+			util.yield()
+		end
+	end)
+
+    
+	menu.divider(lazer_options, "Settings")
+
+	menu.toggle(lazer_options, "Invincible", {"invincarmy"}, "", function(on)
+		lazer_godmode = on
+	end, false)
+	
+	local menu_gunner_weapon_lists = menu.list(lazer_options, "Gunners Weapon")
+	menu.divider(menu_gunner_weapon_lists, "Gunner Weapon List")
+
+	for i = 1, #gunner_weapon_lists do
+		menu.action(menu_gunner_weapon_lists, gunner_weapon_lists[i][1], {}, "", function()
+			gunner_weapons = gunner_weapon_lists[i][2]
+			notification("Now gunners will shoot with "..gunner_weapon_lists[i][1].."s", colors.red)
+		end)
+	end
+
+	menu.toggle(lazer_options, "Visible", {"visablearmy"}, "You shouldn't be that toxic to turn this off", function(on)
+		lazer_visible = on
+	end, true)
+
+	menu.toggle(lazer_options, "Collision", {"collisionarmy"}, "When it's turned off disables world collision for army. Playes can still destroy the vehicle", function(on)
+		collision = on
+	end, false)
+
+	menu.action(lazer_options, "Delete All", {"deletearmy"}, "Deletes all army you've spawned", function()
+		for key, value in pairs(lazer_entities) do
+			entities.delete_by_handle(value)
+		end
+	end)
+
+    -----------------------------------------------------------------------------------------------End------------------------------------------------------------------------------
+
 	menu.action(griefing,"Spawn Attacker Tank", {"sendtank"}, "", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		if table_kidnap == nil then
@@ -11438,59 +11661,46 @@ function spawn_buzzard(pid, gunner_weapon, collision)
 		end
         hash = util.joaat("rhino")
         ped_hash = util.joaat("MP_M_Cocaine_01")
-
         if STREAMING.IS_MODEL_A_VEHICLE(hash) then
             STREAMING.REQUEST_MODEL(hash)
-
             while not STREAMING.HAS_MODEL_LOADED(hash) do
-
                 util.yield()
             end
-
             local aab = 
 			{
 				x = -5784.258301,
 				y = -8289.385742,
 				z = -136.411270
 			}
-
             ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
             ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-
             table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-                                              CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
+            CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
             while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
                 STREAMING.REQUEST_MODEL(ped_hash)
                 util.yield()
             end
             ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
             ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-
             ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
             ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
                 true, true, false, 0, false)
-
             coords_ped = v3()
             coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
             coords_ped.x = coords_ped.x + math.random(-20, 20)
             coords_ped.y = coords_ped.y + math.random(-20, 20)
             coords_ped.z = coords_ped.z
-
             ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
             PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
-
             VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
             TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
             TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
-
             util.yield(1)
             entities.delete_by_handle(ped_to_kidnap)
             veh_to_attach = veh_to_attach + 1
-
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
-
-            --util.toast(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
+            util.toast(os.date("%H:%M:%S") .. " Tank Sent To Attack", TOAST_ABOVE_MAP)
         end
 	end)
 
@@ -12095,6 +12305,13 @@ end)
         end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
+    menu.action(drops, "Rank 8000", {"rank8000"}, "Sets rank to 8000.", function()
+        if pid ~= players.user() then
+            menu.trigger_commands("psetrank" .. players.get_name(pid) .. " 8000")
+            util.yield(10)
+        end
+	end, nil, nil, COMMANDPERM_FRIENDLY)
+
     menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
         if pid ~= players.user() then
 	    for i = 1, 20 do
@@ -12498,23 +12715,23 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     util.yield(10)
     menu.trigger_commands("animlapdance1")
     menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("smash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("footlettuce" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(3000)
+    util.yield(1000)
     menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(50000)
+    util.yield(5000)
     menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
     menu.trigger_commands("cancelanim")
 end)
@@ -13225,6 +13442,10 @@ local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns an
             util.yield()
             menu.trigger_commands("anticrashcamera")
             util.yield()
+            menu.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
             menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
             menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -13249,6 +13470,10 @@ local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns an
             util.yield(200)
         else
             util.yield()
+            menu.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
+            menu.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            util.yield(200)
             menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
             menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -13280,6 +13505,108 @@ local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns an
         end)
        
        menu.divider(TaskCrashes, "_________________________________________")
+
+
+       local peds = 5
+menu.slider(TaskCrashes, "Number Of Guitars & Bongos", {"noguitarsnbongos"}, "Sends Guitar & Bongos crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Guitar & Bongos Crash", {"bongoguitarscrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("IG_Musician_00")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_MUSICIAN", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("prop_acc_guitar_01") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
+
+
+       local peds = 5
+menu.slider(TaskCrashes, "Number Of Cigars", {"nocigars"}, "Sends Cigar crash.", 1, 45, 45, 1, function(amount)
+    peds = amount
+end)
+
+local crash_ents = {}
+local crash_toggle = false
+menu.toggle(TaskCrashes, "Cigar Crash", {"cigarscrash"}, "It's risky to spectate using this but your call", function(val)
+    crash_toggle = val
+        if val then
+            local number_of_peds = peds
+            local ped_mdl = util.joaat("A_F_Y_BevHills_02")
+            local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local ped_pos = players.get_position(pid)
+            ped_pos.z += 3
+            request_model(ped_mdl)
+            for i = 1, number_of_peds do
+                local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                crash_ents[i] = ped
+                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, true)
+            end
+            repeat
+                for k, ped in crash_ents do
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                    TASK.TASK_START_SCENARIO_IN_PLACE(ped, "WORLD_HUMAN_SMOKING", 0, false)
+                end
+                for k, v in entities.get_all_objects_as_pointers() do
+                    if entities.get_model_hash(v) == util.joaat("ng_proc_cigarette01a") then
+--                        entities.delete_by_pointer(v)
+                    end
+                end
+                util.yield_once()
+                util.yield_once()
+            until not (crash_toggle and players.exists(pid))
+            crash_toggle = false
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        else
+            for k, obj in crash_ents do
+--                entities.delete_by_handle(obj)
+            end
+            crash_ents = {}
+        end
+end)
 
 local peds = 5
 menu.slider(TaskCrashes, "Number Of Spatulas", {"nospatulars"}, "Sends Spatula crash.", 1, 45, 45, 1, function(amount)
@@ -16015,7 +16342,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 local fragcrash = menu.list(crash, "Fragment Crash", {}, "")
 
                 menu.toggle_loop(fragcrash, "Fragment Crash V1", {"togglefragv1"}, "Skidded From 2take1", function(on_toggle)
-                BlockSyncs(pid, function()
+                if pid ~= players.user() then
                         local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
                         OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                         entities.delete_by_handle(object)
@@ -16047,10 +16374,11 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                         util.yield(1000)
                         entities.delete_by_handle(object)
-                    end)
+                    end
                 end)
 
                 menu.toggle_loop(fragcrash, "Fragment Crash V2", {"togglefragv2"}, "", function(on_toggle)
+                    if pid ~= players.user() then
                     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
                     local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
                     local Object_pizza2 = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -16073,10 +16401,12 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     entities.delete_by_handle(Object_pizza2)
                     entities.delete_by_handle(Object_pizza2)
                     return
+                    end
                 end
-                end)
+            end)
 
                 menu.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
+                    if pid ~= players.user() then
                     notification("Fragment Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                 if on_toggle then
                         menu.trigger_commands("togglefragv1" .. players.get_name(pid))
@@ -16085,6 +16415,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         menu.trigger_commands("togglefragv1" .. players.get_name(pid))
                         menu.trigger_commands("togglefragv2" .. players.get_name(pid))
                         menu.trigger_commands("superc")
+                        end
                     end
                 end)
 
