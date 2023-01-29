@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.6
+local local_menu_version = 5.7
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4587,15 +4587,17 @@ menu.action(custselc, "{Jrukii's} RP Loop", {"rankall"}, "", function()
 end)
 
 
-menu.action(custselc, "Give Crazy Loop", {"crazyloopto"}, "", function()
+menu.action(custselc, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                util.yield(2000)
                 menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                util.yield(1500)
                 menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
@@ -7646,7 +7648,26 @@ GenerateFeatures = function(pid)
 		end
 	end)
 
+    --[[
+    
+    menu.action(troll_sub_vehicle_tab, "Spawn Ramp in Front of them", {}, "", function() 
+        local ramp_hash = util.joaat("stt_prop_ramp_jump_s")
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+        local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0, 10, -2)
+        local rot = ENTITY.GET_ENTITY_ROTATION(ped, 2)
+        STREAMING.REQUEST_MODEL(ramp_hash)
+    	while not STREAMING.HAS_MODEL_LOADED(ramp_hash) do
+    		util.yield()
+    	end
+        local ramp = OBJECT.CREATE_OBJECT(ramp_hash, pos.x, pos.y, pos.z, true, false, true)
+        ENTITY.SET_ENTITY_VISIBLE(ramp, false)
+        ENTITY.SET_ENTITY_ROTATION(ramp, rot.x, rot.y, rot.z + 90, 0, true)
+        util.yield(1000)
+        entities.delete_by_handle(ramp)
+    end)
 
+    ]]
+    
     menu.toggle_loop(troll_sub_vehicle_tab, "Glitch Vehicle", {}, "", function()
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
@@ -8955,7 +8976,7 @@ menu.action(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the pla
     player_toggle_loop(tormentplayer, pid, "EMP", {"emploop"}, "", function()
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped)
-        for i = 1, 50 do
+        for i = 1, 49 do
             MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(pos.x, pos.y, pos.z + 1, pos.x, pos.y, pos.z, 0, true, util.joaat("weapon_emplauncher"), players.user_ped(), false, true, 1.0)
         end
         util.yield()
@@ -8964,7 +8985,7 @@ menu.action(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the pla
     player_toggle_loop(tormentplayer, pid, "Flare", {"flareon"}, "", function()
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped)
-        for i = 1, 50 do
+        for i = 1, 49 do
             MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(pos.x, pos.y, pos.z + 1, pos.x, pos.y, pos.z, 0, true, util.joaat("weapon_flare"), players.user_ped(), false, true, 1.0)
         end
         util.yield()
@@ -9087,12 +9108,12 @@ menu.toggle_loop(tormentplayer, "Glitch Physics", {"glitchphysics"}, "", functio
     entities.delete_by_handle(vehicle1)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
---[[
-menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainpeds"}, "", function(on_toggle)
+
+menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", function(on_toggle)
     notification("Rain Peds sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-        all_peds = entities.get_all_peds_as_pointers()
+        all_peds = entities.get_all_peds_as_handles()
     for k,ped in pairs(all_peds) do
         if not PED.IS_PED_A_PLAYER(ped) then
             if PED.IS_PED_IN_ANY_VEHICLE(ped, true) then
@@ -9109,7 +9130,6 @@ menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainpeds"}, "", functio
         end
     end
 end)
-]]
 
 menu.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", function(on_toggle)
     notification("Rain Vehicles sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
@@ -11785,9 +11805,9 @@ lazer_entities = {}
 	end, false)
 
 	menu.action(lazer_options, "Delete All", {"deletearmy"}, "Deletes all army you've spawned", function()
-		for key, value in pairs(lazer_entities) do
-			entities.delete_by_handle(value)
-		end
+        menu.trigger_commands("noentities")
+        util.yield(1000)
+        menu.trigger_commands("noentities")
 	end)
 
     -----------------------------------------------------------------------------------------------End------------------------------------------------------------------------------
@@ -12524,17 +12544,17 @@ end)
     menu.action(drops, "Crazy Loop", {"crazyloop"}, "", function()
         if pid ~= players.user() then
             menu.trigger_commands("cards" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(1000)
             menu.trigger_commands("giverp" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(1000)
             menu.trigger_commands("givecash" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(1000)
             menu.trigger_commands("givebigrp" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(1000)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(1000)
             menu.trigger_commands("dropfigures" .. players.get_name(pid))
-            util.yield(200)
+            util.yield(2000)
             menu.trigger_commands("givecollectibles" .. players.get_name(pid))
         end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
