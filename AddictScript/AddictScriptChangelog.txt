@@ -1,18 +1,6 @@
-v5.6
+v5.7
 ________________________
 
-Added Push him up
+Fixed bugs with torment loops
 
-Added Attacker Kamikaze lazer
-
-Added Spawn Attacker MiniTank
-
-Added Auto TP to Taxi Pickup - In >Cash Loops>Auto TP to Taxi Pickup
-
-Added Block Enterances - In >Chaos Shit>Block Entrances
-
-Added Commanded Guns (BETA) - Kick at shoot/Crash at shoot - In >Chaos Shit>Commanded Guns>Kick at shoot
-
-Edited Crazyrank < to > Crazyloop
-
-Added Money Loops
+Re-added Rain Ped - Fixed from a while ago
