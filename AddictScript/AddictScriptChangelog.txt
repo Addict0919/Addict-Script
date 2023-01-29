@@ -1,10 +1,18 @@
-v5.5
+v5.6
 ________________________
 
-Added Spinbot
+Added Push him up
 
-Added Acid Lab Recovery
+Added Attacker Kamikaze lazer
 
-Added Rank Player 8000
+Added Spawn Attacker MiniTank
 
-Added Spawn Army - Spawns a huge army on selected target
+Added Auto TP to Taxi Pickup - In >Cash Loops>Auto TP to Taxi Pickup
+
+Added Block Enterances - In >Chaos Shit>Block Entrances
+
+Added Commanded Guns (BETA) - Kick at shoot/Crash at shoot - In >Chaos Shit>Commanded Guns>Kick at shoot
+
+Edited Crazyrank < to > Crazyloop
+
+Added Money Loops
