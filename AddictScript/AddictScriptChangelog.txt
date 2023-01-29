@@ -1,18 +1,10 @@
-v5.4
+v5.5
 ________________________
 
-Added Anti-Try Hard Shit In - Stand>Lua Scripts>Addict Script>Chaos Shit>Anti-Oppressor
+Added Spinbot
 
-Added Anti-Lazer
+Added Acid Lab Recovery
 
-Added Anti-Kosatka
+Added Rank Player 8000
 
-Added Anti-Hydra
-
-Added Asteroid Shower - Stand>Lua Scripts>Addict Script>Chaos Shit>Asteroid Shower
-
-Added Ped blackhole
-
-Added Object Blackhole
-
-Rejected Dev Fixed Auto Updater
+Added Spawn Army - Spawns a huge army on selected target
