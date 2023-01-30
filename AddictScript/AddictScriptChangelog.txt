@@ -1,6 +1,8 @@
 v5.8
 ________________________
 
+Removed Set Torque
+
 Moved alot of mods into correct order of tabs
 
 Added Spawn Khanjali Attacker
