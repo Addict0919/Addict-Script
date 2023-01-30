@@ -5,6 +5,8 @@ Removed Set Torque
 
 Moved alot of mods into correct order of tabs
 
+Added Stop Propeller Blades
+
 Added Spawn Khanjali Attacker
 
 Added Spawn UFO Attacker
