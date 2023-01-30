@@ -1,6 +1,8 @@
-v5.7
+v5.8
 ________________________
 
-Fixed bugs with torment loops
+Moved alot of mods into correct order of tabs
 
-Re-added Rain Peds - Fixed from a while ago
+Added Spawn Khanjali Attacker
+
+Added Spawn UFO Attacker
