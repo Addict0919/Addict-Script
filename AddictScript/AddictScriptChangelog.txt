@@ -19,7 +19,7 @@ Added Candy Upgrade Vehicle to Select Pussies
 
 Added Edit Projectiles - In Chaos Shit
 ________________________
-v6.0
+v6.1
 ________________________
 
-Fixed Alien Explosion - In Attackers
+Added Send UFO to Select Pussies
