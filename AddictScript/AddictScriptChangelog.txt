@@ -1,6 +1,5 @@
 v5.9
 ________________________
-
 Added Anti-Khanjali - In Chaos Shit
 Added Block Clones - In Protections
 Added Superdrive/SuperHandbreak in 1 - In Fun Shit
@@ -11,6 +10,8 @@ Added Cash Loop to Select Pussies
 Added Candy Upgrade Vehicle to Select Pussies
 Added Edit Projectiles - In Chaos Shit
 ________________________
+v6.0
+Fixed Alien Explosion - In Attackers
+________________________
 v6.1
-
 Added Send UFO to Select Pussies
