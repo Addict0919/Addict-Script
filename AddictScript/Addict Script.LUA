@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.0
+local local_menu_version = 6.1
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4678,6 +4678,24 @@ menu.action(helpful_trolling, "Candy Upgrade Vehicle", {"candyvehs"}, "Sets vehi
     end
 end)
 
+menu.action(helpful_trolling, "Send UFO Attacker", {"sendufo"}, "Sends a ufo to hunt them and kil them.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("ugvsendufoeh" .. PLAYER.GET_PLAYER_NAME(pids))
+                notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            end
+        end
+    end
+end)
+
 menu.action(helpful_trolling, "Vehicle Kick", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -9280,9 +9298,23 @@ local ufo_options = menu.list(Attackers_trollys, "Enemy Ufo", {}, "")
 
 menu.divider(ufo_options, "Enemy Ufo")
 
-
 local gunner_weapon = "weapon_combatmg"
-menu.toggle_loop(ufo_options, "Spawn Ufo", {"sendufo"}, "Spawns a ufo every 3 seconds if left toggled.", function()
+menu.action(ufo_options, "Spawn Ufo", {"sendufo"}, "Spawns a ufo.", function()
+    local pilot, heli = spawn_ufo(pid, gunner_weapon, collision)
+    while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
+        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local a = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local b = ENTITY.GET_ENTITY_COORDS(heli)
+        if MISC.GET_DISTANCE_BETWEEN_COORDS(a.x, a.y, a.z, b.x, b.y, b.z, true) > 90 then
+            TASK.TASK_HELI_CHASE(pilot, player_ped, 0, 0, 50)
+        else
+            TASK.TASK_HELI_MISSION(pilot, heli, 0, player_ped, a.x, a.y, a.z, 23, 30, -1, -1, 10, 10, 5, 0)
+        end
+        util.yield()
+    end
+end)
+
+menu.toggle_loop(ufo_options, "Spawn Ufo Every 3 Seconds", {"send3ufo"}, "Spawns a ufo every 3 seconds if left toggled.", function()
     local pilot, heli = spawn_ufo(pid, gunner_weapon, collision)
     util.yield(3000)
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
