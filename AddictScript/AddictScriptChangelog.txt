@@ -1,12 +1,20 @@
-v5.8
+v5.9
 ________________________
 
-Removed Set Torque
+Added Anti-Khanjali - In Chaos Shit
 
-Moved alot of mods into correct order of tabs
+Added Block Clones - In Protections
 
-Added Stop Propeller Blades
+Added Superdrive/SuperHandbreak in 1 - In Fun Shit
 
-Added Spawn Khanjali Attacker
+Added Stick To Surface - In fun Shit & Playerlist Movement Options
 
-Added Spawn UFO Attacker
+Added More Owned & Anon Features
+
+Added Alien Explosion - In Attackers
+
+Added Cash Loop to Select Pussies
+
+Added Candy Upgrade Vehicle to Select Pussies
+
+Added Edit Projectiles - In Chaos Shit
