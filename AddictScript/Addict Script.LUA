@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 5.9
+local local_menu_version = 6.0
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -9301,11 +9301,7 @@ end)
 menu.action(ufo_options, "Alien Explosion", {"ufoexplode"}, "Simulate an alien invasion", function()
     local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local c = ENTITY.GET_ENTITY_COORDS(p)
-    STREAMING.REQUEST_MODEL(ufo)
-    while not STREAMING.HAS_MODEL_LOADED(ufo) do
-        STREAMING.REQUEST_MODEL(ufo)
-        util.yield()
-    end
+    local ufo = util.joaat("sum_prop_dufocore_01a")
     menu.trigger_commands("freeze".. players.get_name(pid).. " on")
     c.z = c.z + 10
     local spawnedufo = entities.create_object(ufo, c) --creates ufo
