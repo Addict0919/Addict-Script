@@ -89,16 +89,15 @@ menu.divider(Credits, "Great Coders <3")
 menu.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
 menu.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
 menu.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
-menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
 menu.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
+menu.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
+menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
 menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
 menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-menu.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions and testing :)", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
-menu.action(Credits, "Mr's Candy <3", {}, "(Candy's Girlfriend) Great morel support kept me smiling, happy and aloud me to code without a bother <3.", function() end)
 menu.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
 menu.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
 menu.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
@@ -4551,24 +4550,6 @@ menu.divider(custselc, "Slap Man")
 
 rp_cash_loops = menu.list(custselc, "Cash & RP Loops", {}, "", function(); end)
 
-menu.action(rp_cash_loops, "Give Cash Loop", {"givecashto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                util.yield(2000)
-                menu.trigger_commands("givecash" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                util.yield(1500)
-                menu.trigger_commands("givecash" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-            end
-        end
-    end
-end)
-
 menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -4633,24 +4614,6 @@ menu.action(rp_cash_loops, "Give RP Loop", {"giverpto"}, "", function()
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
                 notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
-            end
-        end
-    end
-end)
-
-menu.action(rp_cash_loops, "Rank 8000", {"rank8000to"}, "Sets rank to 8000.", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("psetrank" .. PLAYER.GET_PLAYER_NAME(pids) .. " 8000")
-                notification("Rank 8000 Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("psetrank" .. PLAYER.GET_PLAYER_NAME(pids) .. " 8000")
-                notification("Rank 8000 Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -5564,7 +5527,7 @@ end)
 
 menu.action(help1, "Commands A", {"help1"}, "", function()
     chat.send_message(
-        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME /givecash NAME",
+        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -5574,7 +5537,7 @@ end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
     chat.send_message(
-        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME /givecash NAME",
+        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -8063,16 +8026,6 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.toggle_loop(mov_sub_vehicle_tab, 'Stick to surface', {'stickyveh'}, 'Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function ()
-        local curcar = get_player_veh(pid,true)
-        if curcar then
-            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
-            VEHICLE.MODIFY_VEHICLE_TOP_SPEED(curcar, 40)
-        else
-            util.yield()
-            end
-        end)
-
 	menu.action(mov_sub_vehicle_tab,"Trash Speed", {"trashaccs"}, "Sets max speed of vehicle to INT_MIN",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
@@ -8625,7 +8578,7 @@ read_global = {
     local windmilling = menu.list(attachoptions, "Spam Windmills", {}, "")
 
     menu.toggle_loop(windmilling, "Spam Windmills", {"togglemills"}, "", function(on_toggle)
-        if pid ~= players.user() then
+ --       if pid ~= players.user() then
         local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
         local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
         local Object_pizza2 = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -8648,7 +8601,7 @@ read_global = {
         entities.delete_by_handle(Object_pizza2)
         entities.delete_by_handle(Object_pizza2)
         return
-        end
+--        end
     end
     end)
 
@@ -12886,7 +12839,6 @@ end)
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
-                menu.trigger_commands("givefastrun".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
 	    notification("MAXED!!! GANG SHIT!!!", colors.red)
@@ -12905,38 +12857,9 @@ end)
     
     local drops = menu.list(frienm, "Addict Drops", {}, "")
 
-    menu.toggle_loop(drops, "Money Loop", {"givecash"}, "Gives Players Money $10 mill drops may not work in some sessions.", function(toggle)
-        if pid ~= players.user() then
-	    for i = 1, 20 do
-        menu.trigger_commands("givesh" .. players.get_name(pid))
-        util.yield(100)
-		util.trigger_script_event(1 << pid, {pid, 288807, 140707433584256})
-        util.trigger_script_event(1 << pid, {pid, 288808, 140707735690094})
-        util.trigger_script_event(1 << pid, {pid, 288809, 140707423584256})
-        util.trigger_script_event(1 << pid, {pid, 288810, 140707423584256})
-        util.trigger_script_event(1 << pid, {pid, 288811, 140707423584257})
-        util.trigger_script_event(1 << pid, {pid, 288812, 140709571067903})
-        util.trigger_script_event(1 << pid, {pid, 288806, 140707423584256})
-        util.trigger_script_event(1 << pid, {pid, 26003, 140707423584257})
-        util.yield(200)
-        util.trigger_script_event(1 << pid, {pid, 288807, 140728908420736})
-        util.trigger_script_event(1 << pid, {pid, 288808, 140729210526574})
-        util.trigger_script_event(1 << pid, {pid, 288809, 140728898420736})
-        util.trigger_script_event(1 << pid, {pid, 288810, 140728898420736})
-        util.trigger_script_event(1 << pid, {pid, 288811, 140728898420737})
-        util.trigger_script_event(1 << pid, {pid, 288812, 140731045904383})
-        util.trigger_script_event(1 << pid, {pid, 288806, 140728898420736})
-        util.trigger_script_event(1 << pid, {pid, 26003, 140728898420737})
-        util.yield(200)
-            end
-        end
-    end)
-
     menu.action(drops, "Crazy Loop", {"crazyloop"}, "", function()
         if pid ~= players.user() then
             menu.trigger_commands("cards" .. players.get_name(pid))
-            util.yield(1000)
-            menu.trigger_commands("givecash" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("giverp" .. players.get_name(pid))
             util.yield(1000)
@@ -12953,13 +12876,6 @@ end)
     
     menu.action(drops, "Give All Collectibles", {"collects"}, "", function()
         menu.trigger_commands("givecollectibles" .. players.get_name(pid))
-	end, nil, nil, COMMANDPERM_FRIENDLY)
-
-    menu.action(drops, "Rank 8000", {"rank8000"}, "Sets rank to 8000.", function()
-        if pid ~= players.user() then
-            menu.trigger_commands("psetrank" .. players.get_name(pid) .. " 8000")
-            util.yield(10)
-        end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
     menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
@@ -18027,14 +17943,14 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
                     menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
                     menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
                     menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
                     menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
                     menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
                     menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
                     util.yield(100)
                     menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                    menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
                     end)
 
 
@@ -18069,17 +17985,17 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
                         menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
                         menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("spatcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
                         menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
                         menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
                         menu.trigger_commands("nospat".. players.get_name(pid) .. " 100")
                         menu.trigger_commands("nospat".. players.get_name(pid) .. " 1")
                         util.yield(100)
                         menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("spatcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                        menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
                         end)
 
-            
+            --[[
             local scrash = menu.list(crash, "Script Event Crashes", {}, "Won't work on yourself report any not working at all please.")
 
             menu.toggle_loop(scrash, "SE Crash (S0)", {"crashs0"}, "A very strong SE/SH crash.", function(on_toggle)
@@ -18210,6 +18126,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 notification("SUS Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                             end)
 
+]]
 
             local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {}, "From Nightfall")
 
