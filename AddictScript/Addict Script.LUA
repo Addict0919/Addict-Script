@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.2
+local local_menu_version = 6.3
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4952,6 +4952,12 @@ menu.action(protex, "Tp Casino", {"tpincasino"}, "Faster alternative way of tele
     end
 end)
 
+menu.toggle_loop(protex, "Always Unarmed", {"alwaysunarmed"}, "If your player is frozen on unarmed toggle this off and on to fix without suicide.", function(on_loop)
+    local player_ped = PLAYER.PLAYER_PED_ID()    
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    WEAPON.GIVE_WEAPON_TO_PED(player_ped, util.joaat('WEAPON_COUGAR'), 1, true, true)
+end)
+
 menu.toggle(protex, "Playerbar", {"custombar"}, "(BETA)", function(on_toggle)
     if on_toggle then
         playerbar = true
@@ -7966,8 +7972,17 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Quick Upgrade Vehicle", {"ugveh"}, "Upgrades player's vehicle",function()
+	menu.action(health_sub_vehicle_tab,"Quick Upgrade Vehicle", {"ugveh"}, "Note: Spam it if don't work first time. Upgrades player's vehicle.",function()
 		upgrade_vehicle(pid)
+		upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
+		upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
+		upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
+        upgrade_vehicle(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
 	menu.action(health_sub_vehicle_tab,"Disable Invincibility", {"removeinv"}, "Removes invincibility from player's vehicle",function()
@@ -12529,7 +12544,9 @@ end)
             util.trigger_script_event(1 << pid, event_data)
         end)
 
-	menu.action(griefing,"Deliver Player to you", {"deliver"}, "Kidnaps the target and brings them to your current location", function()
+        local Cargobob_Kidnaps = menu.list(griefing, "Kidnaps")
+
+	menu.action(Cargobob_Kidnaps,"Deliver Player to you", {"deliver"}, "Kidnaps the target and brings them to your current location", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 
 		if table_kidnap == nil then
@@ -12586,31 +12603,24 @@ end)
 
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
-
             --util.toast(os.date("%H:%M:%S") .. " DONE", TOAST_ABOVE_MAP)
-
         end
 	end)
 
 
-    menu.action(griefing,"Special Delivery", {"specialdeliver"}, "Cargobob pickup.", function()
+    menu.action(Cargobob_Kidnaps,"Special Delivery", {"specialdeliver"}, "Puts the player inside a cargobob.", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-
 		if table_kidnap == nil then
 			table_kidnap = {}
 		end
         hash = util.joaat("Cargobob3")
         ped_hash = util.joaat("MP_M_Counterfeit_01")
-
         if STREAMING.IS_MODEL_A_VEHICLE(hash) then
             STREAMING.REQUEST_MODEL(hash)
-
             while not STREAMING.HAS_MODEL_LOADED(hash) do
                 util.yield()
             end
-
             coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
-
             local aab = 
 			{
 				x = -5784.258301,
@@ -12619,7 +12629,6 @@ end)
 			}
             ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
             ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, true)
-
             table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
             CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
             while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
@@ -12650,6 +12659,7 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
         crash = menu.list(menu.player_root(pid), "Crashes", {}, "Addict Crash", function(); end)
+        
         kick = menu.list(menu.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
         menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses buttplug kick", function()
@@ -13523,11 +13533,9 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     menu.trigger_commands("msexmoan")
     util.yield(10)
     menu.trigger_commands("animlapdance1")
-    menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
+    --menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1000)
     menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("smash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1000)
     menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1000)
@@ -13936,6 +13944,7 @@ end)
 local selectedobject = 1268884662
 local all_objects = {
 -1268884662,
+-1268884662,
 1085274000,
 1729911864,
 2166988379,
@@ -14047,6 +14056,7 @@ local all_objects = {
 
 local object_names = {
 
+"Click Next Object >",
 "Bricks",
 "Pizza's",
 "prop_boombox_01",
@@ -14190,23 +14200,23 @@ local function CreateObject(Hash, Pos, static)
 end
 
 
-local objectc = menu.list(crash, "Object Crashes", {}, "")
+local objectc = menu.list(crash, "Object Crashes", {"objectcrashes"}, "")
 
 local amount = 200
 local delay = 100
-menu.slider(objectc, "Spawn Amount", {}, "", 0, 2500, amount, 50, function(val)
+menu.slider(objectc, "Spawn Amount", {"spawnammount"}, "", 0, 2500, amount, 50, function(val)
     amount = val
 end)
 
-menu.slider(objectc, "Spawn Delay", {}, "", 0, 500, delay, 10, function(val)
+menu.slider(objectc, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
     delay = val
 end)
 
-menu.list_select(objectc, "Object Model", {}, "", object_names, 1, function(val)
+menu.list_select(objectc, "Object Model", {"objectmodel"}, "", object_names, 1, function(val)
     selectedobject = all_objects[val]
 end)
 
-menu.toggle_loop(objectc, "Send Objects", {}, "", function()
+menu.toggle_loop(objectc, "Send Objects", {"sendobjects"}, "", function()
     
     local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
@@ -14245,6 +14255,7 @@ end)
 
 local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
 
+menu.divider(TaskCrashes, "_________________________________________")
 
        menu.divider(TaskCrashes, "_________________________________________")
 
@@ -17694,7 +17705,7 @@ menu.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", 
                 util.yield(1)
         else
                 util.toast("Failed to load model. :/")
-notification("Worth it HAHA!!!", colors.red)
+                notification("Worth it HAHA!!!", colors.red)
         end
     end)
 end)
@@ -18900,12 +18911,6 @@ end
             notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("pipebomb" .. players.get_name(pid))
             util.yield()
-        end)
-
-        menu.toggle_loop(standcrash, "Irresponsible Disclosure", {"togglesmash"}, "Note: Use Panic Mode.", function(on_loop)
-            notification("Irresponsible Disclosure sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            menu.trigger_commands("smash" .. players.get_name(pid))
-            util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular menus.", function(on_loop)
