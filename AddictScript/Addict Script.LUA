@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.5
+local local_menu_version = 6.6
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6376,7 +6376,7 @@ local function get_closest_vehicle(entity)
     return closestveh
     end
 
-        menu.toggle(funfun, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time.", function(on_toggle)
+        menu.toggle(funfun, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
             local vehicleHash = util.joaat("hydra")
             request_model(vehicleHash)
@@ -6417,6 +6417,21 @@ local function get_closest_vehicle(entity)
             entities.delete_by_handle(jet)
             util.yield(1000)
             menu.trigger_commands("tpmazehelipad")
+            end
+        end)
+
+        menu.toggle(funfun, "Super Ufo", {"superufo"}, "Toggles superdrive and super handbreak. Warning! This quite is nuts lol.", function(on_toggle)
+            if on_toggle then
+                menu.trigger_commands("speedlimit" .. " 10000")
+                menu.trigger_commands("superdrivespeed" .. " 10000.00")
+                menu.trigger_commands("superdrive")
+                menu.trigger_commands("superhandbreak")
+                menu.trigger_commands("driveufo")
+            else
+                menu.trigger_commands("superdrivespeed" .. " 3.00")
+                menu.trigger_commands("superdrive")
+                menu.trigger_commands("superhandbreak")
+                menu.trigger_commands("driveufo")
             end
         end)
 
