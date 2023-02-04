@@ -7,7 +7,8 @@ Re Added Scenarios
 Added Attach Umbrella to other players
 Added Anon Missile
 Added Drive UFO - Fixed A Bug
-Added Aim Punishments (UNTESTED)
+Added Aim Punishments (UNTESTED) - Addict Script>Modder Detections>Aim Punishments
+
 Improved Blast Kick
 ________________________
 v6.6
