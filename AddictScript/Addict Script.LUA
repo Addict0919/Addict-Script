@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.3
+local local_menu_version = 6.4
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6338,6 +6338,98 @@ end, 'A_C_KillerWhale')
 
 menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
 
+
+-------------------------------------
+-- Drive UFO
+-------------------------------------
+
+function EnableOTR()
+	local toggle_addr = 2657589 + ((PLAYER.PLAYER_ID() * 466) + 1) + 210
+	if read_global.int(toggle_addr) == 1 then
+		return
+	end
+	write_global.int(toggle_addr, 1)
+	write_global.int(2672505 + 56, NETWORK.GET_NETWORK_TIME() + 1)
+end
+
+function DisableOTR()
+	write_global.int(2657589 + ((PLAYER.PLAYER_ID() * 466) + 1) + 210, 0)
+end
+
+function DisablePhone()
+    write_global.int(20366, 1)
+end
+
+local function request_model(hash, timeout)
+    timeout = timeout or 3
+    STREAMING.REQUEST_MODEL(hash)
+    local end_time = os.time() + timeout
+    repeat
+        util.yield()
+    until STREAMING.HAS_MODEL_LOADED(hash) or os.time() >= end_time
+    return STREAMING.HAS_MODEL_LOADED(hash)
+end
+
+local function get_closest_vehicle(entity)
+    local coords = ENTITY.GET_ENTITY_COORDS(entity, true)
+    local vehicles = entities.get_all_vehicles_as_handles()
+    -- init this at some ridiculously large number we will never reach, ez
+    local closestdist = 1000000
+    local closestveh = 0
+    for k, veh in pairs(vehicles) do
+        if veh ~= PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false) and ENTITY.GET_ENTITY_HEALTH(veh) ~= 0 then
+            local vehcoord = ENTITY.GET_ENTITY_COORDS(veh, true)
+            local dist = MISC.GET_DISTANCE_BETWEEN_COORDS(coords['x'], coords['y'], coords['z'], vehcoord['x'], vehcoord['y'], vehcoord['z'], true)
+            if dist < closestdist then
+                closestdist = dist
+                closestveh = veh
+            end
+        end
+    end
+    return closestveh
+    end
+
+        menu.toggle(funfun, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time.", function(on_toggle)
+            if on_toggle then
+            local vehicleHash = util.joaat("hydra")
+            request_model(vehicleHash)
+            local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+            jet = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+            ENTITY.SET_ENTITY_VISIBLE(jet, false, false)
+            ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+
+            VEHICLE.SET_VEHICLE_ENGINE_ON(jet, true, true, true)
+            ENTITY.SET_ENTITY_INVINCIBLE(jet, true)
+            VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(jet, 0.0)
+
+------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+            local id = get_closest_vehicle(entity)
+            local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+            playerpos.z = playerpos.z + 3
+            local ufo_object = util.joaat("sum_prop_dufocore_01a")
+            STREAMING.REQUEST_MODEL(ufo_object)
+            while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+                util.yield()
+            end
+            local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, pos.x, pos.y, pos.z + 200, false, false, true)
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), jet, -1)
+            ENTITY.SET_ENTITY_VISIBLE(object1, true)
+            menu.trigger_commands("cameradistance" .. " 1.50")
+            EnableOTR()
+            DisablePhone()
+        else
+            ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
+            menu.trigger_commands("cameradistance" .. " 1.00")
+            menu.trigger_commands("superc")
+            DisableOTR()
+            end
+        end)
+
 local function getgroupsize(group)
     local unkPtr, sizePtr = memory.alloc(1), memory.alloc(1)
     PED.GET_GROUP_SIZE(group, unkPtr, sizePtr)
@@ -6611,10 +6703,12 @@ end)
 menu.toggle_loop(funfun, 'Stick to surface', {'stickyveh'}, 'Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function ()
     local curcar = entities.get_user_vehicle_as_handle()
     if curcar then
+        menu.trigger_commands("deluxo")
+        util.yield(2000)
         ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
         VEHICLE.MODIFY_VEHICLE_TOP_SPEED(curcar, 40)
     else
-        util.yield()
+        menu.trigger_commands("superc")
         end
     end)
 
@@ -8370,6 +8464,59 @@ read_global = {
         FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
+        menu.toggle_loop(Owned_Anon_Explode,"Anon Mssile", {"amissile"}, "", function(on)
+        local ped = 2459507570
+        STREAMING.REQUEST_MODEL(ped)
+        while not STREAMING.HAS_MODEL_LOADED(ped) do
+            wait(100)
+        end
+        local lazer = 3013282534
+        STREAMING.REQUEST_MODEL(lazer)
+        while not STREAMING.HAS_MODEL_LOADED(lazer) do
+            wait(100)
+        end
+        local pid = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+        local spawn = VEHICLE.CREATE_VEHICLE(lazer, pid.x, pid.y, pid.z+150, 0, true, false, false)
+        local pedspawn = PED.CREATE_PED(26, ped, pid.x, pid.y, pid.z+150, 0, true, false)
+
+        ENTITY.SET_ENTITY_VISIBLE(spawn, false)
+        PED.SET_PED_INTO_VEHICLE(pedspawn, spawn, -1)
+        ENTITY.SET_ENTITY_VISIBLE(pedspawn, false)
+        VEHICLE.SET_VEHICLE_ENGINE_HEALTH(spawn, -20)
+        ENTITY.SET_ENTITY_ROTATION(spawn, -90.0, 0.0, 0.0, 1, true)
+        VEHICLE.SET_VEHICLE_FORWARD_SPEED(spawn, 100)
+
+        local id = get_closest_vehicle(entity)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+        playerpos.z = playerpos.z + 3
+        local ufo_object = util.joaat("xs_prop_arena_airmissile_01a")
+        STREAMING.REQUEST_MODEL(ufo_object)
+        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+            util.yield()
+        end
+
+        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, spawn, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, spawn)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(spawn, object1, 0, 1, 10, 0, 0, 0, -180, 0, false, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, spawn, 0, 1, 10, 0, 0, 0, -180, 0, false, true, false, 0, true)
+        ENTITY.SET_ENTITY_VISIBLE(object1, true)
+        util.yield(3000)
+        entities.delete_by_handle(spawn)
+        entities.delete_by_handle(pedspawn)
+        entities.delete_by_handle(ufo_object)
+        entities.delete_by_handle(object1)
+    end)
+
     menu.divider(Owned_Anon_Explode, "Fake Loop")
 
     menu.toggle_loop(Owned_Anon_Explode, "Fake Explosion Loop", {"fakeexplode"}, "Explosion dealing no damage", function() --fake exp
@@ -8710,6 +8857,23 @@ read_global = {
     menu.action(attachoptions, "Attach A Backpack", {"abackpack"}, "", function(on_click)
         attachto(0.0, -0.15, 0.0, pid, 0.0, 0.0, 0.0, 4208448709, false, false)
     end)
+
+
+menu.action(attachoptions,"Attach A Umbrella", {}, "", function()
+    local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+    playerpos.z = playerpos.z + 3
+    local candyattach = util.joaat("p_amb_brolly_01")
+    STREAMING.REQUEST_MODEL(candyattach)
+    while not STREAMING.HAS_MODEL_LOADED(candyattach) do
+        util.yield()
+    end
+    local cane1 = entities.create_object(candyattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(cane1, id, playerpos, 0.2, 0.2, 0.5, 0, 0, 0, -180, 0, true, true, false, 0, true)
+    ENTITY.SET_ENTITY_VISIBLE(cane1, true, 0)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
+    util.yield(100)
+end)
 
     menu.action(attachoptions, "Attach Candy Cane", {"attachcandycane"}, "", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -9159,25 +9323,6 @@ size['max'] = math.max(size.x, size.y, size.z)
 return size
 end
 
-local function get_closest_vehicle(entity)
-local coords = ENTITY.GET_ENTITY_COORDS(entity, true)
-local vehicles = entities.get_all_vehicles_as_handles()
--- init this at some ridiculously large number we will never reach, ez
-local closestdist = 1000000
-local closestveh = 0
-for k, veh in pairs(vehicles) do
-    if veh ~= PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false) and ENTITY.GET_ENTITY_HEALTH(veh) ~= 0 then
-        local vehcoord = ENTITY.GET_ENTITY_COORDS(veh, true)
-        local dist = MISC.GET_DISTANCE_BETWEEN_COORDS(coords['x'], coords['y'], coords['z'], vehcoord['x'], vehcoord['y'], vehcoord['z'], true)
-        if dist < closestdist then
-            closestdist = dist
-            closestveh = veh
-        end
-    end
-end
-return closestveh
-end
-
 local function request_control_of_entity_once(ent)
 if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(ent) and util.is_session_started() then
     local netid = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent)
@@ -9219,12 +9364,12 @@ STREAMING.REQUEST_MODEL(ufo_object)
 while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
     util.yield()
 end
-local vehicle1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1, ufo)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, vehicle1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, ufo, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true)
+local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, ufo)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
+ENTITY.SET_ENTITY_VISIBLE(object1, true)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilots, util.joaat("ARMY"))
 ENTITY.SET_ENTITY_VISIBLE(pilots, ufo_visible, 0)
@@ -12662,17 +12807,42 @@ end)
         
         kick = menu.list(menu.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
-        menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses buttplug kick", function()
+        menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses every kick in my script and stand, 22 kicks total but smart kick could have more than 1 kick also.", function()
         notification("Blast kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("historyblock " .. players.get_name(pid))
+            menu.trigger_commands("boop" .. players.get_name(pid))
             menu.trigger_commands("buttplug" .. players.get_name(pid))
+            menu.trigger_commands("smartkick" .. players.get_name(pid))
+            util.yield(200)
+            menu.trigger_commands("bankick" .. players.get_name(pid))
+            menu.trigger_commands("confusionkick" .. players.get_name(pid))
+            menu.trigger_commands("aidskick" .. players.get_name(pid))
+            menu.trigger_commands("lovekick" .. players.get_name(pid))
+            menu.trigger_commands("invkick1" .. players.get_name(pid))
+            menu.trigger_commands("invkick2" .. players.get_name(pid))
+            util.yield(200)
+            menu.trigger_commands("arraykickv1" .. players.get_name(pid))
+            menu.trigger_commands("arraykickv2" .. players.get_name(pid))
+            util.yield(200)
+            menu.trigger_commands("invkick1" .. players.get_name(pid))
+            menu.trigger_commands("invkick2" .. players.get_name(pid))
+            util.yield(200)
+            menu.trigger_commands("arraykickv1" .. players.get_name(pid))
+            menu.trigger_commands("arraykickv2" .. players.get_name(pid))
+            menu.trigger_commands("orgkick" .. players.get_name(pid))
+            menu.trigger_commands("blacklistkick" .. players.get_name(pid))
+            menu.trigger_commands("kickhost" .. players.get_name(pid))
+            util.yield(200)
+            menu.trigger_commands("kicknonhost" .. players.get_name(pid))
+            menu.trigger_commands("invalidkick" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.action(kick, "Boop Kick", {"boop"}, "", function()
+        menu.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks if breakup won't work.", function()
+            menu.trigger_commands("breakup" .. players.get_name(pid))
+            menu.trigger_commands("givesh" .. players.get_name(pid))
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1}) --697566862 Give Collectible
             util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657589 + 1 + (pid * 466) + 321 + 8)}) 
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
-            menu.trigger_commands("breakup" .. players.get_name(pid))
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1})
             util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657589 + 1 + (pid * 466) + 321 + 8)})
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1894573 + 1 + (pid * 608) + 510))})
@@ -13062,6 +13232,33 @@ menu.toggle(drops, "Auto Casino Rig", {"autocasino"}, "Teleports them to casino 
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 924.2497, 46.7545, 81.0961)
     end
 end)
+
+
+local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea.")
+
+tpf_units = 1
+menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea.", function()
+    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(200)
+    menu.trigger_commands("nocollision" .. " on")
+    menu.trigger_commands("playanimhug")
+    util.yield(300)
+    menu.trigger_commands("nocollision" .. " off")
+    local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
+end)
+
+tpf_units = -0.7
+menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kaliya for idea.", function()
+    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(200)
+    menu.trigger_commands("nocollision" .. " on")
+    menu.trigger_commands("playanimhug2")
+    util.yield(300)
+    menu.trigger_commands("nocollision" .. " off")
+    local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
+end)
     
 
     local tpthem = menu.list(frienm, 'Teleports', {"friendlyteleports"}, '')
@@ -13275,36 +13472,6 @@ end)
 			util.yield()
 		end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
-
-    --[[
-
-    local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea.")
-
-    tpf_units = 1
-    menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea.", function()
-        menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.yield(200)
-        menu.trigger_commands("nocollision" .. " on")
-        menu.trigger_commands("playanimhug")
-        util.yield(300)
-        menu.trigger_commands("nocollision" .. " off")
-        local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
-	end)
-    
-    tpf_units = -0.7
-    menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kaliya for idea.", function()
-        menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
-        util.yield(200)
-        menu.trigger_commands("nocollision" .. " on")
-        menu.trigger_commands("playanimhug2")
-        util.yield(300)
-        menu.trigger_commands("nocollision" .. " off")
-        local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
-	end)
-
-    ]]
 
 menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
     menu.show_command_box("historybefriend " .. PLAYER.GET_PLAYER_NAME(pid))
@@ -13533,9 +13700,6 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     menu.trigger_commands("msexmoan")
     util.yield(10)
     menu.trigger_commands("animlapdance1")
-    --menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1000)
     menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(1000)
@@ -13610,10 +13774,10 @@ end)
 
 menu.toggle_loop(MenuCrashes,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
     if pid ~= players.user() then
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Cherax Crash Sent to " .. players.get_name(pid))
     util.log("Cherax Crash Sent to " .. players.get_name(pid))
@@ -13649,7 +13813,7 @@ end)
 
 menu.toggle_loop(MenuCrashes,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
     if pid ~= players.user() then
-    menu.trigger_commands("pipebomb" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("flash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
@@ -18907,12 +19071,6 @@ end
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Pipebomb", {"togglepipebomb"}, "", function()
-            notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
-            menu.trigger_commands("pipebomb" .. players.get_name(pid))
-            util.yield()
-        end)
-
         menu.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular menus.", function(on_loop)
             notification("BDSM sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("choke" .. players.get_name(pid))
@@ -19020,6 +19178,7 @@ local function get_interior_player_is_in(pid)
     return memory.read_int(memory.script_global(((0x2908D3 + 1) + (pid * 0x1C5)) + 243)) 
 end
 
+
 local unreleased_vehicles = {
     "virtue",
     "eudora",
@@ -19053,7 +19212,115 @@ local modded_weapons = {
     "weapon_railgun",
     "weapon_stungun",
     "weapon_digiscanner",
+    "weapon_emplauncher",
+    "weapon_digiscanner",
+    "weapon_raypistol",
+    "weapon_firework",
+    "weapon_stungun",
+    "weapon_flare",
 }
+
+local all_weapons = {
+    "weapon_railgun",
+    "weapon_stungun",
+    "weapon_digiscanner",
+    "weapon_emplauncher",
+    "weapon_digiscanner",
+    "weapon_raypistol",
+    "weapon_firework",
+    "weapon_flare",
+    "WEAPON_KNIFE",
+    "WEAPON_NIGHTSTICK",
+    "weapon_bottle",
+    "weapon_unarmed",
+    "WEAPON_HAMMER",
+    "WEAPON_BAT",
+    "WEAPON_GOLFCLUB",
+    "WEAPON_CROWBAR",
+    "WEAPON_PISTOL",
+    "WEAPON_COMBATPISTOL",
+    "WEAPON_APPISTOL",
+    "WEAPON_PISTOL50",
+    "WEAPON_MICROSMG",
+    "WEAPON_SMG",
+    "WEAPON_ASSAULTSMG",
+    "WEAPON_ASSAULTRIFLE",
+  --"weapon_flashlight",
+    "weapon_hatchet",
+    "weapon_knuckle",
+    "weapon_machete",
+    "weapon_dagger",
+    "weapon_switchblade",
+    "weapon_wrench",
+    "weapon_battleaxe",
+    "weapon_poolcue",
+    "weapon_pistol_mk2",
+    "weapon_snspistol",
+    "weapon_snspistol_mk2",
+    "weapon_heavypistol",
+    "weapon_vintagepistol",
+    "weapon_flaregun",
+    "weapon_marksmanpistol",
+    "weapon_revolver",
+    "weapon_revolver_mk2",
+    "weapon_doubleaction",
+    "weapon_ceramicpistol",
+    "weapon_navyrevolver",
+    "weapon_smg_mk2",
+    "weapon_combatpdw",
+    "weapon_machinepistol",
+    "weapon_minismg",
+    "weapon_raycarbine",
+    "weapon_pumpshotgun",
+    "weapon_pumpshotgun_mk2",
+    "weapon_sawnoffshotgun",
+    "weapon_assaultshotgun",
+    "weapon_bullpupshotgun",
+    "weapon_musket",
+    "weapon_heavyshotgun",
+    "weapon_dbshotgun",
+    "weapon_autoshotgun",
+    "weapon_assaultrifle",
+    "weapon_assaultrifle_mk2",
+    "weapon_carbinerifle",
+    "weapon_carbinerifle_mk2",
+    "weapon_advancedrifle",
+    "weapon_specialcarbine",
+    "weapon_specialcarbine_mk2",
+    "weapon_bullpuprifle",
+    "weapon_bullpuprifle_mk2",
+    "weapon_compactrifle",
+    "weapon_mg",
+    "weapon_combatmg",
+    "weapon_combatmg_mk2",
+    "weapon_gusenberg",
+    "weapon_sniperrifle",
+    "weapon_heavysniper",
+    "weapon_heavysniper_mk2",
+    "weapon_marksmanrifle",
+    "weapon_marksmanrifle_mk2",
+    "weapon_rpg",
+    "weapon_grenadelauncher",
+    "weapon_grenadelauncher_smoke",
+    "weapon_minigun",
+    "weapon_hominglauncher",
+    "weapon_compactlauncher",
+    "weapon_rayminigun",
+    "weapon_grenade",
+    "weapon_bzgas",
+    "weapon_molotov",
+    "weapon_proxmine",
+    "weapon_snowball",
+    "weapon_pipebomb",
+    "weapon_ball",
+    "weapon_smokegrenade",
+    "weapon_stickybomb",
+    "weapon_petrolcan",
+    "weapon_parachute",
+    "weapon_fireextinguisher",
+    "weapon_hazardcan",
+}
+
 
 local proofs = {
     bullet = {name="Bullets",on=false},
@@ -19375,7 +19642,129 @@ end)
 
 local detections = menu.list(menu.my_root(), "Modder Detections", {}, "")
 
+--[[
+-------------------------------------------\\\\\Ryze Script Code by Picoles/////-------------------------------------------
+local aimkrma = menu.list(detections, "Aim Karma", {}, "You can do something to people who are aiming at you.")
+
+    playerIsTargetingEntity = function(playerPed)
+        local playerList = players.list(true, true, true)
+        for k, playerPid in pairs(playerList) do
+            if PLAYER.IS_PLAYER_TARGETTING_ENTITY(playerPid, playerPed) or PLAYER.IS_PLAYER_FREE_AIMING_AT_ENTITY  (playerPid, playerPed) then 
+                if not isWhitelisted(playerPid) then
+                    karma[playerPed] = {
+                        pid = playerPid, 
+                        ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(playerPid)
+                    }
+                    return true 
+                end
+            end
+        end
+        karma[playerPed] = nil
+        return false 
+    end,
+
+    local karma = {}
+    menu.toggle_loop(aimkrma, "Shoot", {}, "Will shoot them if they aim at you.", function()
+        if playerIsTargetingEntity(PLAYER.PLAYER_PED_ID()) and karma[PLAYER.PLAYER_PED_ID()] then
+            local pos = ENTITY.GET_ENTITY_COORDS(karma[PLAYER.PLAYER_PED_ID()].ped)
+            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z +0.1, 100, true, 100416529, PLAYER.PLAYER_PED_ID(), true, false, 100.0)
+            util.yield(loopdelayMS + (loopdelaySEC * 1000) + (loopdelayMIN * 1000 * 60))
+        end
+    end)
+    
+    menu.toggle_loop(aimkrma, "Explode", {}, "Will explode them if they aim at you.", function()
+        if playerIsTargetingEntity(PLAYER.PLAYER_PED_ID()) and karma[PLAYER.PLAYER_PED_ID()] then
+            --explodePlayer(karma[PLAYER.PLAYER_PED_ID()].ped, true)
+        end
+    end)
+    
+    menu.toggle_loop(aimkrma, "Remove GodMode", {}, "If the player has a shitty menu will work.", function()
+        if playerIsTargetingEntity(PLAYER.PLAYER_PED_ID()) and karma[PLAYER.PLAYER_PED_ID()] and players.is_godmode(karma[PLAYER.PLAYER_PED_ID()].pid) then
+            local karmaPid = karma[PLAYER.PLAYER_PED_ID()].pid
+            util.trigger_script_event(1 << karmaPid, {801199324, karmaPid, 869796886})
+        end
+    end)
+------------------------------------------------^^^Ryze Script Code by Picoles^^^------------------------------------------------
+]]
+
+local aim_det = menu.list(detections, "Aim Detection", {}, "")
+
+local auto_punish = menu.list(detections, "Aim Punishments", {}, "")
+
 local autohost = menu.list(detections, "Host Detection", {}, "")
+
+    menu.toggle_loop(aim_det, "Aim Detection", {}, "Detects if someone is aiming a weapon at you.", function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+            local weapon_hash = util.joaat(hash)
+            if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
+                util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+            else 
+                util.yield(100)
+                end
+            end
+        end
+    end)
+
+    menu.toggle_loop(auto_punish, "Auto Snipe", {}, "Detects if someone is aiming a weapon at you, then shoots them back them.", function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+            local weapon_hash = util.joaat(hash)
+            if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
+                menu.trigger_commands("osnipel" .. players.get_name(pid))
+                util.yield(1000)
+                menu.trigger_commands("osnipel" .. players.get_name(pid))
+                util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+            else 
+                util.yield(100)
+                end
+            end
+        end
+    end)
+
+    menu.toggle_loop(auto_punish, "Auto Firework", {}, "Detects if someone is aiming a weapon at you, then shoots fireworks at them.", function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+            local weapon_hash = util.joaat(hash)
+            if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
+                menu.trigger_commands("fireworkon" .. players.get_name(pid))
+                util.yield(1000)
+                menu.trigger_commands("fireworkon" .. players.get_name(pid))
+                util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+            else 
+                util.yield(100)
+                end
+            end
+        end
+    end)
+
+    menu.toggle_loop(auto_punish, "Auto Atomizer", {}, "Detects if someone is aiming a weapon at you, then shoots atomizer at them.", function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+            local weapon_hash = util.joaat(hash)
+            if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
+                menu.trigger_commands("atomizeron" .. players.get_name(pid))
+                util.yield(1000)
+                menu.trigger_commands("atomizeron" .. players.get_name(pid))
+                util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+            else 
+                util.yield(100)
+                end
+            end
+        end
+    end)
 
 menu.toggle_loop(autohost, "Is Host", {}, "Detects if someone host", function()
     util.draw_debug_text(players.get_name(players.get_host()) .. " Is Host")
@@ -19785,8 +20174,16 @@ end)
 
 --------------------------------------
 
-menu.action(menu.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
-    util.restart_script()
+menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
+    local curcar = entities.get_user_vehicle_as_handle(entities.get_all_objects_as_handles())
+    if curcar then
+    menu.trigger_commands("deletevehicle")
+    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
+    end
+end)
+
+menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game in singleplayer, closes it in Online. You will need to reinject (duh).", function(on_click)
+    MISC.RESTART_GAME("E574A662ACAEFBB1")
 end)
 
 menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
@@ -19797,7 +20194,7 @@ menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by
         menu.trigger_commands("autoenter")
         util.yield(200)
         menu.trigger_commands("autoenter")
-        ENTITY.APPLY_FORCE_TO_ENTITY(0, 1, 0, 0, 0, 0, 0, 0, 0, true, true, true, true, true)
+        menu.trigger_commands("ye")
     else
         util.toast("Lucky Bastard ;)")
 		menu.show_command_box("say " .. "I got lucky ;)")
@@ -19807,10 +20204,9 @@ menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by
     end
 end)
 
-menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game in singleplayer, closes it in Online. You will need to reinject (duh).", function(on_click)
-    MISC.RESTART_GAME("E574A662ACAEFBB1")
+menu.action(menu.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
+    util.restart_script()
 end)
-
 
 focusref = {}
 isfocused = false
@@ -21250,7 +21646,7 @@ function pairsByKeys(t, f)
     end
     return iter
  end
- --[[
+
 local status = pcall(require, 'resources/addict_actions/addict_action')
 if not status then
     util.toast("Failed to load resource file: addict_actions/addict_action.lua")
@@ -21265,7 +21661,7 @@ if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
         util.stop_script()
     end
 end
-]]
+
 -- Messy Globals
 local scenarioCount = 0
 
@@ -21309,7 +21705,7 @@ menu.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities th
     affectType = index - 1
 end)
 
---[[
+
 function onControllablePress(value)
     if value then
         animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
@@ -21317,7 +21713,7 @@ function onControllablePress(value)
         animFlags = AnimationFlags.ANIM_FLAG_REPEAT
     end
 end
-]]
+
 
 function generateAnimationAction(key, data)
     return function()
@@ -21328,12 +21724,30 @@ function generateAnimationAction(key, data)
 end
 
 menu.divider(sexscript, "Stuff")
---local specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
---menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+local specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
+menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 local animationsMenu = menu.list(sexscript, "Animations", {}, "List of animations you can play")
---menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 
---[[
+local specialAnimationsMenu2 = menu.list(specialAnimationsMenu, "Addict Made Animations", {}, "Just like special animations that can use props")
+
+menu.action(specialAnimationsMenu2,"Attach A Umbrella", {}, "", function()
+    menu.trigger_commands("playanimcrossarms6")
+    local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid, players.user_ped())
+    local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+    playerpos.z = playerpos.z + 3
+    local candyattach = util.joaat("p_amb_brolly_01")
+    STREAMING.REQUEST_MODEL(candyattach)
+    while not STREAMING.HAS_MODEL_LOADED(candyattach) do
+        util.yield()
+    end
+    local cane1 = entities.create_object(candyattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(cane1, id, playerpos, 0.2, 0.2, 0.5, 0, 0, 0, -180, 0, true, true, false, 0, true)
+    ENTITY.SET_ENTITY_VISIBLE(cane1, true, 0)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
+    util.yield(100)
+end)
+
 for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
     local catmenu = menu.list(specialAnimationsMenu, category, {})
     for key, data in pairsByKeys(rows) do
@@ -21346,7 +21760,7 @@ for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
         )
     end
 end
-]]
+
 
 -----------------------
 -- ANIMATIONS
@@ -21595,7 +22009,7 @@ menu.on_focus(browseMenu, function()
 end)
 show_busyspinner("Loading Menus...")
 
---[[
+--
 local scenariosMenu = menu.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
 for group, scenarios in pairs(SCENARIOS) do
     local submenu = menu.list(scenariosMenu, group, {}, "All " .. group .. " scenarios")
@@ -21634,7 +22048,7 @@ local selfSpeechPed = {
     lastUsed = os.millis(),
     model = util.joaat("a_f_m_bevhills_01")
 }
-]]
+
 -----------------------
 -- Animation Functions
 ----------------------
