@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.4
+local local_menu_version = 6.5
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6343,19 +6343,6 @@ menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
 -- Drive UFO
 -------------------------------------
 
-function EnableOTR()
-	local toggle_addr = 2657589 + ((PLAYER.PLAYER_ID() * 466) + 1) + 210
-	if read_global.int(toggle_addr) == 1 then
-		return
-	end
-	write_global.int(toggle_addr, 1)
-	write_global.int(2672505 + 56, NETWORK.GET_NETWORK_TIME() + 1)
-end
-
-function DisableOTR()
-	write_global.int(2657589 + ((PLAYER.PLAYER_ID() * 466) + 1) + 210, 0)
-end
-
 function DisablePhone()
     write_global.int(20366, 1)
 end
@@ -6419,14 +6406,17 @@ local function get_closest_vehicle(entity)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, pos.x, pos.y, pos.z + 200, false, false, true)
             PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), jet, -1)
             ENTITY.SET_ENTITY_VISIBLE(object1, true)
+            menu.trigger_commands("otr" .. " on")
             menu.trigger_commands("cameradistance" .. " 1.50")
-            EnableOTR()
             DisablePhone()
         else
             ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
+            menu.trigger_commands("otr" .. " off")
             menu.trigger_commands("cameradistance" .. " 1.00")
             menu.trigger_commands("superc")
-            DisableOTR()
+            entities.delete_by_handle(jet)
+            util.yield(1000)
+            menu.trigger_commands("tpmazehelipad")
             end
         end)
 
@@ -20182,8 +20172,11 @@ menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to deskt
     end
 end)
 
-menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game in singleplayer, closes it in Online. You will need to reinject (duh).", function(on_click)
+menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
     MISC.RESTART_GAME("E574A662ACAEFBB1")
+    util.yield(3000)
+    menu.trigger_commands("ye")
+    menu.trigger_commands("yeet")
 end)
 
 menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
