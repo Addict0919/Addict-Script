@@ -4,6 +4,7 @@ More Bug Fixes
 Updated Yeet Commands now even more instant
 Re added Hug Player
 Re Added Scenarios
+Added Umbrella Scenarios  - In > Animations > Special Animations
 Added Attach Umbrella to other players
 Added Anon Missile
 Added Drive UFO - Fixed A Bug
