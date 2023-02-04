@@ -7,6 +7,7 @@ Re Added Scenarios
 Added Attach Umbrella to other players
 Added Anon Missile
 Added Drive UFO - Fixed A Bug
+Added Aim Punishments (UNTESTED)
 Improved Blast Kick
 ________________________
 v6.6
