@@ -26,7 +26,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.8
+local local_menu_version = 6.9
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -96,6 +96,7 @@ menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me 
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
 menu.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
+menu.action(Credits, "Kwengz", {}, "This guy got me into paid menus and showed me the ropes.", function() end)
 menu.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
 menu.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
 menu.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
@@ -107,6 +108,7 @@ menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking
 menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
 menu.action(Credits, "Library", {}, "Always been there to help :).", function() end)
 menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
+menu.action(Credits, "Sophie", {}, "For some great ideas she likes to put forward.", function() end)
 menu.action(Credits, "Charlie", {}, "", function() end)
 menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
 
@@ -1188,7 +1190,6 @@ players.on_join(function(player_id)
     menu.toggle(explosion_other_net_list, "Explosion Damage", {"explosiondamage"}, "If Explosion Blamed is on, turning this off won't have any effect.", function(state)
         explosion.damage = state
     end, true)
-
     ------------------------------
     -- Particles Menu
     ------------------------------
@@ -6462,8 +6463,8 @@ end
 
 SEC = ENTITY.SET_ENTITY_COORDS
 local set = {alert = false}
-local obj_hash = 'A_C_KillerWhale'
-local objgun = menu.list(weapons, 'Custom Model Gun', {}, '')
+local obj_hash = 'prop_container_01a'
+local objgun = menu.list(weapons, 'Custom Model Gun', {"custommodlegunloc"}, '')
 
 local obj = {expl = false}
 OBJgun = menu.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function ()
@@ -6511,7 +6512,11 @@ menu.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot exp
            util.toast('Improper Model Name (check the spelling)')
        end
     end
-end, 'A_C_KillerWhale')
+end, 'prop_container_01a')
+
+menu.action(objgun, "Clear All", {"clearshit"}, "", function()
+    menu.trigger_commands("superc")
+end)
 
 menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
 
@@ -7387,11 +7392,6 @@ util.toast("Candy Mode On")
     end 
 end)
 
-	menu.toggle(funfun, "2nd Person Perspective", {"2ndpp"}, "Sets your camera in another players/npc's face", function(on_toggle)
-			notification("Hahahah look at meeee xD", colors.red)
-			menu.trigger_commands("2ndperson")
-	end)
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function start_asteroid_shower()
@@ -7620,7 +7620,8 @@ end
 
     areablocks = menu.list(worldchaos, "Block Entrances", {}, "", function(); end)
 
-    menu.action(areablocks, "Casino", {"blockcasino"}, "", function(on)
+    menu.toggle(areablocks, "Casino", {"blockcasino"}, "", function(on_toggle)
+        if on_toggle then
         local hash = 1952396163
         loadModel(hash)
         for i = 0, 180, 8 do
@@ -7629,9 +7630,15 @@ end
             util.yield(10)
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
 
-    menu.action(areablocks, "LSC Burton", {"blockburton"}, "", function(on)
+    area_lsc_blocks = menu.list(areablocks, "Block LSC Entrances", {}, "", function(); end)
+
+    menu.toggle(area_lsc_blocks, "LSC Burton", {"blocklscb"}, "", function(on_toggle)
+        if on_toggle then
         local hash = 1952396163
         loadModel(hash)
         for i = 0, 180, 8 do
@@ -7640,7 +7647,106 @@ end
             util.yield(10)
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.toggle(area_lsc_blocks, "LSC La Mesa", {"blocklm"}, "", function(on_toggle)
+        if on_toggle then
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 719.7211, -1088.8136, -15.784607, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.toggle(area_lsc_blocks, "LSC International Airport", {"blockia"}, "", function(on_toggle)
+        if on_toggle then
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, -1144.0221, -1989.1848, -21.592183, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.toggle(area_lsc_blocks, "LSC Grand Senora Desert", {"blockgsd"}, "", function(on_toggle)
+        if on_toggle then
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 1174.6398, 2649.226, 1.21482217, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 1182.6398, 2649.226, 1.21482217, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.toggle(area_lsc_blocks, "LSC Paleto Bay", {"blockpb"}, "", function(on_toggle)
+        if on_toggle then
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 116.85485, 6620.863, -5.287771, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 110.85485, 6614.863, -5.287771, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.divider(areablocks, "__________________bruh__________________")
+
+
+    menu.action(areablocks, "Clear All Blocks", {"clearblocks"}, "", function()
+        local count = 0
+        for k,ent in pairs(entities.get_all_objects_as_handles()) do
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+            count = count + 1
+            util.yield()
+        end
+    end)
+
+    menu.action(areablocks, "Custom Bock", {"customblock"}, "Note: You can custom block entrances using a container object or something like it, Shotcut For Custom Model Gun.", function()
+        menu.trigger_commands("custommodlegunloc")
+        menu.trigger_commands("modgun")
+    end)
 
     
     function get_entity_player_is_aiming_at(player)
@@ -8260,10 +8366,11 @@ GenerateFeatures = function(pid)
         upgrade_vehicle(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Disable Invincibility", {"removeinv"}, "Removes invincibility from player's vehicle",function()
+	menu.toggle_loop(health_sub_vehicle_tab,"Disable Invincibility", {"removeinv"}, "Removes invincibility from player's vehicle",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then	
-			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false) 
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+            util.yield(1000)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
@@ -8274,12 +8381,13 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Destroy Engine", {"killveh"}, "Destroys vehicle engine", function()
+	menu.toggle_loop(health_sub_vehicle_tab,"Destroy Engine", {"killveh"}, "Destroys vehicle engine", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_ENGINE_HEALTH(vehicle, -4000)
 			VEHICLE.SET_VEHICLE_BODY_HEALTH(vehicle, -4000)
 			VEHICLE.SET_VEHICLE_PETROL_TANK_HEALTH(vehicle, -4000)
+            util.yield(1000)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
@@ -8292,13 +8400,14 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Explode Vehicle", {"explodeveh"}, "Explodes vehicle",function()
+	menu.toggle_loop(health_sub_vehicle_tab,"Explode Vehicle", {"explodeveh"}, "Explodes vehicle",function()
 		local vehicle = get_player_veh(pid,false)
 		if vehicle then
 			--local pos = ENTITY.GET_ENTITY_COORDS(vehicle)--tried around with EXPLODE_VEHICLE but didnt work mayb im just rarted
 			--FIRE.ADD_EXPLOSION(pos.x,pos.y,pos.z, 7, 1000, true, false, 1, false)
 			VEHICLE.ADD_VEHICLE_PHONE_EXPLOSIVE_DEVICE(vehicle)
 			VEHICLE.DETONATE_VEHICLE_PHONE_EXPLOSIVE_DEVICE()
+            util.yield(1000)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
@@ -9594,8 +9703,8 @@ end
 local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
 ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
 NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, ufo)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
 ENTITY.SET_ENTITY_VISIBLE(object1, true)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilots, util.joaat("ARMY"))
@@ -13039,29 +13148,6 @@ end)
             menu.trigger_commands("historyblock " .. players.get_name(pid))
             menu.trigger_commands("boop" .. players.get_name(pid))
             menu.trigger_commands("buttplug" .. players.get_name(pid))
-            menu.trigger_commands("smartkick" .. players.get_name(pid))
-            util.yield(200)
-            menu.trigger_commands("bankick" .. players.get_name(pid))
-            menu.trigger_commands("confusionkick" .. players.get_name(pid))
-            menu.trigger_commands("aidskick" .. players.get_name(pid))
-            menu.trigger_commands("lovekick" .. players.get_name(pid))
-            menu.trigger_commands("invkick1" .. players.get_name(pid))
-            menu.trigger_commands("invkick2" .. players.get_name(pid))
-            util.yield(200)
-            menu.trigger_commands("arraykickv1" .. players.get_name(pid))
-            menu.trigger_commands("arraykickv2" .. players.get_name(pid))
-            util.yield(200)
-            menu.trigger_commands("invkick1" .. players.get_name(pid))
-            menu.trigger_commands("invkick2" .. players.get_name(pid))
-            util.yield(200)
-            menu.trigger_commands("arraykickv1" .. players.get_name(pid))
-            menu.trigger_commands("arraykickv2" .. players.get_name(pid))
-            menu.trigger_commands("orgkick" .. players.get_name(pid))
-            menu.trigger_commands("blacklistkick" .. players.get_name(pid))
-            menu.trigger_commands("kickhost" .. players.get_name(pid))
-            util.yield(200)
-            menu.trigger_commands("kicknonhost" .. players.get_name(pid))
-            menu.trigger_commands("invalidkick" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
         menu.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks if breakup won't work.", function()
@@ -13511,55 +13597,80 @@ end)
             menu.trigger_commands("givesh" .. players.get_name(pid))
             menu.trigger_commands("aptme" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            givevehicle = menu.list(frienm, "Give Player A vehicle", {}, "", function(); end)
-
+            
             menu.toggle_loop(frienm, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
                 local car = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
                 NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
             end)
 
-            menu.action(givevehicle, "Give Player A Deluxo", {"givedeluxo"}, "", function()
+
+            givevehicle = menu.list(frienm, "Give Player A Vehicle", {}, "", function(); end)
+
+            menu.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
+                local vehicleHash = util.joaat("hydra")
+                request_model(vehicleHash)
+                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+                jet = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+                VEHICLE.SET_VEHICLE_ENGINE_ON(jet, true, true, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(jet, true)
+                VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(jet, 0.0)
+    ------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+                local id = get_closest_vehicle(entity)
+                local playerpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+                playerpos.z = playerpos.z + 3
+                local ufo_object = util.joaat("sum_prop_dufocore_01a")
+                STREAMING.REQUEST_MODEL(ufo_object)
+                while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+                    util.yield()
+                end
+                local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+            end)
+
+            menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Festival Bus", {"givefestivalbus"}, "", function()
+            menu.action(givevehicle, "Give A Festival Bus", {"givefestivalbus"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pbus2")
             end, nil, nil, COMMANDPERM_FRIENDLY)
             
-            menu.action(givevehicle, "Give Player A Forklift", {"giveforklift"}, "", function()
+            menu.action(givevehicle, "Give A Forklift", {"giveforklift"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " forklift")
             end, nil, nil, COMMANDPERM_FRIENDLY)
       
-            menu.action(givevehicle, "Give Player A Khanjali", {"givekhanjali"}, "", function()
+            menu.action(givevehicle, "Give A Khanjali", {"givekhanjali"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " khanjali")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Future Shock Sasquatch", {"givesasquatch"}, "", function()
+            menu.action(givevehicle, "Give A Future Shock Sasquatch", {"givesasquatch"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " monster4")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Future Shock Scarab", {"givescarab"}, "", function()
+            menu.action(givevehicle, "Give A Future Shock Scarab", {"givescarab"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " scarab2")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player Aqua Blazer", {"giveblazer"}, "", function()
+            menu.action(givevehicle, "Give Aqua Blazer", {"giveblazer"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " blazer5")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Lazer", {"givelazer"}, "", function()
+            menu.action(givevehicle, "Give A Lazer", {"givelazer"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " lazer")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Hydra", {"givehydra"}, "", function()
+            menu.action(givevehicle, "Give A Hydra", {"givehydra"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Starling", {"givestarling"}, "", function()
+            menu.action(givevehicle, "Give A Starling", {"givestarling"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-            menu.action(givevehicle, "Give Player A Pyro", {"givepyro"}, "", function()
+            menu.action(givevehicle, "Give A Pyro", {"givepyro"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
@@ -13683,10 +13794,6 @@ end)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
 		end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
-
-    menu.action(frienm, "As Player", {"asplayer"}, "Give them something.", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
-    end, nil, nil, COMMANDPERM_FRIENDLY)
 
     menu.toggle(frienm,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
 		spam = on
@@ -20685,6 +20792,7 @@ menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to deskt
     local curcar = entities.get_user_vehicle_as_handle(entities.get_all_objects_as_handles())
     if curcar then
     menu.trigger_commands("deletevehicle")
+    util.yield(100)
     ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
     end
 end)
@@ -22974,10 +23082,10 @@ while true do
     if enabled then
         menu.trigger_commands("bountyall 10000")
     end
-    util.yield(10000)
+    util.yield(1000)
 end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 util.on_stop(function()
-	notification("Later pussy (Yawn)", colors.red)
+	util.log("Later pussy (Yawn)")
 end)
