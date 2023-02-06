@@ -1,15 +1,7 @@
-v6.4
+v6.8
 ________________________
 More Bug Fixes
-Updated Yeet Commands now even more instant
-Re added Hug Player
-Re Added Scenarios
-Added Umbrella Scenarios  - In > Animations > Special Animations
-Added Attach Umbrella to other players
-Added Anon Missile
-Added Drive UFO - Fixed A Bug
-Added Aim Punishments (UNTESTED) - Addict Script>Modder Detections>Aim Punishments
-Improved Blast Kick
-________________________
-v6.6
-Added Super UFO (Because Why not XD)
+Added bounce up - In Players>PLAYER NAME>Vehicle Events>Movement Options>Bounce Up
+Added PTFX - In Stand>Lua Scripts>Addict Script>Fun Shit>Ped PTFX
+Note: I am still working on the mods above and they are bugged I just needed to update the natives mainly
+Updated Lib Folder Natives
