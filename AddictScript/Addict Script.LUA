@@ -8,8 +8,11 @@ WE HAVE TAKEN OVER░ \☻/\☻/
 ]]
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 util.keep_running()
-require "AddictNatives"
-require "ToxTool"
+util.require_natives("natives-1663599433-uno")
+util.require_natives("natives-1640181023")
+util.require_natives("natives-1651208000")
+util.require_natives("natives-1663599433")
+guidedMissile = require("guided_missile")
 
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
@@ -26,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 6.9
+local local_menu_version = 7.0
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -58,7 +61,7 @@ if not dev_mode then
     until response 
 end
 
-util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "WARNING! Notifications aren't always accurate")
+util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "WARNING! --notifications aren't always accurate")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -138,7 +141,7 @@ resources_dir = filesystem.resources_dir() .. '\\Addictscript\\'
 Addictscript_logo = directx.create_texture(resources_dir .. 'Addictscript_logo.png')
 
 if not filesystem.is_dir(resources_dir) then
-    notification("If Addict Script is not installed properly. Some things will fail to load or break.")
+    --notification("If Addict Script is not installed properly. Some things will fail to load or break.")
 end
 
 if not SCRIPT_SILENT_START then
@@ -645,7 +648,7 @@ end
 
     weapons = menu.list(funfun, "Weapon Shit", {}, "", function(); end)
 
-    local self_root = menu.list(funfun, "Ped PTFX", {"pedptfx"}, "")
+
 
 local last_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
 local attachments_table = {
@@ -2858,7 +2861,7 @@ end
 
 local resource_dir = filesystem.resources_dir()
 if not filesystem.exists(resource_dir) then
-	util.toast("resource directory not found. notification system will be less of a bruh")
+	util.toast("resource directory not found. --notification system will be less of a bruh")
 else
 	util.register_file(resource_dir .. "bruhzowski.ytd")
 end
@@ -2878,31 +2881,6 @@ purple = 49, --, 21, 96
 blue = 11
 }
 
-function notification(message, color)
-	HUD.THEFEED_SET_BACKGROUND_COLOR_FOR_NEXT_POST(color)
-	local picture
-	if not filesystem.exists(resource_dir) then
-		picture = "CHAR_SOCIAL_CLUB"
-	else
-		picture = "bruhzowski"
-	end
-	GRAPHICS.REQUEST_STREAMED_TEXTURE_DICT(picture, 1)
-	while not GRAPHICS.HAS_STREAMED_TEXTURE_DICT_LOADED(picture) do
-		util.yield()
-	end
-	util.BEGIN_TEXT_COMMAND_THEFEED_POST(message)
-	if color == colors.red or color == colors.red then
-		subtitle = "~u~Notification"
-	elseif color == colors.black then
-		subtitle = "~c~Notification"
-	else
-		subtitle = "~u~Notification"
-	end
-	HUD.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(picture, "Mike", true, 4, "Addict Script", subtitle)
-
-	HUD.END_TEXT_COMMAND_THEFEED_POST_TICKER(true, false)
-	util.log(message)
-end
 
 function arg11(pid)
     return (1630317 + (1 + (pid * 595) + 506))
@@ -3015,7 +2993,7 @@ function cage_player(pos)
 	cages[#cages + 1] = object2
 	
 	if object1 == 0 or object2 ==0 then --if 'CREATE_OBJECT' fails to create one of those 
-		notification("Something Went Wrong Creating Cages", colors.red)
+		--notification("Something Went Wrong Creating Cages", colors.red)
 	end
 	ENTITY.FREEZE_ENTITY_POSITION(object1, true)
 	ENTITY.FREEZE_ENTITY_POSITION(object2, true)
@@ -3124,7 +3102,37 @@ function send_script_event(first_arg, receiver, args)
 	util.trigger_script_event(1 << receiver, args)
 end
 
-notification("Addict Script has been successfully loaded!", colors.green)
+--[[
+
+function --notification(message, color)
+	HUD.THEFEED_SET_BACKGROUND_COLOR_FOR_NEXT_POST(color)
+	local picture
+	if not filesystem.exists(resource_dir) then
+		picture = "CHAR_SOCIAL_CLUB"
+	else
+		picture = "bruhzowski"
+	end
+	GRAPHICS.REQUEST_STREAMED_TEXTURE_DICT(picture, 1)
+	while not GRAPHICS.HAS_STREAMED_TEXTURE_DICT_LOADED(picture) do
+		util.yield()
+	end
+	util.BEGIN_TEXT_COMMAND_THEFEED_POST(message)
+	if color == colors.red or color == colors.red then
+		subtitle = "~u~--notification"
+	elseif color == colors.black then
+		subtitle = "~c~--notification"
+	else
+		subtitle = "~u~--notification"
+	end
+	HUD.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(picture, "Mike", true, 4, "Addict Script", subtitle)
+
+	HUD.END_TEXT_COMMAND_THEFEED_POST_TICKER(true, false)
+	util.log(message)
+end
+
+--notification("Addict Script has been successfully loaded!", colors.green)
+
+]]
 
     local kicks = {
     0x493fc6bb,
@@ -4734,32 +4742,32 @@ menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 Peopl
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
                 menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(1500)
                 menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
     end
 end)
 
 menu.action(rp_cash_loops, "{Jrukii's} RP Loop", {"rankall"}, "", function()
-    notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("givebigrp" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("givebigrp" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Rank Everyone has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4770,12 +4778,12 @@ menu.action(rp_cash_loops, "Give RP Steadily", {"giverpstedto"}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("RP Stead has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
     end
@@ -4786,12 +4794,12 @@ menu.action(rp_cash_loops, "Give RP Loop", {"giverpto"}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
     end
@@ -4807,13 +4815,13 @@ menu.action(helpful_trolling, "Candy Upgrade Vehicle", {"candyvehs"}, "Sets vehi
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Candy Upgrade has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Candy Upgrade has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Candy Upgrade has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Candy Upgrade has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4825,13 +4833,13 @@ menu.action(helpful_trolling, "Send UFO Attacker", {"sendufo"}, "Sends a ufo to 
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("ugvsendufoeh" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Ufo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4843,13 +4851,13 @@ menu.action(helpful_trolling, "Vehicle Kick", {}, "", function()
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
                 menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Vehicle Kick has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4860,12 +4868,12 @@ menu.action(helpful_trolling, "Give Wanted", {}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Give Wanted has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4873,17 +4881,33 @@ end)
 
 menu.divider(helpful_trolling, "Helpful")
 
+menu.action(helpful_trolling, "Give A UFO", {"giveufoto"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giveufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                --notification("UFO has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("giveufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                --notification("UFO has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+            end
+        end
+    end
+end)
+
 menu.action(helpful_trolling, "Infinity Ammo", {"infintyammoto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Ammo has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
     end
@@ -4894,12 +4918,12 @@ menu.action(helpful_trolling, "Send Friend Request", {"sendfriend"}, "", functio
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+                --notification("Friend Request has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
     end
@@ -4913,13 +4937,13 @@ menu.action(tp_players, "TP Players", {"tpplayers"}, "Teleports to you.", functi
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -4980,29 +5004,29 @@ menu.action(crashes_kicks, "Next Gen Crash", {}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Next Gen Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
 end)
 
 menu.action(crashes_kicks, "Steamroller Crash", {}, "", function()
-    notification("Sending Steamroller Crash crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Sending Steamroller Crash crash to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Ha Addict Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Ha Addict Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Steamroller Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Steamroller Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -5013,12 +5037,12 @@ menu.action(crashes_kicks, "Desync Kick", {desynckick}, "", function()
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
-                notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("Get fucked off " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         end
     end
@@ -5191,29 +5215,29 @@ menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mu
     end
 end)
 
-protexx = menu.list(protex, "Clear All Notifications", {}, "", function(); end)
+protexx = menu.list(protex, "Clear All --notifications", {}, "", function(); end)
 
-menu.action(protexx, "Clear All Notifications", {"clearnotifs"}, "Clears stand notifs and above mini map", function()
-        menu.trigger_commands("clearnotifications")
+menu.action(protexx, "Clear All --notifications", {"clearnotifs"}, "Clears stand notifs and above mini map", function()
+        menu.trigger_commands("clear--notifications")
         menu.trigger_commands("clearstandnotifys")
 end)
 
 
 
-menu.toggle_loop(protexx, "Clear All Notifications Toggled", {"toggleclearnotifs"}, "Clears stand notifs and above mini map", function(on_toggle)
+menu.toggle_loop(protexx, "Clear All --notifications Toggled", {"toggleclearnotifs"}, "Clears stand notifs and above mini map", function(on_toggle)
     if on then
-        menu.trigger_commands("clearnotifications")
+        menu.trigger_commands("clear--notifications")
         menu.trigger_commands("clearstandnotifys")
         util.yield(1000)
     else
-        menu.trigger_commands("clearnotifications")
+        menu.trigger_commands("clear--notifications")
         menu.trigger_commands("clearstandnotifys")
     end
 end)
 
 menu.toggle_loop(protexx, "Clear All Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
     local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
-    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Notification")
+    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>--notification")
     if on_toggle then
         menu.trigger_command(TransactionError, "on")
         menu.trigger_command(TransactionErrorV, "on")
@@ -5224,11 +5248,11 @@ menu.toggle_loop(protexx, "Clear All Transaction Errors", {"toggleclearallnotifs
     end
 end)
 
-menu.toggle_loop(protexx, "Clear All Notifications & Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
-    local clearnotifts = menu.ref_by_path("Game > Remove Notifications Above Minimap")
-    local clearstandnotifs = menu.ref_by_path("Stand > Clear Notifications")
+menu.toggle_loop(protexx, "Clear All --notifications & Transaction Errors", {"toggleclearallnotifs"}, "Clears stand notifs and above mini map & Transaction Errors.", function(on_toggle)
+    local clearnotifts = menu.ref_by_path("Game > Remove --notifications Above Minimap")
+    local clearstandnotifs = menu.ref_by_path("Stand > Clear --notifications")
     local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
-    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Notification")
+    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>--notification")
     if on_toggle then
         menu.trigger_commands("clearnotifts")
         menu.trigger_commands("clearstandnotifs")
@@ -5259,7 +5283,7 @@ end)
     end)
 
 	menu.action(protex, "Remove Attachments", {"remove attachments"}, "Cleans your ped of all attachments by regenerating it", function()
-		notification("Removing Attachments", colors.red)
+		--notification("Removing Attachments", colors.red)
 		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
 			menu.trigger_commands("mpmale")
 		else
@@ -5380,7 +5404,7 @@ end)
 		end
 		util.toast("Gobbled all pickups nom nom!")
 		util.toast("Fucked Everything off " .. ct .. " Entities removed. :)")
-		notification("Shit cleaned nom nom > " .. ct .. "Entities", colors.green)
+		--notification("Shit cleaned nom nom > " .. ct .. "Entities", colors.green)
 			for k,ent in pairs(entities.get_all_pickups_as_handles()) do
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
 				entities.delete_by_handle(ent)
@@ -5397,7 +5421,7 @@ end)
 
 menu.toggle_loop(protex, "Block Transaction Error 'Test'", {}, "Likely to lead to errors, use under responsibility", function(on_toggle)
     local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
-    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Notification")
+    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>--notification")
     if on_toggle then
         menu.trigger_command(TransactionError, "on")
         menu.trigger_command(TransactionErrorV, "on")
@@ -5544,10 +5568,10 @@ end)
 		local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
 		if on_toggle then
 			menu.trigger_command(BlockNetEvents)
-			notification("Toggling block all network events on... Get those cunts!", colors.red)
+			--notification("Toggling block all network events on... Get those cunts!", colors.red)
 		else
 			menu.trigger_command(UnblockNetEvents)
-			notification("Toggling block all network events off...", colors.red)
+			--notification("Toggling block all network events off...", colors.red)
 		end
 	end)
 
@@ -5557,30 +5581,30 @@ end)
 		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>SyPanicncs>Incoming>Any Incoming Sync>Block>Disabled")
 		if on_toggle then
 			menu.trigger_command(BlockIncSyncs)
-			notification("Toggling block all incoming syncs on... Get those cunts!", colors.red)
+			--notification("Toggling block all incoming syncs on... Get those cunts!", colors.red)
 		else
 			menu.trigger_command(UnblockIncSyncs)
-			notification("toggling block all incoming syncs off...", colors.red)
+			--notification("toggling block all incoming syncs off...", colors.red)
 		end
 	end)
 
 	menu.toggle(protex, "Toggle Block all Outgoing Syncs", {}, "This breaks the game, and other players will not receive any updates from your client", function(on_toggle)
 		if on_toggle then
-			notification("Toggling block all outgoing syncs on", colors.red)
+			--notification("Toggling block all outgoing syncs on", colors.red)
 			menu.trigger_commands("desyncall on")
 		else
-			notification("Toggling block all outgoing syncs off", colors.red)
+			--notification("Toggling block all outgoing syncs off", colors.red)
 			menu.trigger_commands("desyncall off")
 		end
 	end)
 
 	menu.toggle(protex, "Toggle Anticrashcam", {"acc"}, "Put this here for redundancy", function(on_toggle)
 		if on_toggle then
-			notification("Toggling anticrashcam... Get those cunts", colors.red)
+			--notification("Toggling anticrashcam... Get those cunts", colors.red)
 			menu.trigger_commands("anticrashcam on")
 			menu.trigger_commands("potatomode on")
 		else
-			notification("Toggling anticrashcam off...", colors.red)
+			--notification("Toggling anticrashcam off...", colors.red)
 			menu.trigger_commands("anticrashcam off")
 			menu.trigger_commands("potatomode off")
 		end
@@ -5592,13 +5616,13 @@ end)
 		local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
 		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
 		if on_toggle then
-			notification("Toggling panic mode on... Get those cunts", colors.red)
+			--notification("Toggling panic mode on... Get those cunts", colors.red)
 			menu.trigger_commands("desyncall on")
 			menu.trigger_command(BlockIncSyncs)
 			menu.trigger_command(BlockNetEvents)
 			menu.trigger_commands("anticrashcamera on")
 		else
-			notification("toggling panic mode off...", colors.red)
+			--notification("toggling panic mode off...", colors.red)
 			menu.trigger_commands("desyncall off")
 			menu.trigger_command(UnblockIncSyncs)
 			menu.trigger_command(UnblockNetEvents)
@@ -6589,7 +6613,7 @@ local function get_closest_vehicle(entity)
             PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), jet, -1)
             ENTITY.SET_ENTITY_VISIBLE(object1, true)
             menu.trigger_commands("otr" .. " on")
-            menu.trigger_commands("cameradistance" .. " 1.50")
+            menu.trigger_commands("cameradistance" .. " 1.80")
             DisablePhone()
         else
             ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
@@ -6597,8 +6621,6 @@ local function get_closest_vehicle(entity)
             menu.trigger_commands("cameradistance" .. " 1.00")
             menu.trigger_commands("superc")
             entities.delete_by_handle(jet)
-            util.yield(1000)
-            menu.trigger_commands("tpmazehelipad")
             end
         end)
 
@@ -8037,7 +8059,7 @@ end)
 			native_invoker.push_arg_int(veh)
 			native_invoker.push_arg_float(3.402823466e+38)
 			native_invoker.end_call("93A3996368C94158") -- VEHICLE.MODIFY_VEHICLE_TOP_SPEED
-			notification("Removed wheels", colors.red)
+			--notification("Removed wheels", colors.red)
 		end
 	end)
 
@@ -8167,10 +8189,10 @@ GenerateFeatures = function(pid)
 
         ENTITY.SET_ENTITY_COORDS(ped, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
 		ENTITY.SET_ENTITY_VISIBLE(ped, false)
-		notification("Spawned [" .. ped_name .. "] on " .. PLAYER.GET_PLAYER_NAME(pid), colors.red)
+		--notification("Spawned [" .. ped_name .. "] on " .. PLAYER.GET_PLAYER_NAME(pid), colors.red)
 		--util.yield(15000)
 		--entities.delete_by_handle(ped)
-		--notification("Deleted [" .. ped_name .. "]", true, false)
+		----notification("Deleted [" .. ped_name .. "]", true, false)
 	end
 
 	vehopts = menu.list(menu.player_root(pid), "Vehicle Events", {}, "Works only if you are standing near to selected player", function(); end)
@@ -8191,7 +8213,7 @@ GenerateFeatures = function(pid)
 
 	menu.action(vehopts,"Spawn them a vehicle", {}, "Spawns a vehicle on target player", function()
 		menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
-		notification("now type the name of the vehicle in the command box", colors.red)
+		--notification("now type the name of the vehicle in the command box", colors.red)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
 	menu.toggle_loop(troll_sub_vehicle_tab,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
@@ -8433,7 +8455,7 @@ GenerateFeatures = function(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     menu.action(mov_sub_vehicle_tab, 'Reverse Car', {'reversecars'}, "Note: Restart Addict Script if you need to reset your own speed",function()
-        notification("Reverse Car On " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
+        --notification("Reverse Car On " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
 	    local vehicle = get_player_veh(pid,true)
         local player_torques = 1000000
             player_torques = value
@@ -9583,7 +9605,7 @@ menu.click_slider(trolly_vehicles, 'Send Bandito', {'sendbandito'}, '', 1,25,1,1
         add_blip_for_entity(bandito, 646, 4)
         ENTITY.SET_ENTITY_INVINCIBLE(bandito, bandito_godmode)
         ENTITY.SET_ENTITY_VISIBLE(driver, false, 0)
-        notification("Spawned some annoying ass cars", colors.red)
+        --notification("Spawned some annoying ass cars", colors.red)
         util.yield(150)
     end
 end)
@@ -9739,7 +9761,7 @@ util.create_tick_handler(function()
     PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
 end)
 ------------------------------------------------------------------------------------------------------------------------------------------------
-notification("Ufo sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
+--notification("Ufo sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
 return pilot, heli
 end	
 
@@ -9806,7 +9828,7 @@ menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
 for i = 1, #gunner_weapon_listing do
     menu.action(menu_gunner_weapon_list, gunner_weapon_listing[i][1], {}, "", function()
         gunner_weapon = gunner_weapon_listing[i][2]
-        notification("Now gunners will shoot with "..gunner_weapon_listing[i][1].."s", colors.red)
+        --notification("Now gunners will shoot with "..gunner_weapon_listing[i][1].."s", colors.red)
     end)
 end
 
@@ -9893,7 +9915,7 @@ util.create_tick_handler(function()
     PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
 end)
 
-notification("Buzzard sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
+--notification("Buzzard sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
 return pilot, heli
 end	
 
@@ -9932,7 +9954,7 @@ menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
 for i = 1, #gunner_weapon_list do
     menu.action(menu_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
         gunner_weapon = gunner_weapon_list[i][2]
-        notification("Now gunners will shoot with "..gunner_weapon_list[i][1].."s", colors.red)
+        --notification("Now gunners will shoot with "..gunner_weapon_list[i][1].."s", colors.red)
     end)
 end
 
@@ -10019,7 +10041,7 @@ function spawn_lazer(pid, gunner_weapon, collision)
         PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
     end)
 
-    notification("Army Attack sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
+    --notification("Army Attack sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
     return pilot, lazer
     end	
 
@@ -10060,7 +10082,7 @@ menu.divider(menu_gunner_weapon_lists, "Gunner Weapon List")
 for i = 1, #gunner_weapon_lists do
     menu.action(menu_gunner_weapon_lists, gunner_weapon_lists[i][1], {}, "", function()
         gunner_weapons = gunner_weapon_lists[i][2]
-        notification("Now gunners will shoot with "..gunner_weapon_lists[i][1].."s", colors.red)
+        --notification("Now gunners will shoot with "..gunner_weapon_lists[i][1].."s", colors.red)
     end)
 end
 
@@ -10760,7 +10782,7 @@ menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 o
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     menu.toggle_loop(pteleportEntities, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
-        notification("Tp All Entities Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Tp All Entities Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         if on_toggle then
             menu.trigger_commands("tppeds" .. players.get_name(pid))
             util.yield(100)
@@ -11324,7 +11346,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
 menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", function(on_toggle)
-    notification("Rain Peds sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Rain Peds sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_peds_as_handles()
@@ -11346,7 +11368,7 @@ menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", func
 end)
 
 menu.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", function(on_toggle)
-    notification("Rain Vehicles sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Rain Vehicles sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_vehicles_as_handles()
@@ -11363,6 +11385,29 @@ menu.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", func
             ped_c.z = ped_c.z + math.random(5, 10)
             ENTITY.SET_ENTITY_VELOCITY(ped, 0.0, 0.0, -1.0)
             util.yield(100)
+        end
+    end
+end)
+
+
+menu.toggle_loop(tormentplayer, "Rain Objects on Player", {"rainobj"}, "", function(on_toggle)
+    --notification("Rain Objects sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+    local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+        all_peds = entities.get_all_objects_as_handles()
+    for k,ped in pairs(all_peds) do
+        if not PED.IS_PED_A_PLAYER(ped) then
+            if PED.IS_PED_IN_ANY_VEHICLE(ped, true) then
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                TASK.TASK_LEAVE_ANY_VEHICLE(ped, 0, 16)
+            end
+            ENTITY.IS_ENTITY_IN_AIR(ped)
+            ENTITY.SET_ENTITY_COORDS(ped, ped_c.x, ped_c.y, ped_c.z)
+            ped_c.x = ped_c.x + math.random(-5, 5)
+            ped_c.y = ped_c.y + math.random(-5, 5)
+            ped_c.z = ped_c.z + math.random(5, 10)
+            ENTITY.SET_ENTITY_VELOCITY(ped, 0.0, 0.0, -100.0)
+            util.yield(0)
         end
     end
 end)
@@ -11501,7 +11546,7 @@ menu.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_t
 --Ptfx
 
 menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggle)
-    notification("Electric sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Electric sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -11513,7 +11558,7 @@ menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggl
 	end)
 
 menu.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
-    notification("Electric sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Electric sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -11525,7 +11570,7 @@ menu.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
 	end)
 
 menu.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
-    notification("Smoke sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Smoke sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -11537,7 +11582,7 @@ menu.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
 	end)
 
 menu.toggle_loop(ptfxloop, "Clown Explosions", {"ptfxclown"}, "", function(on_toggle)
-    notification("Clown Explosions sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Clown Explosions sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 		request_ptfx_asset("scr_rcbarry2")
 		GRAPHICS.USE_PARTICLE_FX_ASSET("scr_rcbarry2")
 		GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -11549,7 +11594,7 @@ menu.toggle_loop(ptfxloop, "Clown Explosions", {"ptfxclown"}, "", function(on_to
 	end)
 
 menu.toggle_loop(ptfxloop, "Extinguisher", {"ptfxextinguisher"}, "", function(on_toggle)
-    notification("Extinguisher sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Extinguisher sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -11561,7 +11606,7 @@ menu.toggle_loop(ptfxloop, "Extinguisher", {"ptfxextinguisher"}, "", function(on
 	end)
 
 menu.toggle_loop(ptfxloop, "Water Mist", {"ptfxwatermist"}, "", function(on_toggle)
-    notification("Water Mist sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Water Mist sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
                 "ent_anim_bm_water_mist", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
@@ -12284,7 +12329,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
 	menu.toggle(seizures, "Seizure V3", {"seizurev3"}, "", function(on_toggle)
-        notification("Seizure V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Seizure V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 	if on_toggle then
 			menu.trigger_commands("seizurev1" .. players.get_name(pid))
 			menu.trigger_commands("seizurev2" .. players.get_name(pid))
@@ -12301,7 +12346,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
                     STREAMING.REQUEST_MODEL(pedhash)
                     util.yield(10)
                 end
-                notification("Village People 360 Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pid), true, true, colors.red)
+                --notification("Village People 360 Crash has been sent to " .. PLAYER.GET_PLAYER_NAME(pid), true, true, colors.red)
                 local bh = PLAYER.GET_PLAYER_PED(pid)
                 local bi = ENTITY.GET_ENTITY_COORDS(bh, true)
                 local bj = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
@@ -12733,7 +12778,7 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
 			menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
 			util.yield(300)
 			if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-				notification("Failed to kick player out of the vehicle", colors.red)
+				--notification("Failed to kick player out of the vehicle", colors.red)
 				menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 				return
 			end
@@ -12961,7 +13006,7 @@ end)
 				menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
 				util.yield(300)
 				if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-					notification("Failed to kick player out of the vehicle", colors.red)
+					--notification("Failed to kick player out of the vehicle", colors.red)
 					menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 					return
 				end
@@ -12979,7 +13024,7 @@ end)
 					goto continue
 				end
 				cage_player(a)
-				notification(PLAYER.GET_PLAYER_NAME(pid).." was out of the cage. Doing it again", colors.red)
+				--notification(PLAYER.GET_PLAYER_NAME(pid).." was out of the cage. Doing it again", colors.red)
 				::continue::
 			end
 			util.yield(1000)
@@ -13013,7 +13058,7 @@ end)
 		end
 	end)
 
-    menu.action(griefing, "Job SmS Notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
+    menu.action(griefing, "Job SmS --notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
         menu.show_command_box_click_based(cl, "jobnotify "..players.get_name(pid):lower().." ") end, function(input)
             local event_data = {0x8E38E2DF, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             input = input:sub(1, 127)
@@ -13144,7 +13189,7 @@ end)
         kick = menu.list(menu.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
         menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses every kick in my script and stand, 22 kicks total but smart kick could have more than 1 kick also.", function()
-        notification("Blast kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Blast kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("historyblock " .. players.get_name(pid))
             menu.trigger_commands("boop" .. players.get_name(pid))
             menu.trigger_commands("buttplug" .. players.get_name(pid))
@@ -13325,7 +13370,7 @@ end)
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
 	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, vehiclegodmode, vehicle boost, fastrun, explosive ammo, never wanted, gives all weapons, ammo/infinite and parachute all at once", function () -- idea skidded from ajoker script.
-    	notification("Maxing " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    	--notification("Maxing " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         		menu.trigger_commands("bail".. players.get_name(pid))
         		menu.trigger_commands("arm".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
@@ -13334,7 +13379,7 @@ end)
                 menu.trigger_commands("removestickys".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
-	    notification("MAXED!!! GANG SHIT!!!", colors.red)
+	    --notification("MAXED!!! GANG SHIT!!!", colors.red)
     	end, nil, nil, COMMANDPERM_FRIENDLY)
 
         
@@ -13588,11 +13633,6 @@ end)
             menu.trigger_commands("wptp" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(tpthem, "TP All To Their Waypoint", {"alltowaypoint"}, "Teleports all players near you.", function()
-            excludeselected = true
-            menu.trigger_commands("sendalltowp")
-        end, nil, nil, COMMANDPERM_FRIENDLY)
-
         menu.action(tpthem, "Fix loading screen", {"fixme"}, "Try to fix player's infinite loading screen by giving him script host and teleporting to nearest apartment.", function()
             menu.trigger_commands("givesh" .. players.get_name(pid))
             menu.trigger_commands("aptme" .. players.get_name(pid))
@@ -13607,6 +13647,10 @@ end)
             givevehicle = menu.list(frienm, "Give Player A Vehicle", {}, "", function(); end)
 
             menu.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
+                menu.trigger_commands("stopspectating")
+                menu.trigger_commands("spectate" .. players.get_name(pid))
+                menu.trigger_commands("otr" .. players.get_name(pid))
+                util.yield(2000)
                 local vehicleHash = util.joaat("hydra")
                 request_model(vehicleHash)
                 local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
@@ -13628,6 +13672,8 @@ end)
                 NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
                 ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
                 ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+                util.yield(500)
+                menu.trigger_commands("stopspectating")
             end)
 
             menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
@@ -13720,7 +13766,7 @@ end)
 ]]
 
 	menu.action(frienm,"Boost", {"boost"}, "Sets max speed of vehicle to 100 better for cars",function()
-       	notification("100x vehicle speed boost for  " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+       	--notification("100x vehicle speed boost for  " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 100)
@@ -13812,10 +13858,10 @@ end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
     if pids == PLAYER.PLAYER_ID() then
-        notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Spectating " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         return
     else
-        notification("Can't Spectate yourself?", colors.blue)
+        --notification("Can't Spectate yourself?", colors.blue)
     end
     menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
     local hash = util.joaat("baller")
@@ -16011,7 +16057,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
         end)
 
 menu.toggle_loop(keramicrash, "Rope Crash Lobby", {"ropecrash"}, "", function(on_loop)
-    notification("Rope Crash Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Rope Crash Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     PHYSICS.ROPE_LOAD_TEXTURES()
     local hashes = {2132890591, 2727244247}
     local pc = getEntityCoords(getPlayerPed(pid))
@@ -16184,7 +16230,7 @@ local weedcrash = menu.list(crash, "Weed Crash", {}, "")
     end)
 
     menu.toggle_loop(weedcrash, "Weed Pot Crash", {"toggleweedcrash"}, "", function(on_toggle)
-        notification("Weed Pot Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Weed Pot Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         local cord = getEntityCoords(getPlayerPed(pid))
         local a1 = entities.create_object(-930879665, cord)
         local a2 = entities.create_object(3613262246, cord)
@@ -16214,7 +16260,7 @@ local weedcrash = menu.list(crash, "Weed Crash", {}, "")
     local mathcrash = menu.list(lobbycrash, "Math Crash", {}, "")
 
 menu.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of rope crash.", function()
-    notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     pos.x = pos.x+5
@@ -16252,7 +16298,7 @@ menu.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of 
 end)
 
 menu.toggle_loop(mathcrash, "Math Crash x3 Lobby", {"togglemath"}, "One of the versions of rope crash.", function(on_toggle)
-    notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Math Crash x3 Lobby sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     pos.x = pos.x+5
@@ -18056,243 +18102,9 @@ end)
     end
 end)
 
-PTFX = {}
-
-Types = {
-    {"Trail (White)", "scr_rcbarry2", "scr_exp_clown_trails", 500},
-    {"Trail (Color)", "scr_powerplay", "sp_powerplay_beast_appear_trails", 500},
-    {"Electrical Fire (Silent)", "core", "ent_dst_elec_fire_sp", 200},
-    {"Electrical Fire (Noisy)", "core", "ent_dst_elec_crackle", 500},
-    {"Electrical Malfunction", "cut_exile1", "cs_ex1_elec_malfunction", 500},
-    {"Chandelier", "cut_family4", "cs_fam4_shot_chandelier", 100},
-    {"Firework Trail (Short)", "scr_rcpaparazzo1", "scr_mich4_firework_sparkle_spawn", 500},
-    {"Firework Trail (Long)", "scr_indep_fireworks", "scr_indep_firework_sparkle_spawn", 500},
-    {"Firework Burst", "scr_indep_fireworks", "scr_indep_firework_trailburst_spawn", 500},
-    {"Firework Trailburst", "scr_rcpaparazzo1", "scr_mich4_firework_trailburst_spawn", 500},
-    {"Firework Fountain", "scr_indep_fireworks", "scr_indep_firework_trail_spawn", 500},
-    {"Beast Vanish", "scr_powerplay", "scr_powerplay_beast_vanish", 1000},
-    {"Beast Appear", "scr_powerplay", "scr_powerplay_beast_appear", 1000},
-    {"Alien Teleport", "scr_rcbarry1", "scr_alien_teleport", 750},
-    {"Alien Disintegrate", "scr_rcbarry1", "scr_alien_disintegrate", 500},
-    {"Take Zone", "scr_ie_tw", "scr_impexp_tw_take_zone", 500},
-    {"Jackhammer (Quiet)", "core", "ent_dst_bread", 50},
-    {"Jackhammer (Loud)", "core", "bul_paper", 50},
-    {"Vehicle Backfire", "core", "veh_backfire", 250},
-    {"Tire Flash", "scr_carsteal4", "scr_carsteal5_car_muzzle_flash", 50},
-    {"Tire Air", "scr_carsteal4", "scr_carsteal5_tyre_spiked", 150},
-    {"Tire Sparks", "scr_carsteal4", "scr_carsteal4_tyre_spikes", 50},
-    {"Car Sparks", "core", "bang_carmetal", 250},
-    {"Stungun Sparks", "core", "bul_stungun_metal", 500},
-    {"Plane Sparks", "cut_exile1", "cs_ex1_plane_break_L", 325},
-    {"Plane Debris", "scr_solomon3", "scr_trev4_747_engine_debris", 1000},
-    {"Foundry Sparks", "core", "sp_foundry_sparks", 500},
-    {"Foundry Steam", "core", "ent_amb_foundry_steam_spawn", 500},
-    {"Oil", "core", "ent_sht_oil", 3500},
-    {"Trash", "core", "ent_dst_hobo_trolley", 250},
-    {"Money Trail", "scr_exec_ambient_fm", "scr_ped_foot_banknotes", 125},
-    {"Gumball Machine", "core", "ent_dst_gen_gobstop", 500},
-    {"Camera Flash", "scr_bike_business", "scr_bike_cfid_camera_flash", 200},
-    {"Black Smoke", "scr_fbi4", "exp_fbi4_doors_post", 250},
-    {"Musket", "wpn_musket", "muz_musket_ng", 500},
-    {"Torpedo", "veh_stromberg", "exp_underwater_torpedo", 500},
-    {"Molotov", "core", "exp_grd_molotov_lod", 500},
-    {"EMP", "scr_xs_dr", "scr_xs_dr_emp", 350},
-    {"Petrol Fire", "scr_finale1", "scr_fin_fire_petrol_trev", 2500},
-    {"Petrol Explosion", "core", "exp_grd_petrol_pump", 300},
-    {"Inflate", "core", "ent_dst_inflate_lilo", 300},
-    {"Inflatable", "core", "ent_dst_inflatable", 500},
-    {"Water Splash (Short)", "core", "ent_anim_bm_water_scp", 200},
-    {"Water Splash (Long)", "cut_family5", "cs_fam5_michael_pool_splash", 500},
-    {"Mop Squeeze", "scr_agencyheist", "scr_fbi_mop_squeeze", 100},
-    {"Flame (Real)", "core", "ent_sht_flame", 7500}
-}
-
-Request = function(asset)
-    STREAMING.REQUEST_NAMED_PTFX_ASSET(asset)
-    while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(asset) do
-        util.yield()
-    end
-end
-
-GetByName = function(name)
-    for _, ptfx_data in pairs(Types) do
-        if ptfx_data[1] == name then return ptfx_data end
-    end
-    return nil
-end
-
-CreateList = function(root, loop)
-    for _, ptfx in pairs(Types) do
-        menu.toggle_loop(root, ptfx[1], {"addict" .. ptfx[1]:lower()}, "Plays the " .. ptfx[1] .. " effect.", function()
-            loop(ptfx)
-        end)
-    end
-end
-
-PlayAtCoords = function(coords, ptfx_group, ptfx_name, color)
-    Request(ptfx_group)
-    GRAPHICS.USE_PARTICLE_FX_ASSET(ptfx_group)
-    if color then GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(color.r, color.g, color.b) end
-    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
-        ptfx_name, coords.x, coords.y, coords.z,
-        0.0, 0.0, 0.0, 0.0, 
-        false, false, false
-    )
-end
-
-PlayOnEntity = function(entity, ptfx_group, ptfx_name, color)
-    Request(ptfx_group)
-    GRAPHICS.USE_PARTICLE_FX_ASSET(ptfx_group)
-    if color then GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(color.r, color.g, color.b) end
-    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(
-        ptfx_name, entity, 
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 
-        false, false, false
-    )
-end
-
-PlayOnEntityBones = function(entity, bones, ptfx_group, ptfx_name, color)
-    Request(ptfx_group)
-    GRAPHICS.USE_PARTICLE_FX_ASSET(ptfx_group)
-    for _, bone in pairs(bones) do
-        local bone_index = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(entity, bone)
-        local coords = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(entity, bone_index)
-        if coords:magnitude() > -0 then
-            GRAPHICS.USE_PARTICLE_FX_ASSET(ptfx_group)
-            if color then GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(color.r, color.g, color.b) end
-            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(
-                ptfx_name, entity,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                bone_index,
-                0.0,
-                false, false, false
-            )
-        end
-    end
-end
-
-PlayAtEntityBoneCoords = function(entity, bones, ptfx_group, name, color)
-    for _, bone in pairs(bones) do
-        local bone_index = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(entity, bone)
-        local coords = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(entity, bone_index)
-        if coords:magnitude() > 0.0 then
-            PlayAtCoords(coords, ptfx_group, name, color)
-        end
-    end
-end
-
-Objects = {}
-
---========================= Generic Objects =========================--
--- Entity types to include.
-Type = {
-    All = 1,
-    Ped = 2,
-    Vehicle = 3
-}
-
--- Get all entities of type within range of the specified coordinates.
-GetAllNearCoords = function(coords, range, types, include_own_vehicle)
-    if include_own_vehicle == nil then include_own_vehicle = true end
-    local player_vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped())
-    local nearby_objects = {}
-
-    if types == Type.Ped or types == Type.All then
-        for _, ped in pairs(entities.get_all_peds_as_handles()) do
-            if ped ~= players.user_ped() then
-                local ped_coords = ENTITY.GET_ENTITY_COORDS(ped)
-                if coords:distance(ped_coords) <= range then
-                    table.insert(nearby_objects, ped)
-                end
-            end
-        end
-    end
-
-    if types == Type.Vehicle or types == Type.All then
-        for _, vehicle in pairs(entities.get_all_vehicles_as_handles()) do
-            if include_own_vehicle or players.get_vehicle_model(players.user()) == 0 or vehicle ~= PED.GET_VEHICLE_PED_IS_IN(players.user_ped()) then
-                local vehicle_coords = ENTITY.GET_ENTITY_COORDS(vehicle)
-                if coords:distance(vehicle_coords) <= range then
-                    table.insert(nearby_objects, vehicle)
-                end
-            end
-        end
-    end
-
-    table.sort(nearby_objects, function(object_1, object_2)
-        return coords:distance(ENTITY.GET_ENTITY_COORDS(object_1)) < coords:distance(ENTITY.GET_ENTITY_COORDS(object_2))
-    end)
-    
-    return nearby_objects
-end
-
-PlayerBones = {
-    Head = {"IK_Head"},
-    Hands = {"IK_L_Hand", "IK_R_Hand"},
-    Pointer = {"IK_L_Hand"},
-    Feet = {"IK_L_Foot", "IK_R_Foot"}
-}
-
-
-menu.divider(self_root, "General")
-local self_ptfx_root = menu.list(self_root, "Body PTFX...", {"addictptfx"}, "Special FX options.")
-
-
--- -- PTFX
-ptfx_color = {r = 1.0, g = 1.0, b = 1.0}
-ptfx_disable = false
-
-
-util.create_tick_handler(function()
-    _player_is_pointing = memory.read_int(memory.script_global(4521801 + 930)) == 3
-end)
-
-menu.divider(self_ptfx_root, "Options")
-menu.colour(self_ptfx_root, "Color", {"addictptfxcolor"}, "Some PTFX options allow for custom colors.", 1.0, 1.0, 1.0, 1.0, false, function(value)
-    ptfx_color.r = value.r
-    ptfx_color.g = value.g
-    ptfx_color.b = value.b
-end)
-menu.toggle(self_ptfx_root, "Disable", {"addictptfxoff"}, "Disables PTFX but keeps your settings.", function(value)
-    ptfx_disable = value
-end)
-
--- -- Body PTFX
-local self_ptfx_body_head_root = menu.list(self_ptfx_root, "Head...", {"addictptfxhead"}, "Special FX on your head.")
-local self_ptfx_body_hands_root = menu.list(self_ptfx_root, "Hands...", {"addictptfxhands"}, "Special FX on your hands.")
-local self_ptfx_body_feet_root = menu.list(self_ptfx_root, "Feet...", {"addictptfxfeet"}, "Special FX on your feet.")
-local self_ptfx_body_pointer_root = menu.list(self_ptfx_root, "Pointer...", {"addictptfxpointer"}, "Special FX on your finger when pointing.")
-
-CreateList(self_ptfx_body_head_root, function(ptfx)
-    if ptfx_disable then return end
-    PlayOnEntityBones(players.user_ped(), PlayerBones.Head, ptfx[2], ptfx[3], ptfx_color)
-    util.yield(ptfx[4])
-end)
-
-CreateList(self_ptfx_body_hands_root, function(ptfx)
-    if ptfx_disable then return end
-    PlayOnEntityBones(players.user_ped(), PlayerBones.Hands, ptfx[2], ptfx[3], ptfx_color)
-    util.yield(ptfx[4])
-end)
-
-
-CreateList(self_ptfx_body_feet_root, function(ptfx)
-    if ptfx_disable then return end
-    PlayOnEntityBones(players.user_ped(), PlayerBones.Feet, ptfx[2], ptfx[3], ptfx_color)
-    util.yield(ptfx[4])
-end)
-
-CreateList(self_ptfx_body_pointer_root, function(ptfx)
-    if ptfx_disable then return end
-    if _player_is_pointing then
-        PlayOnEntityBones(players.user_ped(), PlayerBones.Pointer, ptfx[2], ptfx[3], ptfx_color)
-        util.yield(ptfx[4])
-    end
-end)
-
 
 menu.toggle_loop(clothescrash, "Small Component Crash", {"scompcrash"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
-    notification("Small Component Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    --notification("Small Component Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         local math_random = math.random
         local joaat = util.joaat
         util.yield(100)
@@ -18378,7 +18190,7 @@ menu.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", 
                 util.yield(1)
         else
                 util.toast("Failed to load model. :/")
-                notification("Worth it HAHA!!!", colors.red)
+                --notification("Worth it HAHA!!!", colors.red)
         end
     end)
 end)
@@ -18404,13 +18216,13 @@ menu.toggle_loop(poodlecrash, "Poodle Bomb Crash", {"togglepoodle"}, "Skidded fr
                 util.yield(1)
         else
                 util.toast("Failed to load model. :/")
-notification("Worth it HAHA!!!", colors.red)
+--notification("Worth it HAHA!!!", colors.red)
         end
     end)
 end)
 
     menu.toggle_loop(poodlecrash, "Poodle Crash V2", {"poodlev2"}, "Skidded from Jinx then x6 by Candy.", function(on_loop)
-        notification("Poodle Crash V2 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Poodle Crash V2 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 --Locals
         local mdl = util.joaat('a_c_poodle')
         local mdl1 = util.joaat('a_c_poodle')
@@ -18568,7 +18380,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
 
                 menu.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
                     if pid ~= players.user() then
-                    notification("Fragment Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    --notification("Fragment Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                 if on_toggle then
                         menu.trigger_commands("togglefragv1" .. players.get_name(pid))
                         menu.trigger_commands("togglefragv2" .. players.get_name(pid))
@@ -18672,7 +18484,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
 
                 menu.toggle(pipecrash, "PipeBomb Crash V3", {"togglepipev3"}, "", function(on_toggle)
                     --if pid ~= players.user() then
-                    notification("PipeBomb Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    --notification("PipeBomb Crash V3 sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                 if on_toggle then
                         menu.trigger_commands("togglepipev1" .. players.get_name(pid))
                         menu.trigger_commands("togglepipev2" .. players.get_name(pid))
@@ -18688,7 +18500,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
         local vehcrash = menu.list(crash, "Vehicle Crash", {}, "")
 
             menu.action(vehcrash, "Vehicle Crash", {"vehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function()
-                    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    --notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                     util.yield(1500)
                     local hash = util.joaat("baller")
                     local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -18744,7 +18556,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
 
 
                 menu.toggle_loop(vehcrash, "Vehicle Crash", {"togglevehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function(on_toggle)
-                    notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                    --notification("Vehicle Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                     util.yield(1500)
                     local hash = util.joaat("baller")
                     local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -18912,7 +18724,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                                 util.trigger_script_event(1 << pid, {697566862, 3, 10, 9, 1, 1, 1})
                                 util.trigger_script_event(1 << pid, {-1990614866, 0, 0})
                                 util.trigger_script_event(1 << pid, {-904555865, 0, 2291045226935366863, 3941791475669737503, 4412177719075258724, 1343321191, 3457004567006375106, 7887301962187726958, -890968357, 415984063236915669, 1084786880, -452708595, 3922984074620229282, 1929770021948630845, 1437514114, 4913381462110453197, 2254569481770203512, 483555136, 743446330622376960, 2252773221044983930, 513716686466719435, 9003636501510659402, 627697547355134532, 1535056389, 436406710, 4096191743719688606, 4258288501459434149})
-                notification("SUS Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+                --notification("SUS Crash sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
                             end)
 
 ]]
@@ -19000,7 +18812,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19025,7 +18837,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19050,7 +18862,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19075,7 +18887,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19102,7 +18914,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19128,7 +18940,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19154,7 +18966,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19180,7 +18992,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19206,7 +19018,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19232,7 +19044,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19258,7 +19070,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19284,7 +19096,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19370,7 +19182,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19395,7 +19207,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19420,7 +19232,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     util.yield(1)
             else
                     util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             end)
             
@@ -19445,7 +19257,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19472,7 +19284,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19498,7 +19310,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19524,7 +19336,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19550,7 +19362,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19576,7 +19388,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19602,7 +19414,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19628,7 +19440,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19654,7 +19466,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 util.yield(1)
             else
                 util.toast("Failed to load model. :/")
-            notification("Worth it HAHA!!!", colors.red)
+            --notification("Worth it HAHA!!!", colors.red)
             end
             
             end)
@@ -19680,43 +19492,43 @@ end
 
 
         menu.toggle_loop(standcrash, "Elegant", {"togglecrash"}, "Blocked by most menus.", function()
-            notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Elegant sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("crash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular menus.", function(on_loop)
-            notification("BDSM sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("BDSM sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("choke" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Indecent Exposure", {"toggleflashcrash"}, "Blocked by popular menus.", function(on_loop)
-            notification("Indecent Exposure sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Indecent Exposure sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("flashcrash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Next-Gen", {"togglengcrash"}, "Blocked by popular menus.", function(on_loop)
-            notification("Next-Gen sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Next-Gen sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("ngcrash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Steamroller", {"togglesteamroll"}, "Note: This crash will also affect other players close to your target.", function(on_loop)
-            notification("Steamroller sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Steamroller sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("steamroll" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Burger King Foot Lettuce", {"togglefootlettuce"}, "Can't be blocked without consequences, but the target might karma you for using it.", function(on_loop)
-            notification("Burger King Foot Lettuce sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Burger King Foot Lettuce sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("footlettuce" .. players.get_name(pid))
             util.yield(1000)
         end)
 
         menu.toggle_loop(standcrash, "Vehicular Manslaughter", {"toggleslaughter"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function(on_loop)
-            notification("Vehicular Manslaughter sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+            --notification("Vehicular Manslaughter sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             menu.trigger_commands("slaughter" .. players.get_name(pid))
             util.yield(1000)
         end)
@@ -19737,13 +19549,13 @@ end
 		local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
 		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
 		if on_toggle then
-			notification("Toggling panic mode on... Get those cunts", colors.red)
+			--notification("Toggling panic mode on... Get those cunts", colors.red)
 			menu.trigger_commands("desyncall on")
 			menu.trigger_command(BlockIncSyncs)
 			menu.trigger_command(BlockNetEvents)
 			menu.trigger_commands("anticrashcamera on")
 		else
-			notification("toggling panic mode off...", colors.red)
+			--notification("toggling panic mode off...", colors.red)
 			menu.trigger_commands("desyncall off")
 			menu.trigger_command(UnblockIncSyncs)
 			menu.trigger_command(UnblockNetEvents)
@@ -19752,12 +19564,12 @@ end
 	end)
 
     menu.toggle(crash, "Block Player", {"block"}, "Shortcut to blocking the player join reaction ", function()
-        notification("Blocked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        --notification("Blocked " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
         menu.trigger_commands("historyblock" .. players.get_name(pid))
     end)
 
 	menu.action(troll_sub_vehicle_tab, "Car Ram", {"ram"}, "Don't drink and drive, folks", function()
-    	notification("Ram that bitch!!! " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+    	--notification("Ram that bitch!!! " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
 		menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " on")
 		util.yield(1500)
 		local hash = util.joaat("baller")
@@ -19989,9 +19801,9 @@ menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is b
     local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
     local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
     local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
+    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Enabled")
     local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Disabled")
     local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
     if on_toggle then
         menu.trigger_commands("anticrashcamera")
@@ -20018,9 +19830,9 @@ menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is b
         end
     end)
 
-    menu.toggle(self, "Hide RAW Notifications", {"hiderawnotifs"}, "", function(on_toggle)
-        local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
-        local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+    menu.toggle(self, "Hide RAW --notifications", {"hiderawnotifs"}, "", function(on_toggle)
+        local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Enabled")
+        local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Disabled")
         if on_toggle then
             menu.trigger_command(UnShowNotis)
 			menu.trigger_commands("clearnotifs")
@@ -20087,7 +19899,7 @@ menu.toggle(bypasskick, "Method V2", {}, "A little more functional but also with
     end
 end)
 
-menu.toggle(bypasskick, "Method V3", {}, "More functional method, but for developers, you will receive notification of all network events", function(on_toggle)
+menu.toggle(bypasskick, "Method V3", {}, "More functional method, but for developers, you will receive --notification of all network events", function(on_toggle)
 local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
 local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
 local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
@@ -20096,9 +19908,9 @@ local BlockBailing = menu.ref_by_path("Online>Protections>Block Bailing>Player N
 local BlockBailing2 = menu.ref_by_path("Online>Protections>Block Bailing>Switching Primary Crew")
 local BlockBailing3 = menu.ref_by_path("Online>Protections>Block Bailing>Spectating Related")
 local BlockBailing4 = menu.ref_by_path("Online>Protections>Block Bailing>Other Reasons")
-local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
+local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Enabled")
 local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Disabled")
 local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
 if on_toggle then
     menu.trigger_commands("nobgscript on")
@@ -20131,9 +19943,9 @@ menu.toggle(bypasskick, "Method V4", {}, "Probably break the game, use at your o
     local BlockBailing2 = menu.ref_by_path("Online>Protections>Block Bailing>Switching Primary Crew")
     local BlockBailing3 = menu.ref_by_path("Online>Protections>Block Bailing>Spectating Related")
     local BlockBailing4 = menu.ref_by_path("Online>Protections>Block Bailing>Other Reasons")
-    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Enabled")
+    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Enabled")
     local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Notification>Disabled")
+    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>--notification>Disabled")
     local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
     local DontAsk = menu.ref_by_path("Online>Transitions>Speed Up>Don't Ask For Permission To Spawn")
     if on_toggle then
@@ -20815,7 +20627,7 @@ menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by
         menu.trigger_commands("ye")
     else
         util.toast("Lucky Bastard ;)")
-		menu.show_command_box("say " .. "I got lucky ;)")
+		menu.show_command_box("say " .. "I got lucky.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
         util.yield(200)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
@@ -21049,7 +20861,7 @@ targetlangmenu = menu.slider_text(chat_trans, "Target Language", {}, "You need t
 	targetlang = LangLookupByName[LangKeys[s]]
 end)
 
-tradlocamenu = menu.slider_text(settingtrad, "Location of Traducted Message", {}, "You need to click to aply change", {"Global Chat networked", "Global Chat not networked", "Team Chat not networked", "Team Chat networked", "Notification"}, function(s)
+tradlocamenu = menu.slider_text(settingtrad, "Location of Traducted Message", {}, "You need to click to aply change", {"Global Chat networked", "Global Chat not networked", "Team Chat not networked", "Team Chat networked", "--notification"}, function(s)
 	Tradloca = s
 end)
 	
@@ -21153,13 +20965,13 @@ end
 				local money = players.get_money(pid)
 				local kd = players.get_kd(pid)
 				if rp == 120 or rp == 720 or rp >= 1000 then
-					notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is G: Modded RP", colors.red)
+					--notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is G: Modded RP", colors.red)
 				end
 				if money >= 500000000 then
-					notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is G: Modded Money", colors.red)
+					--notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is G: Modded Money", colors.red)
 				end
 				if kd <= -1 or kd >= 50 then
-					notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is Weak: Modded KD", colors.red)
+					--notification(PLAYER.GET_PLAYER_NAME(pid) .. " Is Weak: Modded KD", colors.red)
 				end
 			end
 	end)
@@ -21650,7 +21462,7 @@ menu.toggle_loop(protex, 'Increase Kosatka Missile Range', {'krange'}, 'You can 
 end)
 
 joining = false
-menu.toggle(protex, "Player Joining Notifications", {}, "", function(on_toggle)
+menu.toggle(protex, "Player Joining --notifications", {}, "", function(on_toggle)
 	if on_toggle then
 		joining = true
 	else
@@ -21668,7 +21480,7 @@ InitialPlayersList = nil -- Discard the table as it is no longer needed (optiona
 players.on_join(function(pid)
 	while true do
 		if joining then
-			notification(PLAYER.GET_PLAYER_NAME(pid) .. " joined", colors.red)
+			--notification(PLAYER.GET_PLAYER_NAME(pid) .. " joined", colors.red)
 		end
 		util.yield()
 	end
@@ -22939,20 +22751,20 @@ end
 
 
 	menu.toggle(protex, "Rank 420", {"rank"}, "Note: If you save the profile with it toggled it will give you pemanant 420 rank", function(on_toggle)
-		notification("Setting Rank 420...", colors.red)
+		--notification("Setting Rank 420...", colors.red)
 		menu.trigger_commands("setrank" .. " 420")
 	end)
 
 	menu.toggle(protex, "FPS Boost", {"fpsboost"}, "Wait a few seconds for 5-10 FPS Boost.", function(on_toggle)
 	if on_toggle then
-		notification("Setting FPS...", colors.green)
+		--notification("Setting FPS...", colors.green)
 		menu.trigger_commands("weather" .. " extrasunny")
 		menu.trigger_commands("clouds" .. " clear01")
 		menu.trigger_commands("time" .. " 6")
 		menu.trigger_commands("superc")
         menu.trigger_commands("noidlecam ")
 	else
-		notification("Resetting FPS...", colors.red)
+		--notification("Resetting FPS...", colors.red)
 		menu.trigger_commands("weather" .. " normal")
 		menu.trigger_commands("clouds" .. " normal")
         menu.trigger_commands("noidlecam ")
@@ -22961,7 +22773,7 @@ end
 
 	menu.toggle(protex, "FPS Boost No Sky", {"fpsnsboost"}, "Wait a few seconds 10-15 FPS Boost.", function(on_toggle)
 	if on_toggle then
-		notification("Setting FPS...", colors.green)
+		--notification("Setting FPS...", colors.green)
 		menu.trigger_commands("weather" .. " extrasunny")
 		menu.trigger_commands("clouds" .. " clear01")
 		menu.trigger_commands("time" .. " 6")
@@ -22970,7 +22782,7 @@ end
         menu.trigger_commands("nosky ")
         menu.trigger_commands("noidlecam ")
 	else
-		notification("Resetting FPS...", colors.red)
+		--notification("Resetting FPS...", colors.red)
 		menu.trigger_commands("weather" .. " normal")
 		menu.trigger_commands("clouds" .. " normal")
         menu.trigger_commands("potatomode ")
@@ -23004,12 +22816,12 @@ menu.toggle_loop(bountyloop, "Bounty Loop", {"bountyloop"}, "Still experimental"
         local delay
         if not has_bounty then
             local command = "bounty "..players.get_name(players.user()).." 10000"
-            notification("set bounty..", "~b~")
+            --notification("set bounty..", "~b~")
             menu.trigger_commands(command)
             has_bounty = true
             delay = 10000
         else
-            notification("removing bounty...", "~b~")
+            --notification("removing bounty...", "~b~")
             menu.trigger_commands("removebounty")
             has_bounty = false
             delay = 1000
@@ -23041,13 +22853,13 @@ menu.toggle(bountyloop, "Random payout¿", {}, "Set random pay bounty loops\n\nA
 	end
 end)
 
-menu.toggle(bountyloop, "Notifications Off", {}, "By default notifications are turned OFF", function(on)
+menu.toggle(bountyloop, "--notifications Off", {}, "By default --notifications are turned OFF", function(on)
 	if on then
 		notify = true
-		util.show_corner_help("~p~Notifications ~g~On")
+		util.show_corner_help("~p~--notifications ~g~On")
 	else
 		notify = false
-		util.show_corner_help("~p~Notifications ~r~Off")
+		util.show_corner_help("~p~--notifications ~r~Off")
 	end
 end)
 
@@ -23058,7 +22870,7 @@ menu.toggle_loop(bountyloop, "Start Loops", {}, "Will get a random players and g
 		menu.trigger_commands("bounty" .. randomPlayer .. " " .. randomamount)
 		if notify then
 			util.show_corner_help("~o~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
-			if not util.BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED("~p~Notifications ~g~On") then
+			if not util.BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED("~p~--notifications ~g~On") then
 				util.show_corner_help("~o~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
 			end
 		end
