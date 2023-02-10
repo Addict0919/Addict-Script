@@ -12,7 +12,7 @@ util.require_natives("natives-1663599433-uno")
 util.require_natives("natives-1640181023")
 util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
-guidedMissile = require("guided_missile")
+guidedMissile = require "ToxTool"
 
 local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
 
@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.0
+local local_menu_version = 7.1
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -61,7 +61,7 @@ if not dev_mode then
     until response 
 end
 
-util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "WARNING! --notifications aren't always accurate")
+util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
 
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
@@ -3058,8 +3058,8 @@ function upgrade_vehicle(player) --now my funky functions are useless :'( since 
             for i = 0 ,50 do
                 VEHICLE.SET_VEHICLE_MOD(vehicle, i, VEHICLE.GET_NUM_VEHICLE_MODS(vehicle, i) - 13, false)
             end	
-            VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, 255, 0, 255, chrome)
-            VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle,255, 0, 255, chrome)
+            VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, 80, 0, 255, chrome)
+            VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle,80, 0, 255, chrome)
             VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, 10)
             VEHICLE.TOGGLE_VEHICLE_MOD(vehicle, 17, true)
             VEHICLE.TOGGLE_VEHICLE_MOD(vehicle, 18, true)
@@ -6582,18 +6582,90 @@ local function get_closest_vehicle(entity)
     return closestveh
     end
 
+    menu.toggle(funfun, "Drive A Shopping Cart (Bike)", {"givecart"}, "", function(on_toggle)
+        if on_toggle then
+        local vehicleHash = util.joaat("manchez")
+        request_model(vehicleHash)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+        cart = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        ENTITY.SET_ENTITY_VISIBLE(cart, false, false)
+        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+
+        VEHICLE.SET_VEHICLE_ENGINE_ON(cart, true, true, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(cart, true)
+        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(cart, 0.0)
+------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+        local id = get_closest_vehicle(entity)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+        playerpos.z = playerpos.z + 3
+        local ufo_object = util.joaat("prop_rub_trolley02a")
+        STREAMING.REQUEST_MODEL(ufo_object)
+        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+            util.yield()
+        end
+        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, cart)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(cart, object1, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), cart, -1)
+        ENTITY.SET_ENTITY_VISIBLE(object1, true)
+        DisablePhone()
+    else
+        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
+        menu.trigger_commands("superc")
+        entities.delete_by_handle(cart)
+        end
+    end)
+
+    menu.toggle(funfun, "Drive A Shopping Cart (BMX)", {"givecart"}, "Bmx", function(on_toggle)
+        if on_toggle then
+        local vehicleHash = util.joaat("bmx")
+        request_model(vehicleHash)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+        cart = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        ENTITY.SET_ENTITY_VISIBLE(cart, false, false)
+        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+
+        VEHICLE.SET_VEHICLE_ENGINE_ON(cart, true, true, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(cart, true)
+        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(cart, 0.0)
+------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+        local id = get_closest_vehicle(entity)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+        playerpos.z = playerpos.z + 3
+        local ufo_object = util.joaat("prop_rub_trolley02a")
+        STREAMING.REQUEST_MODEL(ufo_object)
+        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+            util.yield()
+        end
+        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, cart)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(cart, object1, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), cart, -1)
+        ENTITY.SET_ENTITY_VISIBLE(object1, true)
+        DisablePhone()
+    else
+        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
+        menu.trigger_commands("superc")
+        entities.delete_by_handle(cart)
+        end
+    end)
+
         menu.toggle(funfun, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
             local vehicleHash = util.joaat("hydra")
             request_model(vehicleHash)
             local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
-            jet = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-            ENTITY.SET_ENTITY_VISIBLE(jet, false, false)
+            ufo = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+            ENTITY.SET_ENTITY_VISIBLE(ufo, false, false)
             ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
 
-            VEHICLE.SET_VEHICLE_ENGINE_ON(jet, true, true, true)
-            ENTITY.SET_ENTITY_INVINCIBLE(jet, true)
-            VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(jet, 0.0)
+            VEHICLE.SET_VEHICLE_ENGINE_ON(ufo, true, true, true)
+            ENTITY.SET_ENTITY_INVINCIBLE(ufo, true)
+            VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(ufo, 0.0)
 
 ------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
             local id = get_closest_vehicle(entity)
@@ -6605,12 +6677,12 @@ local function get_closest_vehicle(entity)
                 util.yield()
             end
             local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, pos.x, pos.y, pos.z + 200, false, false, true)
-            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), jet, -1)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, ufo)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ufo, pos.x, pos.y, pos.z + 200, false, false, true)
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), ufo, -1)
             ENTITY.SET_ENTITY_VISIBLE(object1, true)
             menu.trigger_commands("otr" .. " on")
             menu.trigger_commands("cameradistance" .. " 1.80")
@@ -6620,7 +6692,7 @@ local function get_closest_vehicle(entity)
             menu.trigger_commands("otr" .. " off")
             menu.trigger_commands("cameradistance" .. " 1.00")
             menu.trigger_commands("superc")
-            entities.delete_by_handle(jet)
+            entities.delete_by_handle(ufo)
             end
         end)
 
@@ -13416,15 +13488,18 @@ end)
         menu.trigger_commands("givecollectibles" .. players.get_name(pid))
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.toggle_loop(drops, "RP Loop", {"giverp"}, "Gives Players RP", function(toggle)
+
+
+    menu.toggle_loop(drops, "Rank Everyone Up", {"givealotrp"}, "Gives Players RP", function(toggle) -- Credit to Jrukii for making this
         if pid ~= players.user() then
 	    for i = 1, 20 do
-        util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i})
-		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
-		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
-		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
-		util.trigger_script_event(1 << pid, {0x2994068E, 1, 4, i, i, i})
-		util.trigger_script_event(1 << pid, {0x2994068E, 1, 8, i, 1, 1, 1})
+            local GiveCollectibles = menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 4, i})
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 4, i, i, i})
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 8, i, i, i})
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 9, i, i, i})
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 1, i, i, i})
+            util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 8, -4, 1, 1, 1})
             end
         end
     end)
@@ -13433,12 +13508,13 @@ end)
         if pid ~= players.user() then
         for i = 1, 20 do
         util.yield(0)
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i})
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 4, i, i, i})
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 8, i, i, i})
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 9, i, i, i})
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 1, i, i, i})
-        util.trigger_script_event(1 << pid, {0x2994068E, pid, 1, 8, -4, 1, 1, 1})
+        local GiveCollectibles = menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 4, i})
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 4, i, i, i})
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 8, i, i, i})
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 9, i, i, i})
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 1, i, i, i})
+        util.trigger_script_event(1 << pid, {GiveCollectibles, 1, 8, i, 1, 1, 1})
         util.yield(1)
         end
     end
