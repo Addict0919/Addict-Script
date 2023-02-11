@@ -36,17 +36,15 @@ if not dev_mode then
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict Script.LUA',function(c)
+            menu.action(github,"Update",{"updateAddict"},"If it still says Update when it was updated you might have to redownload the libs",function()
+                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict Script.lua',function(c)
                     local d=select(2,load(c))
-                    if d then 
-                        util.toast("Update failed to Download")
+                    if d then
                         return 
                     end;
                     local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
                     e:write(c)
                     e:close()
-                    util.toast("Update Done!")
                     util.restart_script()
                 end)
                 async_http.dispatch()
@@ -62,7 +60,6 @@ if not dev_mode then
 end
 
 util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-
 
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
 util.log("██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝  ██╔════╝██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝")
@@ -95,7 +92,7 @@ menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to kee
 menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
 menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-menu.action(Credits, "Clone69420", {}, "Github Co", function() end)
+menu.action(Credits, "Clone69420", {}, "Github Collaborator", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
@@ -115,7 +112,6 @@ menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function(
 menu.action(Credits, "Sophie", {}, "For some great ideas she likes to put forward.", function() end)
 menu.action(Credits, "Charlie", {}, "", function() end)
 menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
-
 
 local translations = {}
 setmetatable(translations, {
