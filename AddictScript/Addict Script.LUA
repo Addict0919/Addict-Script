@@ -95,6 +95,7 @@ menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to kee
 menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
 menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
+menu.action(Credits, "Clone69420", {}, "Github Co", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
