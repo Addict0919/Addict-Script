@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.2
+local local_menu_version = 7.3
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4859,12 +4859,12 @@ menu.action(rp_cash_loops, "Give RP Loop", {"giverpto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
                 --notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giverp" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
                 --notification("RP Loop has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
         end
@@ -13558,7 +13558,7 @@ end)
         if pid ~= players.user() then
             menu.trigger_commands("cards" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("giverp" .. players.get_name(pid))
+            menu.trigger_commands("rp" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
             util.yield(1000)
