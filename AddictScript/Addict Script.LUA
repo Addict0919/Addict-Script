@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.1
+local local_menu_version = 7.2
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1313,6 +1313,70 @@ end)
             end
         end)
         end)
+
+-- [Property Trade-In Recovery]
+-- made by gaymer#2093
+
+--[[
+function GetMPX()
+    PlayerIndex = STATS.STAT_GET_INT("MPPLY_LAST_MPCHAR")
+    if PlayerIndex == 1 then
+        mpx = "MP1"
+    else
+        mpx = "MP0_"
+    end
+        return mpx
+end
+
+prop_index = 1
+prop_lst = {'NIGHTCLUB', 'AUTO_SHOP', 'ARCADE'}
+prop_stat = ''
+prop_price = 0
+
+billionair = menu.list(cashloops, "Billionair Stats", {}, "", function(); end)
+
+menu.action(billionair,'Select Property', {'Nightclub', 'Auto Shop', 'Arcade'}, '', function()
+return prop_index
+end, function(value)
+    prop_index = value
+    propstat = GetMPX().."PROP"..prop_lst[value].."_VALUE"
+    prop_price = STATS.STAT_GET_INT(prop_stat)
+    --prop_price = value + 10
+    util.toast("Property Selected: "..prop_stat.."\nValue: "..prop_price)
+    util.log("Property Selected: "..prop_stat.."\nValue: "..prop_price)
+end)
+
+local amount = 2147483647
+menu.slider(billionair, "Selected Property Value", {""}, "", 0, 2500, amount, 50, function(val)
+return prop_price end, function(value) end)
+
+menu.action(billionair, "100 mil", {""}, "", function()
+    prop_price = 100000000
+end)
+
+menu.action(billionair, "500 mil", {""}, "", function()
+    prop_price = 500000000
+end)
+
+menu.action(billionair, "1 Bil", {""}, "", function()
+    prop_price = 1000000000
+end)
+
+menu.action(billionair, "2 Bil", {""}, "", function()
+    prop_price = 2000000000
+end)
+
+local amount = 2000000000
+menu.slider(billionair, "Selected Property Value", {""}, "", 0, 2500, amount, 50, function(val) 
+     return 0 
+end, function(value)
+    prop_price = value
+end)
+
+menu.action(billionair, "Finalize Price", {""}, "", function()
+    stats.set_int(prop_stat, prop_price)
+end)
+]]
 
     acidlabmanager = menu.list(cashloops, "Acid Lab Manager", {}, "", function(); end)
 
@@ -4746,7 +4810,7 @@ menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 Peopl
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                util.yield(1500)
+                util.yield(2000)
                 menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
                 --notification("Crazy Rank has been sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.green)
             end
@@ -4754,6 +4818,7 @@ menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 Peopl
     end
 end)
 
+--[[
 menu.action(rp_cash_loops, "{Jrukii's} RP Loop", {"rankall"}, "", function()
     --notification("Rank Everyone " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
     for pids = 0, 31 do
@@ -4772,6 +4837,7 @@ menu.action(rp_cash_loops, "{Jrukii's} RP Loop", {"rankall"}, "", function()
         end
     end
 end)
+]]
 
 menu.action(rp_cash_loops, "Give RP Steadily", {"giverpstedto"}, "", function()
     for pids = 0, 31 do
@@ -4935,12 +5001,14 @@ menu.action(tp_players, "TP Players", {"tpplayers"}, "Teleports to you.", functi
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                util.yield(2000)
                 menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
                 --notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                util.yield(2000)
                 menu.trigger_commands("summon" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
                 --notification("Teleporting " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
@@ -4984,13 +5052,13 @@ menu.action(tp_players, "TP Player To MazeBank", {"tpplayersmazebank"}, "", func
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(100)
-                menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("apt90all" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(100)
-                menu.trigger_commands("tpmazebank" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("apt90all" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
@@ -7376,7 +7444,6 @@ menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisib
         menu.trigger_commands("quietsteps")
         util.toast("Sneaky Mode On") 
     else
-        menu.trigger_commands("tpmazehelipad")
         menu.trigger_commands("invisibility" .. " off")
         menu.trigger_commands("reducedcollision" .. " off")
         menu.trigger_commands("otr")
@@ -7711,6 +7778,23 @@ end
         mod_uses("object", if on then 1 else -1)
     end)
 
+    menu.toggle(worldchaos, "Party At Escipse Towers", {"eclipseparty"}, "Warning! This will block eclipse towers then turns you invisable off the radar, at same time teleports all players to eclipse towers.", function(on_toggle)
+        if on_toggle then
+            menu.trigger_commands("blockeclipse")
+            menu.trigger_commands("sneakymode")
+            menu.trigger_commands("apt1all")
+            menu.trigger_commands("bountyall 10000")
+            local player_ped = PLAYER.PLAYER_PED_ID()    
+            local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+            local pld = PLAYER.GET_PLAYER_PED(pid)
+            local pos = ENTITY.GET_ENTITY_COORDS(pld)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -824.102, 272.4452, 86.288155)
+        else
+            menu.trigger_commands("blockeclipse")
+            menu.trigger_commands("sneakymode")
+        end
+    end)
+
 
     areablocks = menu.list(worldchaos, "Block Entrances", {}, "", function(); end)
 
@@ -7720,6 +7804,21 @@ end
         loadModel(hash)
         for i = 0, 180, 8 do
             local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, 920.657, 48.360252, 44.913666, true, true, true)
+            ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
+            util.yield(10)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
+    else
+        menu.trigger_commands("clearblocks")
+        end
+    end)
+
+    menu.toggle(areablocks, "Escipse Towers", {"blockeclipse"}, "", function(on_toggle)
+        if on_toggle then
+        local hash = 1952396163
+        loadModel(hash)
+        for i = 0, 180, 8 do
+            local wall = OBJECT.CREATE_OBJECT_NO_OFFSET(hash, -796.4927, 310.48416, 50.49049, true, true, true)
             ENTITY.SET_ENTITY_HEADING(wall, toFloat(i))
             util.yield(10)
         end
@@ -9008,34 +9107,21 @@ read_global = {
 
     griefingtpp = menu.list(tpoptions, "TP Player", {}, "", function(); end)
 
-    menu.action(griefingtpp, "Teleport To Them", {"goingtheere"}, "", function()
-        menu.trigger_commands("tp" .. players.get_name(pid))
+        menu.action(griefingtpp, "Teleport To Them", {"goingtheere"}, "", function()
+            menu.trigger_commands("tp" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(griefingtpp, "Teleport To Me", {"cometome"}, "", function()
-        menu.trigger_commands("summon" .. players.get_name(pid))
+        menu.action(griefingtpp, "Teleport To Me", {"cometome"}, "", function()
+            menu.trigger_commands("summon" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(griefingtpp, "TP Player To MazeBank", {"tpmazebank"}, "", function()
-        local int_min = -2147483647
-        local int_max = 2147483647
-            for i = 1, 1 do
-            menu.trigger_commands("panic")
-            util.trigger_script_event(1 << pid, {-1390976345, 20, 1, -1, 1, 112, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
-            math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-            math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-            util.trigger_script_event(1 << pid, {-1390976345, 20, 1, -1, 1, 112, 0, 0, 0})
-            end
-            menu.trigger_commands("givesh" .. players.get_name(pid))
-            util.yield(100)
-            for i = 1, 1 do
-            menu.trigger_commands("panic")
-            util.trigger_script_event(1 << pid, {-1390976345, 20, 1, -1, 1, 112, 0, 0, 0, pid, math.random(int_min, int_max)})
-            util.trigger_script_event(1 << pid, {-1390976345, 20, 1, -1, 1, 112, 0, 0, 0})
-            end
-            util.yield(100)
-            util.trigger_script_event(1 << pid, {-1390976345, 20, 1, -1, 1, 112, 0, 0, 0})
-            end)
+        menu.action(griefingtpp, "TP Player To Eclipse Towers", {"tpeclipse"}, "", function()
+            menu.trigger_commands("apt90" .. players.get_name(pid))
+        end, nil, nil, COMMANDPERM_FRIENDLY)
+
+        menu.action(griefingtpp, "TP Player To MazeBank", {"tpmazebank"}, "", function()
+            menu.trigger_commands("apt90" .. players.get_name(pid))
+        end, nil, nil, COMMANDPERM_FRIENDLY)
 
             menu.toggle_loop(tpoptions, "TP On Ped Loop", {"tploopon"}, "", function(on_toggle)
                 if on_toggle then
@@ -9056,7 +9142,6 @@ read_global = {
         menu.trigger_commands("say " .. " Get on the bike :)")
         menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " manchez")
         util.toast("Give them a second to get on...")
-        util.yield(10000)
         excludeselected = true
         menu.trigger_commands("tpplayers")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
@@ -13461,6 +13546,8 @@ end)
         local ammo = WEAPON.GET_AMMO_IN_PED_WEAPON(ped, weaphash)
         if ammo < 9999 then
             WEAPON.ADD_AMMO_TO_PED(ped, weaphash, 9999)
+            --menu.trigger_commands("ammo" .. players.get_name(pid))
+            --util.yield(10000)
         end
     end)
 
@@ -13472,8 +13559,6 @@ end)
             menu.trigger_commands("cards" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("giverp" .. players.get_name(pid))
-            util.yield(1000)
-            menu.trigger_commands("givebigrp" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("giverpsted" .. players.get_name(pid))
             util.yield(1000)
@@ -13489,7 +13574,7 @@ end)
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
 
-
+--[[
     menu.toggle_loop(drops, "Rank Everyone Up", {"givealotrp"}, "Gives Players RP", function(toggle) -- Credit to Jrukii for making this
         if pid ~= players.user() then
 	    for i = 1, 20 do
@@ -13503,6 +13588,7 @@ end)
             end
         end
     end)
+
 
     menu.toggle_loop(drops, "{Jrukii's} RP Loop", {"givebigrp"}, "Gives Players RP To Rank 150.", function(toggle)  --Credit to Jrukii for making this
         if pid ~= players.user() then
@@ -13519,6 +13605,8 @@ end)
         end
     end
 end)
+
+]]
 
     menu.toggle_loop(drops, "Drop Figures Steadily", {"giverpsted"}, "", function()
         if pid ~= players.user() then
@@ -20695,9 +20783,9 @@ end)
 menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
     local pick = math.random(6)
     if pick == 4 then 
-        util.log("You loose.")
         menu.show_command_box("say " .. "I loose.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
+        util.log("I loose.")
         util.yield(200)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
         menu.trigger_commands("ye")
