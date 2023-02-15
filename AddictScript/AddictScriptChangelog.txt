@@ -2,3 +2,7 @@ v7.2
 ________________________
 Bug fixes
 Added Party at eclipse towers
+________________________
+v7.3
+________________________
+Bug fixes
