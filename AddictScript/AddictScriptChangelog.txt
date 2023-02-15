@@ -1,8 +1,9 @@
 v7.2
-________________________
 Bug fixes
 Added Party at eclipse towers
 ________________________
 v7.3
-________________________
 Bug fixes
+________________________
+v7.4
+Added Smash Kick - Alternative blast kick for basic users.
