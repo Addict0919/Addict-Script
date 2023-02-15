@@ -1,7 +1,4 @@
-v7.0
-________________________
-Removed shitty notifiction system
-________________________
-v7.1
+v7.2
 ________________________
 Bug fixes
+Added Party at eclipse towers
