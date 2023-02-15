@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.3
+local local_menu_version = 7.4
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -13345,10 +13345,13 @@ end)
         
         kick = menu.list(menu.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
-        menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses every kick in my script and stand, 22 kicks total but smart kick could have more than 1 kick also.", function()
-        --notification("Blast kick sent to " .. PLAYER.GET_PLAYER_NAME(pids), colors.red)
+        menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses breakup kick.", function()
             menu.trigger_commands("historyblock " .. players.get_name(pid))
-            menu.trigger_commands("boop" .. players.get_name(pid))
+            menu.trigger_commands("breakup" .. players.get_name(pid))
+    	end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+        menu.action(kick, "Smash Kick", {"smash"}, "Blocks the player join reaction then uses buttplug kick for basic users.", function()
+            menu.trigger_commands("historyblock " .. players.get_name(pid))
             menu.trigger_commands("buttplug" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
