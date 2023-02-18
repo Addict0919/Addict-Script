@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.5
+local local_menu_version = 7.6
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -10737,7 +10737,7 @@ end)
 
 local Armys = menu.list(Attackers_trollys, "Spam Followers")
 
-menu.action(Attacker_Tanks, "Delete All Attackers", {"deleteattacks"}, "Deletes all everything you've spawned", function()
+menu.action(Attackers_trollys, "Delete All Attackers", {"deleteattacks"}, "Deletes all everything you've spawned", function()
     menu.trigger_commands("superc")
 end)
 
