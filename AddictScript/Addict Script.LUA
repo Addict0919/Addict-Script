@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.6
+local local_menu_version = 7.7
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6694,7 +6694,6 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
             entities.delete_by_handle(ufo)
             end
         end)
-
         
         menu.toggle(driveshit, "Drive Cop Heli", {"copheli"}, "Plus a bodygaurds.", function(on_toggle)
             if on_toggle then
@@ -6704,6 +6703,9 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
                 menu.trigger_commands("spawnbodyguards")
                 menu.trigger_commands("smyswat01")
                 menu.trigger_commands("otr")
+                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
+                util.yield(100)
+                menu.trigger_command(Imortality_BodyGuards)
                 util.toast("Make way for the heli.")
                 util.yield(3000)
                 local vehicleHash = util.joaat("polmav")
@@ -6720,10 +6722,10 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
                 playerpos.z = playerpos.z + 3
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
                 PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
-                menu.trigger_commands("livery -1")
                 util.yield(1500)
                 menu.trigger_commands("livery -1")
             else
+                menu.trigger_command(Imortality_BodyGuards)
                 menu.trigger_commands("delbodyguards")
                 menu.trigger_commands("deletevehicle")
                 menu.trigger_commands("mpfemale")
@@ -6741,6 +6743,9 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
                 menu.trigger_commands("spawnbodyguards")
                 menu.trigger_commands("SMYCop01")
                 menu.trigger_commands("otr")
+                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
+                util.yield(100)
+                menu.trigger_command(Imortality_BodyGuards)
                 local vehicleHash = util.joaat("police3")
                 request_model(vehicleHash)
                 local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
@@ -6757,6 +6762,7 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
                 PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
             else
+                menu.trigger_command(Imortality_BodyGuards)
                 menu.trigger_commands("delbodyguards")
                 menu.trigger_commands("deletevehicle")
                 menu.trigger_commands("mpfemale")
