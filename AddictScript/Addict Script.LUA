@@ -10737,6 +10737,10 @@ end)
 
 local Armys = menu.list(Attackers_trollys, "Spam Followers")
 
+menu.action(Attacker_Tanks, "Delete All Attackers", {"deleteattacks"}, "Deletes all everything you've spawned", function()
+    menu.trigger_commands("superc")
+end)
+
 local player_deer_army = {}
 local DeerArmy = menu.list(Armys, "Deer Army")
 
