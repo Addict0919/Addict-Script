@@ -7185,7 +7185,7 @@ local windows = {
 drawScriptMenu = function()
 
 
-local wrolls = menu.list(funfun, "Roll Windows", {}, "", function(); end)
+local wrolls = menu.list(driveshit, "Roll Windows", {}, "", function(); end)
 
 ROLL_DOWN_INDIVIDUAL = menu.list(wrolls, "Roll down individual windows")
     for k, v in pairs(windows) do
