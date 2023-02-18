@@ -13,3 +13,7 @@ Added Enemy FBI's
 Added Enemy Cops
 
 Added Delete All Attackers
+________________________
+v7.6
+________________________
+Bug Fixes
