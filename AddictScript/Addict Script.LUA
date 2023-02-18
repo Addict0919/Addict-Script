@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 8.0
+local local_menu_version = 8.1
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -16044,7 +16044,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
 
-menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on anticam for you, Warning! This is OP...", function()
+menu.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn on anticam for you, Warning! This is OP...", function()
     menu.trigger_commands("anticrashcamera")
     util.yield(100)
     local player_ped = PLAYER.PLAYER_PED_ID()    
@@ -16106,7 +16106,7 @@ menu.action(attachcrash, "Attachment Crash", {"attachcrash"}, "It will turn on a
     util.yield(100)
 end)
 
-menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
+menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
     if on_toggle then
         menu.trigger_commands("anticrashcamera")
         util.yield(200)
@@ -16168,6 +16168,37 @@ menu.toggle(attachcrash, "Attachment Crash", {"toggleattach"}, "It will turn on 
         local pos = ENTITY.GET_ENTITY_COORDS(pld)
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
         util.yield(200)
+        end
+    end)
+
+    menu.toggle(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9) and (A0:38).", function(on_toggle)
+        if on_toggle then
+            menu.trigger_commands("anticrashcamera")
+            menu.trigger_commands("tpmazehelipad")
+            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            objects = entities.get_all_objects_as_handles()
+            vehicles = entities.get_all_vehicles_as_handles()
+            peds = entities.get_all_peds_as_handles()
+            for i, ent in pairs(peds) do
+                if not is_ped_player(ped) then
+                    ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                end
+            end
+            for i, ent in pairs(vehicles) do
+                if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+                    ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                end
+            end
+            for i, ent in pairs(objects) do
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+            end
+            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
+            menu.trigger_commands("honkallcars".. players.get_name(pid))
+            menu.trigger_commands("blowupallcars".. players.get_name(pid))
+        else
+            menu.trigger_commands("anticrashcamera")
+            menu.trigger_commands("superc")
         end
     end)
 
