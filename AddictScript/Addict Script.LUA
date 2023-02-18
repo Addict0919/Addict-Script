@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.4
+local local_menu_version = 7.5
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6650,79 +6650,10 @@ local function get_closest_vehicle(entity)
     return closestveh
     end
 
-    menu.toggle(funfun, "Drive A Shopping Cart (Bike)", {"givecart"}, "", function(on_toggle)
-        if on_toggle then
-        local vehicleHash = util.joaat("manchez")
-        request_model(vehicleHash)
-        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
-        cart = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-        ENTITY.SET_ENTITY_VISIBLE(cart, false, false)
-        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+    
+local driveshit = menu.list(funfun, "Driving Shit", {}, "")
 
-        VEHICLE.SET_VEHICLE_ENGINE_ON(cart, true, true, true)
-        ENTITY.SET_ENTITY_INVINCIBLE(cart, true)
-        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(cart, 0.0)
-------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
-        local id = get_closest_vehicle(entity)
-        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
-        playerpos.z = playerpos.z + 3
-        local ufo_object = util.joaat("prop_rub_trolley02a")
-        STREAMING.REQUEST_MODEL(ufo_object)
-        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
-            util.yield()
-        end
-        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, cart)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(cart, object1, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
-        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), cart, -1)
-        ENTITY.SET_ENTITY_VISIBLE(object1, true)
-        DisablePhone()
-    else
-        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
-        menu.trigger_commands("superc")
-        entities.delete_by_handle(cart)
-        end
-    end)
-
-    menu.toggle(funfun, "Drive A Shopping Cart (BMX)", {"givecart"}, "Bmx", function(on_toggle)
-        if on_toggle then
-        local vehicleHash = util.joaat("bmx")
-        request_model(vehicleHash)
-        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
-        cart = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-        ENTITY.SET_ENTITY_VISIBLE(cart, false, false)
-        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
-
-        VEHICLE.SET_VEHICLE_ENGINE_ON(cart, true, true, true)
-        ENTITY.SET_ENTITY_INVINCIBLE(cart, true)
-        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(cart, 0.0)
-------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
-        local id = get_closest_vehicle(entity)
-        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
-        playerpos.z = playerpos.z + 3
-        local ufo_object = util.joaat("prop_rub_trolley02a")
-        STREAMING.REQUEST_MODEL(ufo_object)
-        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
-            util.yield()
-        end
-        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, cart)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(cart, object1, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
-        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), cart, -1)
-        ENTITY.SET_ENTITY_VISIBLE(object1, true)
-        DisablePhone()
-    else
-        ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
-        menu.trigger_commands("superc")
-        entities.delete_by_handle(cart)
-        end
-    end)
-
-        menu.toggle(funfun, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
+        menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
             local vehicleHash = util.joaat("hydra")
             request_model(vehicleHash)
@@ -6764,10 +6695,115 @@ local function get_closest_vehicle(entity)
             end
         end)
 
-        menu.toggle(funfun, "Super Ufo", {"superufo"}, "Toggles superdrive and super handbreak. Warning! This quite is nuts lol.", function(on_toggle)
+        
+        menu.toggle(driveshit, "Drive Cop Heli", {"copheli"}, "Plus a bodygaurds.", function(on_toggle)
+            if on_toggle then
+                menu.trigger_commands("bodyguardmodel S_M_Y_Swat_01")
+                menu.trigger_commands("bodyguardcount 3")
+                menu.trigger_commands("bodyguardweapon smg")
+                menu.trigger_commands("spawnbodyguards")
+                menu.trigger_commands("smyswat01")
+                menu.trigger_commands("otr")
+                util.toast("Make way for the heli.")
+                util.yield(3000)
+                local vehicleHash = util.joaat("polmav")
+                request_model(vehicleHash)
+                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                copheli = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+                ENTITY.SET_ENTITY_VISIBLE(copheli, false, false)
+                ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+                VEHICLE.SET_VEHICLE_ENGINE_ON(copheli, true, true, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(copheli, true)
+                VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(copheli, 0.0)
+                local id = get_closest_vehicle(entity)
+                local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+                playerpos.z = playerpos.z + 3
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
+                menu.trigger_commands("livery -1")
+                util.yield(1500)
+                menu.trigger_commands("livery -1")
+            else
+                menu.trigger_commands("delbodyguards")
+                menu.trigger_commands("deletevehicle")
+                menu.trigger_commands("mpfemale")
+                menu.trigger_commands("otr")
+                util.toast("Change you're outfit to get clothes normal again.")
+            end
+        end)
+
+
+        menu.toggle(driveshit, "Drive Cop Car", {"copcar"}, "Plus a bodygaurd.", function(on_toggle)
+            if on_toggle then
+                menu.trigger_commands("bodyguardmodel S_M_Y_Cop_01")
+                menu.trigger_commands("bodyguardcount 1")
+                menu.trigger_commands("bodyguardweapon pistol")
+                menu.trigger_commands("spawnbodyguards")
+                menu.trigger_commands("SMYCop01")
+                menu.trigger_commands("otr")
+                local vehicleHash = util.joaat("police3")
+                request_model(vehicleHash)
+                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                copheli = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+                ENTITY.SET_ENTITY_VISIBLE(copheli, false, false)
+                ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+                VEHICLE.SET_VEHICLE_ENGINE_ON(copheli, true, true, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(copheli, true)
+                VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(copheli, 0.0)
+                VEHICLE.SET_VEHICLE_MOD_KIT(copheli, -1)
+                local id = get_closest_vehicle(entity)
+                local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+                playerpos.z = playerpos.z + 3
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
+            else
+                menu.trigger_commands("delbodyguards")
+                menu.trigger_commands("deletevehicle")
+                menu.trigger_commands("mpfemale")
+                menu.trigger_commands("otr")
+                util.toast("Change you're outfit to get clothes normal again.")
+            end
+        end)
+
+        
+    menu.toggle(driveshit, "Drive A Shopping Cart", {"givecart"}, "Bmx", function(on_toggle)
+        if on_toggle then
+        local vehicleHash = util.joaat("bmx")
+        request_model(vehicleHash)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+        cart = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        ENTITY.SET_ENTITY_VISIBLE(vehicleHash, false)
+        ENTITY.SET_ENTITY_VISIBLE(cart, false)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(cart, true, true, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(cart, true)
+        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(cart, 0.0)
+------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+        local id = get_closest_vehicle(entity)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+        playerpos.z = playerpos.z + 3
+        local ufo_object = util.joaat("prop_rub_trolley02a")
+        STREAMING.REQUEST_MODEL(ufo_object)
+        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+            util.yield()
+        end
+        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, cart)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(cart, object1, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, cart, 0, 0, 0, 0, 0, 0, 180, 0, false, true, false, 0, true)
+        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), cart, -1)
+
+        DisablePhone()
+    else
+        menu.trigger_commands("superc")
+        entities.delete_by_handle(cart)
+        end
+    end)
+        
+        menu.toggle(driveshit, "Super Ufo", {"superufo"}, "Toggles superdrive and super handbreak. Warning! This quite is nuts lol.", function(on_toggle)
             if on_toggle then
                 menu.trigger_commands("speedlimit" .. " 10000")
-                menu.trigger_commands("superdrivespeed" .. " 10000.00")
+                menu.trigger_commands("superdrivespeed" .. " 1000")
                 menu.trigger_commands("superdrive")
                 menu.trigger_commands("superhandbreak")
                 menu.trigger_commands("driveufo")
@@ -6777,6 +6813,44 @@ local function get_closest_vehicle(entity)
                 menu.trigger_commands("superhandbreak")
                 menu.trigger_commands("driveufo")
             end
+        end)
+
+        menu.toggle(driveshit, "Super Drive", {"superd"}, "Toggles superdrive and super handbreak.", function(on_toggle)
+            if on_toggle then
+                menu.trigger_commands("speedlimit" .. " 10000")
+                menu.trigger_commands("superdrivespeed" .. " 3.0")
+                menu.trigger_commands("superdrive")
+                menu.trigger_commands("superhandbreak")
+            else
+                menu.trigger_commands("superdrive")
+                menu.trigger_commands("superhandbreak")
+            end
+        end)
+        
+        menu.toggle_loop(driveshit, 'Stick to surface', {'stickyveh'}, 'Warning! Spawn a vehicle or self crashh! Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function(curcar)
+            local curcar = entities.get_user_vehicle_as_handle()
+            local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            if not PED.IS_PED_IN_VEHICLE(player, PED.GET_VEHICLE_PED_IS_IN(player), false) then
+                util.toast("Player isn't in a vehicle. :/")
+                return
+            end
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
+                VEHICLE.MODIFY_VEHICLE_TOP_SPEED(curcar, 40)
+            end)
+        
+        menu.toggle_loop(driveshit,"Horn boost", {"hornboost"}, "Gives you the ability to speed up their car by pressing honking their horn or activating the siren. Will try fix it for other players soon.", function()
+            local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
+            if not (AUDIO.IS_HORN_ACTIVE(vehicle) or VEHICLE.IS_VEHICLE_SIREN_ON(vehicle)) then return end
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
+            if AUDIO.IS_HORN_ACTIVE(vehicle) then
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 1.0, 0.0, true, true, true, true)
+            end
+        end)
+        
+        menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 2, -1, 1, function(seatnumber)
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+            local vehicle = entities.get_user_vehicle_as_handle()
+            PED.SET_PED_INTO_VEHICLE(ped, vehicle, seatnumber)
         end)
 
 local function getgroupsize(group)
@@ -7037,44 +7111,6 @@ menu.rainbow(menu.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsCol
     fireWingsSettings.fireColour = colour
 end))
 
-menu.toggle(funfun, "Super Drive", {"superd"}, "Toggles superdrive and super handbreak.", function(on_toggle)
-    if on_toggle then
-        menu.trigger_commands("speedlimit" .. " 10000")
-        menu.trigger_commands("superdrivespeed" .. " 3.0")
-        menu.trigger_commands("superdrive")
-        menu.trigger_commands("superhandbreak")
-    else
-        menu.trigger_commands("superdrive")
-        menu.trigger_commands("superhandbreak")
-    end
-end)
-
-menu.toggle_loop(funfun, 'Stick to surface', {'stickyveh'}, 'Warning! Spawn a vehicle or self crashh! Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function(curcar)
-    local curcar = entities.get_user_vehicle_as_handle()
-    local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if not PED.IS_PED_IN_VEHICLE(player, PED.GET_VEHICLE_PED_IS_IN(player), false) then
-        util.toast("Player isn't in a vehicle. :/")
-        return
-    end
-        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
-        VEHICLE.MODIFY_VEHICLE_TOP_SPEED(curcar, 40)
-    end)
-
-menu.toggle_loop(funfun,"Horn boost", {"hornboost"}, "Gives you the ability to speed up their car by pressing honking their horn or activating the siren. Will try fix it for other players soon.", function()
-    local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
-    if not (AUDIO.IS_HORN_ACTIVE(vehicle) or VEHICLE.IS_VEHICLE_SIREN_ON(vehicle)) then return end
-    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
-    if AUDIO.IS_HORN_ACTIVE(vehicle) then
-        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 1.0, 0.0, true, true, true, true)
-    end
-end)
-
-menu.slider(funfun, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 2, -1, 1, function(seatnumber)
-	local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
-	local vehicle = entities.get_user_vehicle_as_handle()
-	PED.SET_PED_INTO_VEHICLE(ped, vehicle, seatnumber)
-end)
-
 menu.toggle(funfun, "Quiet footsteps", {"quietsteps"}, "Disables the sound of your footsteps.", function(toggle)
     AUDIO.SET_PED_FOOTSTEPS_EVENTS_ENABLED(players.user_ped(), not toggle)
 end)
@@ -7207,6 +7243,7 @@ function attach_to_player(hash, bone, x, y, z, xrot, yrot, zrot)           --att
     local object = OBJECT.CREATE_OBJECT(hash, 0.0,0.0,0, true, true, false)
     ENTITY.ATTACH_ENTITY_TO_ENTITY(object, user_ped, PED.GET_PED_BONE_INDEX(PLAYER.PLAYER_PED_ID(), bone), x, y, z, xrot, yrot, zrot, false, false, false, false, 2, true) 
 end
+
 function delete_object(model)
     local hash = util.joaat(model)
     for k, object in pairs(entities.get_all_objects_as_handles()) do
@@ -7442,13 +7479,15 @@ menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisib
         menu.trigger_commands("reducedcollision" .. " on")
         menu.trigger_commands("otr")
         menu.trigger_commands("quietsteps")
-        util.toast("Sneaky Mode On") 
+        menu.trigger_commands("undead")
+        util.toast("Sneaky Mode On\n" .. "\n" .. "No one can see you now!")
     else
         menu.trigger_commands("invisibility" .. " off")
         menu.trigger_commands("reducedcollision" .. " off")
         menu.trigger_commands("otr")
         menu.trigger_commands("quietsteps")
-        util.toast("Sneaky Mode Off")
+        menu.trigger_commands("undead")
+        util.toast("Sneaky Mode Off\n" .. "\n" .. "Everyone can see you now!")
         end 
 end)
 
@@ -9816,6 +9855,8 @@ end)
 ----------------------------------------------------------------------------------------------------------------------- attacker ufo --------------------------------------------------------
 
 local gunner_weapon_listing = { --these are the ufo's gunner weapons 
+{"Heavy Sniper Mk II", "WEAPON_HEAVYSNIPER_MK2"},
+{"Unholy Hellbringer", "WEAPON_RAYCARBINE"},
 {"Combat MG", "weapon_combatmg"},
 {"RPG", "weapon_rpg"}
 }
@@ -10000,9 +10041,12 @@ end, true)
 menu.action(ufo_options, "Delete All", {"deleteufo"}, "Deletes all ufo you've spawned", function()
     menu.trigger_commands("superc")
 end)
------------------------------------------------------------------------------------------------------------------------ attacker buzzard --------------------------------------------------------
+
+---------------------------------------------------------------------- attacker buzzard --------------------------------------------------------
 
 local gunner_weapon_list = { --these are the buzzard's gunner weapons 
+{"Heavy Sniper Mk II", "WEAPON_HEAVYSNIPER_MK2"},
+{"Unholy Hellbringer", "WEAPON_RAYCARBINE"},
 {"Combat MG", "weapon_combatmg"},
 {"RPG", "weapon_rpg"}
 }
@@ -10027,7 +10071,6 @@ end
 local heli = entities.create_vehicle(heli_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
 buzzard_entities[#buzzard_entities + 1] = heli
 
-
 ENTITY.SET_ENTITY_INVINCIBLE(heli, buzzard_godmode)
 ENTITY.SET_ENTITY_VISIBLE(heli, buzzard_visible, 0)	
 VEHICLE.SET_VEHICLE_ENGINE_ON(heli, true, true, true)
@@ -10040,9 +10083,6 @@ PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilot, util.joaat("ARMY"))
 ENTITY.SET_ENTITY_VISIBLE(pilot, buzzard_visible, 0)
 PED.SET_PED_INTO_VEHICLE(pilot, heli, -1)
 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilot, true)
-
-
-
 
 PED.SET_PED_MAX_HEALTH(pilot, 500)
 ENTITY.SET_ENTITY_HEALTH(pilot, 500)
@@ -10129,9 +10169,246 @@ menu.action(buzzard_options, "Delete All", {"deletebuzzard"}, "Deletes all Buzza
     end
 end)
 
+-------------------------------------------------------------- attacker police heli --------------------------------------------------------
+
+local gunner_weapon_list = { --these are the police heli's gunner weapons 
+{"Heavy Sniper Mk II", "WEAPON_HEAVYSNIPER_MK2"},
+{"Unholy Hellbringer", "WEAPON_RAYCARBINE"},
+{"Combat MG", "weapon_combatmg"},
+{"RPG", "weapon_rpg"}
+}
+
+policeheli_entities = {}
+function spawn_policeheli(pid, gunner_weapon, collision)
+local player_ped =  PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+local pos = ENTITY.GET_ENTITY_COORDS(player_ped)
+pos.x = pos.x + math.random(-20, 20)
+pos.y = pos.y + math.random(-20, 20)
+pos.z = pos.z + math.random(20, 40)
+
+PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_ped, util.joaat("PLAYER"))
+
+local heli_hash = util.joaat("polmav")
+local ped_hash = util.joaat("S_M_Y_Swat_01")
+STREAMING.REQUEST_MODEL(ped_hash)
+STREAMING.REQUEST_MODEL(heli_hash)
+while not STREAMING.HAS_MODEL_LOADED(ped_hash) or not STREAMING.HAS_MODEL_LOADED(heli_hash) do
+    util.yield()
+end
+local heli = entities.create_vehicle(heli_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+policeheli_entities[#policeheli_entities + 1] = heli
+
+ENTITY.SET_ENTITY_INVINCIBLE(heli, policeheli_godmode)
+ENTITY.SET_ENTITY_VISIBLE(heli, policeheli_visible, 0)	
+VEHICLE.SET_VEHICLE_ENGINE_ON(heli, true, true, true)
+VEHICLE.SET_HELI_BLADES_FULL_SPEED(heli)
+    
+local pilot = entities.create_ped(5, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+policeheli_entities[#policeheli_entities + 1] = pilot
+
+PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilot, util.joaat("ARMY"))
+ENTITY.SET_ENTITY_VISIBLE(pilot, policeheli_visible, 0)
+PED.SET_PED_INTO_VEHICLE(pilot, heli, -1)
+PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilot, true)
+
+PED.SET_PED_MAX_HEALTH(pilot, 500)
+ENTITY.SET_ENTITY_HEALTH(pilot, 500)
+ENTITY.SET_ENTITY_INVINCIBLE(pilot, policeheli_godmode)
+--TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(pilot, 500, 0)
+
+local gunner = {}
+for i  = 1,2 do
+    gunner[i] = entities.create_ped(29, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+    policeheli_entities[#policeheli_entities + 1] = gunner[i]
+    PED.SET_PED_INTO_VEHICLE(gunner[i], heli, i)
+    WEAPON.GIVE_WEAPON_TO_PED(gunner[i], util.joaat(gunner_weapon) , 9999, false, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(gunner[i], 20 --[[ they can shoot from vehicle ]], true)
+    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(gunner[i], true)
+    PED.SET_PED_MAX_HEALTH(gunner[i], 500)
+    ENTITY.SET_ENTITY_HEALTH(gunner[i], 500)
+    ENTITY.SET_ENTITY_INVINCIBLE(gunner[i], policeheli_godmode)
+    ENTITY.SET_ENTITY_VISIBLE(gunner[i], policeheli_visible, 0)
+    PED.SET_PED_SHOOT_RATE(gunner[i], 1000)
+    PED.SET_PED_RELATIONSHIP_GROUP_HASH(gunner[i], util.joaat("ARMY"))
+    TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(gunner[i], 1000, 0)
+end
+
+util.create_tick_handler(function()
+    PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("ARMY"), util.joaat("PLAYER"))
+    PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("PLAYER"), util.joaat("ARMY"))
+    PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
+end)
+
+--notification("Police Heli sent to "..PLAYER.GET_PLAYER_NAME(pid), colors.red)
+return pilot, heli
+end	
+
+local police_options = menu.list(Attackers_trollys, "Enemy Police Heli", {}, "")
+
+menu.divider(police_options, "Enemy Police Heli")
+
+policeheli_visible = true
+local gunner_weapon = "weapon_combatmg"
+
+menu.action(police_options, "Spawn Police Heli", {"sendpoliceheli"}, "", function()
+    local pilot, heli = spawn_policeheli(pid, gunner_weapon, collision)
+
+    while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
+        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local a = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local b = ENTITY.GET_ENTITY_COORDS(heli)
+        if MISC.GET_DISTANCE_BETWEEN_COORDS(a.x, a.y, a.z, b.x, b.y, b.z, true) > 90 then
+            TASK.TASK_HELI_CHASE(pilot, player_ped, 0, 0, 50)
+        else
+            TASK.TASK_HELI_MISSION(pilot, heli, 0, player_ped, a.x, a.y, a.z, 23, 30, -1, -1, 10, 10, 5, 0)
+        end
+        util.yield()
+    end
+end)
+
+menu.divider(police_options, "Settings")
+
+menu.toggle(police_options, "Invincible", {"invincpoliceheli"}, "", function(on)
+    policeheli_godmode = on
+end, true)
+
+local menu_gunner_weapon_list = menu.list(police_options, "Gunners Weapon")
+menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
+
+for i = 1, #gunner_weapon_list do
+    menu.action(menu_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
+        gunner_weapon = gunner_weapon_list[i][2]
+        --notification("Now gunners will shoot with "..gunner_weapon_list[i][1].."s", colors.red)
+    end)
+end
+
+menu.toggle(police_options, "Visible", {"visablepoliceheli"}, "You shouldn't be that toxic to turn this off", function(on)
+    policeheli_visible = on
+end, true)
+
+menu.toggle(police_options, "Collision", {"collisionpoliceheli"}, "When it's turned off disables world collision for policeheli. Playes can still destroy the vehicle", function(on)
+    collision = on
+end, false)
+
+menu.action(police_options, "Delete All", {"deletepoliceheli"}, "Deletes all policehelis you've spawned", function()
+    for key, value in pairs(policeheli_entities) do
+        entities.delete_by_handle(value)
+    end
+end)
+
+----------------------------------------------- Attacker FBI ----------------------------------------------------------------------
+
+menu.action(Attackers_trollys,"Enemy FBI's", {"sendfbi"}, "", function()
+    V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    if table_kidnap == nil then
+        table_kidnap = {}
+    end
+    hash = util.joaat("fbi2")
+    ped_hash = util.joaat("S_M_Y_Swat_01")
+    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            util.yield()
+        end
+        local aab = 
+        {
+            x = -5784.258301,
+            y = -8289.385742,
+            z = -136.411270
+        }
+        ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
+        ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
+        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
+        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
+        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
+            STREAMING.REQUEST_MODEL(ped_hash)
+            util.yield()
+        end
+        ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+        ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+        local gunner_weapon = "WEAPON_SMG"
+        WEAPON.GIVE_WEAPON_TO_PED(ped_to_kidnap, util.joaat(gunner_weapon) , 9999, false, true)
+        WEAPON.GIVE_WEAPON_TO_PED(ped_to_drive, util.joaat(gunner_weapon) , 9999, false, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
+        coords_ped = v3()
+        coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
+        coords_ped.x = coords_ped.x + math.random(-20, 20)
+        coords_ped.y = coords_ped.y + math.random(-20, 20)
+        coords_ped.z = coords_ped.z
+        ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
+        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
+        TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
+        TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
+        util.yield(1)
+        entities.delete_by_handle(ped_to_kidnap)
+        veh_to_attach = veh_to_attach + 1
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
+        util.toast(os.date("%H:%M:%S") .. " FBI Sent To Attack", TOAST_ABOVE_MAP)
+    end
+end)
+
+----------------------------------------------- Attacker Cops ----------------------------------------------------------------------
+
+menu.action(Attackers_trollys,"Enemy Cops", {"sendcops"}, "", function()
+    V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    if table_kidnap == nil then
+        table_kidnap = {}
+    end
+    hash = util.joaat("police3")
+    ped_hash = util.joaat("S_M_Y_Cop_01")
+    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            util.yield()
+        end
+        local aab = 
+        {
+            x = -5784.258301,
+            y = -8289.385742,
+            z = -136.411270
+        }
+        ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
+        ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
+        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
+        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
+        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
+            STREAMING.REQUEST_MODEL(ped_hash)
+            util.yield()
+        end
+        ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+        ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+        local gunner_weapon = "WEAPON_PISTOL"
+        WEAPON.GIVE_WEAPON_TO_PED(ped_to_kidnap, util.joaat(gunner_weapon) , 9999, false, true)
+        WEAPON.GIVE_WEAPON_TO_PED(ped_to_drive, util.joaat(gunner_weapon) , 9999, false, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
+        coords_ped = v3()
+        coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
+        coords_ped.x = coords_ped.x + math.random(-20, 20)
+        coords_ped.y = coords_ped.y + math.random(-20, 20)
+        coords_ped.z = coords_ped.z
+        ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
+        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
+        TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
+        TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
+        util.yield(1)
+        entities.delete_by_handle(ped_to_kidnap)
+        veh_to_attach = veh_to_attach + 1
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
+        util.toast(os.date("%H:%M:%S") .. " Cop Sent To Attack", TOAST_ABOVE_MAP)
+    end
+end)
+
 ---------------------------------------------- attacker Army --------------------------------------------------------
 
 local gunner_weapon_lists = { --these are the Army's gunner weapons 
+{"Heavy Sniper Mk II", "WEAPON_HEAVYSNIPER_MK2"},
+{"Unholy Hellbringer", "WEAPON_RAYCARBINE"},
 {"Combat MG", "weapon_combatmg"},
 {"RPG", "weapon_rpg"}
 }
@@ -10457,7 +10734,6 @@ end)
 menu.action(Attacker_Tanks, "Delete Tanks", {"deletetanks"}, "Deletes all tanks you've spawned", function()
     menu.trigger_commands("superc")
 end)
-
 
 local Armys = menu.list(Attackers_trollys, "Spam Followers")
 
@@ -12859,7 +13135,7 @@ for i = 1, #SoundAnnoy do
     end)
 end
 
-menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_toggle)
+menu.toggle_loop(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_toggle)
     if on_toggle then
         menu.trigger_commands("basketcage" .. players.get_name(pid))
         util.yield(100)
@@ -12910,8 +13186,9 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
         end
     end)
 
-    menu.toggle_loop(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
+    menu.toggle(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
         if pid ~= players.user() then
+        menu.trigger_commands("disarm" .. players.get_name(pid))
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2769149392)
 
@@ -12928,7 +13205,7 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
         end
 	end)
     
-	menu.toggle_loop(cage_options, "Simple", {"simplecage"}, "", function()
+	menu.toggle(cage_options, "Simple", {"simplecage"}, "", function()
 		local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		local pos = ENTITY.GET_ENTITY_COORDS(player_ped) 
 		if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
@@ -12941,13 +13218,14 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
 			end
 			menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 			pos =  ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)) --if not it could place the cage at the wrong position
+            menu.trigger_commands("disarm" .. players.get_name(pid))
 		end
 		cage_player(pos)
 	end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 	
-	menu.toggle_loop(cage_options, "First Job", {"foodtruckcage"}, "", function()
+	menu.toggle(cage_options, "First Job", {"foodtruckcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		local hash = 4022605402
 		STREAMING.REQUEST_MODEL(hash)
@@ -12963,11 +13241,12 @@ menu.toggle(cage_options, "Toggle All", {"toggleallcages"}, "", function(on_togg
 		--rot.y = 90
 		--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+        menu.trigger_commands("disarm" .. players.get_name(pid))
 	end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 	
-menu.toggle_loop(cage_options, "Married Simulator", {"doghousecage"}, "", function()
+menu.toggle(cage_options, "Married Simulator", {"doghousecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = -1782242710
 	STREAMING.REQUEST_MODEL(hash)
@@ -12983,12 +13262,13 @@ menu.toggle_loop(cage_options, "Married Simulator", {"doghousecage"}, "", functi
 	--rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
 	
-menu.toggle_loop(cage_options, "Christmas Time", {"jollycage"}, "", function()
+menu.toggle(cage_options, "Christmas Time", {"jollycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 238789712
 	STREAMING.REQUEST_MODEL(hash)
@@ -13004,12 +13284,13 @@ menu.toggle_loop(cage_options, "Christmas Time", {"jollycage"}, "", function()
 	--rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
 	
-menu.toggle_loop(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
+menu.toggle(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_02a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -13029,11 +13310,12 @@ menu.toggle_loop(cage_options, "Christmas Time v2", {"jollycage2"}, "", function
 	--rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.toggle_loop(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
+menu.toggle(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -13053,11 +13335,12 @@ menu.toggle_loop(cage_options, "Christmas Time v3", {"jollycage3"}, "", function
 	--rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.toggle_loop(cage_options, "'Safe' Space", {"safecage"}, "", function()
+menu.toggle(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 1089807209
 	STREAMING.REQUEST_MODEL(hash)
@@ -13082,11 +13365,12 @@ menu.toggle_loop(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	ENTITY.FREEZE_ENTITY_POSITION(cage_object5, true)
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.toggle_loop(cage_options, "Average X-Force User", {"trashcage"}, "", function()
+menu.toggle(cage_options, "Average X-Force User", {"trashcage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 684586828
 	STREAMING.REQUEST_MODEL(hash)
@@ -13103,11 +13387,12 @@ menu.toggle_loop(cage_options, "Average X-Force User", {"trashcage"}, "", functi
 	--rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-menu.toggle_loop(cage_options, "money cage", {"moneycage"}, "", function()
+menu.toggle(cage_options, "money cage", {"moneycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("bkr_prop_moneypack_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -13133,11 +13418,12 @@ menu.toggle_loop(cage_options, "money cage", {"moneycage"}, "", function()
 	rot.y = 90
 	--ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    menu.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-	menu.toggle_loop(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
+	menu.toggle(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2081936690)
 
@@ -13151,6 +13437,7 @@ end)
 		rot.y = 90
 		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+        menu.trigger_commands("disarm" .. players.get_name(pid))
 	end)
 							
 	local cage_loop = false
@@ -13842,6 +14129,10 @@ end)
                 util.yield(500)
                 menu.trigger_commands("stopspectating")
             end)
+
+            menu.action(givevehicle, "Give A MK2", {"givemk2"}, "", function()
+                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " oppressor2")
+            end, nil, nil, COMMANDPERM_FRIENDLY)
 
             menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
                 menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
