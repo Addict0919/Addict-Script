@@ -14,10 +14,10 @@ Added Enemy Cops
 
 Added Delete All Attackers
 ________________________
-v7.6
-________________________
-Bug Fixes
-________________________
 v7.7
 ________________________
 Made All Bodygaurd Invincible
+________________________
+v7.8
+________________________
+Bug Fixes
