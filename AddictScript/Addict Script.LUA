@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 7.9
+local local_menu_version = 8.0
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -21071,12 +21071,13 @@ end)
 --------------------------------------
 
 menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
-    local curcar = entities.get_user_vehicle_as_handle(entities.get_all_objects_as_handles())
-    if curcar then
-    menu.trigger_commands("deletevehicle")
-    util.yield(100)
-    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
-    end
+    --local curcar = entities.get_user_vehicle_as_handle(entities.get_all_objects_as_handles())
+    --if curcar then
+    --menu.trigger_commands("deletevehicle")
+    --util.yield(100)
+    --ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(curcar, 1, 0, 0, - 0.5, 0, true, true, true, true)
+    menu.trigger_commands("yeet")
+    --end
 end)
 
 menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
