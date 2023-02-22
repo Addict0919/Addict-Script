@@ -1,14 +1,25 @@
 v8.3
 ________________________
 Moved Crashes around
+
 Updated Attachment Crash v2
+
 Updated Huge Shit on player and normal shit on player
+
 Added Glitch Vehicle V2
+
 Added SE Kick (Crdits to legy)
+
 Added Bounce Up (Targets players)
+
 Added Spinbot Nearby Vehicles
+
 Added Bounce Nearby Vehicles
+
 Added Invisible Peds
+
 Added Trails (BETA) Working on a bug and more trail types
+
 Added Super Finger
+
 Added Super Punch
