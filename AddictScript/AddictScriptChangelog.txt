@@ -12,3 +12,4 @@ Added Invisible Peds
 Added Trails (BETA) Working on a bug and more trail types
 Added Super Finger
 Added Super Punch
+Added Auto Drive
