@@ -10,6 +10,8 @@ Added Spinbot Nearby Vehicles
 Added Bounce Nearby Vehicles
 Added Invisible Peds
 Added Trails (BETA) Working on a bug and more trail types
-Added Super Finger
-Added Super Punch
-Added Auto Drive
+Added Super Finger - In Stand>Lua Scripts>Addict Script>Fun Shit>Player Modes>Super Finger
+
+Added Super Punch - In Stand>Lua Scripts>Addict Script>Fun Shit>Player Modes>Super Punch
+
+Added Auto Drive - In Stand>Lua Scripts>Addict Script>Fun Shit>Driving Shit>Auto Drive
