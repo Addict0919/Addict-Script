@@ -3,3 +3,8 @@ ________________________
 Removed scenarios from animations
 
 Added Drop Cash
+________________________
+v8.5
+________________________
+Improved money drop speed for errors.
+Added Faster drops incase you don't care.
