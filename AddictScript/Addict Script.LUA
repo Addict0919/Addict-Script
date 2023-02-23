@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 8.4
+local local_menu_version = 8.5
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4802,6 +4802,22 @@ menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 Peopl
     end
 end)
 
+menu.action(rp_cash_loops, "Drop Cash", {"dropcashto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                util.yield(2000)
+                menu.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                util.yield(2000)
+                menu.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
 --[[
 menu.action(rp_cash_loops, "{Jrukii's} RP Loop", {"rankall"}, "", function()
     for pids = 0, 31 do
@@ -5750,7 +5766,7 @@ end)
 
 menu.action(help1, "Commands A", {"help1"}, "", function()
     chat.send_message(
-        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
+        "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -5760,7 +5776,7 @@ end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
     chat.send_message(
-        "/max NAME /ceopay NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
+        "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
         false, -- in team chat
         true, -- add to local history
         true  -- networked
@@ -13904,13 +13920,31 @@ end)
 end)
 ]]
 
-menu.action(drops, "Drop Cash", {"dropcash"}, "So friends can type it in chat commands.", function()
+menu.action(drops, "Drop Cash", {"dropcash"}, "So friends can type this in chat commands. It will also send the target a text message saying this. (You may see a transaction error when receiving cash, message me to turn it off or rejoin.)", function()
     menu.trigger_commands("cashloop" .. players.get_name(pid))
+    menu.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash, message me to turn it off or rejoin.")
+    util.yield(500)
+    menu.trigger_commands("smssend" .. players.get_name(pid))
+    util.toast("Text message sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(drops, "Drop Cash Loop", {"cashloop"}, "Risky...", function()
+menu.toggle_loop(drops, "Drop Cash Loop", {"cashloop"}, "No errors, 3600ms cash drops. Risky...", function()
     local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
+    coords.z = coords.z + 1.0
+    local cash = MISC.GET_HASH_KEY("prop_anim_cash_pile_02")
+    STREAMING.REQUEST_MODEL(cash)
+    if STREAMING.HAS_MODEL_LOADED(cash) == false then  
+        STREAMING.REQUEST_MODEL(cash)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(1704231442, coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
+    --OBJECT.CREATE_MONEY_PICKUPS(coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
+    util.toast("Cash Dropping " .. players.get_name(pid))
+    util.yield(3600)
+end)
+
+menu.toggle_loop(drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with errors. Risky...", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.0
     local cash = MISC.GET_HASH_KEY("prop_anim_cash_pile_02")
     STREAMING.REQUEST_MODEL(cash)
     if STREAMING.HAS_MODEL_LOADED(cash) == false then  
