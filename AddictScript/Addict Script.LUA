@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 8.7
+local local_menu_version = 8.8
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1842,6 +1842,44 @@ items.presets.nightclub.root:toggle_loop("Enable", {}, "Enable the preset value 
         end
     end
 
+    local orgScan = memory.scan
+
+    function memory.scan(name, pattern, callback)
+        local address = orgScan(pattern)
+        if address ~= NULL then
+            util.log("Found " .. name)
+            callback(address)
+        else
+            util.log("Failed to find " .. name)
+            util.stop_script()
+        end
+    end
+    
+    function get_net_obj(entity)
+        local pEntity = entities.handle_to_pointer(entity)
+        return pEntity ~= NULL and memory.read_long(pEntity + 0x00D0) or NULL
+    end
+    
+    function get_entity_owner(entity)
+        local net_obj = get_net_obj(entity)
+        return net_obj ~= NULL and memory.read_byte(net_obj + 0x49) or -1
+    end
+    
+    function GetNetGamePlayer(player)
+        return util.call_foreign_function(GetNetGamePlayer_addr, player)
+    end
+    
+    memory.scan("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
+        GetNetGamePlayer_addr = address
+    end)
+    memory.scan("CNetworkObjectMgr", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
+        CNetworkObjectMgr = memory.rip(address + 3)
+    end)
+    
+    memory.scan("ChangeNetObjOwner", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 81 EC ? ? ? ? 44 8A 62 4B", function (address)
+        ChangeNetObjOwner_addr = address
+    end)
+
     if not STATS.STAT_SET_INT(stats.nightclub, ((value * 2) + 4500000), true) then
         ref.value = false
         util.toast("[Recovery]: Failed to set nightclub trade-in price")
@@ -2913,6 +2951,7 @@ end
 function tp_vehicle_to(veh,x,y,z) -- #unfinished -- will this ever be finished or is this just a pointless alias for a native? i dont know.
 	ENTITY.SET_ENTITY_COORDS_NO_OFFSET(veh,x,y,z,0,0,0)
 end
+
 
 
 function do_fade_in(pid) 
@@ -5673,6 +5712,7 @@ end)
         util.yield(750)
     end)
 
+    
 	menu.click_slider(protex,"Clear Shit Up", {"superc"}, "5 = peds, 4 = vehicles, 3 = objects, 2 = pickups, 1 = all \nNote: This excludes players and their vehicles.", 1, 5, 1, 1, function(on_change)
 		if on_change == 5 then
 			local count = 0
@@ -9215,6 +9255,62 @@ read_global = {
         menu.trigger_commands("confuse".. players.get_name(pid).. " off")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
+    
+    local function player_index(pid)
+        local player_index = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        return player_index
+    end
+
+    local function get_player_vehicle(pid, with_access)
+        local player_index = player_index(pid)
+        if PED.IS_PED_IN_ANY_VEHICLE(player_index, true) then
+            local vehicle = PED.GET_VEHICLE_PED_IS_IN(player_index, false)
+            if with_access then
+                request_control_of_entity(vehicle, 5)
+                return vehicle
+            else
+                return vehicle
+            end
+        end
+    end
+
+    
+    local function ChangeNetObjOwner(object, player)
+        if NETWORK.NETWORK_IS_IN_SESSION() then
+            local net_object_mgr = get_player_vehicle(pid, false)
+            if net_object_mgr == NULL then
+                return false
+            end
+            if not ENTITY.DOES_ENTITY_EXIST(object) then
+                return false
+            end
+            local netObj = entities.get_all_vehicles_as_handles()
+            if netObj == NULL then
+                return false
+            end
+            local net_game_player = players.user()
+            if net_game_player == NULL then
+                return false
+            end
+            return true
+        else
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object)
+            return true
+        end
+    end
+
+    menu.toggle_loop(griefing, "Kick from Vehicle", {}, "", function()
+        local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
+        local myveh = PED.GET_VEHICLE_PED_IS_IN(pped, true)
+        PED.SET_PED_INTO_VEHICLE(pped, veh, -2)
+        util.yield(50)
+        ChangeNetObjOwner(veh, pid)
+        ChangeNetObjOwner(veh, pped)
+        util.yield(50)
+        PED.SET_PED_INTO_VEHICLE(pped, myveh, -1)
+    end)
 
     menu.toggle_loop(griefing, "Push player up", {"pushup"}, "Works best if the player is walking on flat ground.", function()
         local vehicle = 4174679674 --1518533038
@@ -11568,6 +11664,26 @@ menu.action(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the pla
 
     local tormentplayer = menu.list(griefing, "Torment Shit")
 
+menu.toggle_loop(tormentplayer, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function(on_toggle)
+        local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
+        local speech = "FEMALE_DISTANT_LAUGH"
+        local z_off = 0
+        if PED.IS_PED_IN_ANY_VEHICLE(target_ped, false) then 
+            ENTITY.GET_ENTITY_MODEL(PED.GET_VEHICLE_PED_IS_IN(target_ped, false))
+        end
+        local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -1.0, 0.0 + z_off)
+        request_model_load(util.joaat("s_f_m_shop_high"))
+        local voice_ped = entities.create_ped(28, util.joaat("s_f_m_shop_high"), coords, 0)
+        ENTITY.SET_ENTITY_COMPLETELY_DISABLE_COLLISION(voice_ped, true, false)
+        ENTITY.SET_ENTITY_VISIBLE(voice_ped, false, 0)
+        ENTITY.FREEZE_ENTITY_POSITION(voice_ped, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(voice_ped, true)
+        AUDIO.PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speech, voice, "SPEECH_PARAMS_FORCE_SHOUTED", 0)
+        util.yield(3000)
+        entities.delete_by_handle(voice_ped)
+    end)
+
     player_toggle_loop(tormentplayer, pid, "Taser", {"taseron"}, "", function()
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped)
@@ -12067,35 +12183,7 @@ menu.toggle_loop(ptfxloop, "Water Mist", {"ptfxwatermist"}, "", function(on_togg
                 "ent_anim_bm_water_mist", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-menu.toggle_loop(tormentplayer, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function(on_toggle)
-        local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-        local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
-        local speech = "FEMALE_DISTANT_LAUGH"
-        local z_off = 0
-        if PED.IS_PED_IN_ANY_VEHICLE(target_ped, false) then 
-            z_off = get_model_size(ENTITY.GET_ENTITY_MODEL(PED.GET_VEHICLE_PED_IS_IN(target_ped, false))).z
-        end
-        local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -1.0, 0.0 + z_off)
-        request_model_load(util.joaat("s_f_m_shop_high"))
-        local voice_ped = entities.create_ped(28, util.joaat("s_f_m_shop_high"), coords, 0)
-        ENTITY.SET_ENTITY_COMPLETELY_DISABLE_COLLISION(voice_ped, true, false)
-        ENTITY.SET_ENTITY_VISIBLE(voice_ped, false, 0)
-        ENTITY.FREEZE_ENTITY_POSITION(voice_ped, true)
-        ENTITY.SET_ENTITY_INVINCIBLE(voice_ped, true)
-        AUDIO.PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speech, voice, "SPEECH_PARAMS_FORCE_SHOUTED", 0)
-        util.yield(3000)
-        entities.delete_by_handle(voice_ped)
-    end)
-
-
-	menu.toggle_loop(griefing, "Kick from vehicle", {"kickveh"}, "Little laggy when looped might find a new way to do this", function(on_toggle)
-	    menu.trigger_commands("vehkick" .. players.get_name(pid))
-	end)
-
-        
+  
 local function request_model(hash, timeout)
     timeout = timeout or 3
     STREAMING.REQUEST_MODEL(hash)
