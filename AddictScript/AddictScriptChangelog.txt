@@ -7,3 +7,7 @@ Added Money Gun - In Stand>Lua Scripts>Addict Script>Fun Shit>Weapon Shit>Custom
 v8.7
 ________________________
 Bug Fixes With Trails
+
+v8.8
+________________________
+Added new vehicle kick
