@@ -1,4 +1,8 @@
 v8.6
 ________________________
-Added Money Gun - In Stand>Lua Scripts>Addict Script>Fun Shit>Weapon Shit>Custom Model Gun
+Added Rain Dildos - In Players>PLAYER>Crashes>Sex Crashes
 
+Added Money Gun - In Stand>Lua Scripts>Addict Script>Fun Shit>Weapon Shit>Custom Model Gun
+v8.7
+________________________
+Bug Fixes With Trails
