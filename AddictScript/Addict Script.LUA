@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 8.5
+local local_menu_version = 8.6
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -2820,49 +2820,6 @@ menu.toggle_loop(cashloop, 'Start $$$ Loop', {""}, '500k + 750k Loop Every 10 Se
     util.yield(10000)
 end)
 
-
-local create_timer_root = menu.list(menu.my_root(), "Create new timer", {'Addictcreate'}, "")
-----
-
-local new_timer_name = "My new timer"
-menu.text_input(create_timer_root, "Name", {"Addictsetname"}, "", function(on_input)
-    new_timer_name = on_input
-end, new_timer_name)
-
-local new_timer_desc = "Your description goes here."
-menu.text_input(create_timer_root, "Description", {"Addictsetdesc"}, "", function(on_input)
-    new_timer_desc = on_input
-end, new_timer_desc)
-
-local new_timer_commands = "crashall"
-menu.text_input(create_timer_root, "Command(s)", {"Addictsetcommands"}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
-    new_timer_commands = on_input
-end, new_timer_commands)
-
-local new_timer_delay = 100
-menu.slider(create_timer_root, "Timer delay (MS)", {"Addictsetdelay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
-    new_timer_delay = s
-end)
-
-menu.action(create_timer_root, "Create timer", {}, "Create and save this timer as a file.", function(click_type)
-    local new_timer_data = {
-        timer_name = new_timer_name,
-        timer_desc = new_timer_desc,
-        timer_commands = new_timer_commands,
-        timer_delay = new_timer_delay
-    }
-    local timer_path = store_dir .. '/' .. new_timer_name .. '.lua'
-    if filesystem.exists(timer_path) then
-        util.toast("A timer with that name already exists.")
-        return 
-    else
-        table.save(new_timer_data, timer_path)
-        parse_all_timer_files()
-        menu.trigger_commands("Addict" .. new_timer_name:gsub(' ', ''))
-        util.toast("Timer created! I\'ve opened it for you :)")
-    end
-end)
-
 util.create_thread(function()
     while true do
         parse_all_timer_files()
@@ -2870,8 +2827,6 @@ util.create_thread(function()
     end
 end
 )
-
-util.keep_running(100)
 
 local function player_toggle_loop(root, pid, menu_name, command_names, help_text, callback)
     return menu.toggle_loop(root, menu_name, command_names, help_text, function()
@@ -3135,54 +3090,6 @@ end
 
 ]]
 
-PTFX_Types = {
-    {"Trail (White)", "scr_rcbarry2", "scr_exp_clown_trails", 500},
-    {"Trail (Color)", "scr_powerplay", "sp_powerplay_beast_appear_trails", 500},
-    {"Electrical Fire (Silent)", "core", "ent_dst_elec_fire_sp", 200},
-    {"Electrical Fire (Noisy)", "core", "ent_dst_elec_crackle", 500},
-    {"Electrical Malfunction", "cut_exile1", "cs_ex1_elec_malfunction", 500},
-    {"Chandelier", "cut_family4", "cs_fam4_shot_chandelier", 100},
-    {"Firework Trail (Short)", "scr_rcpaparazzo1", "scr_mich4_firework_sparkle_spawn", 500},
-    {"Firework Trail (Long)", "scr_indep_fireworks", "scr_indep_firework_sparkle_spawn", 500},
-    {"Firework Burst", "scr_indep_fireworks", "scr_indep_firework_trailburst_spawn", 500},
-    {"Firework Trailburst", "scr_rcpaparazzo1", "scr_mich4_firework_trailburst_spawn", 500},
-    {"Firework Fountain", "scr_indep_fireworks", "scr_indep_firework_trail_spawn", 500},
-    {"Beast Vanish", "scr_powerplay", "scr_powerplay_beast_vanish", 1000},
-    {"Beast Appear", "scr_powerplay", "scr_powerplay_beast_appear", 1000},
-    {"Alien Teleport", "scr_rcbarry1", "scr_alien_teleport", 750},
-    {"Alien Disintegrate", "scr_rcbarry1", "scr_alien_disintegrate", 500},
-    {"Take Zone", "scr_ie_tw", "scr_impexp_tw_take_zone", 500},
-    {"Jackhammer (Quiet)", "core", "ent_dst_bread", 50},
-    {"Jackhammer (Loud)", "core", "bul_paper", 50},
-    {"Vehicle Backfire", "core", "veh_backfire", 250},
-    {"Tire Flash", "scr_carsteal4", "scr_carsteal5_car_muzzle_flash", 50},
-    {"Tire Air", "scr_carsteal4", "scr_carsteal5_tyre_spiked", 150},
-    {"Tire Sparks", "scr_carsteal4", "scr_carsteal4_tyre_spikes", 50},
-    {"Car Sparks", "core", "bang_carmetal", 250},
-    {"Stungun Sparks", "core", "bul_stungun_metal", 500},
-    {"Plane Sparks", "cut_exile1", "cs_ex1_plane_break_L", 325},
-    {"Plane Debris", "scr_solomon3", "scr_trev4_747_engine_debris", 1000},
-    {"Foundry Sparks", "core", "sp_foundry_sparks", 500},
-    {"Foundry Steam", "core", "ent_amb_foundry_steam_spawn", 500},
-    {"Oil", "core", "ent_sht_oil", 3500},
-    {"Trash", "core", "ent_dst_hobo_trolley", 250},
-    {"Money Trail", "scr_exec_ambient_fm", "scr_ped_foot_banknotes", 125},
-    {"Gumball Machine", "core", "ent_dst_gen_gobstop", 500},
-    {"Camera Flash", "scr_bike_business", "scr_bike_cfid_camera_flash", 200},
-    {"Black Smoke", "scr_fbi4", "exp_fbi4_doors_post", 250},
-    {"Musket", "wpn_musket", "muz_musket_ng", 500},
-    {"Torpedo", "veh_stromberg", "exp_underwater_torpedo", 500},
-    {"Molotov", "core", "exp_grd_molotov_lod", 500},
-    {"EMP", "scr_xs_dr", "scr_xs_dr_emp", 350},
-    {"Petrol Fire", "scr_finale1", "scr_fin_fire_petrol_trev", 2500},
-    {"Petrol Explosion", "core", "exp_grd_petrol_pump", 300},
-    {"Inflate", "core", "ent_dst_inflate_lilo", 300},
-    {"Inflatable", "core", "ent_dst_inflatable", 500},
-    {"Water Splash (Short)", "core", "ent_anim_bm_water_scp", 200},
-    {"Water Splash (Long)", "cut_family5", "cs_fam5_michael_pool_splash", 500},
-    {"Mop Squeeze", "scr_agencyheist", "scr_fbi_mop_squeeze", 100},
-    {"Flame (Real)", "core", "ent_sht_flame", 7500}
-}
 
     local kicks = {
     0x493fc6bb,
@@ -5150,6 +5057,395 @@ end
 
 protex = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
 
+
+spams = menu.list(protex, "Chat Spammers", {}, "", function(); end)
+menu.divider(spams, "Chat Spammers")
+
+helpcommands = menu.list(spams, "Help Commands", {}, "Command: helpcommands", function(); end)
+
+menu.action(helpcommands, "Help Commands", {"helpcommands"}, "", function()
+chat.send_message(
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(helpcommands, "Help Commands", {"helpcommand"}, "", function(on_toggle)
+chat.send_message(
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+menu.toggle_loop(helpcommands, "Type Help Commands", {"typehelpcommand"}, "", function(on_toggle)
+chat.send_message(
+    "Type /helpcommands for help",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+carhelpa = menu.list(spams, "Gift Car A", {}, "Command: carhelpa", function(); end)
+
+menu.action(carhelpa, "Gift Car A", {"carhelpa"}, "", function()
+chat.send_message(
+    "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(carhelpa, "Gift Car A", {"carhelpa"}, "", function(on_toggle)
+chat.send_message(
+    "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+carhelpb = menu.list(spams, "Gift Car B", {}, "Command: carhelpb", function(); end)
+
+menu.action(carhelpb, "Gift Car B", {"carhelpb"}, "", function()
+chat.send_message(
+    "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(carhelpb, "Gift Car B", {"carhelpb"}, "", function(on_toggle)
+chat.send_message(
+    "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+carhelpc = menu.list(spams, "Gift Car C", {}, "Command: carhelpc", function(); end)
+
+menu.action(carhelpc, "Gift Car C", {"carhelpc"}, "", function()
+chat.send_message(
+    "Repete first steps to do it again",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(carhelpc, "Gift Car C", {"carhelpc"}, "", function(on_toggle)
+chat.send_message(
+    "Repete first steps to do it again",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+help1 = menu.list(spams, "Commands A", {}, "Command: help1", function(); end)
+
+menu.action(help1, "Commands A", {"help1"}, "", function()
+chat.send_message(
+    "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
+chat.send_message(
+    "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+help2 = menu.list(spams, "Commands B", {}, "Command: help2", function(); end)
+
+menu.action(help2, "Commands B", {"help2"}, "", function()
+chat.send_message(
+    "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(help2, "Commands B", {}, "", function(on_toggle)
+chat.send_message(
+    "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+help3 = menu.list(spams, "Commands C", {}, "Command: help3", function(); end)
+
+menu.action(help3, "Commands C", {"help3"}, "", function()
+chat.send_message(
+    "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(help3, "Commands C", {}, "", function(on_toggle)
+chat.send_message(
+    "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+help4 = menu.list(spams, "Commands D", {}, "Command: help4", function(); end)
+
+menu.action(help4, "Commands D", {"help4"}, "", function()
+chat.send_message(
+    "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(help4, "Commands D", {}, "", function(on_toggle)
+chat.send_message(
+    "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+help5 = menu.list(spams, "Commands E", {}, "Command: help5", function(); end)
+
+menu.action(help5, "Commands E", {"help5"}, "", function()
+chat.send_message(
+    "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(help5, "Commands E", {}, "", function(on_toggle)
+chat.send_message(
+    "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+
+casinohelp1 = menu.list(spams, "Roulette Method", {}, "Command: casinohelp1", function(); end)
+
+menu.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
+chat.send_message(
+    "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(casinohelp1, "Roulette Method", {"togglecasinohelp1"}, "", function(on_toggle)
+chat.send_message(
+    "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+casinohelp2 = menu.list(spams, "Blackjack Method", {}, "Command: casinohelp2", function(); end)
+
+menu.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
+chat.send_message(
+    "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(casinohelp2, "Blackjack Method", {"togglecasinohelp2"}, "", function(on_toggle)
+chat.send_message(
+    "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+whatmenu = menu.list(spams, "What Menu Do I Use?", {}, "Command: whatmenu", function(); end)
+
+menu.action(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function()
+chat.send_message(
+    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function(on_toggle)
+chat.send_message(
+    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(150000)
+end)
+
+imfuckinggod = menu.list(spams, "I'm Fucking God", {}, "Command: imfuckinggod", function(); end)
+
+menu.action(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function()
+chat.send_message(
+    "I'M FUCKING GOD!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function(on_toggle)
+chat.send_message(
+    "I'M FUCKING GOD!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end)
+
+reportme = menu.list(spams, "Report Me", {}, "Command: reportme", function(); end)
+
+menu.action(reportme, "Report Me", {"reportme"}, "", function()
+chat.send_message(
+    "REPORT ME!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(reportme, "Report Me", {"reportme"}, "", function(on_toggle)
+chat.send_message(
+    "REPORT ME!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end)
+
+ilovezelensky = menu.list(spams, "I <3 ZELEN", {}, "Command: ilovezelensky", function(); end)
+
+menu.action(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function()
+chat.send_message(
+    "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function(on_toggle)
+chat.send_message(
+    "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end)
+
+iloveputin = menu.list(spams, "I <3 PUTIN", {}, "Command: iloveputin", function(); end)
+
+menu.action(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function()
+chat.send_message(
+    "I <3 PRESIDENT VOLODYMYR PUTIN",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function(on_toggle)
+chat.send_message(
+    "I <3 PRESIDENT VOLODYMYR PUTIN",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end)
+
+yuminwoman = menu.list(spams, "Yumin Woman", {}, "Command: yuminwoman", function(); end)
+
+menu.action(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function()
+chat.send_message(
+    "Yumin woman! AUUUUUUUUUGGHH!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function(on_toggle)
+chat.send_message(
+    "Yumin woman! AUUUUUUUUUGGHH!!!",
+    false, -- in team chat
+    true, -- add to local history
+    true  -- networked
+    )
+util.yield(50)
+end)
+
 local pidsacam = menu.list(protex, "Anti Crash Camera", {}, "")
 local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
 local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
@@ -5178,6 +5474,49 @@ if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3)))
 else
     end
 end)
+
+local create_timer_root = menu.list(protex, "Create new timer", {'Addictcreate'}, "")
+----
+
+local new_timer_name = "My new timer"
+menu.text_input(create_timer_root, "Name", {"Addictsetname"}, "", function(on_input)
+    new_timer_name = on_input
+end, new_timer_name)
+
+local new_timer_desc = "Your description goes here."
+menu.text_input(create_timer_root, "Description", {"Addictsetdesc"}, "", function(on_input)
+    new_timer_desc = on_input
+end, new_timer_desc)
+
+local new_timer_commands = "crashall"
+menu.text_input(create_timer_root, "Command(s)", {"Addictsetcommands"}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
+    new_timer_commands = on_input
+end, new_timer_commands)
+
+local new_timer_delay = 100
+menu.slider(create_timer_root, "Timer delay (MS)", {"Addictsetdelay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
+    new_timer_delay = s
+end)
+
+menu.action(create_timer_root, "Create timer", {}, "Create and save this timer as a file.", function(click_type)
+    local new_timer_data = {
+        timer_name = new_timer_name,
+        timer_desc = new_timer_desc,
+        timer_commands = new_timer_commands,
+        timer_delay = new_timer_delay
+    }
+    local timer_path = store_dir .. '/' .. new_timer_name .. '.lua'
+    if filesystem.exists(timer_path) then
+        util.toast("A timer with that name already exists.")
+        return 
+    else
+        table.save(new_timer_data, timer_path)
+        parse_all_timer_files()
+        menu.trigger_commands("Addict" .. new_timer_name:gsub(' ', ''))
+        util.toast("Timer created! I\'ve opened it for you :)")
+    end
+end)
+
 
 menu.action(protex, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
     local player_ped = PLAYER.PLAYER_PED_ID()    
@@ -5600,456 +5939,6 @@ end)
 			return
 		end
 	end)
-
-	menu.divider(protex, "Addict Protections")
-
-	
-	menu.toggle(protex, "Toggle Block all Network Events", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
-		local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-		local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-		if on_toggle then
-			menu.trigger_command(BlockNetEvents)
-		else
-			menu.trigger_command(UnblockNetEvents)
-		end
-	end)
-
-
-	menu.toggle(protex, "Toggle Block all Incoming Syncs", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
-		local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>SyPanicncs>Incoming>Any Incoming Sync>Block>Disabled")
-		if on_toggle then
-			menu.trigger_command(BlockIncSyncs)
-		else
-			menu.trigger_command(UnblockIncSyncs)
-		end
-	end)
-
-	menu.toggle(protex, "Toggle Block all Outgoing Syncs", {}, "This breaks the game, and other players will not receive any updates from your client", function(on_toggle)
-		if on_toggle then
-			menu.trigger_commands("desyncall on")
-		else
-			menu.trigger_commands("desyncall off")
-		end
-	end)
-
-	menu.toggle(protex, "Toggle Anticrashcam", {"acc"}, "Put this here for redundancy", function(on_toggle)
-		if on_toggle then
-			menu.trigger_commands("anticrashcam on")
-			menu.trigger_commands("potatomode on")
-		else
-			menu.trigger_commands("anticrashcam off")
-			menu.trigger_commands("potatomode off")
-		end
-	end)
-
-	menu.toggle(protex, "Toggle Panic Mode", {"panic"}, "Uses all of the above. This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
-		local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-		local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-		local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-		if on_toggle then
-			menu.trigger_commands("desyncall on")
-			menu.trigger_command(BlockIncSyncs)
-			menu.trigger_command(BlockNetEvents)
-			menu.trigger_commands("anticrashcamera on")
-		else
-			menu.trigger_commands("desyncall off")
-			menu.trigger_command(UnblockIncSyncs)
-			menu.trigger_command(UnblockNetEvents)
-			menu.trigger_commands("anticrashcamera off")
-		end
-	end)
-
-	spams = menu.list(menu.my_root(), "Chat Spammers", {}, "", function(); end)
-	menu.divider(spams, "Chat Spammers")
-
-	helpcommands = menu.list(spams, "Help Commands", {}, "Command: helpcommands", function(); end)
-
-menu.action(helpcommands, "Help Commands", {"helpcommands"}, "", function()
-    chat.send_message(
-        "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(helpcommands, "Help Commands", {"helpcommand"}, "", function(on_toggle)
-    chat.send_message(
-        "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-menu.toggle_loop(helpcommands, "Type Help Commands", {"typehelpcommand"}, "", function(on_toggle)
-    chat.send_message(
-        "Type /helpcommands for help",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	carhelpa = menu.list(spams, "Gift Car A", {}, "Command: carhelpa", function(); end)
-
-menu.action(carhelpa, "Gift Car A", {"carhelpa"}, "", function()
-    chat.send_message(
-        "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(carhelpa, "Gift Car A", {"carhelpa"}, "", function(on_toggle)
-    chat.send_message(
-        "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	carhelpb = menu.list(spams, "Gift Car B", {}, "Command: carhelpb", function(); end)
-
-menu.action(carhelpb, "Gift Car B", {"carhelpb"}, "", function()
-    chat.send_message(
-        "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(carhelpb, "Gift Car B", {"carhelpb"}, "", function(on_toggle)
-    chat.send_message(
-        "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	carhelpc = menu.list(spams, "Gift Car C", {}, "Command: carhelpc", function(); end)
-
-menu.action(carhelpc, "Gift Car C", {"carhelpc"}, "", function()
-    chat.send_message(
-        "Repete first steps to do it again",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(carhelpc, "Gift Car C", {"carhelpc"}, "", function(on_toggle)
-    chat.send_message(
-        "Repete first steps to do it again",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	help1 = menu.list(spams, "Commands A", {}, "Command: help1", function(); end)
-
-menu.action(help1, "Commands A", {"help1"}, "", function()
-    chat.send_message(
-        "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
-    chat.send_message(
-        "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	help2 = menu.list(spams, "Commands B", {}, "Command: help2", function(); end)
-
-menu.action(help2, "Commands B", {"help2"}, "", function()
-    chat.send_message(
-        "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(help2, "Commands B", {}, "", function(on_toggle)
-    chat.send_message(
-        "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	help3 = menu.list(spams, "Commands C", {}, "Command: help3", function(); end)
-
-menu.action(help3, "Commands C", {"help3"}, "", function()
-    chat.send_message(
-        "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(help3, "Commands C", {}, "", function(on_toggle)
-    chat.send_message(
-        "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	help4 = menu.list(spams, "Commands D", {}, "Command: help4", function(); end)
-
-menu.action(help4, "Commands D", {"help4"}, "", function()
-    chat.send_message(
-        "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(help4, "Commands D", {}, "", function(on_toggle)
-    chat.send_message(
-        "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	help5 = menu.list(spams, "Commands E", {}, "Command: help5", function(); end)
-
-menu.action(help5, "Commands E", {"help5"}, "", function()
-    chat.send_message(
-        "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(help5, "Commands E", {}, "", function(on_toggle)
-    chat.send_message(
-        "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-
-	casinohelp1 = menu.list(spams, "Roulette Method", {}, "Command: casinohelp1", function(); end)
-
-menu.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
-    chat.send_message(
-        "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(casinohelp1, "Roulette Method", {"togglecasinohelp1"}, "", function(on_toggle)
-    chat.send_message(
-        "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	casinohelp2 = menu.list(spams, "Blackjack Method", {}, "Command: casinohelp2", function(); end)
-
-menu.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
-    chat.send_message(
-        "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(casinohelp2, "Blackjack Method", {"togglecasinohelp2"}, "", function(on_toggle)
-    chat.send_message(
-        "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	whatmenu = menu.list(spams, "What Menu Do I Use?", {}, "Command: whatmenu", function(); end)
-
-menu.action(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function()
-    chat.send_message(
-        "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function(on_toggle)
-    chat.send_message(
-        "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(150000)
-end)
-
-	imfuckinggod = menu.list(spams, "I'm Fucking God", {}, "Command: imfuckinggod", function(); end)
-
-menu.action(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function()
-    chat.send_message(
-        "I'M FUCKING GOD!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function(on_toggle)
-    chat.send_message(
-        "I'M FUCKING GOD!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end)
-
-	reportme = menu.list(spams, "Report Me", {}, "Command: reportme", function(); end)
-
-menu.action(reportme, "Report Me", {"reportme"}, "", function()
-    chat.send_message(
-        "REPORT ME!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(reportme, "Report Me", {"reportme"}, "", function(on_toggle)
-    chat.send_message(
-        "REPORT ME!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end)
-
-	ilovezelensky = menu.list(spams, "I <3 ZELEN", {}, "Command: ilovezelensky", function(); end)
-
-menu.action(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function()
-    chat.send_message(
-        "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function(on_toggle)
-    chat.send_message(
-        "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end)
-
-	iloveputin = menu.list(spams, "I <3 PUTIN", {}, "Command: iloveputin", function(); end)
-
-menu.action(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function()
-    chat.send_message(
-        "I <3 PRESIDENT VOLODYMYR PUTIN",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function(on_toggle)
-    chat.send_message(
-        "I <3 PRESIDENT VOLODYMYR PUTIN",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end)
-
-	yuminwoman = menu.list(spams, "Yumin Woman", {}, "Command: yuminwoman", function(); end)
-
-menu.action(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function()
-    chat.send_message(
-        "Yumin woman! AUUUUUUUUUGGHH!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function(on_toggle)
-    chat.send_message(
-        "Yumin woman! AUUUUUUUUUGGHH!!!",
-        false, -- in team chat
-        true, -- add to local history
-        true  -- networked
-        )
-    util.yield(50)
-end)
-----------------------Fun Shit-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ------------------------------------
 --Nuke
 ------------------------------------
@@ -6540,11 +6429,9 @@ OBJgun = menu.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the mod
     end
 end)
 
-
-
-menu.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
-    obj.expl =  on
-  end)
+    menu.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
+        obj.expl =  on
+    end)
 
 
   menu.text_input(objgun, 'Custom Model Gun', {'customgun'}, 'Enter the model name of a model to change the object you shoot example "prop_keg_01"', function(cusobj)
@@ -6567,7 +6454,6 @@ menu.action(objgun, "Clear All", {"clearshit"}, "", function()
 end)
 
 menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
-
 
 -------------------------------------
 -- Drive UFO
@@ -6898,7 +6784,7 @@ end)
             end
         end)
         
-        menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 2, -1, 1, function(seatnumber)
+        menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 7, -1, 1, function(seatnumber)
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
             local vehicle = entities.get_user_vehicle_as_handle()
             PED.SET_PED_INTO_VEHICLE(ped, vehicle, seatnumber)
@@ -7292,6 +7178,37 @@ end)
 
 menu.slider(funfun, "TP Forward", {"tpforward"}, "", 1, 100, 1, 1, function(s)
 tpf_units = s
+end)
+
+local obj = {expl = false}
+OBJgun = menu.toggle_loop(objgun, "Money Gun", {"moneygun"}, "Real Money Gun!", function ()
+   local hash = util.joaat("prop_money_bag_01")
+    Streament(hash)
+    if PLAYER.IS_PLAYER_FREE_AIMING(players.user()) and not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) then
+        local rot = CAM.GET_GAMEPLAY_CAM_ROT(0)
+        local camcoords = get_offset_from_camera(10)
+        if not ENTITY.DOES_ENTITY_EXIST(obj.prev) then
+            objams(hash, obj, camcoords)
+        else
+            SEC(obj.prev, camcoords.x, camcoords.y, camcoords.z, false, true, true, false)
+        end
+        ENTITY.SET_ENTITY_ROTATION(obj.prev, rot.x, rot.y, rot.z, 1, true)
+        
+    elseif ENTITY.DOES_ENTITY_EXIST(obj.prev) and not PLAYER.IS_PLAYER_FREE_AIMING(players.user()) then
+        entities.delete_by_handle(obj.prev)
+    end
+    if PED.IS_PED_SHOOTING(players.user_ped()) and not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) then
+        local camcoords = get_offset_from_camera(15)
+        objshots(hash, obj, camcoords)
+        local cash = MISC.GET_HASH_KEY("prop_money_bag_01")
+        STREAMING.REQUEST_MODEL(cash)
+        if STREAMING.HAS_MODEL_LOADED(cash) == false then  
+            STREAMING.REQUEST_MODEL(cash)
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(1704231442, camcoords.x, camcoords.y, camcoords.z, 0, 2000, cash, false, true)
+        entities.delete_by_handle(obj.prev)
+        util.yield(20)
+    end
 end)
 
 end
@@ -13938,7 +13855,7 @@ menu.toggle_loop(drops, "Drop Cash Loop", {"cashloop"}, "No errors, 3600ms cash 
     end
     OBJECT.CREATE_AMBIENT_PICKUP(1704231442, coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
     --OBJECT.CREATE_MONEY_PICKUPS(coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
-    util.toast("Cash Dropping " .. players.get_name(pid))
+    util.toast("Cash Dropping To" .. players.get_name(pid))
     util.yield(3600)
 end)
 
@@ -13952,7 +13869,7 @@ menu.toggle_loop(drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with e
     end
     OBJECT.CREATE_AMBIENT_PICKUP(1704231442, coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
     --OBJECT.CREATE_MONEY_PICKUPS(coords.x, coords.y, coords.z, 0, 2000, cash, false, true)
-    util.toast("Cash Dropping " .. players.get_name(pid))
+    util.toast("Cash Dropping To" .. players.get_name(pid))
     util.yield()
 end)
 
@@ -14461,19 +14378,6 @@ function attach_ladder(hash, aY, aZ, a_, b0, b1, b2, b3, pid)
     attach = attach + 1
 end
 
---         _____ ________________ ________  _   __
---        / ___// ____/ ___/ ___//  _/ __ \/ | / /
---        \__ \/ __/  \__ \\__ \ / // / / /  |/ / 
---       ___/ / /___ ___/ /__/ // // /_/ / /|  /  
---      /____/_____//____/____/___/\____/_/ |_/   
-
---         __________  ___   _____ __  __
---        / ____/ __ \/   | / ___// / / /
---       / /   / /_/ / /| | \__ \/ /_/ /
---      / /___/ _, _/ ___ |___/ / __  /
---      \____/_/ |_/_/  |_/____/_/ /_/   
-
-
 function RqModel(hash)
     STREAMING.REQUEST_MODEL(hash)
     local count = 0
@@ -14501,7 +14405,113 @@ local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {}, "From Nightfall
 local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
 local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
 local standcrash = menu.list(crash, "Stand Crash Loops", {}, "")
+--         _____ ________________ ________  _   __
+--        / ___// ____/ ___/ ___//  _/ __ \/ | / /
+--        \__ \/ __/  \__ \\__ \ / // / / /  |/ / 
+--       ___/ / /___ ___/ /__/ // // /_/ / /|  /  
+--      /____/_____//____/____/___/\____/_/ |_/   
 
+--         __________  ___   _____ __  __
+--        / ____/ __ \/   | / ___// / / /
+--       / /   / /_/ / /| | \__ \/ /_/ /
+--      / /___/ _, _/ ___ |___/ / __  /
+--      \____/_/ |_/_/  |_/____/_/ /_/   
+
+local function RequestModel(Hash, timeout)
+    STREAMING.REQUEST_MODEL(Hash)
+    local time = util.current_time_millis() + (timeout or 1000)
+    while time > util.current_time_millis() and not STREAMING.HAS_MODEL_LOADED(Hash) do
+        util.yield()
+    end
+    return STREAMING.HAS_MODEL_LOADED(Hash)
+end
+local function ClearEntities(list)
+    for _, entity in pairs(list) do
+        if ENTITY.DOES_ENTITY_EXIST(entity) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
+            RequestControlOfEnt(entity)
+            entities.delete_by_handle(entity)
+        end
+    end
+end
+local function CreateObject(Hash, Pos, static)
+    RequestModel(Hash)
+    local Object = entities.create_object(Hash, Pos)
+    ENTITY.FREEZE_ENTITY_POSITION(Object, (static or false))
+    return Object
+end
+
+    local selecteddildo = 3831526183
+    local all_dildos = {
+                    3831526183,
+                    3563705146,
+                    2314354252,
+                    2009373169,
+                    2373371221,
+                    1333481871,
+                    3872089630
+                    } 
+
+    local dildo_names = {
+                    "v_res_d_dildo_a",
+                    "v_res_d_dildo_b",
+                    "v_res_d_dildo_c",
+                    "v_res_d_dildo_d",
+                    "v_res_d_dildo_e",
+                    "v_res_d_dildo_f",
+                    "prop_cs_dildo_01"
+                    }
+                    
+    local amount = 200
+    local delay = 100
+
+    menu.slider(SexCrashes, "Spawn Amount", {"spawnammount"}, "", 0, 2500, amount, 50, function(val)
+        amount = val
+    end)
+
+    menu.slider(SexCrashes, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
+        delay = val
+    end)
+
+    menu.list_select(SexCrashes, "Dildos Model", {"dildomodel"}, "", dildo_names, 1, function(val)
+        selecteddildo = all_dildos[val]
+    end)
+    
+    menu.toggle_loop(SexCrashes, "Rain Dildos", {"rainodildos"}, "", function()
+        local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
+        local myped = PLAYER.PLAYER_PED_ID()
+        local mypos = ENTITY.GET_ENTITY_COORDS(myped, true)
+        local objects = {}
+        for i = 1, amount do
+            if not players.exists(pid) then
+                break
+            end
+            ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
+            ppos.x = ppos.x + math.random(-1, 1)
+            ppos.y = ppos.y + math.random(-1, 1)
+            objects[#objects+1] = CreateObject(selecteddildo, ppos)
+            FIRE.ADD_EXPLOSION(ppos.x, ppos.y, ppos.z, 0, 1.0, false, true, 0.0, false)
+            util.yield(delay)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(selecteddildo)
+        if players.exists(pid) then
+            util.yield(2500)
+        end
+        ClearEntities(objects)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(myped, mypos.x, mypos.y, mypos.z, false, false, false)
+        util.yield(50)
+        local allobjs = entities.get_all_objects_as_handles()
+        for i, object in ipairs(allobjs) do
+            if ENTITY.GET_ENTITY_MODEL(object) == 3026082634 or ENTITY.GET_ENTITY_MODEL(object) == selecteddildo then
+                entities.delete_by_handle(object)
+            end
+        end
+        util.yield(50)
+        util.toast("[Dildo Rain] Finished.")
+    end)
+
+    menu.divider(SexCrashes, "_________________________________________")
 
 menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stood still if you think freezing wont work. Credits to Legy for idea.", function()
     menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
@@ -15029,6 +15039,7 @@ local all_objects = {
 3999634798
 
 } 
+
 
 local object_names = {
 
@@ -15864,6 +15875,7 @@ end)
 local trailColour = menu.colour(trailsOptions, "Colour", {"trailcolour"}, "", colour, false, function(newColour)
 colour = newColour end)
 menu.rainbow(trailColour)
+
 local crash_ents = {}
 local crash_toggle = false
 menu.toggle(TaskCrashes, "Window Clean Crash", {"wincleancrash"}, "It's risky to spectate using this but your call", function(val)
@@ -20059,6 +20071,68 @@ local interior_stuff = {0, 233985, 169473, 169729, 169985, 170241, 177665, 17740
 
 local self = menu.list(menu.my_root(), "Protections", {}, "")
 
+
+menu.divider(self, "Addict Protections")
+
+	
+menu.toggle(self, "Toggle Block all Network Events", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
+    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+    if on_toggle then
+        menu.trigger_command(BlockNetEvents)
+    else
+        menu.trigger_command(UnblockNetEvents)
+    end
+end)
+
+
+menu.toggle(self, "Toggle Block all Incoming Syncs", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
+    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>SyPanicncs>Incoming>Any Incoming Sync>Block>Disabled")
+    if on_toggle then
+        menu.trigger_command(BlockIncSyncs)
+    else
+        menu.trigger_command(UnblockIncSyncs)
+    end
+end)
+
+menu.toggle(self, "Toggle Block all Outgoing Syncs", {}, "This breaks the game, and other players will not receive any updates from your client", function(on_toggle)
+    if on_toggle then
+        menu.trigger_commands("desyncall on")
+    else
+        menu.trigger_commands("desyncall off")
+    end
+end)
+
+menu.toggle(self, "Toggle Anticrashcam", {"acc"}, "Put this here for redundancy", function(on_toggle)
+    if on_toggle then
+        menu.trigger_commands("anticrashcam on")
+        menu.trigger_commands("potatomode on")
+    else
+        menu.trigger_commands("anticrashcam off")
+        menu.trigger_commands("potatomode off")
+    end
+end)
+
+menu.toggle(self, "Toggle Panic Mode", {"panic"}, "Uses all of the above. This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
+    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+    if on_toggle then
+        menu.trigger_commands("desyncall on")
+        menu.trigger_command(BlockIncSyncs)
+        menu.trigger_command(BlockNetEvents)
+        menu.trigger_commands("anticrashcamera on")
+    else
+        menu.trigger_commands("desyncall off")
+        menu.trigger_command(UnblockIncSyncs)
+        menu.trigger_command(UnblockNetEvents)
+        menu.trigger_commands("anticrashcamera off")
+    end
+end)
+
+
 menu.toggle_loop(self, "Block Clones", {"blockclones"}, "Detects And Blocks Clones.", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
     if ENTITY.GET_ENTITY_MODEL(ped) == ENTITY.GET_ENTITY_MODEL(players.user_ped()) and not PED.IS_PED_A_PLAYER(ped) and not util.is_session_transition_active() then
@@ -20067,6 +20141,11 @@ menu.toggle_loop(self, "Block Clones", {"blockclones"}, "Detects And Blocks Clon
         util.yield(100)
         end
     end
+end)
+
+menu.toggle_loop(self, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
+    local car = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(PLAYER.PLAYER_PED_ID(pid), true))
+    NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
 end)
 
 menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is best for when joining people that are crashing as session. Stops your position being updated for other players and can even prevent other players from knowing that you're in the session if joining with this enabled.", function(on_toggle)
@@ -20836,13 +20915,6 @@ menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to deskt
     --end
 end)
 
-menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
-    MISC.RESTART_GAME("E574A662ACAEFBB1")
-    util.yield(3000)
-    menu.trigger_commands("ye")
-    menu.trigger_commands("yeet")
-end)
-
 menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
     local pick = math.random(6)
     if pick == 4 then 
@@ -20860,6 +20932,13 @@ menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
+    MISC.RESTART_GAME("E574A662ACAEFBB1")
+    util.yield(3000)
+    menu.trigger_commands("ye")
+    menu.trigger_commands("yeet")
+end)
 
 menu.action(menu.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
     util.restart_script()
