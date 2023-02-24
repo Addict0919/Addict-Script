@@ -1,13 +1,7 @@
-v8.6
+v8.9
 ________________________
-Added Rain Dildos - In Players>PLAYER>Crashes>Sex Crashes
-
-Added Money Gun - In Stand>Lua Scripts>Addict Script>Fun Shit>Weapon Shit>Custom Model Gun
-
-v8.7
-________________________
-Bug Fixes With Trails
-
-v8.8
-________________________
-Added new vehicle kick
+Added Bounty All - In Addict Script>Select Pussies
+Added Kick From Vehicle - In Addict Script>Select Pussies
+Added Kick From Interior - In Addict Script>Select Pussies
+Added Ceo Kick - In Addict Script>Select Pussies
+Added TP Players  To My Waypoint - In Addict Script>Select Pussies
