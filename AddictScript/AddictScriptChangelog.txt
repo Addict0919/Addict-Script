@@ -1,10 +1,4 @@
-v8.4
+v8.6
 ________________________
-Removed scenarios from animations
+Added Money Gun - In Stand>Lua Scripts>Addict Script>Fun Shit>Weapon Shit>Custom Model Gun
 
-Added Drop Cash
-________________________
-v8.5
-________________________
-Improved money drop speed for errors.
-Added Faster drops incase you don't care.
