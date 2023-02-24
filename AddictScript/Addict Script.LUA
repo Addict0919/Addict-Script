@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 8.6
+local local_menu_version = 8.7
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -7210,6 +7210,69 @@ OBJgun = menu.toggle_loop(objgun, "Money Gun", {"moneygun"}, "Real Money Gun!", 
         util.yield(20)
     end
 end)
+
+
+-------------------------------------
+-- TRAILS
+-------------------------------------
+
+local bones <const> = {
+	0x49D9,	-- left hand
+	0xDEAD,	-- right hand
+	0x3779,	-- left foot
+	0xCC4D	-- right foot
+}
+local colour = {r = 1.0, g = 0.0, b = 1.0, a = 1.0}
+local timer <const> = newTimer()
+local trailsOptions <const> = menu.list(funfun, "Trails", {}, "Working on a fix or this wil be removed soon.")
+local effect <const> = Effect.new("scr_rcpaparazzo1", "scr_mich4_firework_sparkle_spawn")
+local effects = {}
+
+--@param effects table
+local function removeFxs(effects)
+	for _, effect in ipairs(effects) do
+		GRAPHICS.STOP_PARTICLE_FX_LOOPED(effect, false)
+		GRAPHICS.REMOVE_PARTICLE_FX(effect, false)
+	end
+end
+
+menu.toggle_loop(trailsOptions, "Trails", {"trails"}, "", function ()
+	if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect.asset) then
+		STREAMING.REQUEST_NAMED_PTFX_ASSET(effect.asset)
+		return
+	end
+	if timer.elapsed() >= 1000 then
+		removeFxs(effects); effects = {}
+		timer.reset()
+	end
+	if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) then
+		local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
+		local minimum, maximum = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0), ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0) -- Origninal Code: local minimum, maximum = v3.new(), v3.new()
+		MISC.GET_MODEL_DIMENSIONS(ENTITY.GET_ENTITY_MODEL(vehicle), minimum, maximum)
+		local offsets <const> = {v3(minimum.x, minimum.y, 0.0), v3(maximum.x, minimum.y, 0.0)}
+		for _, offset in ipairs(offsets) do
+			GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+			local fx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY( effect.name, vehicle, offset.x, offset.y, offset.z, 0.0, 0.0, 0.0, 0.7, false, false, false, 0, 0, 0, 0)
+			GRAPHICS.SET_PARTICLE_FX_LOOPED_COLOUR(fx, colour.r, colour.g, colour.b, false)
+			table.insert(effects, fx)
+		end
+
+	elseif ENTITY.DOES_ENTITY_EXIST(players.user_ped()) then
+		for _, boneId in ipairs(bones) do
+			GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+			local bone = PED.GET_PED_BONE_INDEX(players.user_ped(), boneId)
+			local fx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effect.name, players.user_ped(), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, bone, 0.7, false, false, false, 0, 0, 0, 0)
+			GRAPHICS.SET_PARTICLE_FX_LOOPED_COLOUR(fx, colour.r, colour.g, colour.b, false)
+			table.insert(effects, fx)
+		end
+	end
+end, function ()
+	removeFxs(effects); effects = {}
+end)
+
+local trailColour = menu.colour(trailsOptions, "Colour", {"trailcolour"}, "", colour, false, function(newColour)
+colour = newColour end)
+menu.rainbow(trailColour)
 
 end
 drawScriptMenu()
@@ -15814,67 +15877,6 @@ menu.slider(TaskCrashes, "Number Of Window Cleans", {"nowincleans"}, "Sends Wind
 end)
 
 
--------------------------------------
--- TRAILS
--------------------------------------
-
-local bones <const> = {
-	0x49D9,	-- left hand
-	0xDEAD,	-- right hand
-	0x3779,	-- left foot
-	0xCC4D	-- right foot
-}
-local colour = {r = 1.0, g = 0.0, b = 1.0, a = 1.0}
-local timer <const> = newTimer()
-local trailsOptions <const> = menu.list(funfun, "Trails", {}, "Working on a fix or this wil be removed soon.")
-local effect <const> = Effect.new("scr_rcpaparazzo1", "scr_mich4_firework_sparkle_spawn")
-local effects = {}
-
---@param effects table
-local function removeFxs(effects)
-	for _, effect in ipairs(effects) do
-		GRAPHICS.STOP_PARTICLE_FX_LOOPED(effect, false)
-		GRAPHICS.REMOVE_PARTICLE_FX(effect, false)
-	end
-end
-
-menu.toggle_loop(trailsOptions, "Trails", {"trails"}, "", function ()
-	if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect.asset) then
-		STREAMING.REQUEST_NAMED_PTFX_ASSET(effect.asset)
-		return
-	end
-	if timer.elapsed() >= 1000 then
-		removeFxs(effects); effects = {}
-		timer.reset()
-	end
-	if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) then
-		local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
-		local minimum, maximum = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0), ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, 1, 0.0) -- Origninal Code: local minimum, maximum = v3.new(), v3.new()
-		MISC.GET_MODEL_DIMENSIONS(ENTITY.GET_ENTITY_MODEL(vehicle), minimum, maximum)
-		local offsets <const> = {v3(minimum.x, minimum.y, 0.0), v3(maximum.x, minimum.y, 0.0)}
-		for _, offset in ipairs(offsets) do
-			GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
-			local fx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY( effect.name, vehicle, offset.x, offset.y, offset.z, 0.0, 0.0, 0.0, 0.7, false, false, false, 0, 0, 0, 0)
-			GRAPHICS.SET_PARTICLE_FX_LOOPED_COLOUR(fx, colour.r, colour.g, colour.b, false)
-			table.insert(effects, fx)
-		end
-
-	elseif ENTITY.DOES_ENTITY_EXIST(players.user_ped()) then
-		for _, boneId in ipairs(bones) do
-			GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
-			local bone = PED.GET_PED_BONE_INDEX(players.user_ped(), boneId)
-			local fx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effect.name, players.user_ped(), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, bone, 0.7, false, false, false, 0, 0, 0, 0)
-			GRAPHICS.SET_PARTICLE_FX_LOOPED_COLOUR(fx, colour.r, colour.g, colour.b, false)
-			table.insert(effects, fx)
-		end
-	end
-end, function ()
-	removeFxs(effects); effects = {}
-end)
-
-local trailColour = menu.colour(trailsOptions, "Colour", {"trailcolour"}, "", colour, false, function(newColour)
-colour = newColour end)
-menu.rainbow(trailColour)
 
 local crash_ents = {}
 local crash_toggle = false
