@@ -1,7 +1,4 @@
-v8.9
+v9.0
 ________________________
-Added Bounty All - In Addict Script>Select Pussies
-Added Kick From Vehicle - In Addict Script>Select Pussies
-Added Kick From Interior - In Addict Script>Select Pussies
-Added Ceo Kick - In Addict Script>Select Pussies
-Added TP Players  To My Waypoint - In Addict Script>Select Pussies
+Updated name due to stand causing bugs if script is named "Addict Script"
+Added Auto Rocket Recharge In - Addict>Fun Shit>Driving Shit>
