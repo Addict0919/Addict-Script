@@ -1,4 +1,5 @@
 v9.0
 ________________________
 Updated name due to stand causing bugs if script is named "Addict Script"
+
 Added Auto Rocket Recharge In - Addict>Fun Shit>Driving Shit>
