@@ -3066,7 +3066,21 @@ function marqee(text)
 	return text .. temp:sub(1, 1)
 end
 
-function upgrade_vehicle(player) --now my funky functions are useless :'( since u can do menu.trigger_commands("upgrade") or some shit
+function addict_boost_speed(player)
+	local vehicle = get_player_veh(player,true)
+        if vehicle then
+		VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 9999999)
+	end
+end
+
+function normal_boost_speed(player)
+	local vehicle = get_player_veh(player,true)
+        if vehicle then
+		VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 100)
+	end
+end
+
+function upgrade_vehicle(player)
 	local vehicle = get_player_veh(player,true)
         if vehicle then
             DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
@@ -3091,6 +3105,43 @@ function upgrade_vehicle(player) --now my funky functions are useless :'( since 
             VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Addict")
 	end
 end
+
+function candy_paint(player)
+    menu.trigger_commands("perfwithspoiler")
+    menu.trigger_commands("vehprimaryred" .. " 80")
+    menu.trigger_commands("vehprimarygreen" .. " 0")
+    menu.trigger_commands("vehprimaryblue" .. " 255")
+    local Chrome_Paint_Primary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
+    util.yield(500)
+    menu.trigger_command(Chrome_Paint_Primary)
+    local Chrome_Paint_Secondary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
+    menu.trigger_commands("vehsecondaryred" .. " 80")
+    menu.trigger_commands("vehsecondarygreen" .. " 0")
+    menu.trigger_commands("vehsecondaryblue" .. " 255")
+    util.yield(500)
+    menu.trigger_command(Chrome_Paint_Secondary)
+    VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "xCandyx")
+end
+
+function upgrade_own_vehicle_random(player)
+        util.yield(1000)
+        menu.trigger_commands("tune")
+        menu.trigger_commands("vehprimaryred" .. " 80")
+        menu.trigger_commands("vehprimarygreen" .. " 0")
+        menu.trigger_commands("vehprimaryblue" .. " 255")
+        local Chrome_Paint_Primary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
+        util.yield(3000)
+        menu.trigger_command(Chrome_Paint_Primary)
+        local Chrome_Paint_Secondary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
+        menu.trigger_commands("vehsecondaryred" .. " 80")
+        menu.trigger_commands("vehsecondarygreen" .. " 0")
+        menu.trigger_commands("vehsecondaryblue" .. " 255")
+        util.yield(3000)
+        menu.trigger_command(Chrome_Paint_Secondary)
+        VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Addict")
+        util.toast("RC Bombs are now ready")
+        util.log("RC Bombs are now ready")
+	end
 
 
 function send_script_event(first_arg, receiver, args)
@@ -5850,19 +5901,6 @@ menu.toggle_loop(protex, "Anti-Beast", {}, "Prevents you from being turned into 
     end
 end)
 
-menu.toggle_loop(protex, "Block Transaction Error 'Test'", {}, "Likely to lead to errors, use under responsibility", function(on_toggle)
-    local TransactionError = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>Block")
-    local TransactionErrorV = menu.ref_by_path("Online>Protections>Events>Transaction Error Event>notification")
-    if on_toggle then
-        menu.trigger_command(TransactionError, "on")
-        menu.trigger_command(TransactionErrorV, "on")
-        for i = 1, 100 do
-            menu.trigger_commands("removeloader")
-        end
-        util.toast("It's not my fault the log error, wait for Stand to fix it")
-    end
-end)
-
 ----
 YOINK_PEDS = false
 YOINK_VEHICLES = false
@@ -6578,6 +6616,27 @@ function setup_choose_player_menu(rootMenu, menuList, callback, pid)
     end)
 end
 
+boostkeyboard = false
+function boostkeyboard(toggle)
+	if boostkeyboard then
+		while true do
+			local veh = entities.get_user_vehicle_as_handle()
+			if veh then
+				if PAD.IS_CONTROL_PRESSED(1, 61) then
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
+                    VEHICLE.SET_SCRIPT_ROCKET_BOOST_RECHARGE_TIME(veh, 0)
+                    VEHICLE.GET_HAS_ROCKET_BOOST(veh, true)
+                    VEHICLE.SET_ROCKET_BOOST_ACTIVE(veh, true)
+				else
+                    --
+				end
+			end        
+			util.yield()
+		end
+	end
+end
+
 boost = false
 function boost(toggle)
 	if boost then
@@ -6591,7 +6650,53 @@ function boost(toggle)
                     VEHICLE.GET_HAS_ROCKET_BOOST(veh, true)
                     VEHICLE.SET_ROCKET_BOOST_ACTIVE(veh, true)
 				else
-                    --
+                    boostkeyboard(true)
+				end
+			end        
+			util.yield()
+		end
+	end
+end
+
+rcbombkeyboard = false
+function rcbombkeyboard(toggle)
+	if rcbombkeyboard then
+		while true do
+			local vehs = entities.get_user_vehicle_as_handle()
+			if vehs then
+				if PAD.IS_CONTROL_PRESSED(0, 61) then
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(vehs, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(vehs, true)
+                    local p = PLAYER.PLAYER_PED_ID()
+                    local c = ENTITY.GET_ENTITY_COORDS(p)
+                    FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
+				else
+                    local p = PLAYER.PLAYER_PED_ID()
+                    local c = ENTITY.GET_ENTITY_COORDS(p)
+                    FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 0, false, false, 0)
+                    util.yield()
+                    menu.trigger_commands("fixvehicle")
+				end
+			end        
+			util.yield()
+		end
+	end
+end
+
+rcbomb = false
+function rcbomb(toggle)
+	if rcbomb then
+		while true do
+			local veh = entities.get_user_vehicle_as_handle()
+			if veh then
+				if PAD.IS_CONTROL_PRESSED(21, 21) then
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
+                    local p = PLAYER.PLAYER_PED_ID()
+                    local c = ENTITY.GET_ENTITY_COORDS(p)
+                    FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
+				else
+                    rcbombkeyboard(true)
 				end
 			end        
 			util.yield()
@@ -6647,7 +6752,7 @@ menu.action(autodrive, "Stop Driving", {"aistop"}, "", function(v)
     TASK.CLEAR_PED_TASKS(ped)
 end)
 
-menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using 'E' on you're keyboard or 'A' on controller.", function(on_toggle)
+menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number '8' on you're numberpad or 'A' on controller.", function(on_toggle)
     if on_toggle then
         boost(true)
     else
@@ -6657,50 +6762,76 @@ end)
 
         menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
-            local vehicleHash = util.joaat("hydra")
-            request_model(vehicleHash)
-            local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
-            ufo = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-            ENTITY.SET_ENTITY_VISIBLE(ufo, false, false)
-            ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
+                local vehicleHash = util.joaat("hydra")
+                request_model(vehicleHash)
+                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                ufo = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+                ENTITY.SET_ENTITY_VISIBLE(ufo, false, false)
+                ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), false, true)
 
-            VEHICLE.SET_VEHICLE_ENGINE_ON(ufo, true, true, true)
-            ENTITY.SET_ENTITY_INVINCIBLE(ufo, true)
-            VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(ufo, 0.0)
+                VEHICLE.SET_VEHICLE_ENGINE_ON(ufo, true, true, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(ufo, true)
+                VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(ufo, 0.0)
 
-------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
-            local id = get_closest_vehicle(entity)
-            local playerpos = ENTITY.GET_ENTITY_COORDS(id)
-            playerpos.z = playerpos.z + 3
-            local ufo_object = util.joaat("sum_prop_dufocore_01a")
-            STREAMING.REQUEST_MODEL(ufo_object)
-            while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
-                util.yield()
-            end
-            local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, ufo)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ufo, pos.x, pos.y, pos.z + 200, false, false, true)
-            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), ufo, -1)
-            ENTITY.SET_ENTITY_VISIBLE(object1, true)
-            menu.trigger_commands("otr" .. " on")
-            menu.trigger_commands("cameradistance" .. " 1.80")
-            DisablePhone()
-        else
-            ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
-            menu.trigger_commands("otr" .. " off")
-            menu.trigger_commands("cameradistance" .. " 1.00")
-            menu.trigger_commands("deleteveh")
-            for i, object in ipairs(entities.get_all_objects_as_handles()) do
-                if ENTITY.DOES_ENTITY_EXIST(object, util.joaat("sum_prop_dufocore_01a")) then
-                entities.delete_by_handle(object)
-                util.yield()
+    ------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+                local id = get_closest_vehicle(entity)
+                local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+                playerpos.z = playerpos.z + 3
+                local ufo_object = util.joaat("sum_prop_dufocore_01a")
+                STREAMING.REQUEST_MODEL(ufo_object)
+                while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+                    util.yield()
+                end
+                local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, ufo)
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(ufo, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ufo, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ufo, pos.x, pos.y, pos.z + 200, false, false, true)
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), ufo, -1)
+                ENTITY.SET_ENTITY_VISIBLE(object1, true)
+                menu.trigger_commands("otr" .. " on")
+                menu.trigger_commands("cameradistance" .. " 1.80")
+                DisablePhone()
+            else
+                ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
+                menu.trigger_commands("otr" .. " off")
+                menu.trigger_commands("cameradistance" .. " 1.00")
+                menu.trigger_commands("deleteveh")
+                for i, object in ipairs(entities.get_all_objects_as_handles()) do
+                    if ENTITY.DOES_ENTITY_EXIST(object, util.joaat("sum_prop_dufocore_01a")) then
+                    entities.delete_by_handle(object)
+                    util.yield()
+                    end
                 end
             end
-        end
-    end)
+        end)
+
+        menu.toggle(driveshit, "RC bandito bomber", {"rcbomber"}, "Drive rc bandito and explode unlimited times using number '8' on you're numberpad or toggle 'LEFT STICK' 'UP' on controller.", function(on_toggle)
+            if on_toggle then
+                local curcar = entities.get_user_vehicle_as_handle()
+                local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                local vehicleHash = util.joaat("rcbandito")
+                request_model(vehicleHash)
+                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                rcbandito = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), rcbandito, -1)
+                upgrade_own_vehicle_random(pid)
+                VEHICLE.SET_VEHICLE_ENGINE_ON(rcbandito, curcar, true, true, true)
+                ENTITY.SET_ENTITY_INVINCIBLE(rcbandito, curcar, true)
+                normal_boost_speed()
+                menu.trigger_commands("rc" .. " on")
+                menu.trigger_commands("otr" .. " on")
+                DisablePhone()
+                rcbomb(true)
+            else
+                menu.trigger_commands("otr" .. " off")
+                menu.trigger_commands("rc" .. " off")
+                menu.trigger_commands("deleteveh")
+                DisablePhone()
+                util.restart_script()
+            end
+        end)
     
         menu.toggle(driveshit, "Drive Cop Heli", {"copheli"}, "Plus bodygaurds.", function(on_toggle)
             if on_toggle then
@@ -6862,6 +6993,10 @@ end)
             if AUDIO.IS_HORN_ACTIVE(vehicle) then
                 ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 1.0, 0.0, true, true, true, true)
             end
+        end)
+
+        menu.action(driveshit, "Candy Paint Vehicle", {"candypaint"}, "", function()
+            candy_paint(true)
         end)
         
         menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 7, -1, 1, function(seatnumber)
@@ -8126,7 +8261,7 @@ end
         PlayerIsPointing = memory.read_int(memory.script_global(4521801 + 930)) == 3
     end
 
---[[
+    --[[
     chaosguns = menu.list(worldchaos, "Commanded Guns", {}, "", function(); end)
     
     local shotEntities = {}
@@ -8167,7 +8302,7 @@ end
             end
         end
     end)
-]]
+    ]]
 
 	menu.toggle(worldchaos, "World Destruction", {"worlddestruction"}, "", function(on)
 		if on then
@@ -8177,22 +8312,61 @@ end
 		end
 	end, false)
 
-    asteroids = false
-menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
-    if on then
-        asteroids = true
-        start_asteroid_shower()
-    else
         asteroids = false
-    end
-end, false)
+    menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
+        if on then
+            asteroids = true
+            start_asteroid_shower()
+        else
+            asteroids = false
+        end
+    end, false)
 
+    menu.toggle_loop(worldchaos, "Invisible Peds", {"invisiblepeds"}, "", function(on_toggle)
+        local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+        local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            all_peds = entities.get_all_peds_as_handles()
+        for k,ped in pairs(all_peds) do
+            if not PED.IS_PED_A_PLAYER(ped) then
+                if PED.IS_PED_IN_ANY_VEHICLE(ped, true) then
+                end
+                ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
+                util.yield(100)
+            end
+        end
+    end)
+
+	drift = false
+	menu.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
+		drift = on_toggle
+	end)
+
+    
 menu.toggle_loop(worldchaos, "Spinbot", {"spinbot"}, "", function()
     local vehicle = PED.GET_VEHICLE_PED_IS_USING(players.user_ped())
     local velocity = ENTITY.GET_ENTITY_VELOCITY(vehicle)
     local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(vehicle)
     if vehicle ~= 0 and not PED.IS_PED_DEAD_OR_DYING(players.user_ped()) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(vehicle) then
         ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+    end
+end)
+
+menu.toggle_loop(worldchaos,"Glitch Nearby Vehicles", {"glitchall"}, "", function()
+    for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
+        local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
+        if not PED.IS_PED_A_PLAYER(PedInSeat) then
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+            local velocity = ENTITY.GET_ENTITY_VELOCITY(veh)
+            local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(veh)
+            if veh ~= 0 and not PED.IS_PED_DEAD_OR_DYING(PedInSeat, veh) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(PedInSeat, veh) then
+                ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+                cam_pos = CAM.GET_GAMEPLAY_CAM_ROT(0)
+                cam_pos.x = cam_pos.x + math.random(-20,20)
+                cam_pos.y = cam_pos.y + math.random(-20,20)
+                cam_pos.z = cam_pos.z + math.random(-20,20)
+                ENTITY.SET_ENTITY_ROTATION(veh, cam_pos.x, cam_pos.y, cam_pos.z, 1, true);
+            end
+        end
     end
 end)
 
@@ -8218,31 +8392,27 @@ menu.toggle_loop(worldchaos,"Bounce Nearby Vehicles", {"bounceall"}, "", functio
             local velocity = ENTITY.GET_ENTITY_VELOCITY(veh)
             local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(veh)
             if veh ~= 0 and not PED.IS_PED_DEAD_OR_DYING(PedInSeat, veh) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(PedInSeat, veh) then
-                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, 0, 0, 4, true, false, true)
-                util.yield(1000)
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, 0, 0, 10, true, false, true)
+                util.yield(250)
             end
         end
     end
 end)
 
-menu.toggle_loop(worldchaos, "Invisible Peds", {"invisiblepeds"}, "", function(on_toggle)
-    local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-    local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-        all_peds = entities.get_all_peds_as_handles()
-    for k,ped in pairs(all_peds) do
-        if not PED.IS_PED_A_PLAYER(ped) then
-            if PED.IS_PED_IN_ANY_VEHICLE(ped, true) then
+menu.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "", function()
+    for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
+        local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+        if not PED.IS_PED_A_PLAYER(PedInSeat) then
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+            local velocity = ENTITY.GET_ENTITY_VELOCITY(veh)
+            local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(veh)
+            if veh ~= 0 and not PED.IS_PED_DEAD_OR_DYING(PedInSeat, veh) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(PedInSeat, veh) then
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, 0, 0, 100, true, false, true)
+                util.yield(10)
             end
-            ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
-            util.yield(100)
         end
     end
 end)
-
-	drift = false
-	menu.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
-		drift = on_toggle
-	end)
 
 	local dont_stop = false
 	menu.toggle_loop(worldchaos,"Vehicle Fly Nearby vehicles", {"vehflyall"}, "basically 'impulse like sport mode' but applied to every vehicle", function()
@@ -10624,15 +10794,23 @@ local gunner_weapon_lists = { --these are the Army's gunner weapons
 
 lazer_entities = {}
 
-function spawn_lazer(pid, gunner_weapon, collision)
+local amount = 45
+
+local lazer_options = menu.list(Attackers_trollys, "Army Attack", {}, "")
+
+menu.divider(lazer_options, "Army Attack")
+
+menu.slider(lazer_options, "Spawn Ped Amount", {"spawnpedammount"}, "", 1, 45, amount, 1, function(val)
+    amount = val
+end)
+
+function spawn_attack(pid, gunner_weapon, collision)
     local player_peds =  PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(player_peds)
     pos.x = pos.x + math.random(-20, 20)
     pos.y = pos.y + math.random(-20, 20)
     pos.z = pos.z + math.random(20, 40)
-
     PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_peds, util.joaat("PLAYER"))
-
     local lazer_hash = util.joaat("lazer")
     local ped_hash = util.joaat("S_M_Y_ArmyMech_01")
     STREAMING.REQUEST_MODEL(ped_hash)
@@ -10642,7 +10820,6 @@ function spawn_lazer(pid, gunner_weapon, collision)
     end
     local lazer = entities.create_vehicle(lazer_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
     lazer_entities[#lazer_entities + 1] = lazer
-    
     ENTITY.SET_ENTITY_INVINCIBLE(lazer, lazer_godmode)
     ENTITY.SET_ENTITY_VISIBLE(lazer, lazer_visible, 0)	
     VEHICLE.SET_VEHICLE_ENGINE_ON(lazer, true, true, true)
@@ -10650,20 +10827,17 @@ function spawn_lazer(pid, gunner_weapon, collision)
     VEHICLE.CONTROL_LANDING_GEAR(lazer, 3)    
     local pilots = entities.create_ped(5, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
     lazer_entities[#lazer_entities + 1] = pilots
-    
     PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilots, util.joaat("ARMY"))
     ENTITY.SET_ENTITY_VISIBLE(pilots, lazer_visible, 0)
     PED.SET_PED_INTO_VEHICLE(pilots, lazer, -1)
     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilots, true)
-
     PED.SET_PED_MAX_HEALTH(pilots, 500)
     ENTITY.SET_ENTITY_HEALTH(pilots, 500)
     ENTITY.SET_ENTITY_INVINCIBLE(pilots, lazer_godmode)
     TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(pilots, 500, 0)
-
     local gunners = {}
-    for i  = 1, 45 do
-        gunners[i] = entities.create_ped(29, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+    for i  = 1, amount do
+        gunners[#gunners+1] = entities.create_ped(29, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
         lazer_entities[#lazer_entities + 1] = gunners[i]
         PED.SET_PED_INTO_VEHICLE(gunners[i], lazer, i)
         WEAPON.GIVE_WEAPON_TO_PED(gunners[i], util.joaat(gunner_weapon) , 9999, false, true)
@@ -10677,25 +10851,19 @@ function spawn_lazer(pid, gunner_weapon, collision)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(gunners[i], util.joaat("ARMY"))
         TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(gunners[i], 1000, 0)
     end
-    
     util.create_tick_handler(function()
         PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("ARMY"), util.joaat("PLAYER"))
         PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("PLAYER"), util.joaat("ARMY"))
         PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
     end)
-
     return pilot, lazer
     end	
-
-    local lazer_options = menu.list(Attackers_trollys, "Army Attack", {}, "")
-
-    menu.divider(lazer_options, "Army Attack")
 
     lazer_visible = true
     local gunner_weapons = "weapon_combatmg"
 
 menu.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
-    local pilot, lazer = spawn_lazer(pid, gunner_weapons, collision)
+    local pilot, lazer = spawn_attack(pid, gunner_weapons, collision)
     menu.trigger_commands("sendtank " .. players.get_name(pid))
     menu.trigger_commands("sendbuzzard " .. players.get_name(pid))
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -10710,7 +10878,6 @@ menu.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
         util.yield()
     end
 end)
-
 
 menu.divider(lazer_options, "Settings")
 
@@ -20379,50 +20546,6 @@ menu.toggle_loop(self, "Remove Stickys From Car", {"removestickys"}, "", functio
     NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
 end)
 
-menu.toggle(self, "Join Player's Crash Protections", {"joinprotect"}, "This is best for when joining people that are crashing as session. Stops your position being updated for other players and can even prevent other players from knowing that you're in the session if joining with this enabled.", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Enabled")
-    local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Disabled")
-    local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    if on_toggle then
-        menu.trigger_commands("anticrashcamera")
-        menu.trigger_commands("desyncall")
-        menu.trigger_commands("fpsnsboost")
-        menu.trigger_command(BlockIncSyncs)
-        menu.trigger_command(BlockNetEvents)
-        menu.trigger_command(ShowNotis)
-        menu.trigger_command(BlockRaw)
-        util.toast("Activated, now enter your session and prepare the kick/crash.")
-        util.yield(100)
-    else
-        menu.trigger_commands("anticrashcamera")
-        menu.trigger_commands("desyncall")
-        menu.trigger_commands("fpsnsboost")
-        menu.trigger_command(UnblockIncSyncs)
-        menu.trigger_command(UnblockNetEvents)
-        menu.trigger_command(UnShowNotis)
-        menu.trigger_command(UnBlockRaw)
-        util.toast("Done, all off")
-        util.yield(100)
-        end
-    end)
-
-    menu.toggle(self, "Hide RAW notifications", {"hiderawnotifs"}, "", function(on_toggle)
-        local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Enabled")
-        local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Disabled")
-        if on_toggle then
-            menu.trigger_command(UnShowNotis)
-			menu.trigger_commands("clearnotifs")
-            util.yield(100)
-        else
-            menu.trigger_command(ShowNotis)
-            end
-        end)
-
 local values = {
     [0] = 0,
     [1] = 50,
@@ -21952,31 +22075,6 @@ menu.toggle_loop(protex, "Auto Enter", {"autoenter"}, "Automatically hits enter.
     util.yield(100)
 end)
 
-menu.toggle(protex, "Rejoin Failed Joins", {"rejoinfail"}, "Joins previously failed transitions, Joins previously failed sessions but if failed will join new public.", function(state)
-    local message_hash = HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
-    local my_player_id = players.user_ped()
-    local playerstatus = {0, 1} -- This tells the player status, 0 for story mode and 1 for online mode.
-    local message_hashes = {15890625, -398982408, -587688989} 
-    if state then
-        if message_hash == message_hashes then
-            PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
-            util.yield(200)
-        end
-
-        if my_player_id == playerstatus then
-            NETWORK.NETWORK_JOIN_PREVIOUSLY_FAILED_TRANSITION(0, true)
-            NETWORK.NETWORK_JOIN_PREVIOUSLY_FAILED_SESSION(0, true)
-
-            wait_session_transition()
-            util.toast("Rejoining :)")
-            menu.trigger_commands("rejoin ")
-        else
-            util.toast("Failed to join :/")
-            menu.trigger_commands("go newpublic")
-        end
-    end
-end)
-
 players.dispatch_on_join()
 
 menu.toggle(protex, "Stand User Identification", {}, "Identifies other Stand users but also allows them to identify you.", function(on_toggle)
@@ -23298,13 +23396,14 @@ end
 		menu.trigger_commands("weather" .. " extrasunny")
 		menu.trigger_commands("clouds" .. " clear01")
 		menu.trigger_commands("time" .. " 6")
-		menu.trigger_commands("superc")
+		menu.trigger_commands("supercloop")
         menu.trigger_commands("potatomode ")
         menu.trigger_commands("nosky ")
         menu.trigger_commands("noidlecam ")
 	else
 		menu.trigger_commands("weather" .. " normal")
 		menu.trigger_commands("clouds" .. " normal")
+        menu.trigger_commands("supercloop")
         menu.trigger_commands("potatomode ")
         menu.trigger_commands("nosky ")
         menu.trigger_commands("noidlecam ")
