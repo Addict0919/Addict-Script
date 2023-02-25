@@ -1,5 +1,9 @@
-v9.0
+v9.1
 ________________________
-Updated name due to stand causing bugs if script is named "Addict Script"
+Added number of army attacker peds - In Griefing>Attackers>Army Attack
 
-Added Auto Rocket Recharge In - Addict>Fun Shit>Driving Shit>
+Added Remote bandito bomber - In Driving shit
+
+Added Candy paint vehicle - In Driving shit
+
+Added Glitch nearby vehicles - In Chaos Shit
