@@ -7,3 +7,9 @@ Added Remote bandito bomber - In Driving shit
 Added Candy paint vehicle - In Driving shit
 
 Added Glitch nearby vehicles - In Chaos Shit
+________________________
+v9.2
+________________________
+Bug fixes
+Changed keybinds for auto rocket recharge
+Changed keybinds for RC bandito bomber
