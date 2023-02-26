@@ -1,13 +1,3 @@
-v9.1
-________________________
-Added number of army attacker peds - In Griefing>Attackers>Army Attack
-
-Added Remote bandito bomber - In Driving shit
-
-Added Candy paint vehicle - In Driving shit
-
-Added Glitch nearby vehicles - In Chaos Shit
-________________________
 v9.2
 ________________________
 Bug fixes
@@ -17,3 +7,7 @@ v9.3
 ________________________
 Added SE Crashes
 Added Bro Hug Crashes
+________________________
+v9.3
+________________________
+Added Ped Cash Loop In - Friendly>Addict Drops>Ped Cash Loop>Ped Cash Loop
