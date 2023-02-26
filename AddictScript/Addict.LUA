@@ -30,7 +30,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.3
+local local_menu_version = 9.4
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -13008,7 +13008,6 @@ end)
 
     
     local drops = menu.list(frienm, "Addict Drops", {}, "")
-    
 
     menu.action(drops, "Crazy Loop", {"crazyloop"}, "Gives cash, cards, rp and gives all collectibles. Might be risky but should be okay.", function()
         if pid ~= players.user() then
@@ -13198,7 +13197,31 @@ menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", fu
         end
 end)
 
-menu.toggle(drops, "Auto Casino Rig", {"autocasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
+
+local PedCash = menu.list(drops, "Ped Cash Loop", {}, "")
+
+menu.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash. Might be risky but should be okay.", function()
+        menu.trigger_commands("pedcashloops" .. players.get_name(pid))
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped cash. Might be risky but should be okay.", function()
+    menu.trigger_commands("toggletppeds" .. players.get_name(pid))
+    menu.trigger_commands("writherpeds" .. players.get_name(pid))
+    menu.trigger_commands("yoinkpickuploop" .. players.get_name(pid))
+    util.yield(500)
+    ent = entities.get_all_peds_as_handles()
+    if not PED.IS_PED_A_PLAYER(ent) then
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+    for k,ent in pairs(entities.get_all_peds_as_handles()) do
+        if not PED.IS_PED_A_PLAYER(ent) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+            end
+        end
+    end
+end)
+
+menu.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
     if on_toggle then
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
