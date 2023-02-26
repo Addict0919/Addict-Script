@@ -8,6 +8,6 @@ ________________________
 Added SE Crashes
 Added Bro Hug Crashes
 ________________________
-v9.3
+v9.4
 ________________________
 Added Ped Cash Loop In - Friendly>Addict Drops>Ped Cash Loop>Ped Cash Loop
