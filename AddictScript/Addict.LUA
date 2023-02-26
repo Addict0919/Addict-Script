@@ -30,7 +30,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.2
+local local_menu_version = 9.3
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -82,6 +82,7 @@ util.log("▒▒▒▒▒▒▒▒▒▒███████▒▒▒▒▒▒�
 util.log("▒▒▒▒▄▄▄██▒▒█▀█▀█▒▒██▄▄▄▒▒▒▒")
 util.log("▒▒▒▒▀▀██▒▒▒▒▒▒▒▒▒▒▒██▀▀▒▒▒▒")
 util.log("▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▀▀▒▒▒▒▒▒")
+util.log("Addict Script Loaded Successfully!")
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
@@ -3572,1137 +3573,6 @@ notification("Addict Script has been successfully loaded!", colors.green)
     -1217949151,
 }
 
-
-local Addictcrashes = {
--877478386,
--442313018,
--877478386,
-2099682835,
-69874647,
-924535804,
-1494472464,
--1991317864,
-1902624891,
-127278285,
--195247709,
--1322571352,
-704979198,
--1970125962,
-2112408256,
-677240627,
--2113023004,
--1704141512,
-962740265,
--1386010354,
-603406648,
--1715193475,
-1258808115,
-998716537,
-163598572,
--1056683619,
--393294520,
-153488394,
-1723452001,
-210491663,
--1780858740,
-277548576,
--1320260596,
--851196171,
-1293299354,
-903362384,
-243981125,
-1848973789,
--1503282114,
-202252150,
--189552513,
--1896924387,
-1491104200,
-1150803197,
-1808453742,
-75217734,
--1648825077,
-597922279,
--1016027275,
-890117219,
--635501849,
--1521203907,
--675325833,
-1846223309,
-1472117290,
--1054422861,
--73352157,
-1537221257,
--78017695,
-2018643992,
--352859634,
-1370240360,
-627052233,
--2000489950,
-2140301176,
-1926582096,
--1830143324,
--279342915,
-690534430,
--1833002148,
-315658550,
--1005623606,
--2022389047,
-1618779170,
--53130764,
--549542517
--1301508763,
--1413680798,
--1026386029,
-273726443,
-639116,
-1659915470,
-575344561,
--1906146218,
-829201205,
-299217086,
-1187364773,
-1358851648,
--859672259,
--1753084819,
--1500178943,
--863176541,
--397188359,
-1595854775,
-1933105669,
-624184651,
--1520160200,
--1005294040,
--1989758836,
--211878773,
--1318777899,
--178721456,
--325138340,
--2041535807,
--1881357102,
-701013663,
--903212623,
-1816012469,
--1587276086,
-1649958326,
-578058101,
--515495966,
--1235041639,
--396894108,
--1023783113,
-1679855368,
-1863892872,
--1208850730,
--302187166,
--1656474008,
-1230210137,
--1448333980,
--1074756845,
-1229338575,
--505735987,
-1257857900,
--1900695287,
--16213980,
-59352546,
-1795076373,
-134867878,
--1145943081,
--2076396337,
-1950208850,
--2103999464,
--1016625751,
--1095711893,
--971907474,
--1566668579,
-1713679709,
--2100809716,
-1033875141,
-45192266,
-1864582447,
--2014392362,
-808437855,
-447050477,
--1157285407,
--959790325,
--1717096076,
-1954846099,
-1964309656,
-1006166687,
--65296432,
--911081209,
-168919469,
-932894951,
--37068802,
-226676030,
--1773075874,
--1927914708,
--1945247369,
--46298284,
--1705137662,
--1842341008,
-212052693,
--1705411017,
--933507377,
--257834583,
--588744584,
-1186109081,
--639979452,
-2120864071,
-959824647,
-2005618868,
--868839127,
-1800830029,
--1825938840,
--1533887418,
-1643877404,
-712678541,
--2017818728,
-1266208560,
--1529925410,
-987018372,
--1891495479,
--1959541747,
--1870308609,
--1785748887,
-458875017,
-27785517,
-662343702,
--978812630,
-1990909018,
--1484351810,
--1372589624,
-1210543720,
-1764386440,
--1190123899,
-384219567,
--810334939,
--1187407749,
-254526911,
--1924022050,
--979549154,
--544908807,
-675377079,
-678368510,
-2108029684,
-399742549,
-1622386523,
--1999269016,
--126133365,
--1639153173,
-1384138535,
--1794395648,
-1734770887,
--1649341354,
--1819246032,
--733604274,
--275229102,
-541344683,
--487303944,
-1735852781,
-241570528,
--654645351,
-486186480,
-1341149498,
-600486780,
-174461233,
--888636441,
--1532157118,
-1296795403,
-33277241,
-2120839242,
-1154988013,
-1209918357,
-1763836227,
-1249026189,
--283884309,
-1287299127,
-493604397,
--2043109205,
--988842806,
-1146815758,
-1519476362,
-1136772712,
--1723675897,
--390491000,
-23010443,
-641157117,
-1608876738,
--79150418,
-257478565,
-496476216,
-608132931,
--316948135,
--25619296,
--176858990,
--1605274399,
-1731962870,
--1277389265,
--181124995,
-1152266822,
--1855721397,
--151720011,
-1472357458,
-665468344,
--212308547,
-975723848,
--720653448,
-900985860,
-200339862,
--95026574,
-2049240389,
-917535648,
-1517002797,
-1126437067,
--421711998,
-1164760553,
--1428764848,
-161038699,
--137439024,
-997078653,
--384079069,
--1514001560,
--347755611,
-1767220965,
-2051313650,
--1489802466,
--247110509,
-469112443,
--149227625,
-316678593,
--1918817181,
-282406360,
-1433396036,
-696123127,
--877212109,
-770242759,
--796052439,
--19131151,
--169685950,
-1134927454,
-515799090,
-1132500638,
-1216017047,
-1836414206,
-490383602,
-1455421717,
--795567983,
-1355230914,
--341234598,
--525866785,
--419415284,
--1857108105,
--662216118,
-1098534904,
-649952111,
-1923828310,
-795867332,
-1305720168,
--1561004591,
-1463355688,
--2071141142,
-251577675,
--1836118977,
-1788162956,
--1479371259,
--1136752511,
--428995778,
-1119864805,
--699380547,
-1376436345,
-677429013,
--1758368969,
-1173618358,
--898207315,
-1287903621,
--1625031686,
-1873289193,
-1268963570,
--767611756,
--275700180,
-797978700,
--194543830,
--2063448951,
--299840140,
--504114839,
-1197757671,
-1490942189,
-1797631140,
-951147709,
--609583028,
-1824446546,
--771079131,
--1511043020,
--768666112,
-1298961960,
--760171613,
-43922647,
--1911026003,
-15745542,
--1147284669,
--299200920,
--2072214082,
--1568036440,
-1256866538,
--1382676328,
--1813981910,
--845729485,
--892744477,
-2092565704,
-1716640551,
-1005694063,
--1722256522,
--1144835269,
--1710776819,
-381894946,
--2086228364,
--1727818500,
--655898431,
-1889984715,
-1166958622,
--1912844061,
-897248694,
-69874647,
-924535804,
-1494472464,
--1991317864,
-1902624891,
-127278285,
--195247709,
--1322571352,
-704979198,
--1970125962,
-2112408256,
-677240627,
--2113023004,
--1704141512,
-962740265,
--1386010354,
-603406648,
--1715193475,
-1258808115,
-998716537,
-163598572,
--1056683619,
--393294520,
-153488394,
-1723452001,
-210491663,
--1780858740,
-277548576,
--1320260596,
--851196171,
-1293299354,
-903362384,
-243981125,
-1848973789,
--1503282114,
-202252150,
--189552513,
--1896924387,
-1491104200,
-1150803197,
-1808453742,
-75217734,
--1648825077,
-597922279,
--1016027275,
-890117219,
--635501849,
--1521203907,
--675325833,
-1846223309,
-1472117290,
--1054422861,
--73352157,
-1537221257,
--78017695,
-2018643992,
--352859634,
-1370240360,
-627052233,
--2000489950,
-2140301176,
-1926582096,
--1830143324,
--279342915,
-690534430,
--1833002148,
-315658550,
--1005623606,
--2022389047,
-1618779170,
--53130764,
--549542517
--1301508763,
--1413680798,
--1026386029,
-273726443,
-639116,
-1659915470,
-575344561,
--1906146218,
-829201205,
-299217086,
-1187364773,
-1358851648,
--859672259,
--1753084819,
--1500178943,
--863176541,
--397188359,
-1595854775,
-1933105669,
-624184651,
--1520160200,
--1005294040,
--1989758836,
--211878773,
--1318777899,
--178721456,
--325138340,
--2041535807,
--1881357102,
-701013663,
--903212623,
-1816012469,
--1587276086,
-1649958326,
-578058101,
--515495966,
--1235041639,
--396894108,
--1023783113,
-1679855368,
-1863892872,
--1208850730,
--302187166,
--1656474008,
-1230210137,
--1448333980,
--1074756845,
-1229338575,
--505735987,
-1257857900,
--1900695287,
--16213980,
-59352546,
-1795076373,
-134867878,
--1145943081,
--2076396337,
-1950208850,
--2103999464,
--1016625751,
--1095711893,
--971907474,
--1566668579,
-1713679709,
--2100809716,
-1033875141,
-45192266,
-1864582447,
--2014392362,
-808437855,
-447050477,
--1157285407,
--959790325,
--1717096076,
-1954846099,
-1964309656,
-1006166687,
--65296432,
--911081209,
-168919469,
-932894951,
--37068802,
-226676030,
--1773075874,
--1927914708,
--1945247369,
--46298284,
--1705137662,
--1842341008,
-212052693,
--1705411017,
--933507377,
--257834583,
--588744584,
-1186109081,
--639979452,
-2120864071,
-959824647,
-2005618868,
--868839127,
-1800830029,
--1825938840,
--1533887418,
-1643877404,
-712678541,
--2017818728,
-1266208560,
--1529925410,
-987018372,
--1891495479,
--1959541747,
--1870308609,
--1785748887,
-458875017,
-27785517,
-662343702,
--978812630,
-1990909018,
--1484351810,
--1372589624,
-1210543720,
-1764386440,
--1190123899,
-384219567,
--810334939,
--1187407749,
-254526911,
--1924022050,
--979549154,
--544908807,
-675377079,
-678368510,
-2108029684,
-399742549,
-1622386523,
--1999269016,
--126133365,
--1639153173,
-1384138535,
--1794395648,
-1734770887,
--1649341354,
--1819246032,
--733604274,
--275229102,
-541344683,
--487303944,
-1735852781,
-241570528,
--654645351,
-486186480,
-1341149498,
-600486780,
-174461233,
--888636441,
--1532157118,
-1296795403,
-33277241,
-2120839242,
-1154988013,
-1209918357,
-1763836227,
-1249026189,
--283884309,
-1287299127,
-493604397,
--2043109205,
--988842806,
-1146815758,
-1519476362,
-1136772712,
--1723675897,
--390491000,
-23010443,
-641157117,
-1608876738,
--79150418,
-257478565,
-496476216,
-608132931,
--316948135,
--25619296,
--176858990,
--1605274399,
-1731962870,
--1277389265,
--181124995,
-1152266822,
--1855721397,
--151720011,
-1472357458,
-665468344,
--212308547,
-975723848,
--720653448,
-900985860,
-200339862,
--95026574,
-2049240389,
-917535648,
-1517002797,
-1126437067,
--421711998,
-1164760553,
--1428764848,
-161038699,
--137439024,
-997078653,
--384079069,
--1514001560,
--347755611,
-1767220965,
-2051313650,
--1489802466,
--247110509,
-469112443,
--149227625,
-316678593,
--1918817181,
-282406360,
-1433396036,
-696123127,
--877212109,
-770242759,
--796052439,
--19131151,
--169685950,
-1134927454,
-515799090,
-1132500638,
-1216017047,
-1836414206,
-490383602,
-1455421717,
--795567983,
-1355230914,
--341234598,
--525866785,
--419415284,
--1857108105,
--662216118,
-1098534904,
-649952111,
-1923828310,
-795867332,
-1305720168,
--1561004591,
-1463355688,
--2071141142,
-251577675,
--1836118977,
-1788162956,
--1479371259,
--1136752511,
--428995778,
-1119864805,
--699380547,
-1376436345,
-677429013,
--1758368969,
-1173618358,
--898207315,
-1287903621,
--1625031686,
-1873289193,
-1268963570,
--767611756,
--275700180,
-797978700,
--194543830,
--2063448951,
--299840140,
--504114839,
-1197757671,
-1490942189,
-1797631140,
-951147709,
--609583028,
-1824446546,
--771079131,
--1511043020,
--768666112,
-1298961960,
--760171613,
-43922647,
--1911026003,
-15745542,
--1147284669,
--299200920,
--2072214082,
--1568036440,
-1256866538,
--1382676328,
--1813981910,
--845729485,
--892744477,
-2092565704,
-1716640551,
-1005694063,
--1722256522,
--1144835269,
--1710776819,
-381894946,
--2086228364,
--1727818500,
--655898431,
-1889984715,
-1166958622,
--1912844061,
-897248694,
-153488394,
-1723452001,
-210491663,
--1780858740,
-277548576,
--1320260596,
--851196171,
-1293299354,
-903362384,
-243981125,
-1848973789,
--1503282114,
-202252150,
--189552513,
--1896924387,
-1491104200,
-1150803197,
-1808453742,
-75217734,
--1648825077,
-597922279,
--1016027275,
-890117219,
--635501849,
--1521203907,
--675325833,
-1846223309,
-1472117290,
--1054422861,
--73352157,
-1537221257,
--78017695,
-2018643992,
--352859634,
-1370240360,
-627052233,
--2000489950,
-2140301176,
-1926582096,
--1830143324,
--279342915,
-690534430,
--1833002148,
-315658550,
--1005623606,
--2022389047,
-1618779170,
--53130764,
--549542517
--1301508763,
--1413680798,
--1026386029,
-273726443,
-639116,
-1659915470,
-575344561,
--1906146218,
-829201205,
-299217086,
-1187364773,
-1358851648,
--859672259,
--1753084819,
--1500178943,
--863176541,
--397188359,
-1595854775,
-1933105669,
-624184651,
--1520160200,
--1005294040,
--1989758836,
--211878773,
--1318777899,
--178721456,
--325138340,
--2041535807,
--1881357102,
-701013663,
--903212623,
-1816012469,
--1587276086,
-1649958326,
-578058101,
--515495966,
--1235041639,
--396894108,
--1023783113,
-1679855368,
-1863892872,
--1208850730,
--302187166,
--1656474008,
-1230210137,
--1448333980,
--1074756845,
-1229338575,
--505735987,
-1257857900,
--1900695287,
--16213980,
-59352546,
-1795076373,
-134867878,
--1145943081,
--2076396337,
-1950208850,
--2103999464,
--1016625751,
--1095711893,
--971907474,
--1566668579,
-1713679709,
--2100809716,
-1033875141,
-45192266,
-1864582447,
--2014392362,
-808437855,
-447050477,
--1157285407,
--959790325,
--1717096076,
-1954846099,
-1964309656,
-1006166687,
--65296432,
--911081209,
-168919469,
-932894951,
--37068802,
-226676030,
--1773075874,
--1927914708,
--1945247369,
--46298284,
--1705137662,
--1842341008,
-212052693,
--1705411017,
--933507377,
--257834583,
--588744584,
-1186109081,
--639979452,
-2120864071,
-959824647,
-2005618868,
--868839127,
-1800830029,
--1825938840,
--1533887418,
-1643877404,
-712678541,
--2017818728,
-1266208560,
--1529925410,
-987018372,
--1891495479,
--1959541747,
--1870308609,
--1785748887,
-458875017,
-27785517,
-662343702,
--978812630,
-1990909018,
--1484351810,
--1372589624,
-1210543720,
-1764386440,
--1190123899,
-384219567,
--810334939,
--1187407749,
-254526911,
--1924022050,
--979549154,
--544908807,
-675377079,
-678368510,
-2108029684,
-399742549,
-1622386523,
--1999269016,
--126133365,
--1639153173,
-1384138535,
--1794395648,
-1734770887,
--1649341354,
--1819246032,
--733604274,
--275229102,
-541344683,
--487303944,
-1735852781,
-241570528,
--654645351,
-486186480,
-1341149498,
-600486780,
-174461233,
--888636441,
--1532157118,
-1296795403,
-33277241,
-2120839242,
-1154988013,
-1209918357,
-1763836227,
-1249026189,
--283884309,
-1287299127,
-493604397,
--2043109205,
--988842806,
-1146815758,
-1519476362,
-1136772712,
--1723675897,
--390491000,
-23010443,
-641157117,
-1608876738,
--79150418,
-257478565,
-496476216,
-608132931,
--316948135,
--25619296,
--176858990,
--1605274399,
-1731962870,
--1277389265,
--181124995,
-1152266822,
--1855721397,
--151720011,
-1472357458,
-665468344,
--212308547,
-975723848,
--720653448,
-900985860,
-200339862,
--95026574,
-2049240389,
-917535648,
-1517002797,
-1126437067,
--421711998,
-1164760553,
--1428764848,
-161038699,
--137439024,
-997078653,
--384079069,
--1514001560,
--347755611,
-1767220965,
-2051313650,
--1489802466,
--247110509,
-469112443,
--149227625,
-316678593,
--1918817181,
-282406360,
-1433396036,
-696123127,
--877212109,
-770242759,
--796052439,
--19131151,
--169685950,
-1134927454,
-515799090,
-1132500638,
-1216017047,
-1836414206,
-490383602,
-1455421717,
--795567983,
-1355230914,
--341234598,
--525866785,
--419415284,
--1857108105,
--662216118,
-1098534904,
-649952111,
-1923828310,
-795867332,
-1305720168,
--1561004591,
-1463355688,
--2071141142,
-251577675,
--1836118977,
-1788162956,
--1479371259,
--1136752511,
--428995778,
-1119864805,
--699380547,
-1376436345,
-677429013,
--1758368969,
-1173618358,
--898207315,
-1287903621,
--1625031686,
-1873289193,
-1268963570,
--767611756,
--275700180,
-797978700,
--194543830,
--2063448951,
--299840140,
--504114839,
-1197757671,
-1490942189,
-1797631140,
-951147709,
--609583028,
-1824446546,
--771079131,
--1511043020,
--768666112,
-1298961960,
--760171613,
-43922647,
--1911026003,
-15745542,
--1147284669,
--299200920,
--2072214082,
--1568036440,
-1256866538,
--1382676328,
--1813981910,
--845729485,
--892744477,
-2092565704,
-1716640551,
-1005694063,
--1722256522,
--1144835269,
--1710776819,
-381894946,
--2086228364,
--1727818500,
--655898431,
-1889984715,
-1166958622,
--1912844061,
-897248694
-}
-
 array_kick = function(pid)
     for i, v in pairs(kicks) do
         arg1 = math.random(-2147483647, 2147483647)
@@ -4713,18 +3583,6 @@ array_kick = function(pid)
     end
     util.toast("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
     util.log("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
-end
-
-Addictcrashes = function(pid)
-    for i, v in pairs(kicks) do
-        arg1 = math.random(-2147483647, 2147483647)
-        arg2 = math.random(-1987543, 1987543)
-        arg3 = math.random(-19, 19)
-        util.trigger_script_event(1 << pid, {v, pid, arg1, arg3, arg2, arg2, arg1, arg1, arg3, arg3, arg1, arg3, arg2, arg3, arg1, arg1, arg2, arg3, arg1, arg2, arg2, arg3, arg3})
-        util.yield()
-    end
-    util.toast("Crashed " .. PLAYER.GET_PLAYER_NAME(pid))
-    util.log("Crashed " .. PLAYER.GET_PLAYER_NAME(pid))
 end
 
 local resolves = {
@@ -5868,7 +4726,6 @@ end)
 
 			ct = ct + 1
 		end
-		util.toast("Pooped all vehicles!")
 		for k,ent in pairs(entities.get_all_peds_as_handles()) do
 			if not PED.IS_PED_A_PLAYER(ent) then
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -5877,7 +4734,6 @@ end)
 			end
 			ct = ct + 1
 		end
-		util.toast("Shagged all peds AUUUUUGGH!!!")
 		for k,ent in pairs(entities.get_all_objects_as_handles()) do
 			if ent ~= PLAYER.PLAYER_PED_ID() then
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -5885,8 +4741,6 @@ end)
 				ct = ct + 1
 			end
 		end
-		util.toast("Gobbled all pickups nom nom!")
-		util.toast("Fucked Everything off " .. ct .. " Entities removed. :)")
 			for k,ent in pairs(entities.get_all_pickups_as_handles()) do
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
 				entities.delete_by_handle(ent)
@@ -14745,19 +13599,23 @@ function RqModel(hash)
     end
 end
 
-local lobbycrash = menu.list(crash, "Lobby Crashes", {}, "")
-local craftcrash = menu.list(crash, "Vehicle Choas Crashes", {}, "")
-local vehcrash = menu.list(crash, "Vehicle Crashes", {}, "")
+local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
+local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
+local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungus"}, "")
+local craftcrash = menu.list(crash, "Vehicle Choas Crashes", {"vehiclechaos"}, "")
+local vehcrash = menu.list(crash, "Vehicle Crashes", {"vehiclecrashes"}, "")
 local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
 local objectc = menu.list(crash, "Object Crashes", {"objectcrashes"}, "")
-local weedcrash = menu.list(crash, "Weed Crashes", {}, "")
-local bigyachtycrash = menu.list(crash, "Big Yatchy Crashes", {}, "")
-local poodlecrash = menu.list(crash, "Poodle Bomb Crashes", {}, "")
-local fragcrash = menu.list(crash, "Fragment Crashes", {}, "")
-local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {}, "From Nightfall")
+local weedcrash = menu.list(crash, "Weed Crashes", {"weedcrashes"}, "")
+local bigyachtycrash = menu.list(crash, "Big Yatchy Crashes", {"bigyatchycrashes"}, "")
+local poodlecrash = menu.list(crash, "Poodle Bomb Crashes", {"poodlecrashes"}, "")
+local fragcrash = menu.list(crash, "Fragment Crashes", {"fragmentcrashes"}, "")
+local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {"oxcrashes"}, "From Nightfall")
 local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
 local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
-local standcrash = menu.list(crash, "Stand Crash Loops", {}, "")
+local SECrashes = menu.list(crash, "SE Crashes", {"secrashes"}, "")
+local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
+
 --         _____ ________________ ________  _   __
 --        / ___// ____/ ___/ ___//  _/ __ \/ | / /
 --        \__ \/ __/  \__ \\__ \ / // / / /  |/ / 
@@ -14769,6 +13627,848 @@ local standcrash = menu.list(crash, "Stand Crash Loops", {}, "")
 --       / /   / /_/ / /| | \__ \/ /_/ /
 --      / /___/ _, _/ ___ |___/ / __  /
 --      \____/_/ |_/_/  |_/____/_/ /_/   
+
+
+menu.divider(BroHugCrashes, "Bro Hugs")
+menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modified it to be visible.", function(on)
+    local math_random = math.random
+    local joaat = util.joaat
+    util.yield(10)
+    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash2 = util.joaat("MP_F_Freemode_01")
+    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
+        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
+        util.yield(10)
+    end
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+    SpawnedPeds1 = {}
+    local ped_amount = math_random(7, 10)
+    for i = 1, ped_amount do
+        local pedtype = 0
+        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local coords = PlayerPedCoords
+        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        coords.x = coords.x
+        coords.y = coords.y
+        coords.z = coords.z
+        if loc1 == 1 then
+            coords.x = coords.x - math_random(1, 5)
+        else
+            coords.x = coords.x + math_random(1, 5)
+        end
+        if loc2 == 1 then
+            coords.y = coords.y - math_random(1, 5)
+        else
+            coords.y = coords.y + math_random(1, 5)
+        end
+        if loc3 == 1 then
+            coords.z = coords.z - math_random(3, 5)
+        else
+            coords.z = coords.z + math_random(3, 5)
+        end
+        if pedt == 1 then
+            pedtype = 0
+        else
+            pedtype = 3
+        end
+        SpawnedPeds2 = {}
+        local ped_amount = math_random(7, 10)
+        for i = 1, ped_amount do
+            local pedtype = 0
+            local coords = PlayerPedCoords
+            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            coords.x = coords.x
+            coords.y = coords.y
+            coords.z = coords.z
+            if loc1 == 1 then
+                coords.x = coords.x - math_random(1, 5)
+            else
+                coords.x = coords.x + math_random(1, 5)
+            end
+            if loc2 == 1 then
+                coords.y = coords.y - math_random(1, 5)
+            else
+                coords.y = coords.y + math_random(1, 5)
+            end
+            if loc3 == 1 then
+                coords.z = coords.z - math_random(3, 5)
+            else
+                coords.z = coords.z + math_random(3, 5)
+            end
+            if pedt == 1 then
+                pedtype = 0
+            else
+                pedtype = 3
+            end
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
+        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
+        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        util.yield(5)
+    end
+    for i = 1, ped_amount do
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        util.yield()
+        end
+        util.yield(10)
+        end
+        menu.trigger_commands("clean")
+        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+    end
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+
+menu.toggle_loop(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modified it to be visible.", function(on)
+    local math_random = math.random
+    local joaat = util.joaat
+    util.yield(10)
+    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash2 = util.joaat("MP_F_Freemode_01")
+    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
+        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
+        util.yield(10)
+    end
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+    SpawnedPeds1 = {}
+    local ped_amount = math_random(7, 10)
+    for i = 1, ped_amount do
+        local pedtype = 0
+        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local coords = PlayerPedCoords
+        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        coords.x = coords.x
+        coords.y = coords.y
+        coords.z = coords.z
+        if loc1 == 1 then
+            coords.x = coords.x - math_random(1, 5)
+        else
+            coords.x = coords.x + math_random(1, 5)
+        end
+        if loc2 == 1 then
+            coords.y = coords.y - math_random(1, 5)
+        else
+            coords.y = coords.y + math_random(1, 5)
+        end
+        if loc3 == 1 then
+            coords.z = coords.z - math_random(3, 5)
+        else
+            coords.z = coords.z + math_random(3, 5)
+        end
+        if pedt == 1 then
+            pedtype = 0
+        else
+            pedtype = 3
+        end
+        SpawnedPeds2 = {}
+        local ped_amount = math_random(7, 10)
+        for i = 1, ped_amount do
+            local pedtype = 0
+            local coords = PlayerPedCoords
+            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            coords.x = coords.x
+            coords.y = coords.y
+            coords.z = coords.z
+            if loc1 == 1 then
+                coords.x = coords.x - math_random(1, 5)
+            else
+                coords.x = coords.x + math_random(1, 5)
+            end
+            if loc2 == 1 then
+                coords.y = coords.y - math_random(1, 5)
+            else
+                coords.y = coords.y + math_random(1, 5)
+            end
+            if loc3 == 1 then
+                coords.z = coords.z - math_random(3, 5)
+            else
+                coords.z = coords.z + math_random(3, 5)
+            end
+            if pedt == 1 then
+                pedtype = 0
+            else
+                pedtype = 3
+            end
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
+        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
+        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        util.yield(5)
+    end
+    for i = 1, ped_amount do
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        util.yield()
+        end
+        util.yield(10)
+        end
+        menu.trigger_commands("clean")
+        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+    end
+end)
+
+menu.divider(BroHugCrashes, "Bro Hug V2's")
+
+menu.action(BroHugCrashes, "Bro Hug V2", {"brohugv2"}, "Logged from 2take1 and modified differently.", function(on)
+    local math_random = math.random
+    local joaat = util.joaat
+    util.yield(10)
+    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash2 = util.joaat("MP_F_Freemode_01")
+    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
+        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
+        util.yield(10)
+    end
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+    SpawnedPeds1 = {}
+    local ped_amount = math_random(7, 10)
+    for i = 1, ped_amount do
+        local pedtype = 0
+        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local coords = PlayerPedCoords
+        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        coords.x = coords.x
+        coords.y = coords.y
+        coords.z = coords.z
+        if loc1 == 1 then
+            coords.x = coords.x - math_random(1, 5)
+        else
+            coords.x = coords.x + math_random(1, 5)
+        end
+        if loc2 == 1 then
+            coords.y = coords.y - math_random(1, 5)
+        else
+            coords.y = coords.y + math_random(1, 5)
+        end
+        if loc3 == 1 then
+            coords.z = coords.z - math_random(3, 5)
+        else
+            coords.z = coords.z + math_random(3, 5)
+        end
+        if pedt == 1 then
+            pedtype = 0
+        else
+            pedtype = 3
+        end
+        SpawnedPeds2 = {}
+        local ped_amount = math_random(7, 10)
+        for i = 1, ped_amount do
+            local pedtype = 0
+            local coords = PlayerPedCoords
+            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            coords.x = coords.x
+            coords.y = coords.y
+            coords.z = coords.z
+            if loc1 == 1 then
+                coords.x = coords.x - math_random(1, 5)
+            else
+                coords.x = coords.x + math_random(1, 5)
+            end
+            if loc2 == 1 then
+                coords.y = coords.y - math_random(1, 5)
+            else
+                coords.y = coords.y + math_random(1, 5)
+            end
+            if loc3 == 1 then
+                coords.z = coords.z - math_random(3, 5)
+            else
+                coords.z = coords.z + math_random(3, 5)
+            end
+            if pedt == 1 then
+                pedtype = 0
+            else
+                pedtype = 3
+            end
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
+        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
+        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds1
+        repeat
+            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
+        until peds1 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds1, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds2
+        repeat
+            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
+        until peds2 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds2, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds3
+        repeat
+            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
+        until peds3 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds3, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        util.yield()
+    end
+    for i = 1, ped_amount do
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        util.yield()
+        end
+        util.yield()
+        end
+        menu.trigger_commands("clean")
+        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+    end
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+menu.toggle_loop(BroHugCrashes, "Bro Hug V2", {"brohugv2"}, "Logged from 2take1 and modified differently.", function(on)
+    local math_random = math.random
+    local joaat = util.joaat
+    util.yield(10)
+    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash2 = util.joaat("MP_F_Freemode_01")
+    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
+        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
+        util.yield(10)
+    end
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+    SpawnedPeds1 = {}
+    local ped_amount = math_random(7, 10)
+    for i = 1, ped_amount do
+        local pedtype = 0
+        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local coords = PlayerPedCoords
+        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        coords.x = coords.x
+        coords.y = coords.y
+        coords.z = coords.z
+        if loc1 == 1 then
+            coords.x = coords.x - math_random(1, 5)
+        else
+            coords.x = coords.x + math_random(1, 5)
+        end
+        if loc2 == 1 then
+            coords.y = coords.y - math_random(1, 5)
+        else
+            coords.y = coords.y + math_random(1, 5)
+        end
+        if loc3 == 1 then
+            coords.z = coords.z - math_random(3, 5)
+        else
+            coords.z = coords.z + math_random(3, 5)
+        end
+        if pedt == 1 then
+            pedtype = 0
+        else
+            pedtype = 3
+        end
+        SpawnedPeds2 = {}
+        local ped_amount = math_random(7, 10)
+        for i = 1, ped_amount do
+            local pedtype = 0
+            local coords = PlayerPedCoords
+            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            coords.x = coords.x
+            coords.y = coords.y
+            coords.z = coords.z
+            if loc1 == 1 then
+                coords.x = coords.x - math_random(1, 5)
+            else
+                coords.x = coords.x + math_random(1, 5)
+            end
+            if loc2 == 1 then
+                coords.y = coords.y - math_random(1, 5)
+            else
+                coords.y = coords.y + math_random(1, 5)
+            end
+            if loc3 == 1 then
+                coords.z = coords.z - math_random(3, 5)
+            else
+                coords.z = coords.z + math_random(3, 5)
+            end
+            if pedt == 1 then
+                pedtype = 0
+            else
+                pedtype = 3
+            end
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(1, 5)
+                else
+                    coords.x = coords.x + math_random(1, 5)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(1, 5)
+                else
+                    coords.y = coords.y + math_random(1, 5)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(3, 5)
+                else
+                    coords.z = coords.z + math_random(3, 5)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
+        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
+        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds1
+        repeat
+            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
+        until peds1 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds1, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds2
+        repeat
+            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
+        until peds2 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds2, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local peds3
+        repeat
+            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
+        until peds3 ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(peds3, true, true) 
+        util.yield(100)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        util.yield()
+    end
+    for i = 1, ped_amount do
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        util.yield()
+        end
+        util.yield()
+        end
+        menu.trigger_commands("clean")
+        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+    end
+end)
+
+menu.action(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+        local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+        local mdl = util.joaat("A_C_Cat_01")
+        local mdl2 = util.joaat("U_M_Y_Zombie_01")
+        local mdl3 = util.joaat("A_F_M_ProlHost_01")
+        local mdl4 = util.joaat("A_M_M_SouCent_01")
+        local veh_mdl = util.joaat("insurgent2")
+        local veh_mdl2 = util.joaat("brawler")
+        util.request_model(veh_mdl)
+        util.request_model(veh_mdl2)
+        util.request_model(mdl)
+        util.request_model(mdl2)
+        util.request_model(mdl3)
+        util.request_model(mdl4)
+        for i = 1, 250 do
+            local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
+            local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
+            local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
+            local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
+            local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
+            local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
+            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
+    
+            PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
+    
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+            util.yield(100)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
+            
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
+    
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
+    
+            ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
+            ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
+    
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
+            PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
+            PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
+            ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
+            ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
+            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
+        end
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
+        entities.delete_by_handle(mdl)
+        entities.delete_by_handle(mdl2)
+        entities.delete_by_handle(mdl3)
+        entities.delete_by_handle(mdl4)
+        entities.delete_by_handle(veh_mdl)
+        entities.delete_by_handle(veh_mdl2)
+        util.yield(1000)
+    end)
+
+menu.toggle(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+if on_toggle then
+    menu.trigger_commands("tploopon" .. players.get_name(pid))
+    menu.trigger_commands("anticrashcamera On")
+    menu.trigger_commands("invisibility On")
+    menu.trigger_commands("levitate On")
+    menu.trigger_commands("potatomode On")
+    menu.trigger_commands("nosky On")
+    menu.trigger_commands("reducedcollision On")
+    menu.trigger_commands("nocollision On")
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+    local mdl = util.joaat("A_C_Cat_01")
+    local mdl2 = util.joaat("U_M_Y_Zombie_01")
+    local mdl3 = util.joaat("A_F_M_ProlHost_01")
+    local mdl4 = util.joaat("A_M_M_SouCent_01")
+    local veh_mdl = util.joaat("insurgent2")
+    local veh_mdl2 = util.joaat("brawler")
+    util.request_model(veh_mdl)
+    util.request_model(veh_mdl2)
+    util.request_model(mdl)
+    util.request_model(mdl2)
+    util.request_model(mdl3)
+    util.request_model(mdl4)
+    for i = 1, 250 do
+        local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
+        local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
+        local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
+        local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
+        local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
+        local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
+        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
+
+        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
+        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
+
+        PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
+
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
+        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
+        util.yield(100)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
+        
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
+
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
+
+        ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
+        ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
+
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
+        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
+        PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
+        PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
+        ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
+        ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
+        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
+    end
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
+    entities.delete_by_handle(mdl)
+    entities.delete_by_handle(mdl2)
+    entities.delete_by_handle(mdl3)
+    entities.delete_by_handle(mdl4)
+    entities.delete_by_handle(veh_mdl)
+    entities.delete_by_handle(veh_mdl2)
+    util.yield(1000)
+else
+    menu.trigger_commands("tploopon" .. players.get_name(pid))
+    util.yield(100)
+    menu.trigger_commands("anticrashcamera Off")
+    menu.trigger_commands("tpmazehelipad")
+    menu.trigger_commands("invisibility Off")
+    menu.trigger_commands("levitate Off")
+    menu.trigger_commands("potatomode Off")
+    menu.trigger_commands("nosky Off")
+    menu.trigger_commands("reducedcollision Off")
+    menu.trigger_commands("nocollision Off")
+    end
+end)
 
 local function RequestModel(Hash, timeout)
     STREAMING.REQUEST_MODEL(Hash)
@@ -14896,6 +14596,45 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
     menu.trigger_commands("cancelanim")
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+menu.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from x-force.", function()
+    util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655}) -- Crash Event S1
+    util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
+    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0}) -- Modded Event S3
+    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 1, 0}) -- Modded Event S3
+    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 0, 0}) -- Modded Event S3
+    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 2, 0}) -- Modded Event S3
+    util.trigger_script_event(1 << pid, {891653640, 26770, 95398, 98426, -24591, 47901, -64814}) -- Crash Event S0
+    util.trigger_script_event(1 << pid, {891653640, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S0
+    util.trigger_script_event(1 << pid, {-992162568, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S1
+    util.trigger_script_event(1 << pid, {1556360603, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S2
+    util.trigger_script_event(1 << pid, {2041805809, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Modded Event S3
+    util.trigger_script_event(1 << pid, {-702866045, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Apartment Invite
+end)
+
+
+menu.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged from x-force and modified.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655, math.random(int_min, int_max), math.random(int_min, int_max), -- Crash Event S1
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0, pid, math.random(int_min, int_max)}) -- Modded Event S3
+        util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 1, 0}) -- Modded Event S3
+        util.trigger_script_event(1 << pid, {891653640, 26770, 95398, 98426, -24591, 47901, -64814}) -- Crash Event S0
+        util.trigger_script_event(1 << pid, {891653640, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S0
+        util.trigger_script_event(1 << pid, {-992162568, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S1
+        util.trigger_script_event(1 << pid, {1556360603, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S2
+        util.trigger_script_event(1 << pid, {2041805809, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Modded Event S3
+        util.trigger_script_event(1 << pid, {-702866045, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Apartment Invite
+    end
+end)
 
 local standcrashes = menu.list(MenuCrashes, "Stand Crashes", {}, "")
 
@@ -15689,7 +15428,104 @@ menu.toggle_loop(objectc, "Send Objects", {"sendobjects"}, "", function()
     util.toast("[Object Crash] Finished.")
 end)
 
-menu.divider(TaskCrashes, "_________________________________________")
+
+    menu.action(TaskCrashes, "Trolly Crash", {"trollcrash"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
+        if pid ~= players.user() then
+        menu.trigger_commands("anticrashcamera")
+        util.yield(100)
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local pld = PLAYER.GET_PLAYER_PED(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(pld)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2699.9976)
+        menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
+        util.yield(100)
+        menu.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
+        util.yield(100)
+        menu.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
+        util.yield(1500)
+        menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
+        util.yield(1500)
+        menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(100)
+        menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
+        util.yield(1500)
+        menu.trigger_commands("explode" .. players.get_name(pid))
+        util.yield(1500)
+        menu.trigger_commands("explodeloop" .. players.get_name(pid))
+        util.yield(1500)
+        menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
+        util.yield(1500)
+        menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
+        util.yield(1500)
+        menu.trigger_commands("stopall".. players.get_name(pid))
+        util.yield(100)
+        menu.trigger_commands("anticrashcamera")
+        util.yield(100)
+        util.toast("Addict Fuck Sent to " .. players.get_name(pid))
+        util.log("Addict Fuck Sent to " .. players.get_name(pid))
+        end
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
        menu.divider(TaskCrashes, "_________________________________________")
 
@@ -16419,111 +16255,9 @@ menu.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectat
         end
 end)
 
-local addictcrash = menu.list(lobbycrash, "Addict Crashes", {"addictcrashes"}, "")
-
-menu.toggle_loop(addictcrash, "Addict Crashing", {"addictcrashing"}, "", function(on_toggle)
-    Addictcrashes(pid)
-end)
-
-menu.action(addictcrash, "Addict Fuck", {"fuckplayer"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
-    if pid ~= players.user() then
-    menu.trigger_commands("anticrashcamera")
-    util.yield(100)
-    local player_ped = PLAYER.PLAYER_PED_ID()    
-    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-    local pld = PLAYER.GET_PLAYER_PED(pid)
-    local pos = ENTITY.GET_ENTITY_COORDS(pld)
-    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2699.9976)
-    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
-    util.yield(100)
-    menu.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
-    util.yield(100)
-    menu.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
-    util.yield(1500)
-    menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
-    util.yield(1500)
-    menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(100)
-    menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1500)
-    menu.trigger_commands("explode" .. players.get_name(pid))
-    util.yield(1500)
-    menu.trigger_commands("explodeloop" .. players.get_name(pid))
-    util.yield(1500)
-    menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
-    util.yield(1500)
-    menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
-    util.yield(1500)
-    menu.trigger_commands("stopall".. players.get_name(pid))
-    util.yield(100)
-    menu.trigger_commands("anticrashcamera")
-    util.yield(100)
-    util.toast("Addict Fuck Sent to " .. players.get_name(pid))
-    util.log("Addict Fuck Sent to " .. players.get_name(pid))
-    end
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
+
+menu.divider(attachcrash, "V1 Crashes")
 
 menu.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn on anticam for you, Warning! This is OP...", function()
     menu.trigger_commands("anticrashcamera")
@@ -16585,7 +16319,8 @@ menu.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn
     local pos = ENTITY.GET_ENTITY_COORDS(pld)
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
     util.yield(100)
-end)
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
 
 menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
     if on_toggle then
@@ -16652,6 +16387,46 @@ menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It wi
         end
     end)
 
+    
+    menu.divider(attachcrash, "V2 Crashes")
+
+    menu.action(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function()
+            menu.trigger_commands("anticrashcamera")
+            menu.trigger_commands("tpmazehelipad")
+            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            objects = entities.get_all_objects_as_handles()
+            vehicles = entities.get_all_vehicles_as_handles()
+            peds = entities.get_all_peds_as_handles()
+            for i, ent in pairs(peds) do
+                if not is_ped_player(ped) then
+                    ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                end
+            end
+            for i, ent in pairs(vehicles) do
+                if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+                    ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                end
+            end
+            for i, ent in pairs(objects) do
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+            end
+            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            menu.trigger_commands("blackholeoffset" .. players.get_name(pid) .. " 0")
+            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
+            menu.trigger_commands("honkallcars".. players.get_name(pid))
+            menu.trigger_commands("blowupallcars".. players.get_name(pid))
+            util.yield(1000)
+            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
+            menu.trigger_commands("honkallcars".. players.get_name(pid))
+            menu.trigger_commands("blowupallcars".. players.get_name(pid))
+            menu.trigger_commands("superc")
+            menu.trigger_commands("anticrashcamera")
+        end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+
     menu.toggle(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function(on_toggle)
         if on_toggle then
             menu.trigger_commands("anticrashcamera")
@@ -16680,286 +16455,15 @@ menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It wi
             menu.trigger_commands("honkallcars".. players.get_name(pid))
             menu.trigger_commands("blowupallcars".. players.get_name(pid))
         else
-            menu.trigger_commands("anticrashcamera")
             menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
             menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
             menu.trigger_commands("fuckupallcars".. players.get_name(pid))
             menu.trigger_commands("honkallcars".. players.get_name(pid))
             menu.trigger_commands("blowupallcars".. players.get_name(pid))
             menu.trigger_commands("superc")
+            menu.trigger_commands("anticrashcamera")
         end
     end)
-
-local chunguscrashes = menu.list(lobbycrash, "Big Chungus Crashes", {}, "")
-
-menu.action(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
-        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
-        local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
-        local mdl = util.joaat("A_C_Cat_01")
-        local mdl2 = util.joaat("U_M_Y_Zombie_01")
-        local mdl3 = util.joaat("A_F_M_ProlHost_01")
-        local mdl4 = util.joaat("A_M_M_SouCent_01")
-        local veh_mdl = util.joaat("insurgent2")
-        local veh_mdl2 = util.joaat("brawler")
-        util.request_model(veh_mdl)
-        util.request_model(veh_mdl2)
-        util.request_model(mdl)
-        util.request_model(mdl2)
-        util.request_model(mdl3)
-        util.request_model(mdl4)
-        for i = 1, 250 do
-            local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
-            local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
-            local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
-            local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
-            local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
-            local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
-            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
-            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
-    
-            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
-            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
-    
-            PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
-            PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
-    
-            PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
-            PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
-    
-            PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
-            PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
-    
-            PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
-            PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
-    
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
-    
-            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
-    
-            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
-    
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
-            TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
-            util.yield(100)
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
-    
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
-    
-            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
-            
-            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
-    
-            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
-            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
-    
-            ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
-            ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
-            ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
-            ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
-    
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
-            PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
-            TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
-            PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
-            PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
-            ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
-            ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
-            TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
-        end
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
-        entities.delete_by_handle(mdl)
-        entities.delete_by_handle(mdl2)
-        entities.delete_by_handle(mdl3)
-        entities.delete_by_handle(mdl4)
-        entities.delete_by_handle(veh_mdl)
-        entities.delete_by_handle(veh_mdl2)
-        util.yield(1000)
-    end)
-
-menu.toggle(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
-if on_toggle then
-    menu.trigger_commands("tploopon" .. players.get_name(pid))
-    menu.trigger_commands("anticrashcamera On")
-    menu.trigger_commands("invisibility On")
-    menu.trigger_commands("levitate On")
-    menu.trigger_commands("potatomode On")
-    menu.trigger_commands("nosky On")
-    menu.trigger_commands("reducedcollision On")
-    menu.trigger_commands("nocollision On")
-    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
-    local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
-    local mdl = util.joaat("A_C_Cat_01")
-    local mdl2 = util.joaat("U_M_Y_Zombie_01")
-    local mdl3 = util.joaat("A_F_M_ProlHost_01")
-    local mdl4 = util.joaat("A_M_M_SouCent_01")
-    local veh_mdl = util.joaat("insurgent2")
-    local veh_mdl2 = util.joaat("brawler")
-    util.request_model(veh_mdl)
-    util.request_model(veh_mdl2)
-    util.request_model(mdl)
-    util.request_model(mdl2)
-    util.request_model(mdl3)
-    util.request_model(mdl4)
-    for i = 1, 250 do
-        local ped1 = entities.create_ped(1, mdl, pos + 20, 0)
-        local ped_ = entities.create_ped(1, mdl2, pos + 20, 0)
-        local ped3 = entities.create_ped(1, mdl3, pos + 20, 0)
-        local ped3 = entities.create_ped(1, mdl4, pos + 20, 0)
-        local veh = entities.create_vehicle(veh_mdl, pos + 20, 0)
-        local veh2 = entities.create_vehicle(veh_mdl2, pos + 20, 0)
-        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
-        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
-
-        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
-        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
-
-        PED.SET_PED_INTO_VEHICLE(ped1, veh, -1)
-        PED.SET_PED_INTO_VEHICLE(ped_, veh, -1)
-
-        PED.SET_PED_INTO_VEHICLE(ped1, veh2, -1)
-        PED.SET_PED_INTO_VEHICLE(ped_, veh2, -1)
-
-        PED.SET_PED_INTO_VEHICLE(mdl3, veh, -1)
-        PED.SET_PED_INTO_VEHICLE(mdl3, veh2, -1)
-
-        PED.SET_PED_INTO_VEHICLE(mdl4, veh, -1)
-        PED.SET_PED_INTO_VEHICLE(mdl4, veh2, -1)
-
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
-
-        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(mdl3, veh2, ped, 10.0, 0, 10, 0, 0)
-
-        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(mdl4, veh2, ped, 10.0, 0, 10, 0, 0)
-
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped1, veh2, ped, 10.0, 0, 10, 0, 0)
-        TASK.TASK_VEHICLE_HELI_PROTECT(ped_, veh2, ped, 10.0, 0, 10, 0, 0)
-        util.yield(100)
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
-
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
-
-        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl3, 0, 0, 0)
-        
-        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl4, 0, 0, 0)
-
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl)
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskDoNothing", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl4, "CTaskDoNothing", 0, false)
-
-        ENTITY.SET_ENTITY_HEALTH(mdl, false, 200)
-        ENTITY.SET_ENTITY_HEALTH(mdl2, false, 200)
-        ENTITY.SET_ENTITY_HEALTH(mdl3, false, 200)
-        ENTITY.SET_ENTITY_HEALTH(mdl4, false, 200)
-
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl, 0, 0, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 2, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 1, 0)
-        PED.SET_PED_COMPONENT_VARIATION(mdl2, 0, 0, 0)
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(mdl2)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskInVehicleBasic", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl2, "CTaskAmbientClips", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(mdl3, "CTaskAmbientClips", 0, false)
-        PED.SET_PED_INTO_VEHICLE(mdl, veh, -1)
-        PED.SET_PED_INTO_VEHICLE(mdl2, veh, -1)
-        ENTITY.SET_ENTITY_PROOFS(veh_mdl, true, true, true, true, true, false, false, true)
-        ENTITY.SET_ENTITY_PROOFS(veh_mdl2, true, true, true, true, true, false, false, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicle", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskWaitForSteppingOut", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskInVehicleSeatShuffle", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl, "CTaskExitVehicleSeat", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicle", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskWaitForSteppingOut", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskInVehicleSeatShuffle", 0, false)
-        TASK.TASK_START_SCENARIO_IN_PLACE(veh_mdl2, "CTaskExitVehicleSeat", 0, false)
-    end
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl2)
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl2)
-    entities.delete_by_handle(mdl)
-    entities.delete_by_handle(mdl2)
-    entities.delete_by_handle(mdl3)
-    entities.delete_by_handle(mdl4)
-    entities.delete_by_handle(veh_mdl)
-    entities.delete_by_handle(veh_mdl2)
-    util.yield(1000)
-else
-    menu.trigger_commands("tploopon" .. players.get_name(pid))
-    util.yield(100)
-    menu.trigger_commands("anticrashcamera Off")
-    menu.trigger_commands("tpmazehelipad")
-    menu.trigger_commands("invisibility Off")
-    menu.trigger_commands("levitate Off")
-    menu.trigger_commands("potatomode Off")
-    menu.trigger_commands("nosky Off")
-    menu.trigger_commands("reducedcollision Off")
-    menu.trigger_commands("nocollision Off")
-    end
-end)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23752,7 +23256,6 @@ while true do
     end
     util.yield(1000)
 end
-
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 util.on_stop(function()
 	util.log("Later pussy (Yawn)")
