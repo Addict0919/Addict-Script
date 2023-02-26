@@ -12,4 +12,8 @@ v9.2
 ________________________
 Bug fixes
 Changed keybinds for auto rocket recharge
-Changed keybinds for RC bandito bomber
+________________________
+v9.3
+________________________
+Added SE Crashes
+Added Bro Hug Crashes
