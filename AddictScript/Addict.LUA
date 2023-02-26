@@ -30,7 +30,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.1
+local local_menu_version = 9.2
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6622,7 +6622,7 @@ function boostkeyboard(toggle)
 		while true do
 			local veh = entities.get_user_vehicle_as_handle()
 			if veh then
-				if PAD.IS_CONTROL_PRESSED(1, 61) then
+				if PAD.IS_CONTROL_PRESSED(21, 21) then
                     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
                     TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(veh, true)
                     VEHICLE.SET_SCRIPT_ROCKET_BOOST_RECHARGE_TIME(veh, 0)
@@ -6664,7 +6664,7 @@ function rcbombkeyboard(toggle)
 		while true do
 			local vehs = entities.get_user_vehicle_as_handle()
 			if vehs then
-				if PAD.IS_CONTROL_PRESSED(0, 61) then
+				if PAD.IS_CONTROL_PRESSED(21, 21) then
                     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(vehs, true)
                     TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(vehs, true)
                     local p = PLAYER.PLAYER_PED_ID()
@@ -6752,7 +6752,7 @@ menu.action(autodrive, "Stop Driving", {"aistop"}, "", function(v)
     TASK.CLEAR_PED_TASKS(ped)
 end)
 
-menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number '8' on you're numberpad or 'A' on controller.", function(on_toggle)
+menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number 'Left Shift' on you're numberpad or 'A' on controller.", function(on_toggle)
     if on_toggle then
         boost(true)
     else
@@ -6807,7 +6807,7 @@ end)
             end
         end)
 
-        menu.toggle(driveshit, "RC bandito bomber", {"rcbomber"}, "Drive rc bandito and explode unlimited times using number '8' on you're numberpad or toggle 'LEFT STICK' 'UP' on controller.", function(on_toggle)
+        menu.toggle(driveshit, "RC bandito bomber", {"rcbomber"}, "Drive rc bandito and explode unlimited times using number 'Left Shift' on you're numberpad or toggle 'A' on controller.", function(on_toggle)
             if on_toggle then
                 local curcar = entities.get_user_vehicle_as_handle()
                 local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
