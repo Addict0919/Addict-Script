@@ -1,13 +1,7 @@
-v9.2
+v9.5
 ________________________
-Bug fixes
-Changed keybinds for auto rocket recharge
-________________________
-v9.3
-________________________
-Added SE Crashes
-Added Bro Hug Crashes
-________________________
-v9.4
-________________________
-Added Ped Cash Loop In - Friendly>Addict Drops>Ped Cash Loop>Ped Cash Loop
+Added Auto Accept Joins & Transaction Errors
+Added Yatekomo Laggers - In Griefing>Lag With Shit
+Added Stronger Bro Hug Crashes
+Added Bad Head Blend Data Crashes
+Added Michael Taxi Crash
