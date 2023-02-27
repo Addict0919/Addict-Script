@@ -14,8 +14,7 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
-
-local github = menu.list(menu.my_root(), "Github", {"addictgithub"})
+local github = menu.list(menu.my_root(), "Updates", {"addictupdates"})
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
     response=true;
@@ -30,14 +29,14 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.5
+local local_menu_version = 9.6
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(github,"Update",{"updateAddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+            menu.action(github,"Update",{"updateaddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
@@ -3833,11 +3832,11 @@ menu.action(helpful_trolling, "Send Friend Request", {"sendfriend"}, "", functio
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("historybefriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
@@ -4543,21 +4542,150 @@ end)
 		end
 	end)
 
-	menu.action(protex, "Remove Attachments", {"remove attachments"}, "Cleans your ped of all attachments by regenerating it", function()
+    local Cleansers = menu.list(protex, "Cleansers", {"cleansers"})
+
+	menu.action(Cleansers, "Remove Attachments", {"remove attachments"}, "Cleans your ped of all attachments by regenerating it", function()
 		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
 			menu.trigger_commands("mpmale")
 		else
 			menu.trigger_commands("mpfemale")
 		end
-	
 	end)
 
-    menu.toggle_loop(protex, "Clear Shit Up looped", {"supercloop"}, "Every 1 second deletes all owned entities.", function (on_toggle)
+    supercleanse = menu.action(Cleansers, "Super Cleanse", {"cleanrope"}, "Cleans everything including ropes.", function(click_type)
+        util.show_corner_help("Be careful; using this can possibly crash your game or break a mission if important entities get deleted. Proceed?\n(NOTE: If you have skip warnings on, this won't show again.)")
+            local ct = 0
+            for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+                local driver = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)
+                if not PED.IS_PED_A_PLAYER(driver) then
+                    entities.delete_by_handle(ent)
+                    ct += 1
+                end
+            end
+            for k,ent in pairs(entities.get_all_peds_as_handles()) do
+                if not PED.IS_PED_A_PLAYER(ent) then
+                    entities.delete_by_handle(ent)
+                end
+                ct += 1
+            end
+            for k,ent in pairs(entities.get_all_objects_as_handles()) do
+                entities.delete_by_handle(ent)
+                ct += 1
+            end
+            local rope_alloc = memory.alloc(4)
+            for i=0, 100 do 
+                memory.write_int(rope_alloc, i)
+                if PHYSICS.DOES_ROPE_EXIST(rope_alloc) then   
+                    PHYSICS.DELETE_ROPE(rope_alloc)
+                    ct += 1
+                end
+            end
+    
+            util.toast("Super Cleanse has cleaned " .. ct .. " entities!")
+        end, function()
+            util.toast("Aborted.")
+        end)
+
+    supercleanse = menu.toggle_loop(Cleansers, "Super Cleanse Toggle", {"cleanropeloop"}, "Cleans everything including ropes.", function(click_type)
+        util.show_corner_help("Be careful; using this can possibly crash your game or break a mission if important entities get deleted. Proceed?\n(NOTE: If you have skip warnings on, this won't show again.)")
+            local ct = 0
+            for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+                local driver = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)
+                if not PED.IS_PED_A_PLAYER(driver) then
+                    entities.delete_by_handle(ent)
+                    ct += 1
+                end
+            end
+            for k,ent in pairs(entities.get_all_peds_as_handles()) do
+                if not PED.IS_PED_A_PLAYER(ent) then
+                    entities.delete_by_handle(ent)
+                end
+                ct += 1
+            end
+            for k,ent in pairs(entities.get_all_objects_as_handles()) do
+                entities.delete_by_handle(ent)
+                ct += 1
+            end
+            local rope_alloc = memory.alloc(4)
+            for i=0, 100 do 
+                memory.write_int(rope_alloc, i)
+                if PHYSICS.DOES_ROPE_EXIST(rope_alloc) then   
+                    PHYSICS.DELETE_ROPE(rope_alloc)
+                    ct += 1
+                end
+            end
+        end, function()
+            util.toast("Everything cleaned including ropes.")
+        end)
+
+    menu.action(Cleansers, "No Entity Spawn", {"clean"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_click)
+        local ct = 0
+        for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+    
+            ct = ct + 1
+        end
+        for k,ent in pairs(entities.get_all_peds_as_handles()) do
+            if not PED.IS_PED_A_PLAYER(ent) then
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+    
+            end
+            ct = ct + 1
+        end
+        for k,ent in pairs(entities.get_all_objects_as_handles()) do
+            if ent ~= PLAYER.PLAYER_PED_ID() then
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+                ct = ct + 1
+            end
+        end
+            for k,ent in pairs(entities.get_all_pickups_as_handles()) do
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+                util.yield()
+            return
+        end
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+    
+        menu.toggle_loop(Cleansers, "No Entity Spawn Toggled", {"noentities"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_loop)
+            local ct = 0
+            for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+    
+                ct = ct + 1
+            end
+            for k,ent in pairs(entities.get_all_peds_as_handles()) do
+                if not PED.IS_PED_A_PLAYER(ent) then
+                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                    entities.delete_by_handle(ent)
+    
+                end
+                ct = ct + 1
+            end
+            for k,ent in pairs(entities.get_all_objects_as_handles()) do
+                if ent ~= PLAYER.PLAYER_PED_ID() then
+                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                    entities.delete_by_handle(ent)
+                    ct = ct + 1
+                end
+            end
+                for k,ent in pairs(entities.get_all_pickups_as_handles()) do
+                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                    entities.delete_by_handle(ent)
+                    util.yield()
+                return
+            end
+        end)
+
+    menu.toggle_loop(Cleansers, "Clear Shit Up Toggled", {"supercloop"}, "Every 1 second deletes all owned entities.", function (on_toggle)
         menu.trigger_commands("superc")
         util.yield(750)
     end)
 
-	menu.click_slider(protex,"Clear Shit Up", {"superc"}, "5 = peds, 4 = vehicles, 3 = objects, 2 = pickups, 1 = all \nNote: This excludes players and their vehicles.", 1, 5, 1, 1, function(on_change)
+	menu.click_slider(Cleansers,"Clear Shit Up", {"superc"}, "5 = peds, 4 = vehicles, 3 = objects, 2 = pickups, 1 = all \nNote: This excludes players and their vehicles.", 1, 5, 1, 1, function(on_change)
 		if on_change == 5 then
 			local count = 0
 			for k,ent in pairs(entities.get_all_peds_as_handles()) do
@@ -4642,68 +4770,6 @@ end)
             util.toast("Fucked Everything off " .. count .. " Entities removed. :)")
 		end
 	end)
-
-    menu.action(protex, "No Entity Spawn", {"clean"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_click)
-        local ct = 0
-        for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
-            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-            entities.delete_by_handle(ent)
-    
-            ct = ct + 1
-        end
-        for k,ent in pairs(entities.get_all_peds_as_handles()) do
-            if not PED.IS_PED_A_PLAYER(ent) then
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                entities.delete_by_handle(ent)
-    
-            end
-            ct = ct + 1
-        end
-        for k,ent in pairs(entities.get_all_objects_as_handles()) do
-            if ent ~= PLAYER.PLAYER_PED_ID() then
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                entities.delete_by_handle(ent)
-                ct = ct + 1
-            end
-        end
-            for k,ent in pairs(entities.get_all_pickups_as_handles()) do
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                entities.delete_by_handle(ent)
-                util.yield()
-            return
-        end
-    end, nil, nil, COMMANDPERM_FRIENDLY)
-    
-        menu.toggle_loop(protex, "No Entity Spawn Toggled", {"noentities"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_loop)
-            local ct = 0
-            for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                entities.delete_by_handle(ent)
-    
-                ct = ct + 1
-            end
-            for k,ent in pairs(entities.get_all_peds_as_handles()) do
-                if not PED.IS_PED_A_PLAYER(ent) then
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                    entities.delete_by_handle(ent)
-    
-                end
-                ct = ct + 1
-            end
-            for k,ent in pairs(entities.get_all_objects_as_handles()) do
-                if ent ~= PLAYER.PLAYER_PED_ID() then
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                    entities.delete_by_handle(ent)
-                    ct = ct + 1
-                end
-            end
-                for k,ent in pairs(entities.get_all_pickups_as_handles()) do
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                    entities.delete_by_handle(ent)
-                    util.yield()
-                return
-            end
-        end)
 
 menu.toggle_loop(protex, "Anti-Beast", {}, "Prevents you from being turned into the beast but will also stop the event for others.", function()
     if util.spoof_script("am_hunt_the_beast", SCRIPT.TERMINATE_THIS_THREAD) then
@@ -7845,7 +7911,7 @@ GenerateFeatures = function(pid)
         util.yield(1000)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
+	menu.action(mov_sub_vehicle_tab,"Launch Up", {"launchcar"}, "Shoots player up",function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
             ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, 10000, true, false, true)
@@ -11115,7 +11181,9 @@ menu.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_t
 
 	ptfxloop = menu.list(griefing, "PTFX Loops", {"ptfxloops"}, "", function(); end)
 
-                	local pos = players.get_position(pid)
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+
 
 --Ptfx
 
@@ -11130,17 +11198,17 @@ menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggl
                 "blood_wheel", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 
-menu.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
-            request_ptfx_asset("core")
-            GRAPHICS.USE_PARTICLE_FX_ASSET("core")
-            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
-                "ent_sht_electrical_box", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
-            request_ptfx_asset("core")
-            GRAPHICS.USE_PARTICLE_FX_ASSET("core")
-            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
-                "ent_sht_electrical_box", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
-	end)
-
+    menu.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
+        request_ptfx_asset("core")
+        GRAPHICS.USE_PARTICLE_FX_ASSET("core")
+        GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+            "ent_sht_electrical_box", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
+        request_ptfx_asset("core")
+        GRAPHICS.USE_PARTICLE_FX_ASSET("core")
+        GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+            "ent_sht_electrical_box", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
+end)
+    
 menu.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
@@ -11209,6 +11277,8 @@ end
         if on_toggle then
             menu.trigger_commands("nuke" .. players.get_name(pid))
             util.yield(100)
+            menu.trigger_commands("nukev2" .. players.get_name(pid))
+            util.yield(100)
             menu.trigger_commands("cpulag" .. players.get_name(pid))
             util.yield(100)
             menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
@@ -11240,8 +11310,6 @@ end
             menu.trigger_commands("lagwithfreightcar" .. players.get_name(pid))
             util.yield(100)
         else
-            menu.trigger_commands("nuke" .. players.get_name(pid))
-            util.yield(100)
             menu.trigger_commands("cpulag" .. players.get_name(pid))
             util.yield(100)
             menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
@@ -11277,9 +11345,9 @@ end
             end
         end)
 
-    menu.divider(lagwiths, "Yatekomo Laggers")
+    menu.divider(lagwiths, "Addict Laggers")
     
-    menu.action(lagwiths, "Nuke", {"nuke"}, "Nuke the player", function()
+    menu.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = offset_coords_forward(ENTITY.GET_ENTITY_COORDS(p), ENTITY.GET_ENTITY_HEADING(p), 100)
         local defx = 0
@@ -11348,6 +11416,218 @@ end
         end
     end)
 
+
+    menu.action(lagwiths, "Nuke V2", {"nukev2"}, "Nuke the player, This is OP.", function()
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        menu.trigger_commands("vehicleblackholes" .. players.get_name(pid))
+        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        menu.trigger_commands("sendarmyattack" .. players.get_name(pid))
+        menu.trigger_commands("atomizeron" .. players.get_name(pid))
+        menu.trigger_commands("emploop" .. players.get_name(pid))
+        menu.trigger_commands("bloodslash" .. players.get_name(pid))
+        menu.trigger_commands("ptfxelectric" .. players.get_name(pid))
+        menu.trigger_commands("ptfxsmoke" .. players.get_name(pid))
+        menu.trigger_commands("ptfxclown" .. players.get_name(pid))
+        menu.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
+        menu.trigger_commands("ptfxwatermist" .. players.get_name(pid))
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local c = offset_coords_forward(ENTITY.GET_ENTITY_COORDS(p), ENTITY.GET_ENTITY_HEADING(p), 100)
+        local defx = 0
+        local defy = 0
+        local defz = 0
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        util.yield(50)
+        defz = defz + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        util.yield(50)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        defz = defz + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        util.yield(50)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        defz = defz + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        util.yield(50)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+         defz = defz + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+         util.yield(50)
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        defz = defz + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        util.yield(50)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        defx = defx + 2
+        defy = defy + 2
+        c = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(p, defx, defy, defz), ENTITY.GET_ENTITY_HEADING(p), 300)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        while not STREAMING.HAS_MODEL_LOADED(2336777441) do
+            STREAMING.REQUEST_MODEL(2336777441)
+            util.yield(10)
+        end
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local PlayerPedCoords = offset_coords_forward(ENTITY.GET_ENTITY_COORDS(player_ped, true), ENTITY.GET_ENTITY_HEADING(player_ped), 300)
+        spam_amount = 300
+        while spam_amount >= 1 do
+            entities.create_vehicle(2336777441, PlayerPedCoords, 0)
+            spam_amount = spam_amount - 1
+            util.yield(10)
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        end
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "TIME_LAPSE_MASTER", "0", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
+        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local PlayerPedCoords = offset_coords_forward(ENTITY.GET_ENTITY_COORDS(player_ped, true), ENTITY.GET_ENTITY_HEADING(player_ped), 300)
+        spam_amount = 300
+        while spam_amount >= 1 do
+            entities.create_vehicle(2336777441, PlayerPedCoords, 0)
+            spam_amount = spam_amount - 1
+            util.yield(10)
+        end
+        local ct = 0       
+        util.toast("Clearing")
+        for k, ent in pairs(entities.get_all_vehicles_as_handles()) do
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+            ct = ct + 1
+        end
+        menu.trigger_commands("vehicleblackholes" .. players.get_name(pid))
+        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        menu.trigger_commands("deletearmy" .. players.get_name(pid))
+        menu.trigger_commands("atomizeron" .. players.get_name(pid))
+        menu.trigger_commands("emploop" .. players.get_name(pid))
+        menu.trigger_commands("bloodslash" .. players.get_name(pid))
+        menu.trigger_commands("ptfxelectric" .. players.get_name(pid))
+        menu.trigger_commands("ptfxsmoke" .. players.get_name(pid))
+        menu.trigger_commands("ptfxclown" .. players.get_name(pid))
+        menu.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
+        menu.trigger_commands("ptfxwatermist" .. players.get_name(pid))
+        util.toast("Finished")
+        for k, ent in pairs(entities.get_all_peds_as_handles()) do
+            if not PED.IS_PED_A_PLAYER(ent) then
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+            end
+            ct = ct + 1
+        end
+    end)
+
     menu.toggle_loop(lagwiths,"CPU Penetrator", {"cpulag"}, "Lag them do do do it.", function()
         while not STREAMING.HAS_MODEL_LOADED(447548909) do
             STREAMING.REQUEST_MODEL(447548909)
@@ -11362,8 +11642,6 @@ end
             util.yield(10)
         end
     end)
-
-    menu.divider(lagwiths, "Addict Laggers")
 
     menu.toggle_loop(lagwiths, "Lag With Armytrailer2", {"lagwitharmytrailer2"}, "", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -13057,6 +13335,10 @@ end)
 
     menu.action(drops, "Crazy Loop", {"crazyloop"}, "Gives cash, cards, rp and gives all collectibles. Might be risky but should be okay.", function()
         if pid ~= players.user() then
+            menu.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash and rp it's nothing don't worry.")
+            util.yield(500)
+            menu.trigger_commands("smssend" .. players.get_name(pid))
+            util.toast("Text message sent to " .. players.get_name(pid))
             menu.trigger_commands("cashloopfast" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("cards" .. players.get_name(pid))
@@ -13537,7 +13819,7 @@ end)
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
-    menu.show_command_box("historybefriend " .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.show_command_box("befriend " .. PLAYER.GET_PLAYER_NAME(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
 menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
@@ -21154,140 +21436,6 @@ local values = {
     [3] = 160,
     [4] = 208,
 }
-
-local bypasskick = menu.list(self, "Bypass Kicks", {}, "Options that allow you to use methods to n enter the session if you are being blocked.")
-
-menu.divider(bypasskick, "Normal Methods")
-
-menu.toggle(bypasskick, "Method V1", {}, "It gives you a limited time for you to expel the one who blocks you", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-    if on_toggle then
-        menu.trigger_commands("nobgscript on")
-        menu.trigger_command(BlockIncSyncs)
-        menu.trigger_command(BlockNetEvents)
-        util.toast("Activated, now enter your session and prepare the kick")
-    else
-        menu.trigger_commands("nobgscript off")
-        menu.trigger_command(UnblockIncSyncs)
-        menu.trigger_command(UnblockNetEvents)
-        util.toast("Done, all off")
-    end
-end)
-
-menu.toggle(bypasskick, "Method V2", {}, "A little more functional but also with more network errors", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-    local BlockBailing = menu.ref_by_path("Online>Protections>Block Bailing>Player No Longer In Session")
-    local BlockBailing2 = menu.ref_by_path("Online>Protections>Block Bailing>Switching Primary Crew")
-    local BlockBailing3 = menu.ref_by_path("Online>Protections>Block Bailing>Spectating Related")
-    local BlockBailing4 = menu.ref_by_path("Online>Protections>Block Bailing>Other Reasons")
-    if on_toggle then
-        menu.trigger_commands("nobgscript on")
-        menu.trigger_command(BlockIncSyncs)
-        menu.trigger_command(BlockNetEvents)
-        menu.trigger_command(BlockBailing, "on")
-        menu.trigger_command(BlockBailing2, "on")
-        menu.trigger_command(BlockBailing3, "on")
-        menu.trigger_command(BlockBailing4, "on")
-        util.toast("Activated, now enter your session and prepare the kick")
-    else
-        menu.trigger_commands("nobgscript off")
-        menu.trigger_command(UnblockIncSyncs)
-        menu.trigger_command(UnblockNetEvents)
-        menu.trigger_command(BlockBailing3, "off")
-        util.toast("Done, all off")
-    end
-end)
-
-menu.toggle(bypasskick, "Method V3", {}, "More functional method, but for developers, you will receive notification of all network events", function(on_toggle)
-local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-local BlockBailing = menu.ref_by_path("Online>Protections>Block Bailing>Player No Longer In Session")
-local BlockBailing2 = menu.ref_by_path("Online>Protections>Block Bailing>Switching Primary Crew")
-local BlockBailing3 = menu.ref_by_path("Online>Protections>Block Bailing>Spectating Related")
-local BlockBailing4 = menu.ref_by_path("Online>Protections>Block Bailing>Other Reasons")
-local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Enabled")
-local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Disabled")
-local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-if on_toggle then
-    menu.trigger_commands("nobgscript on")
-    menu.trigger_command(BlockIncSyncs)
-    menu.trigger_command(BlockNetEvents)
-    menu.trigger_command(BlockBailing, "on")
-    menu.trigger_command(BlockBailing2, "on")
-    menu.trigger_command(BlockBailing3, "on")
-    menu.trigger_command(BlockBailing4, "on")
-    menu.trigger_command(ShowNotis)
-    menu.trigger_command(BlockRaw)
-    util.toast("Activated, now enter your session and prepare the kick")
-else
-    menu.trigger_commands("nobgscript off")
-    menu.trigger_command(UnblockIncSyncs)
-    menu.trigger_command(UnblockNetEvents)
-    menu.trigger_command(BlockBailing3, "off")
-    menu.trigger_command(UnShowNotis)
-    menu.trigger_command(UnBlockRaw)
-    util.toast("Done, all off")
-end
-end)
-
-menu.toggle(bypasskick, "Method V4", {}, "Probably break the game, use at your own risk", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
-    local BlockBailing = menu.ref_by_path("Online>Protections>Block Bailing>Player No Longer In Session")
-    local BlockBailing2 = menu.ref_by_path("Online>Protections>Block Bailing>Switching Primary Crew")
-    local BlockBailing3 = menu.ref_by_path("Online>Protections>Block Bailing>Spectating Related")
-    local BlockBailing4 = menu.ref_by_path("Online>Protections>Block Bailing>Other Reasons")
-    local ShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Enabled")
-    local BlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnShowNotis = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>notification>Disabled")
-    local UnBlockRaw = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local DontAsk = menu.ref_by_path("Online>Transitions>Speed Up>Don't Ask For Permission To Spawn")
-    if on_toggle then
-        menu.trigger_commands("nobgscript on")
-		menu.trigger_commands("skipbroadcast on")
-        menu.trigger_commands("speedupspawn on")
-        menu.trigger_commands("speedupfmmc on")
-        menu.trigger_commands("skipswoopdown on")
-        menu.trigger_command(BlockIncSyncs)
-        menu.trigger_command(BlockNetEvents)
-        menu.trigger_command(BlockBailing, "on")
-        menu.trigger_command(BlockBailing2, "on")
-        menu.trigger_command(BlockBailing3, "on")
-        menu.trigger_command(BlockBailing4, "on")
-        menu.trigger_command(ShowNotis)
-        menu.trigger_command(BlockRaw)
-        menu.trigger_commands("skipbroadcast on")
-        menu.trigger_command(DontAsk, "on")
-        menu.trigger_commands("skipswoopdown on")
-        util.toast("Activated, now enter your session and prepare the kick")
-    else
-        menu.trigger_commands("nobgscript off")
-		menu.trigger_commands("skipbroadcast off")
-        menu.trigger_commands("speedupspawn off")
-        menu.trigger_commands("speedupfmmc off")
-        menu.trigger_commands("skipswoopdown off")
-        menu.trigger_command(UnblockIncSyncs)
-        menu.trigger_command(UnblockNetEvents)
-        menu.trigger_command(BlockBailing3, "off")
-        menu.trigger_command(UnShowNotis)
-        menu.trigger_command(UnBlockRaw)
-        menu.trigger_commands("skipbroadcast off")
-        menu.trigger_command(DontAsk, "off")
-        menu.trigger_commands("skipswoopdown off")
-        util.toast("Done, all off")
-        end
-    end)
 
 local proofsList = menu.list(self, "Godmode Editor", {}, "")
 local immortalityCmd = menu.ref_by_path("Self>Immortality")
