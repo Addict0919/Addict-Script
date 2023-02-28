@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.6
+local local_menu_version = 9.7
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1346,6 +1346,122 @@ end)
             end
         end)
         end)
+
+        Morse_Mutual = menu.list(Recovery, "Morse Mutual", {"morsemutual"}, "", function(); end)
+
+        
+        menu.divider(Morse_Mutual, "Vehicle Gifting")
+        
+        check = memory.script_global(78558)
+
+        function BitTest(value, bit)
+            return value & (1 << bit) ~= 0
+        end
+
+        function BitSet(value, bit)
+            return value | (1 << bit)
+        end
+
+        function BitClear(value, bit)
+            return value & ~(1 << bit)
+        end
+
+        menu.action(Morse_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
+            pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
+            veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+            bitfield = memory.read_int(veh)
+            memory.write_int(veh, bitfield | 0xC)
+        end)
+
+        menu.toggle_loop(Morse_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
+            menu.trigger_commands("addins")
+            util.yield(1000)
+        end)
+
+        menu.toggle_loop(Morse_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
+            ped = players.user_ped()
+            hash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(players.user())
+            veh = entities.get_user_vehicle_as_pointer(false)
+            if veh ~= 0 then
+                start = os.time() + 15
+                if veh ~= 0 then
+                    spawned_model = util.reverse_joaat(entities.get_model_hash(veh))
+                    if hash ~= 0 then
+                        memory.write_int(check, 0)
+                        handle = entities.pointer_to_handle(veh)
+                        bitset = DECORATOR.DECOR_GET_INT(handle, "MPBitset")
+                        bitset = BitClear(bitset, 3)
+                        bitset = BitSet(bitset, 24)
+                        DECORATOR.DECOR_SET_INT(handle, "MPBitset", bitset)
+                        DECORATOR.DECOR_SET_INT(handle, "Previous_Owner", 0)
+                        DECORATOR.DECOR_SET_INT(handle, "PV_Slot", 0)
+                        DECORATOR.DECOR_SET_INT(handle, "Player_Vehicle", hash)
+                        DECORATOR.DECOR_SET_INT(handle, "Veh_Modded_By_Player", hash)
+                        interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
+                        pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+                        while interior == 0 do
+                            interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
+                            if os.time() >= start then
+                                memory.write_int(check, 1)
+                                util.stop_thread()
+                            end
+                            util.yield_once()
+                        end
+                        memory.write_int(check, 1)
+                        while interior ~= 0 do
+                            interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
+                            util.yield(1000)
+                        end
+                        util.toast("You can drive in your garage now!")
+                        menu.trigger_commands("clearblockage")
+                        util.yield(1000)
+                        menu.trigger_commands("clearblockage")
+                        menu.trigger_commands("addins")
+                    end
+                end
+            else
+                util.toast("You\'re not in a vehicle!")
+            end
+        end)
+
+        menu.toggle_loop(Morse_Mutual, "Clear Blockage", {"clearblockage"}, "Clears the blockage infront of your garage every 1 second.", function()
+            for i, veh in pairs(entities.get_all_vehicles_as_handles()) do
+                if not ENTITY.IS_ENTITY_VISIBLE(veh) then
+                    entities.delete_by_handle(veh)
+                    util.toast("Cleared invisible vehciles.")
+                    util.yield(1000)
+                end
+            end
+        end)
+
+        menu.divider(Morse_Mutual, "Claim Vehicles")
+
+    
+        menu.action(Morse_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
+            for slot = 0, 415 do
+                veh = memory.script_global(1586468 + 1 + (slot * 142) + 103)
+                bitfield = memory.read_int(veh)
+                memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
+            end
+        end)
+    
+        menu.action(Morse_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
+            pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
+            veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+            bitfield = memory.read_int(veh)
+            memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
+        end)
+    
+        menu.toggle_loop(Morse_Mutual, "Auto Claim All Personal Vehicles", {"autoclaimall"}, "Automatically claims all destroyed/impounded personal vehicles.", function()
+            menu.trigger_commands("claimallveh")
+            util.yield(1000)
+        end, true)
+    
+        menu.toggle_loop(Morse_Mutual, "Auto Claim Personal Vehicle", {"autoclaimpersonal"}, "Automatically claims the current active personal vehicle.", function()
+            menu.trigger_commands("claimpersonal")
+            util.yield(1000)
+        end, true)
+
 
     acidlabmanager = menu.list(Recovery, "Acid Lab Manager", {}, "", function(); end)
 
@@ -3740,6 +3856,22 @@ menu.toggle_loop(helpful_trolling, "Bounty All", {}, "", function()
     end
 end)
 
+menu.toggle_loop(helpful_trolling, "Steal All Vehicles", {"stealall"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                menu.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
 menu.toggle_loop(helpful_trolling, "Kick From Vehicle", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -3800,6 +3932,20 @@ end)
 
 menu.divider(helpful_trolling, "Helpful")
 
+menu.toggle_loop(helpful_trolling, "Auto Gift Vehicle", {"autogiftall"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autogift" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("autogift" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
 menu.action(helpful_trolling, "Give A UFO", {"giveufoto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -3813,6 +3959,7 @@ menu.action(helpful_trolling, "Give A UFO", {"giveufoto"}, "", function()
         end
     end
 end)
+
 
 menu.action(helpful_trolling, "Infinity Ammo", {"infintyammoto"}, "", function()
     for pids = 0, 31 do
@@ -7495,6 +7642,15 @@ end)
 		end
 	end)
 
+    menu.action(worldchaos, "Steal All Player Vehicles", {"stealvehicles"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
+        for _, pid in players.list(false, true, true) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local pos = players.get_position(pid)
+            if ENTITY.DOES_ENTITY_EXIST(ped) and PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
+                menu.trigger_commands("steal " .. players.get_name(pid))
+            end
+        end
+    end)
 
 	menu.divider(worldchaos, "Anti-Try Hard Shit")
 
@@ -8368,7 +8524,87 @@ read_global = {
         end
     end
 
-    menu.toggle_loop(griefing, "Kick from Vehicle", {}, "", function()
+    menu.action(griefing, "Steal Vehicle", {"steal"}, "Spawns a ped to take them out of their vehicle and drive away.", function() -- Skidded from femboy girl prishum
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = players.get_position(pid)
+        local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
+
+        if not PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
+            util.toast(lang.get_localised(1067523721):gsub("{}", players.get_name(pid)))
+        return end
+        local spawned_ped = PED.CREATE_RANDOM_PED(pos.x, pos.y - 10, pos.z)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(spawned_ped)
+        entities.set_can_migrate(entities.handle_to_pointer(spawned_ped), false)
+        ENTITY.SET_ENTITY_INVINCIBLE(spawned_ped, true)
+        ENTITY.SET_ENTITY_VISIBLE(spawned_ped, false)
+        ENTITY.FREEZE_ENTITY_POSITION(spawned_ped, true)
+        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(spawned_ped, true)
+        PED.CAN_PED_RAGDOLL(spawned_ped, false)
+        PED.SET_PED_CONFIG_FLAG(spawned_ped, 26, true)
+        TASK.TASK_ENTER_VEHICLE(spawned_ped, vehicle, 1000, -1, 1.0, 2|8|16, pos)
+        util.yield(1500)
+        if TASK.GET_IS_TASK_ACTIVE(ped, 2) then
+            repeat
+                util.yield()
+            until not TASK.GET_IS_TASK_ACTIVE(ped, 2) or PED.IS_PED_IN_ANY_VEHICLE(spawned_ped, false)
+            TASK.TASK_VEHICLE_DRIVE_WANDER(spawned_ped, vehicle, 9999.0, 6)
+            util.toast("Now your vehcile!")
+        else
+            util.toast("Failed to steal players vehicle. :/")
+            entities.delete_by_handle(spawned_ped)
+        end
+        if not TASK.GET_IS_TASK_ACTIVE(spawned_ped) then
+            repeat
+            TASK.TASK_VEHICLE_DRIVE_WANDER(spawned_ped, vehicle, 9999.0, 6) -- giving task again cus doesnt work sometimes
+            util.yield()
+            until TASK.GET_IS_TASK_ACTIVE(spawned_ped)
+        end
+    end)
+
+    local Steal
+    local fail_count = 0
+    Steal = player_toggle_loop(griefing, pid, "Auto Steal Vehicle", {"autosteal"}, "Will keep stealing any vehicle they try to drive.", function()
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = players.get_position(pid)
+        local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
+
+        if PED.IS_PED_IN_VEHICLE(ped, vehicle, false) then
+            local spawned_ped = PED.CREATE_RANDOM_PED(pos.x, pos.y - 10, pos.z)
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(spawned_ped)
+            entities.set_can_migrate(entities.handle_to_pointer(spawned_ped), false)
+            ENTITY.SET_ENTITY_INVINCIBLE(spawned_ped, true)
+            ENTITY.SET_ENTITY_VISIBLE(spawned_ped, false)
+            ENTITY.FREEZE_ENTITY_POSITION(spawned_ped, true)
+            PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(spawned_ped, true)
+            PED.CAN_PED_RAGDOLL(spawned_ped, false)
+            PED.SET_PED_CONFIG_FLAG(spawned_ped, 26, true)
+            TASK.TASK_ENTER_VEHICLE(spawned_ped, vehicle, 1000, -1, 1.0, 2|8|16, pos)
+            util.yield(1000)
+            if TASK.GET_IS_TASK_ACTIVE(ped, 2) then
+                repeat
+                    util.yield()
+                until not TASK.GET_IS_TASK_ACTIVE(ped, 2)
+            end
+            if fail_count >= 5 then
+                util.toast("Failed to steal player too many times. Disabling feature...")
+                fail_count = 0
+                Steal.value = false
+            end
+            if PED.IS_PED_IN_ANY_VEHICLE(spawned_ped, false) then
+                util.yield(1500)
+                TASK.TASK_VEHICLE_DRIVE_WANDER(spawned_ped, vehicle, 9999.0, 6)
+                fail_count = 0
+            else
+                fail_count += 1
+                entities.delete_by_handle(spawned_ped)
+            end
+            util.yield(500)
+        end
+    end, function()
+        fail_count = 0
+    end)
+
+    menu.toggle_loop(griefing, "Kick from Vehicle", {"vehiclekick"}, "", function()
         local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
@@ -13308,12 +13544,13 @@ end)
 
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
-	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, fastrun, never wanted, gives all weapons, ammo/infinite and parachute all at once", function () -- idea skidded from ajoker script.
+	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, autogift, never wanted, gives all weapons, ammo/infinite and parachute all at once", function () -- idea skidded from ajoker script.
         		menu.trigger_commands("bail".. players.get_name(pid))
         		menu.trigger_commands("arm".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("ceopay".. players.get_name(pid))
                 menu.trigger_commands("repairloop".. players.get_name(pid))
+                menu.trigger_commands("autogift" .. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
@@ -13625,6 +13862,15 @@ end)
             menu.trigger_commands("givesh" .. players.get_name(pid))
             menu.trigger_commands("aptme" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
+
+            menu.toggle_loop(frienm, "Auto Gift Vehicle", {"autogift"}, "Allows them to drive any vehicle into their garage automaticly.", function(on_toggle)
+                if on_toggle then
+                menu.trigger_commands("gift" .. players.get_name(pid))
+                util.yield(1000)
+            else
+                util.toast("You\'re not in a vehicle!")
+                end
+            end)
             
             menu.toggle_loop(frienm, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
                 local car = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
