@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = 9.7
+local local_menu_version = 9.8
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1347,10 +1347,10 @@ end)
         end)
         end)
 
-        Morse_Mutual = menu.list(Recovery, "Morse Mutual", {"morsemutual"}, "", function(); end)
+        Mors_Mutual = menu.list(Recovery, "Mors Mutual", {"morsmutual"}, "", function(); end)
 
         
-        menu.divider(Morse_Mutual, "Vehicle Gifting")
+        menu.divider(Mors_Mutual, "Vehicle Gifting")
         
         check = memory.script_global(78558)
 
@@ -1366,19 +1366,19 @@ end)
             return value & ~(1 << bit)
         end
 
-        menu.action(Morse_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
+        menu.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
             veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield | 0xC)
         end)
 
-        menu.toggle_loop(Morse_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
+        menu.toggle_loop(Mors_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
             menu.trigger_commands("addins")
             util.yield(1000)
         end)
 
-        menu.toggle_loop(Morse_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
+        menu.toggle_loop(Mors_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
             ped = players.user_ped()
             hash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(players.user())
             veh = entities.get_user_vehicle_as_pointer(false)
@@ -1424,7 +1424,7 @@ end)
             end
         end)
 
-        menu.toggle_loop(Morse_Mutual, "Clear Blockage", {"clearblockage"}, "Clears the blockage infront of your garage every 1 second.", function()
+        menu.toggle_loop(Mors_Mutual, "Clear Blockage", {"clearblockage"}, "Clears the blockage infront of your garage every 1 second.", function()
             for i, veh in pairs(entities.get_all_vehicles_as_handles()) do
                 if not ENTITY.IS_ENTITY_VISIBLE(veh) then
                     entities.delete_by_handle(veh)
@@ -1434,10 +1434,10 @@ end)
             end
         end)
 
-        menu.divider(Morse_Mutual, "Claim Vehicles")
+        menu.divider(Mors_Mutual, "Claim Vehicles")
 
     
-        menu.action(Morse_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
+        menu.action(Mors_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
             for slot = 0, 415 do
                 veh = memory.script_global(1586468 + 1 + (slot * 142) + 103)
                 bitfield = memory.read_int(veh)
@@ -1445,19 +1445,19 @@ end)
             end
         end)
     
-        menu.action(Morse_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
+        menu.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
             veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
         end)
     
-        menu.toggle_loop(Morse_Mutual, "Auto Claim All Personal Vehicles", {"autoclaimall"}, "Automatically claims all destroyed/impounded personal vehicles.", function()
+        menu.toggle_loop(Mors_Mutual, "Auto Claim All Personal Vehicles", {"autoclaimall"}, "Automatically claims all destroyed/impounded personal vehicles.", function()
             menu.trigger_commands("claimallveh")
             util.yield(1000)
         end, true)
     
-        menu.toggle_loop(Morse_Mutual, "Auto Claim Personal Vehicle", {"autoclaimpersonal"}, "Automatically claims the current active personal vehicle.", function()
+        menu.toggle_loop(Mors_Mutual, "Auto Claim Personal Vehicle", {"autoclaimpersonal"}, "Automatically claims the current active personal vehicle.", function()
             menu.trigger_commands("claimpersonal")
             util.yield(1000)
         end, true)
