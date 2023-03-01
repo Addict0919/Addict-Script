@@ -14156,7 +14156,8 @@ function RqModel(hash)
     end
 end
 
-menu.action(crash,"Ooof", {"oof"}, "", function()
+
+menu.action(crash,"Confusion Crash", {"confusion"}, "", function()
     menu.trigger_commands("brohugloop" .. players.get_name(pid))
     util.yield(100)
     menu.trigger_commands("brohugv2loop" .. players.get_name(pid))
@@ -14191,7 +14192,8 @@ menu.action(crash,"Ooof", {"oof"}, "", function()
     util.yield(100)
     menu.trigger_commands("michaeltaxiloop" .. players.get_name(pid))
     util.yield(100)
-end)
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
 local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
 local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
 local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
