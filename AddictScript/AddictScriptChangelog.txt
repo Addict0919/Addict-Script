@@ -10,4 +10,4 @@ Added Confusion Crash
 ________________________
 v1.0.0
 ________________________
-Added Confusion Crash bug fix
+Confusion Crash bug fix
