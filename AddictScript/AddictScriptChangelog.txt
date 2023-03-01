@@ -1,6 +1,9 @@
 v9.9
 ________________________
 Bug Fixes
+
 Re Added Scenarios - In Fun Shit>Animations
+
 Added Crash Protection to Nuke V2
+
 Added Confusion Crash
