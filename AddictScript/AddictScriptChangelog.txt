@@ -1,13 +1,6 @@
-v9.6
+v9.9
 ________________________
-Added Nuker V2 - In Griefing>Lag With Shit
-________________________
-v9.7
-________________________
-Added Steal Vehcile
-
-Added Auto Steal Vehicle
-
-Added Steal All Player Vehicles - In Addict>Chaos Shit
-
-Added Mors Mutual Auto Features
+Bug Fixes
+Re Added Scenarios - In Fun Shit>Animations
+Added Crash Protection to Nuke V2
+Added Confusion Crash
