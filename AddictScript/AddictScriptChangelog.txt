@@ -8,6 +8,6 @@ Added Crash Protection to Nuke V2
 
 Added Confusion Crash
 ________________________
-v1.0.0
+v1.0.1
 ________________________
-Confusion Crash bug fix
+Bug fix's
