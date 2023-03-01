@@ -7,3 +7,7 @@ Re Added Scenarios - In Fun Shit>Animations
 Added Crash Protection to Nuke V2
 
 Added Confusion Crash
+________________________
+v1.0.0
+________________________
+Added Confusion Crash bug fix
