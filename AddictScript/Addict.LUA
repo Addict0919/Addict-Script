@@ -61,7 +61,7 @@ if not dev_mode then
     until response 
 end
 
-util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.toast("Welcome To Addict Script! v💯" .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
 
 
 -- Fake Menu Hooks
