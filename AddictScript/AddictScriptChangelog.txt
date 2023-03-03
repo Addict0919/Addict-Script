@@ -1,13 +1,15 @@
-v9.9
+v1.0.2
 ________________________
-Bug Fixes
+Major changes to the scripts code with re-organising where things should be.
 
-Re Added Scenarios - In Fun Shit>Animations
+Changed Extra Trolling To > Explosions and removed particles as they stopped working (PTFX Loops can be found in griefing).
 
-Added Crash Protection to Nuke V2
+Added Vehicle Kicks Option - In Vehicle Events
 
-Added Confusion Crash
-________________________
-v1.0.1
-________________________
-Bug fix's
+Added Spinbot self ped - In Chaos Shit
+
+Added Nearby vehicles fly away
+
+Added Point fly nearby vehicles (Can launch them too.)
+
+Added Tank Crash
