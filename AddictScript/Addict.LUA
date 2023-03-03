@@ -29,18 +29,18 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.2"
+local local_menu_version = "1.0.3"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
         currentVer=tonumber(b)
         response=true;
         if local_menu_version~=currentVer then 
-            menu.action(github,"Update",{"updateaddict"},"If it still says Update when its been updated just ignore it for few mins then click it again or restart the script.",function()
+            menu.action(github,"Update",{"updateaddict"},"If it still says 'Update' when it's been updated just ignore it I'll fix this bug in future keep your eyes peeled for updates in the changelog.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
-                        util.toast("Update failed to Download")
+                        util.toast("Update failed to download, please re-download manually via Github or using Addict Skidz server.")
                         return 
                     end;
                     local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
@@ -6278,6 +6278,22 @@ end)
         end 
     end)
 
+    menu.toggle_loop(playermode, "Fast Respawn", {"fastrespawn"}, "", function()
+        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
+            GRAPHICS.ANIMPOSTFX_STOP_ALL()
+            memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
+        end
+    end,
+        function()
+        local gwobaw = memory.script_global(2672505 + 1685 + 756)
+        memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
+    end)
+    
+    menu.toggle_loop(playermode, "Fast Roll", {"fastroll"}, "", function()
+        STATS.STAT_SET_INT(util.joaat("MP"..util.get_char_slot().."_SHOOTING_ABILITY"), 200, true)
+    end)
+
     menu.toggle(playermode, "Quiet footsteps", {"quietsteps"}, "Disables the sound of your footsteps.", function(toggle)
         AUDIO.SET_PED_FOOTSTEPS_EVENTS_ENABLED(players.user_ped(), not toggle)
     end)
@@ -7712,7 +7728,7 @@ GenerateFeatures = function(pid)
         util.yield(1000)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Launch Up", {"launchcar"}, "Shoots player up",function()
+	menu.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
             ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, 10000, true, false, true)
@@ -13252,9 +13268,9 @@ end)
 
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
-	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once", function () -- idea skidded from ajoker script.
-        		menu.trigger_commands("bail".. players.get_name(pid))
+	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
         		menu.trigger_commands("arm".. players.get_name(pid))
+                menu.trigger_commands("bail".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("ceopay".. players.get_name(pid))
                 menu.trigger_commands("repairloop".. players.get_name(pid))
@@ -13278,15 +13294,11 @@ end)
             util.yield(1000)
             menu.trigger_commands("rp" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("dropfigures" .. players.get_name(pid))
-            util.yield(1000)
             menu.trigger_commands("givecollectibles" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("cards" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("rp" .. players.get_name(pid))
-            util.yield(1000)
-            menu.trigger_commands("dropfigures" .. players.get_name(pid))
             util.yield(1000)
             menu.trigger_commands("cashloopfast" .. players.get_name(pid))
             util.yield(1000)
@@ -13458,10 +13470,10 @@ menu.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then t
 end)
 
 
-local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kaliya for idea.")
+local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kataliya for idea.")
 
 tpf_units = 1
-menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea.", function()
+menu.action(hugs,"Hug Player 1", {}, "Credits to Kataliya for idea.", function()
     menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
     menu.trigger_commands("nocollision" .. " on")
@@ -13473,7 +13485,7 @@ menu.action(hugs,"Hug Player 1", {}, "Credits to Kaliya for idea.", function()
 end)
 
 tpf_units = -0.7
-menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kaliya for idea.", function()
+menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kataliya for idea.", function()
     menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
     menu.trigger_commands("nocollision" .. " on")
