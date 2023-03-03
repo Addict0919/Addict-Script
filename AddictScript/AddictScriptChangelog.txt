@@ -13,3 +13,9 @@ Added Nearby vehicles fly away
 Added Point fly nearby vehicles (Can launch them too.)
 
 Added Tank Crash
+________________________
+v1.0.3
+________________________
+Added Fast Respawn - In Fun Shit> My Player
+
+Added Fast Roll - In Fun Shit> My Player
