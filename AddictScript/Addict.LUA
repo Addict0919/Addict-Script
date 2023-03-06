@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.4"
+local local_menu_version = "1.0.5"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4317,7 +4317,7 @@ Net_Shit = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); en
 
 menu.action(Net_Shit, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
     local player_ped = PLAYER.PLAYER_PED_ID()    
-    for i=1,3  do
+    for i = 1 , 7  do
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1112.384, 225.92778, -48.758114)
         menu.trigger_commands("levitate")
         util.yield(1000)
@@ -5311,6 +5311,10 @@ function rcbomb(toggle)
 	end
 end
 
+local function is_user_driving_vehicle()
+    return (PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) and VEHICLE.GET_PED_IN_VEHICLE_SEAT(entities.get_user_vehicle_as_handle(), -1, false) == players.user_ped())
+end
+
 local driveshit = menu.list(funfun, "Driving Shit", {}, "")
 
 menu.action(driveshit, "Candy Paint Vehicle", {"candypaint"}, "", function()
@@ -5369,6 +5373,36 @@ menu.action(autodrive, "Stop Driving", {"aistop"}, "", function(v)
     TASK.CLEAR_PED_TASKS(ped)
 end)
 
+menu.toggle_loop(driveshit, "Vehicle Jump", {"vehiclejump"}, "Lets you jump with your car if you tap 'Left Shift' or 'A' on controller.", function()
+    local my_cur_car = entities.get_user_vehicle_as_handle()
+    if not is_user_driving_vehicle() then return end
+    local prevPress = PAD.IS_CONTROL_PRESSED(21, 21)
+    if PAD.IS_CONTROL_PRESSED(21, 21) then
+        local mySpeed = ENTITY.GET_ENTITY_SPEED(my_cur_car)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(my_cur_car, 1, 0, 2, (mySpeed / 10) + 5, 0, true, true, true)
+        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, 'Hydraulics_Down', players.user_ped(), 'Lowrider_Super_Mod_Garage_Sounds', true, 20)
+    end
+end)
+
+menu.toggle_loop(driveshit, "Unlimited Nitro", {"unitro"}, "Enable nitro boost on any vehicle,tap 'X' or 'A' on controller. still working on how to turn it off.", function()
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED('veh_xs_vehicle_mods') then
+        STREAMING.REQUEST_NAMED_PTFX_ASSET('veh_xs_vehicle_mods')
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED('veh_xs_vehicle_mods') do
+            util.yield_once()
+        end
+    end
+    local my_cur_car = entities.get_user_vehicle_as_handle()
+    if not is_user_driving_vehicle() then return end
+    local prevPress = PAD.IS_CONTROL_PRESSED(21, 21)
+    if PAD.IS_CONTROL_PRESSED(21, 21) and PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) then
+        local mySpeed = NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(my_cur_car, players.user_ped())
+        VEHICLE.SET_OVERRIDE_NITROUS_LEVEL(my_cur_car, true, 500, 2, 0, 1, 200, 1, false)
+        --AUDIO.PLAY_SOUND_FROM_ENTITY(-1, 'Hydraulics_Down', players.user_ped(), 'Lowrider_Super_Mod_Garage_Sounds', true, 20)
+    elseif PAD.IS_CONTROL_PRESSED(21, 21) and PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) then
+    VEHICLE.SET_OVERRIDE_NITROUS_LEVEL(my_cur_car, false, 500, 2, 0, 1, 200, 1, false)
+    end
+end)
+
 menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number 'Left Shift' on you're numberpad or 'A' on controller.", function(on_toggle)
     if on_toggle then
         boost(true)
@@ -5384,6 +5418,17 @@ menu.toggle_loop(driveshit, "Engine Always On", {"alwayson"}, "", function()
         VEHICLE.SET_VEHICLE_LIGHTS(vehicle, 0)
         VEHICLE.SET_VEHICLE_HEADLIGHT_SHADOWS(vehicle, 2)
     end
+end)
+
+menu.toggle_loop(driveshit, "Turn Radio Off", {"radiooff"}, "Turn off the radio completely (only for you).", function () -- Credits To Acjoker Script
+    local veh = PED.GET_VEHICLE_PED_IS_IN(players.user_ped())
+    if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), false) then
+        AUDIO.SET_VEHICLE_RADIO_ENABLED(veh, false)
+        util.yield()
+    end
+end, function ()
+    local veh = PED.GET_VEHICLE_PED_IS_IN(players.user_ped())
+    AUDIO.SET_VEHICLE_RADIO_ENABLED(veh, true)
 end)
 
         menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
@@ -5992,6 +6037,73 @@ function delete_object(model)
     end
 end
 
+scaleform = require('ScaleformLib')
+sf = scaleform('instructional_buttons')
+function Hudhide()
+    HUD.HIDE_HUD_COMPONENT_THIS_FRAME(6)
+    HUD.HIDE_HUD_COMPONENT_THIS_FRAME(7)
+    HUD.HIDE_HUD_COMPONENT_THIS_FRAME(8)
+    HUD.HIDE_HUD_COMPONENT_THIS_FRAME(9)
+---@diagnostic disable-next-line: param-type-mismatch
+    memory.write_int(memory.script_global(1645739+1121), 1)
+    sf.CLEAR_ALL()
+    sf.TOGGLE_MOUSE_BUTTONS(false)
+end
+
+function SFlev() 
+    Hudhide()
+    sf.SET_DATA_SLOT(0,PAD.GET_CONTROL_INSTRUCTIONAL_BUTTONS_STRING(0, 68, true), "Lazer Eyes")
+    sf.DRAW_INSTRUCTIONAL_BUTTONS()
+    sf:draw_fullscreen()
+end
+
+function SFle() 
+    Hudhide()
+    sf.SET_DATA_SLOT(0,PAD.GET_CONTROL_INSTRUCTIONAL_BUTTONS_STRING(0, 25, true), "Lazer Eyes")
+    sf.DRAW_INSTRUCTIONAL_BUTTONS()
+    sf:draw_fullscreen()
+end
+
+function Streamptfx(lib)
+    STREAMING.REQUEST_NAMED_PTFX_ASSET(lib)
+    while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(lib) do
+        util.yield()
+    end
+    GRAPHICS.USE_PARTICLE_FX_ASSET(lib)
+end
+
+function Player_rotate()
+    local CV = CAM.GET_GAMEPLAY_CAM_COORD()
+    local rot = CAM.GET_GAMEPLAY_CAM_ROT(0)
+    local he = MISC.GET_HEADING_FROM_VECTOR_2D(CV.x, CV.y)
+    ENTITY.SET_ENTITY_HEADING(players.user_ped(), he)
+    ENTITY.SET_ENTITY_ROTATION(players.user_ped(), rot.x, rot.y, rot.z, 0, true)
+end
+
+function Leyes(lazer, impact, camrot, weap)
+    local reye, leye
+    Player_rotate()
+    if util.is_session_started() then
+        reye = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(players.user_ped(), PED.GET_PED_BONE_INDEX(players.user_ped(), 0x6b52))
+        leye = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(players.user_ped(), PED.GET_PED_BONE_INDEX(players.user_ped(), 0x62ac))
+    else
+        reye = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(players.user_ped(), PED.GET_PED_BONE_INDEX(players.user_ped(), 6468))
+        leye = ENTITY.GET_WORLD_POSITION_OF_ENTITY_BONE(players.user_ped(), PED.GET_PED_BONE_INDEX(players.user_ped(), 5956))
+    end
+    Streamptfx('weap_xs_weapons')
+    camrot.x += 90
+    camrot.y += 180
+    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD('bullet_tracer_xs_sr', reye.x, reye.y, reye.z, camrot.x, camrot.y,  camrot.z, 1, true)
+    Streamptfx('weap_xs_weapons')
+    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD('bullet_tracer_xs_sr', leye.x, leye.y, leye.z, camrot.x, camrot.y,  camrot.z, 1, true)
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped)
+    for i = 1, 1 do
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(reye.x, reye.y, reye.z + 1, camrot.x, camrot.y, camrot.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(leye.x, leye.y, leye.z + 1, camrot.x, camrot.y, camrot.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
+    end
+end
+
 
 all_female_sex_voicenames = {
     "S_F_Y_HOOKER_01_WHITE_FULL_01",
@@ -6164,7 +6276,92 @@ menu.action(list, "Normal shit", {"nshit"}, "Make a normale sized shit", functio
     util.yield(1000)
     entities.create_object(rshit, c)
 end)
+
+local lazereyes = false
+coords_ped = v3()
+coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
+coords_ped.x = coords_ped.x + math.random(-2, 2)
+coords_ped.y = coords_ped.y + math.random(-2, 2)
+coords_ped.z = coords_ped.z
+
+local impact = v3_2(coords_ped.x, coords_ped.y, coords_ped.z)
+local lazer = {exp = false, bull = 'WEAPON_TACTICALRIFLE', crosshair = true}
+
+menu.toggle_loop(playermode, "Lazer Eyes", {"lazereyes"}, "Shoot lazers out of your eyes also works in vehicles", function (on)
+    lazereyes = on
+    if lazer.crosshair then
+        HUD.DISPLAY_SNIPER_SCOPE_THIS_FRAME()
+    end
     
+    local weap = util.joaat(lazer.bull)
+    local camrot = CAM.GET_FINAL_RENDERED_CAM_ROT(2)
+    WEAPON.REQUEST_WEAPON_ASSET(weap)
+    if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped())  then
+        SFlev()
+    else
+        SFle()
+    end
+    if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) and PAD.IS_CONTROL_PRESSED(0, 68) then
+        Leyes(lazer, impact, camrot, weap)
+        ENTITY.SET_ENTITY_ROTATION(entities.get_user_vehicle_as_handle(), 0, 0, camrot.z, 2, true)
+    elseif not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) and PAD.IS_CONTROL_PRESSED(0, 25) then
+        Leyes(lazer, impact, camrot, weap)
+    end
+end)
+
+-------------------------------------
+-- SUPERPUNCH
+-------------------------------------
+
+function SetBit(bits, place)
+	return (bits | (1 << place))
+end
+
+function ClearBit(bits, place)
+	return (bits & ~(1 << place))
+end
+
+function set_explosion_proof(entity, value)
+	local pEntity = entities.handle_to_pointer(entity)
+	if pEntity == 0 then return end
+	local damageBits = memory.read_uint(pEntity + 0x188)
+	damageBits = value and SetBit(damageBits, 11) or ClearBit(damageBits, 11)
+	memory.write_uint(pEntity + 0x188, damageBits)
+end
+
+menu.toggle_loop(playermode, "Superpunch", {"superpunch"}, "", function()
+	local pWeapon = memory.alloc_int()
+	WEAPON.GET_CURRENT_PED_WEAPON(players.user_ped(), pWeapon, true)
+	local weaponHash = memory.read_int(pWeapon)
+	if WEAPON.IS_PED_ARMED(players.user_ped(), 1) or weaponHash == util.joaat("weapon_unarmed") then
+		local pImpactCoords = ENTITY.GET_ENTITY_COORDS(players.user_ped(), true)
+		local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), false)
+		if WEAPON.GET_PED_LAST_WEAPON_IMPACT_COORD(players.user_ped(), pImpactCoords) then
+			set_explosion_proof(players.user_ped(), true)
+			util.yield_once()
+			FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z - 1.0, 29, 5.0, false, true, 0.3, true)
+
+		elseif not FIRE.IS_EXPLOSION_IN_SPHERE(29, pos.x, pos.y, pos.z, 2.0) then
+			set_explosion_proof(players.user_ped(), false)
+		end
+	end
+end)
+
+local jump = {height = 0.6 }
+menu.toggle_loop(playermode, "Super Man", {}, "Keep going higher the longer you press jump (can also be used to fly), Make sure you disable lock parachutes.", function () -- Credits to Acjoker Script
+    if PAD.IS_CONTROL_PRESSED(0, 22) or PAD.IS_CONTROL_JUST_PRESSED(0, 21) then
+        PED.SET_PED_CAN_RAGDOLL(players.user_ped(), false)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(players.user_ped(), 1, 0.0, 0.6, jump.height, 0, 0, 0, 0, true, true, true, true)
+        if ENTITY.IS_ENTITY_IN_AIR(players.user_ped()) then
+            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(players.user_ped(), 1, 0.0, 0.6, jump.height, 0, 0, 0, 0, true, true, true, true)
+        end
+    end
+end)
+
+menu.slider(playermode, "Super Man Power", {"supermanpower"}, "Adjust the amount you move upwards. Make sure you disable lock parachutes.", 6, 1000, 6, 1, function (a) -- Credits to Acjoker Script
+    jump.height = a*0.1
+end)
+
 escort_root = menu.list(playermode, "Escort services", {"sexluaescorts"}, "")
 
 menu.toggle_loop(escort_root, "Female Moan", {"fsexmoan"}, "", function(on_click)
@@ -22892,403 +23089,6 @@ end
 			end
 	end)
 
-
-spoofpresets = menu.list(Net_Shit, "IP Spoofer Repository", {}, "Stand's default GeoIP may show wrong location on some presets", function(); end)
-
-	menu.action(spoofpresets, "Enable IP Spoofer", {}, "", function()
-		menu.trigger_commands("spoofip on")
-	end)
-
-	menu.action(spoofpresets, "Disable IP Spoofer", {}, "", function()
-		menu.trigger_commands("spoofip off")
-	end)
-
-	menu.divider(spoofpresets, "Fun IP Presets")
-
-	menu.action(spoofpresets, "Computer Problem Solving (US)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.146." .. tostring(math.random(48, 123)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "US Department of Defense", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "155.21." .. tostring(math.random(224, 255)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "NASA (US)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.169." .. tostring(math.random(48, 123)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Apple (US)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "17.234." .. tostring(math.random(0, 127)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Akamai (NL)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "23.66." .. tostring(math.random(16, 31)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Microsoft (US)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "40.89." .. tostring(math.random(224, 255)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Microsoft (NL)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "51.144." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	t2spoofpresets = menu.list(spoofpresets, "Take-Two", {}, "", function(); end)
-	
-	menu.action(t2spoofpresets, "Take-Two (UK)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.227." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (US)", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "192.81." .. tostring(math.random(240, 244)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "139.138." .. tostring(math.random(231, 232)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (AU)", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "139.138.226." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "139.138.244." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (DE)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.233." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (ES)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.247." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (HU)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.236." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (CZ)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.237." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (IN)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.224." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (SG)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.228." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (JP)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.229." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (CN)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.230." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(t2spoofpresets, "Take-Two (HK)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.138.238." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.divider(spoofpresets, "VPN IP Presets")
-
-	octospoofpresets = menu.list(spoofpresets, "OVH", {}, "", function(); end)
-
-	menu.action(octospoofpresets, "OVH (AU)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.99." .. tostring(math.random(232, 234)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(octospoofpresets, "OVH (DE)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "145.239.235." .. tostring(math.random(40, 111)))
-	end)
-
-	menu.action(octospoofpresets, "OVH (UK)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "51.89.208." .. tostring(math.random(88, 95)))
-	end)
-
-	menu.action(octospoofpresets, "OVH (US)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "51.81.119." .. tostring(math.random(0, 15)))
-	end)
-
-	menu.action(octospoofpresets, "OVH (CA)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "192.99.250." .. tostring(math.random(208, 223)))
-	end)
-
-	tempestpresets = menu.list(spoofpresets, "Tempest Hosting", {}, "", function(); end)
-
-	menu.action(tempestpresets, "Tempest Hosting (US-NY)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.252." .. tostring(math.random(128, 255)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (US-CA)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.252." .. tostring(math.random(0, 127)))
-	end)
-	
-	menu.action(tempestpresets, "Tempest Hosting (US-FL)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.254." .. tostring(math.random(128, 255)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (CA)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.253." .. tostring(math.random(128, 255)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (NL)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.253." .. tostring(math.random(0, 127)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (UK)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.255." .. tostring(math.random(0, 127)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (RU)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.253." .. tostring(math.random(127, 255)))
-	end)
-
-	menu.action(tempestpresets, "Tempest Hosting (JP)", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "142.252.254." .. tostring(math.random(0, 127)))
-	end)
-
-	menu.divider(spoofpresets, "Residential IP Presets")
-
-	menu.action(spoofpresets, "Russia", {}, "", function()
-		sel = math.random(1,3)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "109.252." .. tostring(math.random(40, 45)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "92.100." .. tostring(math.random(178, 182)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 3 then
-			menu.trigger_commands("spoofedip " .. "217.107." .. tostring(math.random(82, 98)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 4 then
-			menu.trigger_commands("spoofedip " .. "95.24." .. tostring(math.random(0, 31)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "China", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "42.123." .. tostring(math.random(0, 31)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Australia", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "139.168." .. tostring(math.random(40, 53)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "USA Chicago", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "73.110." .. tostring(math.random(149, 151)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "USA Baltimore", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "69.67." .. tostring(math.random(80, 95)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "USA Texas", {}, "AT&T / IBM", function()
-		menu.trigger_commands("spoofedip " .. "198.81.193." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Germany", {}, "", function()
-		sel = math.random(1,4)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "84.56." .. tostring(math.random(218, 231)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "46.223." .. tostring(math.random(234, 251)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 3 then
-			menu.trigger_commands("spoofedip " .. "93." .. tostring(math.random(192, 255)) .. "." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 4 then
-			menu.trigger_commands("spoofedip " .. "89.14." .. tostring(math.random(120, 124)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Italy", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "5.89." .. tostring(math.random(190, 197)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "217.200." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Netherlands", {}, "", function()
-		sel = math.random(1,4)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "217.123." .. tostring(math.random(124, 125)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "217." .. tostring(math.random(100, 105)) .. "." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 3 then
-			menu.trigger_commands("spoofedip " .. "139.156." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 4 then
-			menu.trigger_commands("spoofedip " .. "94.212." .. tostring(math.random(40, 47)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "France", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "2.10." .. tostring(math.random(134, 151)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "United Kingdom", {}, "", function()
-		sel = math.random(1,4)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "81.109." .. tostring(math.random(120, 130)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "217.33." .. tostring(math.random(88, 90)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 3 then
-			menu.trigger_commands("spoofedip " .. "2.217." .. tostring(math.random(20, 30)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 4 then
-			menu.trigger_commands("spoofedip " .. "86.0." .. tostring(math.random(54, 60)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Ireland", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "84.203." .. tostring(math.random(0, 10)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Switzerland", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "85.0." .. tostring(math.random(41, 43)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "84.73." .. tostring(math.random(0, 115)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Austria", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "194.166." .. tostring(math.random(250, 252)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Denmark", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "83.92." .. tostring(math.random(121, 124)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "87.104." .. tostring(math.random(64, 127)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Belgium", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "94.111." .. tostring(math.random(2, 4)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Spain", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "93.176." .. tostring(math.random(154, 155)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Portugal", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "94.61." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Norway", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "80.213." .. tostring(math.random(174, 181)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Finland", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "88.113." .. tostring(math.random(64, 83)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Sweden", {}, "", function()
-		sel = math.random(1,2)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "78.72." .. tostring(math.random(240, 245)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "151.252." .. tostring(math.random(128, 172)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Slovakia", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "90.64." .. tostring(math.random(50, 55)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Romania", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "79.117." .. tostring(math.random(0, 127)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Poland", {}, "", function()
-		sel = math.random(1,3)
-		if sel == 1 then
-			menu.trigger_commands("spoofedip " .. "178.36." .. tostring(math.random(221, 229)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 2 then
-			menu.trigger_commands("spoofedip " .. "193.17." .. tostring(math.random(174, 174)) .. "." .. tostring(math.random(0, 255)))
-		elseif sel == 3 then
-			menu.trigger_commands("spoofedip " .. "217." .. tostring(math.random(96, 99)) .. "." .. tostring(math.random(0, 255)) .. "." .. tostring(math.random(0, 255)))
-		end
-	end)
-
-	menu.action(spoofpresets, "Czech Republic", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "185.91." .. tostring(math.random(164, 166)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Bulgaria", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "90.154." .. tostring(math.random(162, 164)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Slovenia", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "77.111." .. tostring(math.random(53, 53)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Croatia", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "185.133." .. tostring(math.random(132, 135)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Albania", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "79.106." .. tostring(math.random(160, 191)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Lithuania", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "90.140." .. tostring(math.random(13, 13)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Hungary", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "84.2." .. tostring(math.random(137, 137)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-	menu.action(spoofpresets, "Greece", {}, "", function()
-		menu.trigger_commands("spoofedip " .. "2.85." .. tostring(math.random(227, 227)) .. "." .. tostring(math.random(0, 255)))
-	end)
-
-ColorRepo = menu.list(Net_Shit, "Color Repository", {"colorrepo"}, "", function(); end)
-BasicColors = menu.list(ColorRepo, "Basic Colors", {}, "", function(); end)
-SecondaryColors = menu.list(ColorRepo, "Secondary Colors", {}, "", function(); end)
-
-menu.action(BasicColors, "Red", {"red"}, "Copies a red hex value to your clipboard", function()
-	util.copy_to_clipboard("ff0000")
-end)
-
-menu.action(BasicColors, "Green", {"green"}, "Copies a green hex value to your clipboard", function()
-	util.copy_to_clipboard("00ff00")
-end)
-
-menu.action(BasicColors, "Blue", {"blue"}, "Copies a blue hex value to your clipboard", function()
-	util.copy_to_clipboard("0000ff")
-end)
-
-menu.action(BasicColors, "Yellow", {"yellow"}, "Copies a yellow hex value to your clipboard", function()
-	util.copy_to_clipboard("ffff00")
-end)
-
-menu.action(BasicColors, "Purple", {"purple"}, "Copies a purple hex value to your clipboard", function()
-	util.copy_to_clipboard("800080")
-end)
-
-menu.action(BasicColors, "Orange", {"orange"}, "Copies an orange hex value to your clipboard", function()
-	util.copy_to_clipboard("ffa500")
-end)
-
-menu.action(BasicColors, "White", {"white"}, "Copies a white hex value to your clipboard", function()
-	util.copy_to_clipboard("ffffff")
-end)
-
-menu.action(BasicColors, "Black", {"black"}, "Copies a black hex value to your clipboard", function()
-	util.copy_to_clipboard("000000")
-end)
-
-menu.action(SecondaryColors, "Magenta", {"magenta"}, "Magenta color for magenta menu", function()
-	util.copy_to_clipboard("ff00FF")
-end)
-
-menu.action(SecondaryColors, "CEO of Crash", {"ceoofcrash"}, "The color I personally use, in case you wanted it", function()
-	util.copy_to_clipboard("00ffa8")
-end)
-
-
 faketype = menu.list(Net_Shit, "Spoof Typing indicator", {}, "", function(); end)
 
 menu.action(faketype, "Start Fake Typing", {}, "Will show a typing indicator above your nickname and also make other menus think that you're typing in chat", function()
@@ -24906,48 +24706,6 @@ for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 end
 end
 end)
-
-
-
--------------------------------------
--- SUPERPUNCH
--------------------------------------
-
-function SetBit(bits, place)
-	return (bits | (1 << place))
-end
-
-function ClearBit(bits, place)
-	return (bits & ~(1 << place))
-end
-
-function set_explosion_proof(entity, value)
-	local pEntity = entities.handle_to_pointer(entity)
-	if pEntity == 0 then return end
-	local damageBits = memory.read_uint(pEntity + 0x188)
-	damageBits = value and SetBit(damageBits, 11) or ClearBit(damageBits, 11)
-	memory.write_uint(pEntity + 0x188, damageBits)
-end
-
-menu.toggle_loop(worldchaos, "Superpunch", {"superpunch"}, "", function()
-	local pWeapon = memory.alloc_int()
-	WEAPON.GET_CURRENT_PED_WEAPON(players.user_ped(), pWeapon, true)
-	local weaponHash = memory.read_int(pWeapon)
-	if WEAPON.IS_PED_ARMED(players.user_ped(), 1) or weaponHash == util.joaat("weapon_unarmed") then
-		local pImpactCoords = ENTITY.GET_ENTITY_COORDS(players.user_ped(), true)
-		local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), false)
-		if WEAPON.GET_PED_LAST_WEAPON_IMPACT_COORD(players.user_ped(), pImpactCoords) then
-			set_explosion_proof(players.user_ped(), true)
-			util.yield_once()
-			FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z - 1.0, 29, 5.0, false, true, 0.3, true)
-
-		elseif not FIRE.IS_EXPLOSION_IN_SPHERE(29, pos.x, pos.y, pos.z, 2.0) then
-			set_explosion_proof(players.user_ped(), false)
-		end
-	end
-end)
-
-
 
 enabled = false
 menu.toggle(bountyloop, "Infinite bountys Loop", {"infinibounty"}, "Places a 10k bounty on the entire session again and again.", function(on)
