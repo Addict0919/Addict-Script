@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.8"
+local local_menu_version = "1.0.9"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4307,15 +4307,18 @@ for pids = 0, 31 do
     end
 end
 
-local Player_List = menu.ref_by_path("Players")
+
+
 function do_label_preset(label, text)
     --util.log("Set label " .. label .. " > " .. text)
     menu.trigger_commands("addlabel " .. label)
     local prep = "edit" .. string.gsub(label, "_", "") .. " " .. text
     menu.trigger_commands(prep)
-    menu.trigger_commands("luaaddict")
+
+    menu.trigger_commands("addictlabelpresets")
+    --local Player_List = menu.ref_by_path("Players")
     --menu.trigger_command(Player_List)
-    --util.toast("Label set!")
+    util.toast("Label Set!")
 end
 
 Net_Shit = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
@@ -4337,176 +4340,201 @@ end)
 
 labelpresets = menu.list(Net_Shit, "Label Presets", {"addictlabelpresets"}, "", function(); end)
 
-menu.toggle(labelpresets, "Auto Label Setter", {"autolabel"}, "Auto set all the labels everytime you join a new session. Save this turned 'On' your profile to keep set.", function(state)
-    if state then
-        players.on_join(function(player_id)
-            local my_player_id <const> = players.user()
-            if player_id == my_player_id then
-                wait_session_transition()
-                menu.trigger_commands("joinlabel") -- 1
-                util.yield(100)
-                menu.trigger_commands("initiallabel") -- 2
-                util.yield(100)
-                menu.trigger_commands("loadlabel") -- 3
-                util.yield(100)
-                menu.trigger_commands("onlinelabel") -- 4
-                util.yield(100)
-                menu.trigger_commands("diedlabel") -- 5
-                util.yield(100)
-                menu.trigger_commands("dippedlabel") -- 6
-                util.yield(100)
-                menu.trigger_commands("bannedlabel") -- 7
-                util.yield(100)
-                menu.trigger_commands("loadstorylabel") -- 8
-                util.yield(100)
-                menu.trigger_commands("muglabel") -- 9
-                util.yield(100)
-                menu.trigger_commands("killlabel") -- 10
-                util.yield(100)
-                menu.trigger_commands("radarlabel") -- 11
-                util.yield(100)
-                menu.trigger_commands("translabel") -- 12
-                util.yield(100)-------------------------------- Middle
-                menu.trigger_commands("joinlabel") -- 1
-                util.yield(100)
-                menu.trigger_commands("initiallabel") -- 2
-                util.yield(100)
-                menu.trigger_commands("loadlabel") -- 3
-                util.yield(100)
-                menu.trigger_commands("onlinelabel") -- 4
-                util.yield(100)
-                menu.trigger_commands("diedlabel") -- 5
-                util.yield(100)
-                menu.trigger_commands("dippedlabel") -- 6
-                util.yield(100)
-                menu.trigger_commands("bannedlabel") -- 7
-                util.yield(100)
-                menu.trigger_commands("loadstorylabel") -- 8
-                util.yield(100)
-                menu.trigger_commands("muglabel") -- 9
-                util.yield(100)
-                menu.trigger_commands("killlabel") -- 10
-                util.yield(100)
-                menu.trigger_commands("radarlabel") -- 11
-                util.yield(100)
-                menu.trigger_commands("translabel") -- 12
-            end
-        end)
+menu.toggle(labelpresets, "Set all labels", {"autolabel"}, "Auto set all the labels. Save this turned 'On' your profile to keep set.", function(on_toggle)
+    if on_toggle then
+        menu.trigger_commands("joinlabel") -- 1
+        util.yield_once()
+        menu.trigger_commands("initiallabel") -- 2
+        util.yield_once()
+        menu.trigger_commands("loadlabel") -- 3
+        util.yield_once()
+        menu.trigger_commands("onlinelabel") -- 4
+        util.yield_once()
+        menu.trigger_commands("diedlabel") -- 5
+        util.yield_once()
+        menu.trigger_commands("dippedlabel") -- 6
+        util.yield_once()
+        menu.trigger_commands("bannedlabel") -- 7
+        util.yield_once()
+        menu.trigger_commands("loadstorylabel") -- 8
+        util.yield_once()
+        menu.trigger_commands("muglabel") -- 9
+        util.yield_once()
+        menu.trigger_commands("killlabel") -- 10
+        util.yield_once()
+        menu.trigger_commands("radarlabel") -- 11
+        util.yield_once()
+        menu.trigger_commands("translabel") -- 12
+        util.yield_once()
+        menu.trigger_commands("ceolabel") -- 13
+        util.yield_once()
+        menu.trigger_commands("viplabel") -- 14
+        util.yield_once()
+        menu.trigger_commands("vipglabel") -- 15
+        util.yield_once()
+        menu.trigger_commands("mclabel") -- 16
+        util.yield_once()
+        menu.trigger_commands("regceoglabel") -- 17
+        util.yield_once()
+        menu.trigger_commands("associatelabel") -- 18
+        util.yield_once()
+        menu.trigger_commands("ceogodlabel") -- 19
+        util.yield_once()
+        menu.trigger_commands("secceogodlabel") -- 20
+        util.yield_once()
+        menu.trigger_commands("isoffradarlabel") -- 21
+        util.yield_once()
+        menu.trigger_commands("quitasslabel") -- 22
+        util.yield_once()
+        menu.trigger_commands("joinminlabel") -- 23
+        util.yield_once()
+        menu.trigger_commands("ceogodoflabel") -- 24
+        util.yield_once()
+        menu.trigger_commands("hireminlabel") -- 25
+        util.yield_once()
+        menu.trigger_commands("hireminslabel") -- 26
+        util.yield_once()
+        menu.trigger_commands("retirelabel") -- 27
+        util.yield_once()
+        menu.trigger_commands("nearlabel") -- 28
+        util.toast("All 21 Labels Set!")
+    else
+        -- Nothing as removing labels using re_by_path is not working
     end
 end)
 
 menu.hyperlink(labelpresets, "Label List", "https://gist.githubusercontent.com/aaronlink127/afc889be7d52146a76bab72ede0512c7/raw")
 
-menu.toggle(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("HUD_JOINING", "Joining GTA Online With Addict Script!")
-    else
-        --
-    end
+menu.action(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function()
+    do_label_preset("HUD_JOINING", "Joining GTA Online With Addict Script!") -- 1
 end)
 
-menu.toggle(labelpresets, "Initializing fuck all really...", {"initiallabel"}, "Usually says: \"Initializing\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("FMMC_PLYLOAD", "Initializing fuck all really...")
-    else
-        --
-    end
+menu.action(labelpresets, "Initializing fuck all really...", {"initiallabel"}, "Usually says: \"Initializing\"", function()
+    do_label_preset("FMMC_PLYLOAD", "Initializing fuck all really...") -- 2
 end)
 
-menu.toggle(labelpresets, "Taking forever to load... AUUUUUGH!", {"loadlabel"}, "Usually says: \"Loading\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("MP_SPINLOADING", "Taking forever to load... AUUUUUGH!")
-    else
-        --
-    end
+menu.action(labelpresets, "Taking forever to load... AUUUUUGH!", {"loadlabel"}, "Usually says: \"Loading\"", function()
+    do_label_preset("MP_SPINLOADING", "Taking forever to load... AUUUUUGH!") -- 3
 end)
 
-menu.toggle(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA online\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("HUD_LBD_FMF", "Addict Online (Invite, ~1~)")
-        do_label_preset("HUD_LBD_FMP", "Addict Online (Public, ~1~)")
-        do_label_preset("HUD_LBD_FMS", "Addict Online (Solo, ~1~)")
-        do_label_preset("HUD_LBD_FMF", "Addict Online (Friend, ~1~)")
-        do_label_preset("PM_SCR_MIS", "Addict Online")
-        do_label_preset("PCARD_ONLINE_OTHER", "Addict Online")
-        do_label_preset("ONLINE_BUILD", "Addict Online")
-        do_label_preset("LOADING_MPLAYER", "Addict Online")
-    else
-        --
-    end
+menu.action(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA online\"", function()
+    do_label_preset("HUD_LBD_FMF", "Addict Online (Invite, ~1~)") -- 4
+    do_label_preset("HUD_LBD_FMP", "Addict Online (Public, ~1~)")
+    do_label_preset("HUD_LBD_FMS", "Addict Online (Solo, ~1~)")
+    do_label_preset("HUD_LBD_FMF", "Addict Online (Friend, ~1~)")
+    do_label_preset("PM_SCR_MIS", "Addict Online")
+    do_label_preset("PCARD_ONLINE_OTHER", "Addict Online")
+    do_label_preset("ONLINE_BUILD", "Addict Online")
+    do_label_preset("LOADING_MPLAYER", "Addict Online")
 end)
 
-menu.toggle(labelpresets, "Yeeted", {"diedlabel"}, "Usually says: \"-playername- died.\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_RED~ yeeted.")
-    else
-        --
-    end
+menu.action(labelpresets, "Yeeted", {"diedlabel"}, "Usually says: \"-playername- died.\"", function()
+    do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_RED~ yeeted.") -- 5
 end)
 
-menu.toggle(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_RED~ dipped.")
-    else
-        --
-    end
+menu.action(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function()
+    do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_RED~ dipped.") -- 6
 end)
 
-menu.toggle(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "Usually says: \"You have been banned from Grand Theft Auto Online.\" Hopefully you never see this one.", function(on_toggle)
-    if on_toggle then
-        do_label_preset("HUD_ROSBANNED", "You finally got banned. Oh well.")
-        do_label_preset("HUD_ROSBANPERM", "You finally got banned. Oh well.")
-    else
-        --
-    end
+menu.action(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "Usually says: \"You have been banned from Grand Theft Auto Online.\" Hopefully you never see this one.", function()
+    do_label_preset("HUD_ROSBANNED", "You finally got banned. Oh well.") -- 7
+    do_label_preset("HUD_ROSBANPERM", "You finally got banned. Oh well.")
 end)
 
-menu.toggle(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("LOADING_SPLAYER_L", "~a~~HUD_COLOUR_RED~ Going offline...")
-    else
-        --
-    end
+menu.action(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function()
+    do_label_preset("LOADING_SPLAYER_L", "~a~~HUD_COLOUR_RED~ Going offline...") -- 8
 end)
 
-menu.toggle(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("ACH47_DESC", "You fucked up the piss flap that mugged you.")
-    else
-        --
-    end
+menu.action(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function()
+    do_label_preset("ACH47_DESC", "You fucked up the piss flap that mugged you.") -- 9
 end)
 
-menu.toggle(labelpresets, "Player fucked up player", {"killlabel"}, "Usually says: \"Player Killed Player\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("TICK_KILL", "~a~~HUD_COLOUR_RED~ fucked up ~a~")
-    else
-        --
-    end
+menu.action(labelpresets, "Player fucked up player", {"killlabel"}, "Usually says: \"Player Killed Player\"", function()
+    do_label_preset("TICK_KILL", "~a~~HUD_COLOUR_RED~ fucked up ~a~") -- 10
 end)
 
-menu.toggle(labelpresets, "Some Players Are Off The Radar Hiding Like Bitches.", {"radarlabel"}, "Usually says: \"Some players are Off the Radar.\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("GC_TCK_95", "~a~~HUD_COLOUR_RED~ Some Players Are Off The Radar Hiding Like Bitches. ~a~")
-    else
-        --
-    end
+menu.action(labelpresets, "Some Players Are Off The Radar Hiding Like Bitches.", {"radarlabel"}, "Usually says: \"Some players are Off the Radar.\"", function()
+    do_label_preset("GC_TCK_95", "~a~~HUD_COLOUR_RED~ Some Players Are Off The Radar Hiding Like Bitches. ~a~") -- 11
 end)
 
-menu.toggle(labelpresets, "Transaction Pending Forever & Ever & Ever & Ever...", {"translabel"}, "Usually says: \"Transaction Pending.\"", function(on_toggle)
-    if on_toggle then
-        do_label_preset("HUD_TRANSP", "Transaction Pending Forever & Ever & Ever & Ever...")
-    else
-        --
-    end
+menu.action(labelpresets, "Transaction Pending Forever & Ever & Ever & Ever...", {"translabel"}, "Usually says: \"Transaction Pending.\"", function()
+    do_label_preset("HUD_TRANSP", "Transaction Pending Forever & Ever & Ever & Ever...") -- 12
 end)
+
+menu.action(labelpresets, "Murdered a CEO", {"ceolabel"}, "Usually says: \"killed a CEO\"", function()
+    do_label_preset("GB_TICK_KILLC", "<C>~a~</C>~a~~HUD_COLOUR_RED~ Murdered a CEO ~a~<C>~a~</C>.") -- 13
+end)
+
+menu.action(labelpresets, "Murdered a VIP", {"viplabel"}, "Usually says: \"killed a VIP\"", function()
+    do_label_preset("GB_TICK_KILLB", "<C>~a~</C>~a~~HUD_COLOUR_RED~ Murdered a VIP ~a~<C>~a~</C>.") -- 14
+end)
+
+menu.action(labelpresets, "has registered as a VIP Gangster", {"vipglabel"}, "Usually says: \"has registered as a VIP\"", function()
+    do_label_preset("GB_UBECOME", "~a~ ~s~~a~~HUD_COLOUR_PURPLE~ has registered as a VIP Gangster.~a~") -- 155
+end)
+
+menu.action(labelpresets, "has registered as an MC Goth", {"mclabel"}, "Usually says: \"has registered as an MC President\"", function()
+    do_label_preset("GB_UBECOMEB", "~a~ ~s~~a~~HUD_COLOUR_RED~ has registered as a MC Goth.~a~") -- 16
+end)
+
+menu.action(labelpresets, "has registered as a CEO God", {"regceoglabel"}, "Usually says: \"has registered as a CEO\"", function()
+    do_label_preset("GB_UBECOMEC", "~a~ ~s~~a~~HUD_COLOUR_PURPLE~ has registered as a CEO God.~a~") -- 17
+end)
+
+menu.action(labelpresets, "is now your Minion", {"associatelabel"}, "Usually says: \"is now your Associate\"", function()
+    do_label_preset("GB_JOINEDC", "~a~ ~s~is now your ~a~~HUD_COLOUR_YELLOW~Minion~a~") -- 18
+end)
+
+menu.action(labelpresets, "You are no longer a CEO God", {"ceogodlabel"}, "Usually says: \"You are no longer a CEO\"", function()
+    do_label_preset("GB_NOLONGERC", "~a~~HUD_COLOUR_RED~You are no longer a CEO God~a~") -- 19
+end)
+
+menu.action(labelpresets, "SecuroServ CEO God", {"secceogodlabel"}, "Usually says: \"SecuroServ CEO\"", function()
+    do_label_preset("PIM_MAGBC", "~a~~HUD_COLOUR_PURPLE~SecuroServ CEO God~a~") -- 20
+end)
+
+menu.action(labelpresets, "is Off the Radar Like A Bitch.", {"isoffradarlabel"}, "Usually says: \"is Off the Radar.\"", function()
+    do_label_preset("GC_TCK_94", "~s~~a~~s~ ~a~~HUD_COLOUR_RED~ is Off the Radar Hiding Like A Bitch!~a~") -- 21
+end)
+
+menu.action(labelpresets, "You quit as a Minion", {"quitasslabel"}, "Usually says: \"You quit as an Associate\"", function()
+    do_label_preset("GBCGOONLEFTB", "~s~~a~~s~ ~a~~HUD_COLOUR_RED~ You quit ~a~~s~ as a Minion~a~") -- 22
+end)
+
+menu.action(labelpresets, "joined as a Minion", {"joinminlabel"}, "Usually says: \"joined as an Associate\"", function()
+    do_label_preset("GBGOONJOINEDC", "<C>~a~</C> ~a~~HUD_COLOUR_PURPLE~ joined~a~ ~a~~s~ ~a~~HUD_COLOUR_YELLOW~as a Minion.~a~") -- 23
+end)
+
+menu.action(labelpresets, "You just became the God of CEO's", {"ceogodoflabel"}, "Usually says: \"You are now the CEO of\"", function()
+    do_label_preset("GB_BECOMEC", "~a~~HUD_COLOUR_PURPLE~ Active! You just became the God of CEO's~a~ ~a~~s~") -- 24
+end)
+
+menu.action(labelpresets, "Hire Minions", {"hireminlabel"}, "Usually says: \"Hire Associates in interaction menu\"", function()
+    do_label_preset("PIM_MAGM100C", "~a~~HUD_COLOUR_YELLOW~Hire Minions~a~") -- 25
+end)
+
+menu.action(labelpresets, "Hire Minions", {"hireminslabel"}, "Usually says: \"HIRE ASSOCIATES (ABOVE LABEL)\"", function()
+    do_label_preset("PIM_MAGHGTC", "~a~~HUD_COLOUR_YELLOW~Hire Minions~a~") -- 26
+end)
+
+menu.action(labelpresets, "Quit Being A God", {"retirelabel"}, "Usually says: \"Retire\"", function()
+    do_label_preset("PIM_MAGM0B", "~a~~HUD_COLOUR_RED~Quit Being A God~a~") -- 27
+end)
+
+menu.action(labelpresets, "Nearby Minions", {"nearlabel"}, "Usually says: \"Nearby\"", function()
+    do_label_preset("PIM_MAGM103A", "~a~~HUD_COLOUR_YELLOW~Nearby Minions~a~") -- 28
+end)
+
+-------------------------
+----- Chat Spamers ------
+-------------------------
 
 spams = menu.list(Net_Shit, "Chat Spammers", {}, "", function(); end)
 menu.divider(spams, "Chat Spammers")
 
-helpcommands = menu.list(spams, "Help Commands", {}, "Command: helpcommands", function(); end)
+helpcommands = menu.list(spams, "Help Commands", {}, "Command: help", function(); end)
 
-menu.action(helpcommands, "Help Commands", {"helpcommands"}, "", function()
+menu.action(helpcommands, "Help Commands", {"help"}, "", function()
 chat.send_message(
     "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
     false, -- in team chat
@@ -4528,7 +4556,7 @@ end)
 
 menu.toggle_loop(helpcommands, "Type Help Commands", {"typehelpcommand"}, "", function(on_toggle)
 chat.send_message(
-    "Type /helpcommands for help",
+    "Type /help for help",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -24597,6 +24625,54 @@ menu.toggle_loop(self_protections, "Ghost PvP Players", {}, "", function()
 end)
 
 local detections = menu.list(menu.my_root(), "Modder Detections", {}, "")
+
+--[[
+menu.toggle_loop(detections, "Get IP's", {}, "Log's IP's", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local print_ip = players.get_connect_ip(pid)
+            if print_ip == util.joaat(print_ip) then
+                util.draw_debug_text(players.get_connect_ip(pid) .. "(" .. print_ip .. ")")
+                util.log(players.get_name(pid) .. "(" .. print_ip .. ")")
+        end
+    end
+end)
+
+menu.toggle_loop(detections, "Focused in the menu", {}, "Detects stuff", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local focused = players.get_focused(pid)
+            if focused == util.joaat(focused) then
+                util.draw_debug_text(players.get_name(pid) .. " name is focused in the menu")
+        end
+    end
+end)
+
+menu.toggle_loop(detections, "Rockstar id", {}, "Detects stuff", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local rockstar_id = players.get_rockstar_id(pid)
+            if rockstar_id == util.joaat(rockstar_id) then
+                util.draw_debug_text(players.get_name(players.get_rockstar_id(pid)) .. " Rockstar id")
+        end
+    end
+end)
+
+menu.toggle_loop(detections, "Get money", {}, "Detects stuff", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local get_bank = players.get_bank(pid)
+            if get_bank == util.joaat(get_bank) then
+                util.draw_debug_text(players.get_name(players.get_bank(pid)) .. " Get money")
+        end
+    end
+end)
+
+menu.toggle_loop(detections, "Player is using controller", {}, "Detects stuff", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local is_using_controller = players.is_using_controller(pid)
+            if is_using_controller == util.joaat(is_using_controller) then
+                util.draw_debug_text(players.get_name(players.is_using_controller(pid)) .. " Player is using controller")
+        end
+    end
+end)
+]]
 
 local auto_punish = menu.list(detections, "Aim Punishments", {}, "")
 
