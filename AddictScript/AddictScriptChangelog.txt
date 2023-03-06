@@ -15,3 +15,7 @@ Added Unlimited Nitro (Works on any vehicle)
 Added Super Man (aka ultra jump in his script) - Credits To Acjoker Script
 
 Added Lazer Eyes - In Fun Shit> My Player
+________________________
+v1.0.6
+________________________
+Bug Fix
