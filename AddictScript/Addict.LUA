@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.7"
+local local_menu_version = "1.0.8"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -2721,12 +2721,6 @@ opti_settings = menu.toggle(main_menu,'Optimised Settings', {""}, 'Improve FPS a
     menu.trigger_commands("nosky "..opti_value)
     menu.trigger_commands("noidlekick "..opti_value)
     menu.trigger_commands("noidlecam "..opti_value)
-    menu.trigger_commands("monitorcargo "..opti_value)
-    menu.trigger_commands("maxsellcargo "..opti_value)
-    menu.trigger_commands("nobuycdcargo "..opti_value)
-    menu.trigger_commands("nosellcdcargo "..opti_value)
-    menu.trigger_commands("autocompletespecialbuy "..opti_value)
-    menu.trigger_commands("autocompletespecialsell "..opti_value)
 end)
 
 moneyMultiplier = menu.toggle_loop(main_menu, 'Disable RP', {""}, 'Dont earn anymore RP with cargo sells.', function()
@@ -2739,8 +2733,8 @@ moneyMultiplier = menu.toggle_loop(main_menu, 'Disable RP', {""}, 'Dont earn any
 end)
 
 menu.action(main_menu,'Solo Spoofed Session', {""}, 'Reduces even more risks.\nNOTE: Will make you go in solo session with spoofed session so you cant be crashed or checked by R* Admins.', function()
-	    menu.trigger_commands("go solo")
-	    menu.trigger_commands("spoofsession storymode")
+    menu.trigger_commands("spoofsession storymode")
+    menu.trigger_commands("go solo")
 end)
 
 menu.action(main_menu, "Send To Storymode If Stuck", {"gostorymode"}, "Press if the warehouse screen/scaleform gets stuck. It will forcequit you to SP, but you at least wont have to restart your game.", function()
@@ -4315,11 +4309,12 @@ end
 
 local Player_List = menu.ref_by_path("Players")
 function do_label_preset(label, text)
-    util.log("Set label " .. label .. " > " .. text)
+    --util.log("Set label " .. label .. " > " .. text)
     menu.trigger_commands("addlabel " .. label)
     local prep = "edit" .. string.gsub(label, "_", "") .. " " .. text
     menu.trigger_commands(prep)
-    menu.trigger_command(Player_List)
+    menu.trigger_commands("luaaddict")
+    --menu.trigger_command(Player_List)
     --util.toast("Label set!")
 end
 
@@ -4340,8 +4335,6 @@ menu.action(Net_Shit, "Fix Casino Heist", {}, "If you've bricked your casino hei
 	STATS.STAT_SET_INT(util.joaat("MP0_H3OPT_ACCESSPOINTS"), 0, true)
 end)
 
-
-
 labelpresets = menu.list(Net_Shit, "Label Presets", {"addictlabelpresets"}, "", function(); end)
 
 menu.toggle(labelpresets, "Auto Label Setter", {"autolabel"}, "Auto set all the labels everytime you join a new session. Save this turned 'On' your profile to keep set.", function(state)
@@ -4350,37 +4343,59 @@ menu.toggle(labelpresets, "Auto Label Setter", {"autolabel"}, "Auto set all the 
             local my_player_id <const> = players.user()
             if player_id == my_player_id then
                 wait_session_transition()
-                menu.trigger_commands("joinlabel")
+                menu.trigger_commands("joinlabel") -- 1
                 util.yield(100)
-                menu.trigger_commands("initiallabel")
+                menu.trigger_commands("initiallabel") -- 2
                 util.yield(100)
-                menu.trigger_commands("loadlabel")
+                menu.trigger_commands("loadlabel") -- 3
                 util.yield(100)
-                menu.trigger_commands("onlinelabel")
+                menu.trigger_commands("onlinelabel") -- 4
                 util.yield(100)
-                menu.trigger_commands("diedlabel")
+                menu.trigger_commands("diedlabel") -- 5
                 util.yield(100)
-                menu.trigger_commands("dippedlabel")
+                menu.trigger_commands("dippedlabel") -- 6
                 util.yield(100)
-                menu.trigger_commands("bannedlabel")
-                util.yield(100)--
-                menu.trigger_commands("joinlabel")
+                menu.trigger_commands("bannedlabel") -- 7
                 util.yield(100)
-                menu.trigger_commands("initiallabel")
+                menu.trigger_commands("loadstorylabel") -- 8
                 util.yield(100)
-                menu.trigger_commands("loadlabel")
+                menu.trigger_commands("muglabel") -- 9
                 util.yield(100)
-                menu.trigger_commands("onlinelabel")
+                menu.trigger_commands("killlabel") -- 10
                 util.yield(100)
-                menu.trigger_commands("diedlabel")
+                menu.trigger_commands("radarlabel") -- 11
                 util.yield(100)
-                menu.trigger_commands("dippedlabel")
+                menu.trigger_commands("translabel") -- 12
+                util.yield(100)-------------------------------- Middle
+                menu.trigger_commands("joinlabel") -- 1
                 util.yield(100)
-                menu.trigger_commands("bannedlabel")
+                menu.trigger_commands("initiallabel") -- 2
+                util.yield(100)
+                menu.trigger_commands("loadlabel") -- 3
+                util.yield(100)
+                menu.trigger_commands("onlinelabel") -- 4
+                util.yield(100)
+                menu.trigger_commands("diedlabel") -- 5
+                util.yield(100)
+                menu.trigger_commands("dippedlabel") -- 6
+                util.yield(100)
+                menu.trigger_commands("bannedlabel") -- 7
+                util.yield(100)
+                menu.trigger_commands("loadstorylabel") -- 8
+                util.yield(100)
+                menu.trigger_commands("muglabel") -- 9
+                util.yield(100)
+                menu.trigger_commands("killlabel") -- 10
+                util.yield(100)
+                menu.trigger_commands("radarlabel") -- 11
+                util.yield(100)
+                menu.trigger_commands("translabel") -- 12
             end
         end)
     end
 end)
+
+menu.hyperlink(labelpresets, "Label List", "https://gist.githubusercontent.com/aaronlink127/afc889be7d52146a76bab72ede0512c7/raw")
 
 menu.toggle(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function(on_toggle)
     if on_toggle then
@@ -4421,9 +4436,9 @@ menu.toggle(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA
     end
 end)
 
-menu.toggle(labelpresets, "Retard fucking died", {"diedlabel"}, "Usually says: \"-playername- died.\"", function(on_toggle)
+menu.toggle(labelpresets, "Yeeted", {"diedlabel"}, "Usually says: \"-playername- died.\"", function(on_toggle)
     if on_toggle then
-        do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_WHITE~ fucking died.")
+        do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_RED~ yeeted.")
     else
         --
     end
@@ -4431,7 +4446,7 @@ end)
 
 menu.toggle(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function(on_toggle)
     if on_toggle then
-        do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_WHITE~ dipped.")
+        do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_RED~ dipped.")
     else
         --
     end
@@ -4441,6 +4456,46 @@ menu.toggle(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "
     if on_toggle then
         do_label_preset("HUD_ROSBANNED", "You finally got banned. Oh well.")
         do_label_preset("HUD_ROSBANPERM", "You finally got banned. Oh well.")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("LOADING_SPLAYER_L", "~a~~HUD_COLOUR_RED~ Going offline...")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("ACH47_DESC", "You fucked up the piss flap that mugged you.")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Player fucked up player", {"killlabel"}, "Usually says: \"Player Killed Player\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("TICK_KILL", "~a~~HUD_COLOUR_RED~ fucked up ~a~")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Some Players Are Off The Radar Hiding Like Bitches.", {"radarlabel"}, "Usually says: \"Some players are Off the Radar.\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("GC_TCK_95", "~a~~HUD_COLOUR_RED~ Some Players Are Off The Radar Hiding Like Bitches. ~a~")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Transaction Pending Forever & Ever & Ever & Ever...", {"translabel"}, "Usually says: \"Transaction Pending.\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("HUD_TRANSP", "Transaction Pending Forever & Ever & Ever & Ever...")
     else
         --
     end
@@ -11572,6 +11627,8 @@ end
             menu.trigger_commands("nuke" .. players.get_name(pid))
             util.yield(100)
             menu.trigger_commands("nukev2" .. players.get_name(pid))
+            util.yield(100)
+            menu.trigger_commands("orbitalfuck" .. players.get_name(pid))
             util.yield(100)
             menu.trigger_commands("cpulag" .. players.get_name(pid))
             util.yield(100)
