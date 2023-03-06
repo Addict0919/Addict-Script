@@ -1,21 +1,3 @@
-v1.0.5
+v1.0.7
 ________________________
-Removed IP spoofers
-
-Removed colour repo
-
-Fixed TP to Casino (Alt)
-
-Added Turn Off Radio - Credits To Acjoker Script
-
-Added Vehicle Jump 
-
-Added Unlimited Nitro (Works on any vehicle)
-
-Added Super Man (aka ultra jump in his script) - Credits To Acjoker Script
-
-Added Lazer Eyes - In Fun Shit> My Player
-________________________
-v1.0.6
-________________________
-Bug Fix
+Added Game Label Presets > In Net Shit
