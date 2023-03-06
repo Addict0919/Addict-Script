@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.0.5"
+local local_menu_version = "1.0.6"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -6284,7 +6284,7 @@ coords_ped.x = coords_ped.x + math.random(-2, 2)
 coords_ped.y = coords_ped.y + math.random(-2, 2)
 coords_ped.z = coords_ped.z
 
-local impact = v3_2(coords_ped.x, coords_ped.y, coords_ped.z)
+--local impact = v3_2(coords_ped.x, coords_ped.y, coords_ped.z)
 local lazer = {exp = false, bull = 'WEAPON_TACTICALRIFLE', crosshair = true}
 
 menu.toggle_loop(playermode, "Lazer Eyes", {"lazereyes"}, "Shoot lazers out of your eyes also works in vehicles", function (on)
