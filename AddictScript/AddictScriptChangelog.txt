@@ -1,8 +1,17 @@
-v1.0.4
+v1.0.5
 ________________________
-Removed Tank Crash
-Removed Bro Hug Crashes
-Removed Big Chungus Crashes
-Crashes became useless...
+Removed IP spoofers
 
-Added 5G Crashes - In Lobby Crashes
+Removed colour repo
+
+Fixed TP to Casino (Alt)
+
+Added Turn Off Radio - Credits To Acjoker Script
+
+Added Vehicle Jump 
+
+Added Unlimited Nitro (Works on any vehicle)
+
+Added Super Man (aka ultra jump in his script) - Credits To Acjoker Script
+
+Added Lazer Eyes - In Fun Shit> My Player
