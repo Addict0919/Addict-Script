@@ -1,4 +1,9 @@
 v1.1.0
 ________________________
 Added Chauffeurs (Taxis, Chauffeurs, Boats)
+
 Added Aimbot (esp and max damage toggle)
+
+Added Silent Rope Crash Lobby - In Lobby Crashes> Kerami Crashes
+
+Added Better Rope Crash Lobby - In Lobby Crashes> Kerami Crashes
