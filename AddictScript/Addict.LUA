@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.0"
+local local_menu_version = "1.1.1"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -98,12 +98,31 @@ function UnregisterNetworkObject(object, reason, force1, force2)
 	return true
 end
 
+function getModelInfo(modelHash)
+	return util.call_foreign_function(p_getModelInfo, modelHash, NULL)
+end
+
+function getVehicleModelHandlingData(modelInfo)
+	return util.call_foreign_function(GetHandlingDataFromIndex, memory.read_uint(modelInfo + 0x4B8))
+end
+
 myModule("NOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
 	CNetworkObjectMgr = memory.rip(address + 3)
 end)
 
 myModule("GNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
 	GetNetGamePlayer_addr = address
+end)
+
+p_getModelInfo = 0
+myModule("GVMI", "48 89 5C 24 ? 57 48 83 EC 20 8B 8A ? ? ? ? 48 8B DA", function (address)
+	p_getModelInfo = memory.rip(address + 0x2A)
+end)
+
+
+GetHandlingDataFromIndex = 0
+myModule("GHDFI", "40 53 48 83 EC 30 48 8D 54 24 ? 0F 29 74 24 ?", function (address)
+	GetHandlingDataFromIndex = memory.rip(address + 0x37)
 end)
 
 myModule("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
@@ -682,10 +701,9 @@ weapons = menu.list(funfun, "Weapon Shit", {}, "", function(); end)
         if PED.IS_PED_A_PLAYER(aim_target) then
             pid = NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(aim_target)
             pname = PLAYER.GET_PLAYER_NAME(pid)
-            if set.alert then
-                ACutil(Str_trans('Target is ')..pname)
-            end
+            util.toast('Target is ' .. pname)
         end
+        
         
         if aimbot.esp then
             Draw_esp(aim_target)
@@ -4584,7 +4602,7 @@ menu.action(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "
 end)
 
 menu.action(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function()
-    do_label_preset("LOADING_SPLAYER_L", "~a~~HUD_COLOUR_RED~ Going offline...") -- 8
+    do_label_preset("LOADING_SPLAYER_L", "Going offline...") -- 8
 end)
 
 menu.action(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function()
@@ -6960,7 +6978,7 @@ end)
 local jump = {height = 0.6 }
 menu.toggle_loop(playermode, "Super Man", {}, "Keep going higher the longer you press jump (can also be used to fly), Make sure you disable lock parachutes.", function () -- Credits to Acjoker Script
     menu.trigger_commands("paralock full")
-    if PAD.IS_CONTROL_PRESSED(0, 22) or PAD.IS_CONTROL_JUST_PRESSED(0, 21) then
+    if PAD.IS_CONTROL_PRESSED(22, 22) or PAD.IS_CONTROL_JUST_PRESSED(21, 21) then
         PED.SET_PED_CAN_RAGDOLL(players.user_ped(), false)
         ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(players.user_ped(), 1, 0.0, 0.6, jump.height, 0, 0, 0, 0, true, true, true, true)
         if ENTITY.IS_ENTITY_IN_AIR(players.user_ped()) then
@@ -16784,15 +16802,9 @@ function RqModel(hash)
     end
 end
 
-
-
-
 local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
---local TankCrash = menu.list(crash, "Tank Crashes", {"tankcrashes"}, "")
---local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
 local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
 local MichaelCrashes = menu.list(crash, "Michael Taxi Crash", {"michaelcrashes"}, "Spawns animations next to them for crashing.")
---local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
 local craftcrash = menu.list(crash, "Vehicle Chaos Crashes", {"vehiclechaos"}, "")
 local vehcrash = menu.list(crash, "Vehicle Crashes", {"vehiclecrashes"}, "")
 local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
@@ -16806,6 +16818,10 @@ local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash spe
 local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
 local SECrashes = menu.list(crash, "SE Crashes", {"secrashes"}, "")
 local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
+
+--local TankCrash = menu.list(crash, "Tank Crashes", {"tankcrashes"}, "")
+--local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
+--local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
 
 --         _____ ________________ ________  _   __
 --        / ___// ____/ ___/ ___//  _/ __ \/ | / /
@@ -26204,21 +26220,23 @@ util.create_thread(function()
 	end
 end)
 
-
-local SCRIPT_SOURCE = "REPO"
-local SCRIPT_BRANCH = "release"
-local BRANCH_LAST_COMMIT = "d26731ac7ca2bf1339315b3eb8d5f26b378691f3"
-local SCRIPT_BRANCH_IDS = {"jackzscript","master","release"}
-local SCRIPT_BRANCH_NAMES = {{"jackzscript"},{"dev"},{"release"}}
-
-
-local SCRIPT = "actions"
-VERSION = "1.10.10"
-local ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/jackz_actions/animations.txt"
-local ANIMATIONS_DATA_FILE_VERSION = "1.0"
-local SPECIAL_ANIMATIONS_DATA_FILE_VERSION = "1.0.0" -- target version of actions_data
-
 sexscript = menu.list(funfun, "Animation Script", {}, "", function(); end)
+
+SCRIPT_SOURCE = "REPO"
+SCRIPT_BRANCH = "release"
+BRANCH_LAST_COMMIT = "d26731ac7ca2bf1339315b3eb8d5f26b378691f3"
+SCRIPT_BRANCH_IDS = {"jackzscript","master","release"}
+SCRIPT_BRANCH_NAMES = {{"jackzscript"},{"dev"},{"release"}}
+-- END AUTOGENERATED CODE --
+
+-- Actions
+-- Created By Jackz
+-- SOURCE CODE: https://github.com/Jackzmc/lua-scripts
+SCRIPT = "actions"
+VERSION = "1.10.10"
+ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/jackz_actions/animations.txt"
+ANIMATIONS_DATA_FILE_VERSION = "1.0"
+SPECIAL_ANIMATIONS_DATA_FILE_VERSION = "1.0.0" -- target version of actions_data
 
 
 -- TEMPLATE: release/log.lua --
@@ -26227,8 +26245,8 @@ if SCRIPT_DEBUG == nil then
     SCRIPT_DEBUG = false
 end
 function Log._log(prefix, ...)
-    local mod = debug.getinfo(3, "n").name or debug.getinfo(4, "n").name or "_anon_func"
-    local msg = ""
+    mod = debug.getinfo(3, "n").name or debug.getinfo(4, "n").name or "_anon_func"
+    msg = ""
     for _, a in ipairs(...) do
         if a == nil then a = "<nil>" end
         if type(a) == "table" then a = dumpTable(a) end
@@ -26240,37 +26258,37 @@ function Log._log(prefix, ...)
 end
 function Log.debug(...)
     if SCRIPT_DEBUG then
-        local arg = {...}
+        arg = {...}
         Log._log("debug", arg)
     end
 end
 function Log.debugTable(table)
     if SCRIPT_DEBUG then
-        local mod = debug.getinfo(3, "n").name or debug.getinfo(4, "n").name or "_anon_func"
+        mod = debug.getinfo(3, "n").name or debug.getinfo(4, "n").name or "_anon_func"
         util.log(string.format("%s:%s/%s: %s", SCRIPT_NAME, SCRIPT_SOURCE or "DEV", mod, dumpTable(table)))
     end
 end
 function Log.warn(...)
-    local arg = {...}
+    arg = {...}
     Log._log("Warn", arg)
 end
 function Log.error(...)
-    local arg = {...}
+    arg = {...}
     Log._log("Error", arg)
 end
 function Log.severe(...)
-    local arg = {...}
+    arg = {...}
     Log._log("Severe", arg)
     util.stop_script()
 end
 function Log.log(...)
-    local arg = {...}
+    arg = {...}
     Log._log(nil, arg)
 end
 
 function dumpTable(o)
     if type(o) == 'table' then
-       local s = '{ '
+       s = '{ '
        for k,v in pairs(o) do
           if type(k) ~= 'number' then k = '"'..k..'"' end
           s = s .. '['..k..'] = ' .. dumpTable(v) .. ','
@@ -26285,11 +26303,11 @@ end
 -- END TEMPLATE --
 -- TEMPLATE: release/repo.lua --
 function download_resources_update(filepath, destOverwritePath)
-    local lockPath = filesystem.scripts_dir() .. "/lib/" .. filepath .. ".lock"
+    lockPath = filesystem.scripts_dir() .. "/lib/" .. filepath .. ".lock"
     if filesystem.exists(lockPath) then
         util.log(SCRIPT_NAME .. ": Skipping resource update \" .. lib .. \", found update lockfile")
     end
-    local lock = io.open(lockPath, "w")
+    lock = io.open(lockPath, "w")
     if lock == nil then
         util.toast(SCRIPT_NAME .. ": Could not create lockfile, skipping update", TOAST_ALL)
         return
@@ -26302,7 +26320,7 @@ function download_resources_update(filepath, destOverwritePath)
             util.log(string.format("%s: Resource \"%s\" returned: %s", SCRIPT_NAME, filepath, result))
             return
         end
-        local file = io.open(filesystem.resources_dir() .. (destOverwritePath or filepath), "w")
+        file = io.open(filesystem.resources_dir() .. (destOverwritePath or filepath), "w")
         if file == nil then
             util.toast("Could not write resource file for: " .. filepath .. "\nSee logs for details")
             util.log(string.format("%s: Resource \"%s\" file could not be created.", SCRIPT_NAME, filepath))
@@ -26331,7 +26349,7 @@ end
 -- Version Check
 function get_version_info(version)
     if not version then error("Missing version", 2) end
-    local major, minor, patch = version:match("(%d+)%.(%d+)%.(%d+)")
+    major, minor, patch = version:match("(%d+)%.(%d+)%.(%d+)")
     return {
         major = tonumber(major) or 0,
         minor = tonumber(minor) or 0,
@@ -26339,8 +26357,8 @@ function get_version_info(version)
     }
 end
 function compare_version(a, b)
-    local av = get_version_info(a)
-    local bv = get_version_info(b)
+    av = get_version_info(a)
+    bv = get_version_info(b)
     if not av or not bv then error("Missing versions to compare") end
     if av.major > bv.major then return 1
     elseif av.major < bv.major then return -1
@@ -26351,18 +26369,18 @@ function compare_version(a, b)
     else return 0 end
 end
 if SCRIPT_BRANCH and SCRIPT_BRANCH == "release" then
-    local VERSION_FILE_PATH = filesystem.store_dir() .. "jackz_versions.txt"
+    VERSION_FILE_PATH = filesystem.store_dir() .. "jackz_versions.txt"
     if not filesystem.exists(VERSION_FILE_PATH) then
-        local versionFile = io.open(VERSION_FILE_PATH, "w")
+        versionFile = io.open(VERSION_FILE_PATH, "w")
         if versionFile then
             versionFile:close()
         end
     end
-    local versionFile = io.open(VERSION_FILE_PATH, "r+")
+    versionFile = io.open(VERSION_FILE_PATH, "r+")
     if versionFile then
-        local versions = {}
+        versions = {}
         for line in versionFile:lines("l") do
-            local script, version = line:match("(%g+): (%g+)")
+            script, version = line:match("(%g+): (%g+)")
             if script then
                 versions[script] = version
             end
@@ -26396,6 +26414,9 @@ end
 
 SCRIPT_META_LIST = menu.list(sexscript, "Script Meta")
 menu.divider(SCRIPT_META_LIST, SCRIPT_NAME .. " V" .. VERSION)
+menu.hyperlink(SCRIPT_META_LIST, "View full changelog", "https://jackz.me/stand/changelog?html=1&reverse=1&script=" .. SCRIPT_NAME)
+menu.hyperlink(SCRIPT_META_LIST, "Jackz's Guilded", "https://www.guilded.gg/i/k8bMDR7E?cid=918b2f61-989c-41c4-ba35-8fd0e289c35d&intent=chat", "Get help, submit suggestions, report bugs, or be with other users of my scripts")
+menu.hyperlink(SCRIPT_META_LIST, "Github Source", "https://github.com/Jackzmc/lua-scripts", "View all my lua scripts on github")
 if SCRIPT_SOURCE == "MANUAL" then
     menu.list_select(SCRIPT_META_LIST, "Release Channel", {SCRIPT_NAME.."channel"}, "Sets the release channel for updates for this script.\nChanging the channel from release may result in bugs.", SCRIPT_BRANCH_NAMES, 1, function(index, name)
         show_busyspinner("Downloading update...")
@@ -26416,12 +26437,12 @@ if _lang ~= nil then
 end
 menu.readonly(SCRIPT_META_LIST, "Build Commit", BRANCH_LAST_COMMIT and BRANCH_LAST_COMMIT:sub(1,10) or "Dev Build")
 menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of your stand log (%appdata%\\Stand\\Log.txt) to hastebin.com.\nHastebin posts expire in upto 7 days.\n\nUploaded log can be accessed from \"Open Uploaded Log\" button below once pressed", function()
-    local logs = io.open(filesystem.stand_dir() .. "Log.txt", "r")
+    logs = io.open(filesystem.stand_dir() .. "Log.txt", "r")
     if logs then
         show_busyspinner("Uploading logs....")
         async_http.init("hastebin.com", "/documents", function(body)
             HUD.BUSYSPINNER_OFF()
-            local url = "https://hastebin.com/" .. body:sub(9, -3)
+            url = "https://hastebin.com/" .. body:sub(9, -3)
             util.toast("Uploaded: " .. url)
             menu.hyperlink(SCRIPT_META_LIST, "Open Uploaded Log", url)
         end, function()
@@ -26429,7 +26450,7 @@ menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of 
             HUD.BUSYSPINNER_OFF() 
         end)
         logs:seek("end", -3072)
-        local content = logs:read("*a")
+        content = logs:read("*a")
         async_http.set_post("text/plain",
             string.format("Script: %s\nSource: %s\nBranch: %s\nVersion: %s\nCommit: %s\n%s", SCRIPT_NAME, SCRIPT_SOURCE or "UNK", SCRIPT_BRANCH or "UNK", VERSION or "UNK", BRANCH_LAST_COMMIT or "DEV BUILD", content)
         )
@@ -26443,7 +26464,7 @@ end)
 SCRIPT_DEBUG = SCRIPT_SOURCE == nil
 
 function try_require(name, isOptional)
-    local status, data = pcall(require, name)
+    status, data = pcall(require, name)
     if status then
         return data
     else
@@ -26458,7 +26479,7 @@ function try_require(name, isOptional)
                 Log.severe("Missing required dependency:", name)
             end
         elseif download_lib_update then
-            local lockPath = download_lib_update(name, function()
+            lockPath = download_lib_update(name, function()
                 Log.log("Downloaded ", isOptional and "optional" or "required", "library:", name)
             end)
             while filesystem.exists(lockPath) do
@@ -26478,13 +26499,13 @@ end
 
 -- Iterates in consistent order a Key/Value
 function pairsByKeys(t, f)
-    local a = {}
+    a = {}
     for n in pairs(t) do
        table.insert(a, n)
     end
     table.sort(a, f)
-    local i = 0 -- iterator variable
-    local iter = function()
+    i = 0 -- iterator variable
+    iter = function()
         -- iterator function
         i = i + 1
         if a[i] == nil then
@@ -26495,46 +26516,45 @@ function pairsByKeys(t, f)
     end
     return iter
  end
-
-local status = pcall(require, 'resources/addict_actions/addict_action')
+status = pcall(require, 'resources/jackz_actions/actions_data')
 if not status then
-    util.toast("Failed to load resource file: addict_actions/addict_action.lua")
+    util.toast("Failed to load resource file: jackz_actions/actions_data.lua")
     util.stop_script()
 end
 if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
     if SCRIPT_SOURCE == "MANUAL" then
-        download_resources_update("addict_actions/addict_action.min.lua", "addict_actions/addict_action.lua")
+        download_resources_update("jackz_actions/actions_data.min.lua", "jackz_actions/actions_data.lua")
         util.toast("Restart script to use updated resource file")
     else
-        util.toast("addict_actions: Warn: Outdated or missing addict_action. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
+        util.toast("jackz_actions: Warn: Outdated or missing actions_data. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
         util.stop_script()
     end
 end
 
 -- Messy Globals
-local scenarioCount = 0
+scenarioCount = 0
 
-local clearActionImmediately = true
-local favorites = {}
-local favoritesActions = {}
-local recents = {}
-local animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
-local allowControl = true
-local affectType = 0
+clearActionImmediately = true
+favorites = {}
+favoritesActions = {}
+recents = {}
+animFlags = AnimationFlags.ANIM_FLAG_REPEAT | AnimationFlags.ANIM_FLAG_ENABLE_PLAYER_CONTROL
+allowControl = true
+affectType = 0
 -----------------------
 -- SCENARIOS
 ----------------------
 
 menu.action(sexscript, "Stop All Actions", {"stopself"}, "Stops the current scenario or animation", function(v)
     clear_anim_props()
-    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+    ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
     if clearActionImmediately then
         TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
     else
         TASK.CLEAR_PED_TASKS(ped)
     end
     if affectType > 0 then
-        local peds = entities.get_all_peds_as_handles()
+        peds = entities.get_all_peds_as_handles()
         for _, npc in ipairs(peds) do
             if not PED.IS_PED_A_PLAYER(npc) and not PED.IS_PED_IN_ANY_VEHICLE(npc, true) then
                 NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(npc)
@@ -26550,10 +26570,9 @@ end)
 menu.toggle(sexscript, "Clear Action Immediately", {"clearimmediately"}, "If enabled, will immediately stop the animation / scenario that is playing when activating a new one. If false, you will transition smoothly to the next action.", function(on)
     lclearActionImmediately = on
 end, clearActionImmediately)
-menu.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities that will play this action.\n0 = Only yourself\n1 = Only NPCs\n2 = Both you and NPCS", { { "Only yourself" }, { "Only NPCs" }, {"Both"} }, 1, function(index)
+menu.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities that will play this action.\n0 = Only yourself\n1 = Only NPCs\n2 = Both you and NPCS", { { "Only yourself" }, { "Only NPCs" }, {"Both you and NPCS"} }, 1, function(index)
     affectType = index - 1
 end)
-
 
 function onControllablePress(value)
     if value then
@@ -26562,8 +26581,6 @@ function onControllablePress(value)
         animFlags = AnimationFlags.ANIM_FLAG_REPEAT
     end
 end
-
-
 function generateAnimationAction(key, data)
     return function()
         util.toast("Playing anim: " .. data[3] or key)
@@ -26573,13 +26590,14 @@ function generateAnimationAction(key, data)
 end
 
 menu.divider(sexscript, "Stuff")
-local specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
+specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
 menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
-local animationsMenu = menu.list(sexscript, "Animations", {}, "List of animations you can play")
+animationsMenu = menu.list(sexscript, "Animations", {}, "List of animations you can play")
 menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 
+
 for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
-    local catmenu = menu.list(specialAnimationsMenu, category, {})
+    catmenu = menu.list(specialAnimationsMenu, category, {})
     for key, data in pairsByKeys(rows) do
         menu.action(
             catmenu,
@@ -26595,8 +26613,8 @@ end
 -----------------------
 -- ANIMATIONS
 ----------------------
-local animLoaded = false
-local animAttachments = {}
+animLoaded = false
+animAttachments = {}
 function clear_anim_props()
     for ent, shouldDelete in pairs(animAttachments) do
         if shouldDelete then
@@ -26612,17 +26630,17 @@ function delete_anim_props()
     end
 end
 
-local animMenuData = {}
-local resultMenus = {}
-local cloudFavoritesMenu = menu.list(animationsMenu, "Cloud Favorites", {}, "View categorized saved favorites from other users, or store your own.")
-local favoritesMenu = menu.list(animationsMenu, "Favorites", {}, "List of all your favorited animations. Hold SHIFT to add or remove from favorites.")
-local cloudFavoritesUploadMenu = menu.list(cloudFavoritesMenu, "Upload", {}, "Add your own cloud animation favorites. BETA.")
-    local cloudUploadFromFavorites = menu.list(cloudFavoritesUploadMenu, "From Favorites", {}, "Browse your favorite played animations to upload them", function() populate_cloud_list(true) end)
-    local cloudUploadFromRecent = menu.list(cloudFavoritesUploadMenu, "From Recent", {}, "Browse your recently played animations to upload them",  function() populate_cloud_list(false) end)
-local cloudFavoritesBrowseMenu = menu.list(cloudFavoritesMenu, "Browse", {}, "Browse all uploaded cloud animation favorites")
+animMenuData = {}
+resultMenus = {}
+cloudFavoritesMenu = menu.list(animationsMenu, "Cloud Favorites", {}, "View categorized saved favorites from other users, or store your own.")
+favoritesMenu = menu.list(animationsMenu, "Favorites", {}, "List of all your favorited animations. Hold SHIFT to add or remove from favorites.")
+cloudFavoritesUploadMenu = menu.list(cloudFavoritesMenu, "Upload", {}, "Add your own cloud animation favorites. BETA.")
+    cloudUploadFromFavorites = menu.list(cloudFavoritesUploadMenu, "From Favorites", {}, "Browse your favorite played animations to upload them", function() populate_cloud_list(true) end)
+    cloudUploadFromRecent = menu.list(cloudFavoritesUploadMenu, "From Recent", {}, "Browse your recently played animations to upload them",  function() populate_cloud_list(false) end)
+cloudFavoritesBrowseMenu = menu.list(cloudFavoritesMenu, "Browse", {}, "Browse all uploaded cloud animation favorites")
 
-local cloudUsers = {} -- Record<user, { menu, categories = Record<dictionary, { menu, animations = {} }>}
-local cloud_loading = false
+cloudUsers = {} -- Record<user, { menu, categories = Record<dictionary, { menu, animations = {} }>}
+cloud_loading = false
 function cloudvehicle_fetch_error(code)
     return function()
         cloud_loading = false
@@ -26630,7 +26648,7 @@ function cloudvehicle_fetch_error(code)
         HUD.BUSYSPINNER_OFF()
     end
 end
-local cloud_list = {}
+cloud_list = {}
 function upload_animation(group, animation, alias)
     show_busyspinner("Uploading animation")
     async_http.init('jackz.me',
@@ -26657,18 +26675,18 @@ function upload_animation(group, animation, alias)
     async_http.dispatch()
 end
 function populate_cloud_list(useFavorites)
-    local listMenu = useFavorites and cloudUploadFromFavorites or cloudUploadFromRecent
-    local tuple = useFavorites and favorites or recents
+    listMenu = useFavorites and cloudUploadFromFavorites or cloudUploadFromRecent
+    tuple = useFavorites and favorites or recents
     for _, m in ipairs(cloud_list) do
         menu.delete(m)
     end
     cloud_list = {}
     for _, favorite in ipairs(tuple) do
-        local name = favorite[2]
-        if favorite[3] then
-        name = favorite[3] .. " (" .. favorite[2] .. ")"
-        end
-        local action = menu.action(listMenu, name, {}, "Upload the " .. favorite[2] .. " from group " .. favorite[1] .. " to the cloud", function(v)
+        name = favorite[2]
+        -- if favorite[3] then
+        --     name = favorite[3] .. " (" .. favorite[2] .. ")"
+        -- end
+        action = menu.action(listMenu, name, {}, "Upload the " .. favorite[2] .. " from group " .. favorite[1] .. " to the cloud", function(v)
             upload_animation(favorite[1], favorite[2], nil)
         end)
         table.insert(cloud_list, action)
@@ -26691,10 +26709,10 @@ function populate_user_dict(user, dictionary)
             pcall(menu.delete, animation)
         end
         cloudUsers[user].categories[dictionary].animations = {}
-        local count = 0
+        count = 0
         for animation in string.gmatch(body, "[^\r\n]+") do
             count = count + 1
-            local action = menu.action(cloudUsers[user].categories[dictionary].menu, animation, {}, dictionary .. " " .. animation, function(_)
+            action = menu.action(cloudUsers[user].categories[dictionary].menu, animation, {}, dictionary .. " " .. animation, function(_)
                 play_animation(dictionary, animation)
             end)
             table.insert(cloudUsers[user].categories[dictionary].animations, action)
@@ -26729,7 +26747,7 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
             cloudUsers[user].menu = nil
         end
         for user in string.gmatch(body, "[^\r\n]+") do
-            local userMenu = menu.list(cloudFavoritesBrowseMenu, user, {}, "All action categories favorited by " .. user)
+            userMenu = menu.list(cloudFavoritesBrowseMenu, user, {}, "All action categories favorited by " .. user)
             cloudUsers[user] = {
                 menu = userMenu,
                 categories = {}
@@ -26754,10 +26772,10 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
                         end
                     end
                     cloudUsers[user].categories = {}
-                    local count = 0
+                    count = 0
                     for dictionary in string.gmatch(body, "[^\r\n]+") do
                         count = count + 1
-                        local dictMenu = menu.list(userMenu, dictionary, {}, "All actions in " .. dictionary .. " favorited by " .. user, function() populate_user_dict(user, dictionary) end)
+                        dictMenu = menu.list(userMenu, dictionary, {}, "All actions in " .. dictionary .. " favorited by " .. user, function() populate_user_dict(user, dictionary) end)
                         cloudUsers[user].categories[dictionary] = {
                             menu = dictMenu,
                             animations = {}
@@ -26773,9 +26791,9 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
     end, cloudvehicle_fetch_error("FETCH_USERS"))
     async_http.dispatch()
 end)
-local recentsMenu = menu.list(animationsMenu, "Recents", {}, "List of all your recently played animations")
+recentsMenu = menu.list(animationsMenu, "Recents", {}, "List of all your recently played animations")
 menu.divider(animationsMenu, "Raw Animations")
-local searchMenu = menu.list(animationsMenu, "Search", {}, "Search for animation groups")
+searchMenu = menu.list(animationsMenu, "Search", {}, "Search for animation groups")
 menu.action(searchMenu, "Search Animation Groups", {"searchanim"}, "Searches all animation groups for the inputted text", function()
     menu.show_command_box("searchanim ")
 end, function(args)
@@ -26785,18 +26803,18 @@ end, function(args)
     end
     resultMenus = {}
     -- Find all possible groups
-    local results = {}
+    results = {}
     -- loop ANIMATIONS by heading then subheading then insert based on result
     if not filesystem.exists(ANIMATIONS_DATA_FILE) then
         download_animation_data()
     end
     -- Parse the file
-    local isHeaderRead = false
+    isHeaderRead = false
     -- Possibly recurse down categories splitting on _ and @
     for line in io.lines(ANIMATIONS_DATA_FILE) do
         if isHeaderRead then
             
-            local i, j = line:find(args)
+            i, j = line:find(args)
             if i then
                 chunks = {} -- [ category, anim ]
                 for substring in string.gmatch(line, "%S+") do
@@ -26808,7 +26826,7 @@ end, function(args)
             end
             -- TODO: Add back organization to list
         else
-            local version = line:sub(2)
+            version = line:sub(2)
             if version ~= ANIMATIONS_DATA_FILE_VERSION then
                 util.toast("Animation data out of date, updating...")
                 download_animation_data()
@@ -26821,15 +26839,15 @@ end, function(args)
     -- Messy, but no way to call a list group, so recreate all animations in a sublist:
     for i = 1, 201 do
         if results[i] then
-           local m = menu.list(searchMenu, group, {}, "All animations for " .. group)
-           local m = menu.action(searchMenu, results[i][2], {"animate" .. results[i][1] .. " " .. results[i][2]}, "Plays the " .. results[i][2] .. " animation from group " .. results[i][1], function(v)
+            -- m = menu.list(searchMenu, group, {}, "All animations for " .. group)
+           m = menu.action(searchMenu, results[i][2], {"animate" .. results[i][1] .. " " .. results[i][2]}, "Plays the " .. results[i][2] .. " animation from group " .. results[i][1], function(v)
                 play_animation(results[i][1], results[i][2], false)
             end)
             table.insert(resultMenus, m)
         end
     end
 end)
-local browseMenu = menu.list(animationsMenu, "Browse Animations", {}, "WARNING: Will cause a freeze when exiting, stand does not like unloading 15,000 animations. Use search if your pc cannot handle.", function() setup_animation_list() end)
+browseMenu = menu.list(animationsMenu, "Browse Animations", {}, "WARNING: Will cause a freeze when exiting, stand does not like unloading 15,000 animations. Use search if your pc cannot handle.", function() setup_animation_list() end)
 menu.on_focus(browseMenu, function()
     if animLoaded then
         util.toast("WARN: Unloading animation browse list, prepare for lag.")
@@ -26839,15 +26857,18 @@ menu.on_focus(browseMenu, function()
 end)
 show_busyspinner("Loading Menus...")
 
-local scenariosMenu = menu.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
+
+scenariosMenu = menu.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
 for group, scenarios in pairs(SCENARIOS) do
-    local submenu = menu.list(scenariosMenu, group, {}, "All " .. group .. " scenarios")
+    submenu = menu.list(scenariosMenu, group, {}, "All " .. group .. " scenarios")
     for _, scenario in ipairs(scenarios) do
         scenarioCount = scenarioCount + 1
         menu.action(submenu, scenario[2], {"scenario"}, "Plays the " .. scenario[2] .. " scenario", function(v)
-            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+            ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+            
+            -- Play scenario on all npcs if enabled:
             if affectType > 0 then
-                local peds = entities.get_all_peds_as_handles()
+                peds = entities.get_all_peds_as_handles()
                 for _, npc in ipairs(peds) do
                     if not PED.IS_PED_A_PLAYER(npc) and not PED.IS_PED_IN_ANY_VEHICLE(npc, true) then
                         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(npc)
@@ -26858,6 +26879,7 @@ for group, scenarios in pairs(SCENARIOS) do
                     end
                 end
             end
+            -- Play scenario on self if enabled:
             if affectType == 0 or affectType == 2 then
                 if clearActionImmediately then
                     TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
@@ -26867,22 +26889,20 @@ for group, scenarios in pairs(SCENARIOS) do
         end)
     end
 end
+
 HUD.BUSYSPINNER_OFF()
 
-local selfSpeechPed = {
-    entity = 0,
-    lastUsed = os.millis(),
-    model = util.joaat("a_f_m_bevhills_01")
-}
-
-
+-----------------------
+-- Animation Functions
+----------------------
+-- Maybe smart deletion but eh
 function populate_favorites()
     for _, action in ipairs(favoritesActions) do
         menu.delete(action)
     end
     favoritesActions = {}
     for _, favorite in ipairs(favorites) do
-        local name = favorite[2]
+        name = favorite[2]
         if favorite[3] then
             name = favorite[3] .. " (" .. favorite[2] .. ")"
         end
