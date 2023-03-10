@@ -6,6 +6,6 @@ Added custom peds and animals 800+
 
 Added Bri' 'ish Attacker
 ________________________
-v1.1.2
+v1.1.3
 ________________________
 Added Bri' 'ish Attacker Weapon List
