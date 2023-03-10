@@ -1,3 +1,5 @@
-v1.1.1
+v1.1.2
 ________________________
-Fixed bugs with animation script
+Added ability for ped attackers to attack with any gun
+Added custom peds and animals 800+
+Added Bri' 'ish Attacker
