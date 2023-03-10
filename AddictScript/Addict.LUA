@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.2"
+local local_menu_version = "1.1.3"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -174,6 +174,7 @@ menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to kee
 menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
 menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
 menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
+menu.action(Credits, "Jailbroken", {}, "Cool guy very fast learner, unlike some people (no names) PRISHUM.", function() end)
 ---------------------------------------------------------------------------------
 menu.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
@@ -6866,7 +6867,7 @@ menu.rainbow(menu.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsCol
     fireWingsSettings.fireColour = colour
 end))
 
-util.keep_running()
+
 local player = players.user_ped()
 local agroup = "missfbi3ig_0"
 local anim = "shit_loop_trev"
@@ -7204,7 +7205,7 @@ util.toast("Hulk Mode Off")
     end 
 end)
 
-menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisible, off radar and no collisions...", function(on_toggle)
+menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisible, off radar and no collisions with quietsteps...", function(on_toggle)
     if on_toggle then
         menu.trigger_commands("invisibility" .. " on")
         menu.trigger_commands("reducedcollision" .. " on")
@@ -11814,26 +11815,29 @@ local all_peds_list = {
 }
 
 function brish(pid)
+    local selectedbritwep = 1
+    local player_Brish_army = {}
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(player_ped, false)
+    local modelHash <const> = util.joaat(all_weapons_list[selectedbritwep])
     PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_ped, util.joaat("PLAYER"))
     local flag_hash = util.joaat("prop_flag_uk")
     local hash = 905946442
     request_model(hash)
-    local ped =  entities.create_ped(28, hash, pos, FinalRenderedCamRot)
+    player_Brish_army[i] =  entities.create_ped(28, hash, pos, FinalRenderedCamRot)
     request_model(flag_hash)
-    PED.SET_PED_MAX_HEALTH(ped, 100)
-    ENTITY.SET_ENTITY_HEALTH(ped, 100)
-    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+    PED.SET_PED_MAX_HEALTH(player_Brish_army[i], 100)
+    ENTITY.SET_ENTITY_HEALTH(player_Brish_army[i], 100)
+    ENTITY.SET_ENTITY_INVINCIBLE(player_Brish_army[i], true)
     local object = entities.create_object(flag_hash, pos)
-    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, ped, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-    PED.SET_PED_AS_ENEMY(ped, true)
-    PED.SET_PED_FLEE_ATTRIBUTES(ped, 0, false)
-    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-    WEAPON.GIVE_WEAPON_TO_PED(ped, -1834847097, 9999,  true)
-    PED.SET_PED_COMBAT_ATTRIBUTES(ped, player_ped, 0, 16)
-    PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped ,util.joaat("HATES_PLAYER"))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, player_Brish_army[i], playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+    PED.SET_PED_AS_ENEMY(player_Brish_army[i], true)
+    PED.SET_PED_FLEE_ATTRIBUTES(player_Brish_army[i], 0, false)
+    PED.SET_PED_COMBAT_ATTRIBUTES(player_Brish_army[i], 46, true)
+    WEAPON.GIVE_WEAPON_TO_PED(player_Brish_army[i], modelHash, 9999,  true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(player_Brish_army[i], player_ped, 0, 16)
+    PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_Brish_army[i] ,util.joaat("HATES_PLAYER"))
     util.toast("Britishman sent to " .. PLAYER.GET_PLAYER_NAME(pid))
     util.log("Britishman sent to " .. PLAYER.GET_PLAYER_NAME(pid))
 end
@@ -11844,9 +11848,23 @@ menu.action(Attackers_trollys, "Delete All Attackers", {"deleteattacks"}, "Delet
     menu.trigger_commands("superc")
 end)
 
-menu.action(Armys, "Bri' 'ish Attack", {"brish"}, "", function()
+local British_Attack = menu.list(Armys, "Bri' 'ish Attack")
+
+menu.action(British_Attack, "Bri' 'ish Attack", {"brish"}, "", function()
     brish(pid)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+menu.list_select(British_Attack, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+    selectedbritwep = opt
+end)
+
+menu.action(British_Attack, "Clear Brits", {"clearbrits"}, "", function()
+    for i, ped in ipairs(entities.get_all_peds_as_handles()) do
+        if PED.IS_PED_MODEL(ped, PedHash) then
+            entities.delete_by_handle(ped)
+        end
+    end
+end)
 
 local selectedwep = 1
 local selectedped = 1
@@ -12351,11 +12369,12 @@ end)
     local CloneEntities = menu.list(griefing, "Clone Attacker", {}, "")
 
     local pclpid = {}
-
+    local selectedweapon = 1
     menu.action(CloneEntities, "Clone", {}, "Clone the player into a ped", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(p, util.joaat("PLAYER"))
+        local modelHashes <const> = util.joaat(all_weapons_list[selectedweapon])
         local pclone = entities.create_ped(26, ENTITY.GET_ENTITY_MODEL(p), c, 0)
         pclpid [#pclpid + 1] = pclone 
         PED.CLONE_PED_TO_TARGET(p, pclone)
@@ -12365,12 +12384,16 @@ end)
         PED.SET_PED_AS_ENEMY(pclone, true)
         PED.SET_PED_FLEE_ATTRIBUTES(pclone, 0, false)
         PED.SET_PED_COMBAT_ATTRIBUTES(pclone, 46, true)
-        WEAPON.GIVE_WEAPON_TO_PED(pclone, util.joaat("weapon_raypistol"), 9999,  true)
+        WEAPON.GIVE_WEAPON_TO_PED(pclone, modelHashes, 9999,  true)
         PED.SET_PED_COMBAT_ATTRIBUTES(pclone, ped, 0, 16)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(pclone,util.joaat("HATES_PLAYER"))
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the player into a centipede. Note: Click a few times for better results.", function()
+    menu.list_select(CloneEntities, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+        selectedweapon = opt
+    end)
+
+    menu.toggle_loop(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the player into a centipede. Note: Click a few times for better results.", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(p, util.joaat("PLAYER"))
@@ -12624,7 +12647,7 @@ menu.toggle_loop(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone th
         util.yield(100)
         entities.create_object(rshit, c)
     end)
-
+    
 menu.toggle_loop(tormentplayer, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function(on_toggle)
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
@@ -17843,7 +17866,6 @@ function RqModel(hash)
         util.toast("Tried for 1 second, couldn't load this specified model!")
     end
 end
-
 
 local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
 local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
