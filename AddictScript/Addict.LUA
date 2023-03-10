@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.3"
+local local_menu_version = "1.1.4"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -27316,9 +27316,9 @@ SCRIPT_BRANCH_NAMES = {{"jackzscript"},{"dev"},{"release"}}
 -- SOURCE CODE: https://github.com/Jackzmc/lua-scripts
 SCRIPT = "actions"
 VERSION = "1.10.10"
-ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/jackz_actions/animations.txt"
+ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/addict_actions/animations.txt"
 ANIMATIONS_DATA_FILE_VERSION = "1.0"
-SPECIAL_ANIMATIONS_DATA_FILE_VERSION = "1.0.0" -- target version of actions_data
+SPECIAL_ANIMATIONS_DATA_FILE_VERSION = "1.0.0" -- target version of addict_action
 
 
 -- TEMPLATE: release/log.lua --
@@ -27598,17 +27598,17 @@ function pairsByKeys(t, f)
     end
     return iter
  end
-status = pcall(require, 'resources/jackz_actions/actions_data')
+status = pcall(require, 'resources/addict_actions/addict_action')
 if not status then
-    util.toast("Failed to load resource file: jackz_actions/actions_data.lua")
+    util.toast("Failed to load resource file: addict_actions/addict_action.lua")
     util.stop_script()
 end
 if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
     if SCRIPT_SOURCE == "MANUAL" then
-        download_resources_update("jackz_actions/actions_data.min.lua", "jackz_actions/actions_data.lua")
+        download_resources_update("addict_actions/addict_action.min.lua", "addict_actions/addict_action.lua")
         util.toast("Restart script to use updated resource file")
     else
-        util.toast("jackz_actions: Warn: Outdated or missing actions_data. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
+        util.toast("addict_actions: Warn: Outdated or missing addict_action. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
         util.stop_script()
     end
 end
@@ -28024,7 +28024,7 @@ end
 function download_animation_data()
     local loading = true
     show_busyspinner("Downloading animation data")
-    async_http.init("jackz.me", "/stand/resources/jackz_actions/animations.txt", function(result)
+    async_http.init("jackz.me", "/stand/resources/addict_actions/animations.txt", function(result)
         local file = io.open(ANIMATIONS_DATA_FILE, "w")
         file:write(result:gsub("\r", ""))
         file:close()
