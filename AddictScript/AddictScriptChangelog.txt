@@ -1,25 +1,14 @@
 v1.1.5
 ________________________
 Added Explode Map In - Chaos Shit>Explode Map
-
 Added A.I. Entities In - Chaos Shit>A.I. Entities
-
 Added Entity Dump In - Griefing>Control Entities>Entity Dump
-
 Added Entity Fuck In - Griefing>Control Entities>Entity Fuck
-
 Added Outfit Crashes In - Crashes
-
 Added Parachute Crashes In - Lobby Crashes
-
 Added Scenario Crash In - Task Crashes
-
 Added Muscle Crash In - Task Crashes
-
 Added Next Gen Crash In - Vehicle Crashes
-
 Added TnT Crash In - Crashes>Menu Crashes>Most Menu Crashes
-
 Added Ka-Chow In - Crashes>Menu Crashes>Most Menu Crashes
-
 Added A.I. Crashes In - Crashes>Menu Crashes>Most Menu Crashes
