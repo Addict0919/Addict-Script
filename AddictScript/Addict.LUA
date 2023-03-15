@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.6"
+local local_menu_version = "1.1.7"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -5121,20 +5121,6 @@ menu.action(helpful_trolling, "Give Vehicle Godmode Off", {"givegodmodeoffall"},
 end)
 
 menu.divider(helpful_trolling, "Helpful")
-
-menu.toggle(helpful_trolling, "Give Godmode", {"givegodmodeall"}, "", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("givegodmode" .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("givegodmode" .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        end
-    end
-end)
 
 menu.action(helpful_trolling, "Give Vehicle Godmode", {"givegodmodeall"}, "", function()
     for pids = 0, 31 do
@@ -17477,22 +17463,6 @@ end)
 		end
 	end)
 
-    function GodmodeOn(pid)
-        while true do
-            local PlayerId = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            ENTITY.SET_ENTITY_INVINCIBLE(PlayerId, true)
-            util.yield_once()
-        end
-    end
-
-    function GodmodeOff(pid)
-        while true do
-            local PlayerId = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            ENTITY.SET_ENTITY_INVINCIBLE(PlayerId, false)
-            util.yield_once()
-        end
-    end
-
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
 	menu.action(frienm, "Max Player", {"max"}, "Turns on Godmode, auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
@@ -17502,19 +17472,10 @@ end)
                 menu.trigger_commands("ceopay".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
                 menu.trigger_commands("autoheal".. players.get_name(pid))
-                menu.trigger_commands("givegodmode".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_FRIENDLY)
-
-    menu.toggle(frienm, "Godmode Player", {"givegodmode"}, "", function(on)
-        if on then
-            GodmodeOn(pid)
-        else
-            GodmodeOff(pid)
-        end
-    end)
 
     local drops = menu.list(frienm, "Addict Drops", {}, "")
 
