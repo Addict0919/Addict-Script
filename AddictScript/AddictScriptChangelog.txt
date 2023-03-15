@@ -1,15 +1,25 @@
-v1.1.2
+v1.1.5
 ________________________
-Added ability for ped attackers to attack with any gun
+Added Explode Map In - Chaos Shit>Explode Map
 
-Added custom peds and animals 800+
+Added A.I. Entities In - Chaos Shit>A.I. Entities
 
-Added Bri' 'ish Attacker
-________________________
-v1.1.3
-________________________
-Added Bri' 'ish Attacker Weapon List
-________________________
-v1.1.4
-________________________
-Bug Fixes
+Added Entity Dump In - Griefing>Control Entities>Entity Dump
+
+Added Entity Fuck In - Griefing>Control Entities>Entity Fuck
+
+Added Outfit Crashes In - Crashes
+
+Added Parachute Crashes In - Lobby Crashes
+
+Added Scenario Crash In - Task Crashes
+
+Added Muscle Crash In - Task Crashes
+
+Added Next Gen Crash In - Vehicle Crashes
+
+Added TnT Crash In - Crashes>Menu Crashes>Most Menu Crashes
+
+Added Ka-Chow In - Crashes>Menu Crashes>Most Menu Crashes
+
+Added A.I. Crashes In - Crashes>Menu Crashes>Most Menu Crashes
