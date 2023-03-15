@@ -12,3 +12,6 @@ Added Next Gen Crash In - Vehicle Crashes
 Added TnT Crash In - Crashes>Menu Crashes>Most Menu Crashes
 Added Ka-Chow In - Crashes>Menu Crashes>Most Menu Crashes
 Added A.I. Crashes In - Crashes>Menu Crashes>Most Menu Crashes
+v1.1.8
+________________________
+Added Attach Sirons (Very funny, annoys all modders)
