@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.9"
+local local_menu_version = "1.2.0"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -5091,6 +5091,20 @@ menu.toggle_loop(helpful_trolling, "Ceo Kick", {}, "", function()
     end
 end)
 
+menu.toggle_loop(helpful_trolling, "Give Sirens", {}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
 menu.toggle_loop(helpful_trolling, "Give Wanted", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
@@ -9144,7 +9158,7 @@ GenerateFeatures = function(pid)
 		menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(troll_sub_vehicle_tab, "Attach Cop Sirons", {"siron"}, "Attaches annoying cop car under there car with the sirons on. Skidded idea from 2take1 PoliceCar.lua", function()
+    menu.action(troll_sub_vehicle_tab, "Attach Cop Sirens", {"siren"}, "Attaches annoying cop car under there car with the sirens on. Skidded idea from 2take1 PoliceCar.lua", function()
         if not PED.IS_PED_IN_ANY_VEHICLE(pid) then
             local player_vehicle = get_player_vehicle(pid, true)
             local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
