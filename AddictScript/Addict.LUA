@@ -12493,8 +12493,6 @@ end)
 
     local ControlEntities = menu.list(griefing, "Control Entities", {}, "")
 
-    efucks = menu.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
-
     menu.action(ControlEntities,"Entity Dump", {"entcrash"}, "Working.", function()
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
@@ -12513,6 +12511,8 @@ end)
         menu.trigger_commands("superc")
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+    efucks = menu.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
 
     menu.toggle_loop(efucks, "Vehicle fuck", {"vehfuck"}, "", function()
     for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
