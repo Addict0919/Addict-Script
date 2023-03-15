@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.8"
+local local_menu_version = "1.1.9"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -9145,27 +9145,27 @@ GenerateFeatures = function(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
     menu.action(troll_sub_vehicle_tab, "Attach Cop Sirons", {"siron"}, "Attaches annoying cop car under there car with the sirons on. Skidded idea from 2take1 PoliceCar.lua", function()
-        if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
-            local sat_in_veh = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+        if not PED.IS_PED_IN_ANY_VEHICLE(pid) then
+            local player_vehicle = get_player_vehicle(pid, true)
             local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local playerpos = ENTITY.GET_ENTITY_COORDS(id)
             playerpos.z = playerpos.z + 3
-            local copcar = util.joaat("policeold2")
             local model = util.joaat("mp_m_freemode_01")
-            STREAMING.REQUEST_MODEL(copcar)
-            while not STREAMING.HAS_MODEL_LOADED(copcar) do
+            STREAMING.REQUEST_MODEL(2515846680)
+            while not STREAMING.HAS_MODEL_LOADED(2515846680) do
                 util.yield()
             end
-            local vehicle1 = entities.create_vehicle(copcar, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-            local pedspawn = PED.CREATE_PED(26, model, playerpos.x, playerpos.y, playerpos.z, 0, true, false)
-            PED.SET_PED_INTO_VEHICLE(pedspawn, vehicle1, -1)
-            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
-            VEHICLE.SET_VEHICLE_SIREN(vehicle1, true)
-            VEHICLE.SET_VEHICLE_WILL_FORCE_OTHER_VEHICLES_TO_STOP(vehicle1, true)
-            ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(vehicle1, sat_in_veh, true)
-            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, sat_in_veh, 0, 0, 0, -2, 0, 0, 0, 0, false, true, false, 0, true)
-            ENTITY.SET_ENTITY_VISIBLE(vehicle1, false, 0)
-            ENTITY.SET_ENTITY_VISIBLE(pedspawn, false, 0)
+            local siren_vehicle = entities.create_vehicle(2515846680, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+            local siren_ped = PED.CREATE_PED(26, model, playerpos.x, playerpos.y, playerpos.z, 0, true, false)
+            PED.SET_PED_INTO_VEHICLE(siren_ped, siren_vehicle, -1)
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(siren_vehicle)
+            VEHICLE.SET_VEHICLE_SIREN(siren_vehicle, true)
+            ENTITY.SET_ENTITY_VISIBLE(siren_vehicle, false, 0)
+            ENTITY.SET_ENTITY_VISIBLE(siren_ped, false, 0)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(siren_vehicle, player_vehicle, 0, 0, 0, -2, 0, 0, 0, 0, false, true, false, 0, true)
+            VEHICLE.SET_VEHICLE_WILL_FORCE_OTHER_VEHICLES_TO_STOP(siren_vehicle, true)
+            ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(siren_vehicle, player_vehicle, true)
+
         else
             util.toast("Player is not in a vehicle. :/")
         end
@@ -22950,1754 +22950,1754 @@ menu.action(clothescrash,"Confusion Crash", {"confusion"}, "", function()
     util.yield(100)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
-        if pid ~= players.user() then
-            util.toast("Wait 20 Seconds...")
-            local math_random = math.random
-            local joaat = util.joaat
-            util.yield(100)
-            local pedhash = util.joaat("P_franklin_02")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds1 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                --entities.delete(SpawnedPeds1[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_lazlow")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds2 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 3, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds2[i])
-                util.yield(5)
-            end
-            util.yield(5)
-            local pedhash = util.joaat("cs_taocheng")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 2, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds3[i])
-                util.yield(5)
-            end
-            util.yield(5)
-            local pedhash = util.joaat("cs_solomon")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds4 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds4[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds4[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds4[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds4[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds4[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds4[i])
-                util.yield(5)
-            end
-            util.yield(5)
-            local pedhash = util.joaat("cs_stevehains")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds5 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds5[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds5[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds5[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds5[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds5[i], 3, 1, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds5[i])
-                util.yield(5)
-            end
-            
-            local pedhash = util.joaat("cs_taostranslator")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds6 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds6[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds6[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds6[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds6[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds6[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds6[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_debra")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds7 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds7[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds7[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds7[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds7[i], 4, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds7[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_devin")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds8 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds8[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds8[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds8[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds8[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds8[i], 3, 1, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds8[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_guadalope")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds9 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds9[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds9[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds9[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds9[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds9[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds9[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_gurk")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds10 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds10[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds10[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds10[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds10[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds10[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds10[i])
-                util.yield(5)
-            end
-            
-            local pedhash = util.joaat("cs_jimmydisanto")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds11 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds11[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds11[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds11[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds11[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds11[i], 3, 2, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds11[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_josh")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds12 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds12[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds12[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds12[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds12[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds12[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds12[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_lamardavis")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds13 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds13[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds13[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds13[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds13[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds13[i], 3, 2, 3, 0 )
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds13[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_lestercrest")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds14 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds14[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds14[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds14[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds14[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds14[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds14[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds14[i], 11, 2, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds14[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_lestercrest_3")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds15 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds15[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds15[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds15[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds15[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds15[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds15[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds15[i], 3, 2, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds15[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_martinmadrazo")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds16 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds16[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds16[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds16[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds16[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds16[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds16[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds16[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds16[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_milton")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds17 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds17[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds17[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds17[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds17[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds17[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds17[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds17[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds17[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_molly")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds18 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds18[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds18[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds18[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds18[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds18[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds18[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds18[i], 4, 1, 3, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds18[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_mrs_thornhill")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds19 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds19[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds19[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds19[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds19[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds19[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds19[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds19[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds19[i])
-                util.yield(5)
-            end
-            local pedhash = util.joaat("cs_nigel")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds20 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds20[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds20[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds20[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds20[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds20[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds20[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds20[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                entities.delete(SpawnedPeds20[i])
-                util.yield(5)					
-            end
-            util.yield(100)
-            util.toast("Done")
-        else
-            util.toast("You can't use it on yourself")
-        end
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+            menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
+                    if pid ~= players.user() then
+                        util.toast("Wait 20 Seconds...")
+                        local math_random = math.random
+                        local joaat = util.joaat
+                        util.yield(100)
+                        local pedhash = util.joaat("P_franklin_02")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds1 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            --entities.delete(SpawnedPeds1[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_lazlow")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds2 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 3, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds2[i])
+                            util.yield(5)
+                        end
+                        util.yield(5)
+                        local pedhash = util.joaat("cs_taocheng")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds3 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 2, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds3[i])
+                            util.yield(5)
+                        end
+                        util.yield(5)
+                        local pedhash = util.joaat("cs_solomon")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds4 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds4[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds4[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds4[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds4[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds4[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds4[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds4[i])
+                            util.yield(5)
+                        end
+                        util.yield(5)
+                        local pedhash = util.joaat("cs_stevehains")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds5 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds5[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds5[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds5[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds5[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds5[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds5[i], 3, 1, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds5[i])
+                            util.yield(5)
+                        end
+                        
+                        local pedhash = util.joaat("cs_taostranslator")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds6 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds6[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds6[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds6[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds6[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds6[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds6[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds6[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_debra")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds7 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds7[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds7[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds7[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds7[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds7[i], 4, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds7[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_devin")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds8 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds8[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds8[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds8[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds8[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds8[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds8[i], 3, 1, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds8[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_guadalope")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds9 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds9[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds9[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds9[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds9[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds9[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds9[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds9[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_gurk")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds10 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds10[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds10[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds10[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds10[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds10[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds10[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds10[i])
+                            util.yield(5)
+                        end
+                        
+                        local pedhash = util.joaat("cs_jimmydisanto")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds11 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds11[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds11[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds11[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds11[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds11[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds11[i], 3, 2, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds11[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_josh")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds12 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds12[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds12[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds12[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds12[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds12[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds12[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds12[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_lamardavis")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds13 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds13[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds13[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds13[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds13[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds13[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds13[i], 3, 2, 3, 0 )
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds13[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_lestercrest")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds14 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds14[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds14[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds14[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds14[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds14[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds14[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds14[i], 11, 2, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds14[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_lestercrest_3")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds15 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds15[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds15[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds15[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds15[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds15[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds15[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds15[i], 3, 2, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds15[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_martinmadrazo")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds16 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds16[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds16[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds16[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds16[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds16[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds16[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds16[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds16[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_milton")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds17 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds17[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds17[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds17[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds17[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds17[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds17[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds17[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds17[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_molly")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds18 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds18[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds18[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds18[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds18[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds18[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds18[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds18[i], 4, 1, 3, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds18[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_mrs_thornhill")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds19 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds19[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds19[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds19[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds19[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds19[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds19[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds19[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds19[i])
+                            util.yield(5)
+                        end
+                        local pedhash = util.joaat("cs_nigel")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds20 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds20[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds20[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds20[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds20[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds20[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds20[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds20[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            entities.delete(SpawnedPeds20[i])
+                            util.yield(5)					
+                        end
+                        util.yield(100)
+                        util.toast("Done")
+                    else
+                        util.toast("You can't use it on yourself")
+                    end
+                end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(clothescrash, "Component Crash V2", {"compcrashv2"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
-            local math_random = math.random
-            local joaat = util.joaat
-            util.yield(100)
-            local pedhash = util.joaat("s_m_y_blackops_03")
-            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                STREAMING.REQUEST_MODEL(pedhash)
-                util.yield(10)
-            end
-            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-            SpawnedPeds1 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                util.yield()
-            end
-            util.yield(50)
-            for i = 1, ped_amount do
-                --entities.delete(SpawnedPeds1[i])
-                util.yield(5)
-            ----------------------------------------------------------------------------
-                local pedhash = util.joaat("a_f_y_juggalo_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("g_m_y_ballasout_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("u_m_m_markfost")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("a_m_y_gay_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("S_M_Y_DWService_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("a_m_m_farmer_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("s_m_y_construct_01")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("a_m_y_beach_02")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("s_m_y_garbage")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    ----entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("g_m_y_armgoon_02")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
-                ----------------------------------------------------------------------------
-                local pedhash = util.joaat("u_m_y_abner")
-                while not STREAMING.HAS_MODEL_LOADED(pedhash) do
-                    STREAMING.REQUEST_MODEL(pedhash)
-                    util.yield(10)
-                end
-                local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-                local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-                SpawnedPeds1 = {}
-                local ped_amount = math_random(7, 10)
-                for i = 1, ped_amount do
-                    local pedtype = 0
-                    local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-                    local coords = PlayerPedCoords
-                    local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                    coords.x = coords.x
-                    coords.y = coords.y
-                    coords.z = coords.z
-                    if loc1 == 1 then
-                        coords.x = coords.x - math_random(1, 5)
-                    else
-                        coords.x = coords.x + math_random(1, 5)
-                    end
-                    if loc2 == 1 then
-                        coords.y = coords.y - math_random(1, 5)
-                    else
-                        coords.y = coords.y + math_random(1, 5)
-                    end
-                    if loc3 == 1 then
-                        coords.z = coords.z - math_random(3, 5)
-                    else
-                        coords.z = coords.z + math_random(3, 5)
-                    end
-                    if pedt == 1 then
-                        pedtype = 0
-                    else
-                        pedtype = 3
-                    end
-                    SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                    TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                    ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
-                    util.yield(5)
-                end
-                for i = 1, ped_amount do
-                    ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                    PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                    util.yield()
-                end
-                util.yield(50)
-                for i = 1, ped_amount do
-                    --entities.delete(SpawnedPeds1[i])
-                    util.yield(5)
+                menu.toggle_loop(clothescrash, "Component Crash V2", {"compcrashv2"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
+                        local math_random = math.random
+                        local joaat = util.joaat
+                        util.yield(100)
+                        local pedhash = util.joaat("s_m_y_blackops_03")
+                        while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                            STREAMING.REQUEST_MODEL(pedhash)
+                            util.yield(10)
+                        end
+                        local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                        local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                        SpawnedPeds1 = {}
+                        local ped_amount = math_random(7, 10)
+                        for i = 1, ped_amount do
+                            local pedtype = 0
+                            local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                            local coords = PlayerPedCoords
+                            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                            coords.x = coords.x
+                            coords.y = coords.y
+                            coords.z = coords.z
+                            if loc1 == 1 then
+                                coords.x = coords.x - math_random(1, 5)
+                            else
+                                coords.x = coords.x + math_random(1, 5)
+                            end
+                            if loc2 == 1 then
+                                coords.y = coords.y - math_random(1, 5)
+                            else
+                                coords.y = coords.y + math_random(1, 5)
+                            end
+                            if loc3 == 1 then
+                                coords.z = coords.z - math_random(3, 5)
+                            else
+                                coords.z = coords.z + math_random(3, 5)
+                            end
+                            if pedt == 1 then
+                                pedtype = 0
+                            else
+                                pedtype = 3
+                            end
+                            SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                            util.yield(5)
+                        end
+                        for i = 1, ped_amount do
+                            ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                            PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                            util.yield()
+                        end
+                        util.yield(50)
+                        for i = 1, ped_amount do
+                            --entities.delete(SpawnedPeds1[i])
+                            util.yield(5)
+                        ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("a_f_y_juggalo_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("g_m_y_ballasout_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("u_m_m_markfost")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("a_m_y_gay_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("S_M_Y_DWService_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("a_m_m_farmer_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("s_m_y_construct_01")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("a_m_y_beach_02")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("s_m_y_garbage")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                ----entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("g_m_y_armgoon_02")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
+                            ----------------------------------------------------------------------------
+                            local pedhash = util.joaat("u_m_y_abner")
+                            while not STREAMING.HAS_MODEL_LOADED(pedhash) do
+                                STREAMING.REQUEST_MODEL(pedhash)
+                                util.yield(10)
+                            end
+                            local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                            local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+                            SpawnedPeds1 = {}
+                            local ped_amount = math_random(7, 10)
+                            for i = 1, ped_amount do
+                                local pedtype = 0
+                                local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+                                local coords = PlayerPedCoords
+                                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                                coords.x = coords.x
+                                coords.y = coords.y
+                                coords.z = coords.z
+                                if loc1 == 1 then
+                                    coords.x = coords.x - math_random(1, 5)
+                                else
+                                    coords.x = coords.x + math_random(1, 5)
+                                end
+                                if loc2 == 1 then
+                                    coords.y = coords.y - math_random(1, 5)
+                                else
+                                    coords.y = coords.y + math_random(1, 5)
+                                end
+                                if loc3 == 1 then
+                                    coords.z = coords.z - math_random(3, 5)
+                                else
+                                    coords.z = coords.z + math_random(3, 5)
+                                end
+                                if pedt == 1 then
+                                    pedtype = 0
+                                else
+                                    pedtype = 3
+                                end
+                                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash, coords, FinalRenderedCamRot)
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
+                                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
+                                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], false)
+                                util.yield(5)
+                            end
+                            for i = 1, ped_amount do
+                                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
+                                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+                                util.yield()
+                            end
+                            util.yield(50)
+                            for i = 1, ped_amount do
+                                --entities.delete(SpawnedPeds1[i])
+                                util.yield(5)
 ----------------------------------------------------------------------------
                                                 end
                                             end
