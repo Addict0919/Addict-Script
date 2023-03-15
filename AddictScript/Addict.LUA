@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.4"
+local local_menu_version = "1.1.5"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -256,31 +256,11 @@ end)
 end
 
 --------------------------------------------------------------------------------------
-local alarm = false
 
 function random_float(min, max)
 	return min + math.random() * (max - min)
 end
 
-function start_alarm(alarm_time)
-    alarm = false
-    local time = 0
-
-    util.create_tick_handler(function()
-        local time_elapsed = MISC.GET_FRAME_TIME() * 1000
-
-        if time >= alarm_time then
-            alarm = true
-            return false
-        else
-            time += time_elapsed
-        end
-    end)
-end
-
-function get_alarm()
-    return alarm
-end
 
 function get_hud_colour()
     local red_command_ref <const> = menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
@@ -323,28 +303,6 @@ function wait_player_revive(player_id, yield_time)
     yield_time = yield_time or 250
 
     while PLAYER.IS_PLAYER_DEAD(player_id) do
-        util.yield(yield_time)
-    end
-end
-
-function kick_player_out_of_veh(player_id, yield_time, max_time)
-    yield_time = yield_time or 50
-    max_time = max_time or 1000
-
-    local player_ped <const> = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
-    local player_root_ref <const> = menu.player_root(player_id)
-    local kick_vehicle_command_ref <const> = menu.ref_by_rel_path(player_root_ref, "Trolling>Kick From Vehicle")
-
-    menu.trigger_command(kick_vehicle_command_ref)
-    start_alarm(max_time)
-
-    while PED.IS_PED_IN_ANY_VEHICLE(player_ped) do
-        local is_alarm_finished <const> = get_alarm()
-
-        if is_alarm_finished then
-            break
-        end
-
         util.yield(yield_time)
     end
 end
@@ -3997,6 +3955,920 @@ notification("Addict Script has been successfully loaded!", colors.green)
     -1217949151,
 }
 
+
+local all_weapons_list = {
+    "weapon_unarmed",
+    "weapon_digiscanner",
+    "weapon_raypistol",
+    "weapon_firework",
+    "weapon_stungun",
+    "weapon_switchblade",
+    "weapon_emplauncher",
+    "weapon_railgun",
+    "weapon_flare",
+    "weapon_knife",
+    "weapon_NIGHTSTICK",
+    "weapon_bottle",
+    "weapon_HAMMER",
+    "weapon_BAT",
+    "weapon_GOLFCLUB",
+    "weapon_CROWBAR",
+    "weapon_PISTOL",
+    "weapon_COMBATPISTOL",
+    "weapon_APPISTOL",
+    "weapon_PISTOL50",
+    "weapon_MICROSMG",
+    "weapon_SMG",
+    "weapon_ASSAULTSMG",
+    "weapon_ASSAULTRIFLE",
+    "weapon_hatchet",
+    "weapon_knuckle",
+    "weapon_machete",
+    "weapon_dagger",
+    "weapon_wrench",
+    "weapon_battleaxe",
+    "weapon_poolcue",
+    "weapon_pistol_mk2",
+    "weapon_snspistol",
+    "weapon_snspistol_mk2",
+    "weapon_heavypistol",
+    "weapon_vintagepistol",
+    "weapon_flaregun",
+    "weapon_marksmanpistol",
+    "weapon_revolver",
+    "weapon_revolver_mk2",
+    "weapon_doubleaction",
+    "weapon_ceramicpistol",
+    "weapon_navyrevolver",
+    "weapon_smg_mk2",
+    "weapon_combatpdw",
+    "weapon_machinepistol",
+    "weapon_minismg",
+    "weapon_raycarbine",
+    "weapon_pumpshotgun",
+    "weapon_pumpshotgun_mk2",
+    "weapon_sawnoffshotgun",
+    "weapon_assaultshotgun",
+    "weapon_bullpupshotgun",
+    "weapon_musket",
+    "weapon_heavyshotgun",
+    "weapon_dbshotgun",
+    "weapon_autoshotgun",
+    "weapon_assaultrifle",
+    "weapon_assaultrifle_mk2",
+    "weapon_carbinerifle",
+    "weapon_carbinerifle_mk2",
+    "weapon_advancedrifle",
+    "weapon_specialcarbine",
+    "weapon_specialcarbine_mk2",
+    "weapon_bullpuprifle",
+    "weapon_bullpuprifle_mk2",
+    "weapon_compactrifle",
+    "weapon_mg",
+    "weapon_combatmg",
+    "weapon_combatmg_mk2",
+    "weapon_gusenberg",
+    "weapon_sniperrifle",
+    "weapon_heavysniper",
+    "weapon_heavysniper_mk2",
+    "weapon_marksmanrifle",
+    "weapon_marksmanrifle_mk2",
+    "weapon_rpg",
+    "weapon_grenadelauncher",
+    "weapon_grenadelauncher_smoke",
+    "weapon_minigun",
+    "weapon_hominglauncher",
+    "weapon_compactlauncher",
+    "weapon_rayminigun",
+    "weapon_grenade",
+    "weapon_bzgas",
+    "weapon_molotov",
+    "weapon_proxmine",
+    "weapon_snowball",
+    "weapon_pipebomb",
+    "weapon_ball",
+    "weapon_smokegrenade",
+    "weapon_stickybomb",
+    "weapon_petrolcan",
+    "weapon_parachute",
+    "weapon_fireextinguisher",
+    "weapon_hazardcan",
+}
+
+local all_peds_list = {
+    "a_f_m_beach_01",
+    "a_f_m_bevhills_01",
+    "a_f_m_bevhills_02",
+    "a_f_m_bodybuild_01",
+    "a_f_m_business_02",
+    "a_f_m_downtown_01",
+    "a_f_m_eastsa_01",
+    "a_f_m_eastsa_02",
+    "a_f_m_fatbla_01",
+    "a_f_m_fatcult_01",
+    "a_f_m_fatwhite_01",
+    "a_f_m_ktown_01",
+    "a_f_m_ktown_02",
+    "a_f_m_prolhost_01",
+    "a_f_m_salton_01",
+    "a_f_m_skidrow_01",
+    "a_f_m_soucent_01",
+    "a_f_m_soucent_02",
+    "a_f_m_soucentmc_01",
+    "a_f_m_tourist_01",
+    "a_f_m_tramp_01",
+    "a_f_m_trampbeac_01",
+    "a_f_o_genstreet_01",
+    "a_f_o_indian_01",
+    "a_f_o_ktown_01",
+    "a_f_o_salton_01",
+    "a_f_o_soucent_01",
+    "a_f_o_soucent_02",
+    "a_f_y_beach_01",
+    "a_f_y_bevhills_01",
+    "a_f_y_bevhills_02",
+    "a_f_y_bevhills_03",
+    "a_f_y_bevhills_04",
+    "a_f_y_business_01",
+    "a_f_y_business_02",
+    "a_f_y_business_03",
+    "a_f_y_business_04",
+    "a_f_y_clubcust_01",
+    "a_f_y_clubcust_02",
+    "a_f_y_clubcust_03",
+    "a_f_y_eastsa_01",
+    "a_f_y_eastsa_02",
+    "a_f_y_eastsa_03",
+    "a_f_y_epsilon_01",
+    "a_f_y_femaleagent",
+    "a_f_y_fitness_01",
+    "a_f_y_fitness_02",
+    "a_f_y_genhot_01",
+    "a_f_y_golfer_01",
+    "a_f_y_hiker_01",
+    "a_f_y_hippie_01",
+    "a_f_y_hipster_01",
+    "a_f_y_hipster_02",
+    "a_f_y_hipster_03",
+    "a_f_y_hipster_04",
+    "a_f_y_indian_01",
+    "a_f_y_juggalo_01",
+    "a_f_y_runner_01",
+    "a_f_y_rurmeth_01",
+    "a_f_y_scdressy_01",
+    "a_f_y_skater_01",
+    "a_f_y_soucent_01",
+    "a_f_y_soucent_02",
+    "a_f_y_soucent_03",
+    "a_f_y_tennis_01",
+    "a_f_y_topless_01",
+    "a_f_y_tourist_01",
+    "a_f_y_tourist_02",
+    "a_f_y_vinewood_01",
+    "a_f_y_vinewood_02",
+    "a_f_y_vinewood_03",
+    "a_f_y_vinewood_04",
+    "a_f_y_yoga_01",
+    "a_m_m_acult_01",
+    "a_m_m_afriamer_01",
+    "a_m_m_beach_01",
+    "a_m_m_beach_02",
+    "a_m_m_bevhills_01",
+    "a_m_m_bevhills_02",
+    "a_m_m_business_01",
+    "a_m_m_eastsa_01",
+    "a_m_m_eastsa_02",
+    "a_m_m_farmer_01",
+    "a_m_m_fatlatin_01",
+    "a_m_m_genfat_01",
+    "a_m_m_genfat_02",
+    "a_m_m_golfer_01",
+    "a_m_m_hasjew_01",
+    "a_m_m_hillbilly_01",
+    "a_m_m_hillbilly_02",
+    "a_m_m_indian_01",
+    "a_m_m_ktown_01",
+    "a_m_m_malibu_01",
+    "a_m_m_mexcntry_01",
+    "a_m_m_mexlabor_01",
+    "a_m_m_og_boss_01",
+    "a_m_m_paparazzi_01",
+    "a_m_m_polynesian_01",
+    "a_m_m_prolhost_01",
+    "a_m_m_rurmeth_01",
+    "a_m_m_salton_01",
+    "a_m_m_salton_02",
+    "a_m_m_salton_03",
+    "a_m_m_salton_04",
+    "a_m_m_skater_01",
+    "a_m_m_skidrow_01",
+    "a_m_m_socenlat_01",
+    "a_m_m_soucent_01",
+    "a_m_m_soucent_02",
+    "a_m_m_soucent_03",
+    "a_m_m_soucent_04",
+    "a_m_m_stlat_02",
+    "a_m_m_tennis_01",
+    "a_m_m_tourist_01",
+    "a_m_m_tramp_01",
+    "a_m_m_trampbeac_01",
+    "a_m_m_tranvest_01",
+    "a_m_m_tranvest_02",
+    "a_m_o_acult_01",
+    "a_m_o_acult_02",
+    "a_m_o_beach_01",
+    "a_m_o_genstreet_01",
+    "a_m_o_ktown_01",
+    "a_m_o_salton_01",
+    "a_m_o_soucent_01",
+    "a_m_o_soucent_02",
+    "a_m_o_soucent_03",
+    "a_m_o_tramp_01",
+    "a_m_y_acult_01",
+    "a_m_y_acult_02",
+    "a_m_y_beach_01",
+    "a_m_y_beach_02",
+    "a_m_y_beach_03",
+    "a_m_y_beachvesp_01",
+    "a_m_y_beachvesp_02",
+    "a_m_y_bevhills_01",
+    "a_m_y_bevhills_02",
+    "a_m_y_breakdance_01",
+    "a_m_y_busicas_01",
+    "a_m_y_business_01",
+    "a_m_y_business_02",
+    "a_m_y_business_03",
+    "a_m_y_clubcust_01",
+    "a_m_y_clubcust_02",
+    "a_m_y_clubcust_03",
+    "a_m_y_cyclist_01",
+    "a_m_y_dhill_01",
+    "a_m_y_downtown_01",
+    "a_m_y_eastsa_01",
+    "a_m_y_eastsa_02",
+    "a_m_y_epsilon_01",
+    "a_m_y_epsilon_02",
+    "a_m_y_gay_01",
+    "a_m_y_gay_02",
+    "a_m_y_genstreet_01",
+    "a_m_y_genstreet_02",
+    "a_m_y_golfer_01",
+    "a_m_y_hasjew_01",
+    "a_m_y_hiker_01",
+    "a_m_y_hippy_01",
+    "a_m_y_hipster_01",
+    "a_m_y_hipster_02",
+    "a_m_y_hipster_03",
+    "a_m_y_indian_01",
+    "a_m_y_jetski_01",
+    "a_m_y_juggalo_01",
+    "a_m_y_ktown_01",
+    "a_m_y_ktown_02",
+    "a_m_y_latino_01",
+    "a_m_y_methhead_01",
+    "a_m_y_mexthug_01",
+    "a_m_y_motox_01",
+    "a_m_y_motox_02",
+    "a_m_y_musclbeac_01",
+    "a_m_y_musclbeac_02",
+    "a_m_y_polynesian_01",
+    "a_m_y_roadcyc_01",
+    "a_m_y_runner_01",
+    "a_m_y_runner_02",
+    "a_m_y_salton_01",
+    "a_m_y_skater_01",
+    "a_m_y_skater_02",
+    "a_m_y_soucent_01",
+    "a_m_y_soucent_02",
+    "a_m_y_soucent_03",
+    "a_m_y_soucent_04",
+    "a_m_y_stbla_01",
+    "a_m_y_stbla_02",
+    "a_m_y_stlat_01",
+    "a_m_y_stwhi_01",
+    "a_m_y_stwhi_02",
+    "a_m_y_sunbathe_01",
+    "a_m_y_surfer_01",
+    "a_m_y_vindouche_01",
+    "a_m_y_vinewood_01",
+    "a_m_y_vinewood_02",
+    "a_m_y_vinewood_03",
+    "a_m_y_vinewood_04",
+    "a_m_y_yoga_01",
+    "cs_amandatownley",
+    "cs_andreas",
+    "cs_ashley",
+    "cs_bankman",
+    "cs_barry",
+    "cs_barry_p",
+    "cs_beverly",
+    "cs_beverly_p",
+    "cs_brad",
+    "cs_bradcadaver",
+    "cs_carbuyer",
+    "cs_casey",
+    "cs_chengsr",
+    "cs_chrisformage",
+    "cs_clay",
+    "cs_dale",
+    "cs_davenorton",
+    "cs_debra",
+    "cs_denise",
+    "cs_devin",
+    "cs_dom",
+    "cs_dreyfuss",
+    "cs_drfriedlander",
+    "cs_fabien",
+    "cs_fbisuit_01",
+    "cs_floyd",
+    "cs_guadalope",
+    "cs_gurk",
+    "cs_hunter",
+    "cs_janet",
+    "cs_jewelass",
+    "cs_jimmyboston",
+    "cs_jimmydisanto",
+    "cs_joeminuteman",
+    "cs_johnnyklebitz",
+    "cs_josef",
+    "cs_josh",
+    "cs_karen_daniels",
+    "cs_lamardavis",
+    "cs_lazlow",
+    "cs_lestercrest",
+    "cs_lifeinvad_01",
+    "cs_magenta",
+    "cs_manuel",
+    "cs_marnie",
+    "cs_martinmadrazo",
+    "cs_maryann",
+    "cs_michelle",
+    "cs_milton",
+    "cs_molly",
+    "cs_movpremf_01",
+    "cs_movpremmale",
+    "cs_mrk",
+    "cs_mrs_thornhill",
+    "cs_mrsphillips",
+    "cs_natalia",
+    "cs_nervousron",
+    "cs_nigel",
+    "cs_old_man1a",
+    "cs_old_man2",
+    "cs_omega",
+    "cs_orleans",
+    "cs_paper",
+    "cs_paper_p",
+    "cs_patricia",
+    "cs_priest",
+    "cs_prolsec_02",
+    "cs_russiandrunk",
+    "cs_siemonyetarian",
+    "cs_solomon",
+    "cs_stevehains",
+    "cs_stretch",
+    "cs_tanisha",
+    "cs_taocheng",
+    "cs_taostranslator",
+    "cs_tenniscoach",
+    "cs_terry",
+    "cs_tom",
+    "cs_tomepsilon",
+    "cs_tracydisanto",
+    "cs_wade",
+    "cs_zimbor",
+    "csb_abigail",
+    "csb_agent",
+    "csb_anita",
+    "csb_anton",
+    "csb_avon",
+    "csb_ballasog",
+    "csb_bogdan",
+    "csb_bride",
+    "csb_burgerdrug",
+    "csb_car3guy1",
+    "csb_car3guy2",
+    "csb_chef2",
+    "csb_chef",
+    "csb_chin_goon",
+    "csb_cletus",
+    "csb_cop",
+    "csb_customer",
+    "csb_denise_friend",
+    "csb_dix",
+    "csb_djblamadon",
+    "csb_englishdave",
+    "csb_fos_rep",
+    "csb_g",
+    "csb_groom",
+    "csb_grove_str_dlr",
+    "csb_hao",
+    "csb_hugh",
+    "csb_imran",
+    "csb_jackhowitzer",
+    "csb_janitor",
+    "csb_maude",
+    "csb_money",
+    "csb_mp_agent14",
+    "csb_mrs_r",
+    "csb_mweather",
+    "csb_ortega",
+    "csb_oscar",
+    "csb_paige",
+    "csb_popov",
+    "csb_porndudes",
+    "csb_porndudes_p",
+    "csb_prologuedriver",
+    "csb_prolsec",
+    "csb_ramp_gang",
+    "csb_ramp_hic",
+    "csb_ramp_hipster",
+    "csb_ramp_marine",
+    "csb_ramp_mex",
+    "csb_rashcosvki",
+    "csb_reporter",
+    "csb_roccopelosi",
+    "csb_screen_writer",
+    "csb_sol",
+    "csb_stripper_01",
+    "csb_stripper_02",
+    "csb_talcc",
+    "csb_talmm",
+    "csb_tonya",
+    "csb_tonyprince",
+    "csb_trafficwarden",
+    "csb_undercover",
+    "csb_vagspeak",
+    "g_f_importexport_01",
+    "g_f_y_ballas_01",
+    "g_f_y_families_01",
+    "g_f_y_lost_01",
+    "g_f_y_vagos_01",
+    "g_m_importexport_01",
+    "g_m_m_armboss_01",
+    "g_m_m_armgoon_01",
+    "g_m_m_armlieut_01",
+    "g_m_m_chemwork_01_p",
+    "g_m_m_chemwork_01",
+    "g_m_m_chiboss_01",
+    "g_m_m_chiboss_01_p",
+    "g_m_m_chicold_01",
+    "g_m_m_chicold_01_p",
+    "g_m_m_chigoon_01",
+    "g_m_m_chigoon_01_p",
+    "g_m_m_chigoon_02",
+    "g_m_m_korboss_01",
+    "g_m_m_mexboss_01",
+    "g_m_m_mexboss_02",
+    "g_m_y_armgoon_02",
+    "g_m_y_azteca_01",
+    "g_m_y_ballaeast_01",
+    "g_m_y_ballaorig_01",
+    "g_m_y_ballasout_01",
+    "g_m_y_famca_01",
+    "g_m_y_famdnf_01",
+    "g_m_y_famfor_01",
+    "g_m_y_korean_01",
+    "g_m_y_korean_02",
+    "g_m_y_korlieut_01",
+    "g_m_y_lost_01",
+    "g_m_y_lost_02",
+    "g_m_y_lost_03",
+    "g_m_y_mexgang_01",
+    "g_m_y_mexgoon_01",
+    "g_m_y_mexgoon_02",
+    "g_m_y_mexgoon_03",
+    "g_m_y_mexgoon_03_p",
+    "g_m_y_pologoon_01_p",
+    "g_m_y_pologoon_01",
+    "g_m_y_pologoon_02_p",
+    "g_m_y_pologoon_02",
+    "g_m_y_salvaboss_01",
+    "g_m_y_salvagoon_01",
+    "g_m_y_salvagoon_02",
+    "g_m_y_salvagoon_03_p",
+    "g_m_y_salvagoon_03",
+    "g_m_y_strpunk_01",
+    "g_m_y_strpunk_02",
+    "hc_driver",
+    "hc_gunman",
+    "hc_hacker",
+    "ig_abigail",
+    "ig_agent",
+    "ig_amandatownley",
+    "ig_andreas",
+    "ig_ashley",
+    "ig_avon",
+    "ig_ballasog",
+    "ig_bankman",
+    "ig_barry",
+    "ig_barry_p",
+    "ig_benny",
+    "ig_bestmen",
+    "ig_beverly",
+    "ig_beverly_p",
+    "ig_brad",
+    "ig_bride",
+    "ig_car3guy1",
+    "ig_car3guy2",
+    "ig_casey",
+    "ig_chef2",
+    "ig_chef",
+    "ig_chengsr",
+    "ig_chrisformage",
+    "ig_clay",
+    "ig_claypain",
+    "ig_cletus",
+    "ig_dale",
+    "ig_davenorton",
+    "ig_denise",
+    "ig_devin",
+    "ig_dix",
+    "ig_djblamadon",
+    "ig_djblamrupert",
+    "ig_djblamryanh",
+    "ig_djblamryans",
+    "ig_djdixmanager",
+    "ig_djgeneric_01",
+    "ig_djsolfotios",
+    "ig_djsoljakob",
+    "ig_djsolmanager",
+    "ig_djsolmike",
+    "ig_djsolrobt",
+    "ig_djtalaurelia",
+    "ig_djtalignazio",
+    "ig_dom",
+    "ig_dreyfuss",
+    "ig_drfriedlander",
+    "ig_englishdave",
+    "ig_fabien",
+    "ig_fbisuit_01",
+    "ig_floyd",
+    "ig_g",
+    "ig_groom",
+    "ig_hao",
+    "ig_hunter",
+    "ig_janet",
+    "ig_jay_norris",
+    "ig_jewelass",
+    "ig_jimmyboston",
+    "ig_jimmyboston_02",
+    "ig_jimmydisanto",
+    "ig_joeminuteman",
+    "ig_johnnyklebitz",
+    "ig_josef",
+    "ig_josh",
+    "ig_karen_daniels",
+    "ig_kerrymcintosh",
+    "ig_kerrymcintosh_02",
+    "ig_lacey_jones_02",
+    "ig_lamardavis",
+    "ig_lazlow",
+    "ig_lazlow_2",
+    "ig_lestercrest",
+    "ig_lestercrest_2",
+    "ig_lifeinvad_01",
+    "ig_lifeinvad_02",
+    "ig_magenta",
+    "ig_malc",
+    "ig_manuel",
+    "ig_marnie",
+    "ig_maryann",
+    "ig_maude",
+    "ig_michelle",
+    "ig_milton",
+    "ig_molly",
+    "ig_money",
+    "ig_mp_agent14",
+    "ig_mrk",
+    "ig_mrs_thornhill",
+    "ig_mrsphillips",
+    "ig_natalia",
+    "ig_nervousron",
+    "ig_nigel",
+    "ig_old_man1a",
+    "ig_old_man2",
+    "ig_omega",
+    "ig_oneil",
+    "ig_orleans",
+    "ig_ortega",
+    "ig_paige",
+    "ig_paper",
+    "ig_patricia",
+    "ig_popov",
+    "ig_priest",
+    "ig_prolsec_02",
+    "ig_ramp_gang",
+    "ig_ramp_hic",
+    "ig_ramp_hipster",
+    "ig_ramp_mex",
+    "ig_rashcosvki",
+    "ig_roccopelosi",
+    "ig_russiandrunk",
+    "ig_screen_writer",
+    "ig_siemonyetarian",
+    "ig_sol",
+    "ig_solomon",
+    "ig_stevehains",
+    "ig_stretch",
+    "ig_talcc",
+    "ig_talina",
+    "ig_talmm",
+    "ig_tanisha",
+    "ig_taocheng",
+    "ig_taostranslator",
+    "ig_taostranslator_p",
+    "ig_tenniscoach",
+    "ig_terry",
+    "ig_tomepsilon",
+    "ig_tonya",
+    "ig_tonyprince",
+    "ig_tracydisanto",
+    "ig_trafficwarden",
+    "ig_tylerdix",
+    "ig_tylerdix_02",
+    "ig_vagspeak",
+    "ig_wade",
+    "ig_zimbor",
+    "mp_f_boatstaff_01",
+    "mp_f_cardesign_01",
+    "mp_f_chbar_01",
+    "mp_f_cocaine_01",
+    "mp_f_counterfeit_01",
+    "mp_f_deadhooker",
+    "mp_f_execpa_01",
+    "mp_f_execpa_02",
+    "mp_f_forgery_01",
+    "mp_f_freemode_01",
+    "mp_f_helistaff_01",
+    "mp_f_meth_01",
+    "mp_f_misty_01",
+    "mp_f_stripperlite",
+    "mp_f_weed_01",
+    "mp_g_m_pros_01",
+    "mp_headtargets",
+    "mp_m_avongoon",
+    "mp_m_boatstaff_01",
+    "mp_m_bogdangoon",
+    "mp_m_claude_01",
+    "mp_m_cocaine_01",
+    "mp_m_counterfeit_01",
+    "mp_m_exarmy_01",
+    "mp_m_execpa_01",
+    "mp_m_famdd_01",
+    "mp_m_fibsec_01",
+    "mp_m_forgery_01",
+    "mp_m_freemode_01",
+    "mp_m_g_vagfun_01",
+    "mp_m_marston_01",
+    "mp_m_meth_01",
+    "mp_m_niko_01",
+    "mp_m_securoguard_01",
+    "mp_m_shopkeep_01",
+    "mp_m_waremech_01",
+    "mp_m_weapexp_01",
+    "mp_m_weapexp_01_p",
+    "mp_m_weapwork_01",
+    "mp_m_weapwork_01_p",
+    "mp_m_weed_01",
+    "mp_s_m_armoured_01",
+    "s_f_m_fembarber",
+    "s_f_m_maid_01",
+    "s_f_m_shop_high",
+    "s_f_m_sweatshop_01",
+    "s_f_y_airhostess_01",
+    "s_f_y_bartender_01",
+    "s_f_y_baywatch_01",
+    "s_f_y_clubbar_01",
+    "s_f_y_cop_01",
+    "s_f_y_factory_01",
+    "s_f_y_hooker_01",
+    "s_f_y_hooker_02",
+    "s_f_y_hooker_03",
+    "s_f_y_migrant_01",
+    "s_f_y_movprem_01",
+    "s_f_y_ranger_01",
+    "s_f_y_scrubs_01",
+    "s_f_y_sheriff_01",
+    "s_f_y_shop_low",
+    "s_f_y_shop_mid",
+    "s_f_y_stripper_01",
+    "s_f_y_stripper_02",
+    "s_f_y_stripperlite",
+    "s_f_y_sweatshop_01",
+    "s_m_m_ammucountry",
+    "s_m_m_armoured_01",
+    "s_m_m_armoured_02",
+    "s_m_m_autoshop_01",
+    "s_m_m_autoshop_02",
+    "s_m_m_bouncer_01",
+    "s_m_m_ccrew_01",
+    "s_m_m_chemsec_01",
+    "s_m_m_ciasec_01",
+    "s_m_m_cntrybar_01",
+    "s_m_m_dockwork_01",
+    "s_m_m_doctor_01",
+    "s_m_m_fiboffice_01",
+    "s_m_m_fiboffice_02",
+    "s_m_m_fibsec_01",
+    "s_m_m_gaffer_01",
+    "s_m_m_gardener_01",
+    "s_m_m_gentransport",
+    "s_m_m_hairdress_01",
+    "s_m_m_highsec_01",
+    "s_m_m_highsec_02",
+    "s_m_m_janitor",
+    "s_m_m_lathandy_01",
+    "s_m_m_lifeinvad_01",
+    "s_m_m_linecook",
+    "s_m_m_lsmetro_01",
+    "s_m_m_mariachi_01",
+    "s_m_m_marine_01",
+    "s_m_m_marine_02",
+    "s_m_m_migrant_01",
+    "s_m_m_movalien_01",
+    "s_m_m_movprem_01",
+    "s_m_m_movspace_01",
+    "s_m_m_paramedic_01",
+    "s_m_m_pilot_01",
+    "s_m_m_pilot_02",
+    "s_m_m_postal_01",
+    "s_m_m_postal_02",
+    "s_m_m_prisguard_01",
+    "s_m_m_scientist_01",
+    "s_m_m_security_01",
+    "s_m_m_snowcop_01",
+    "s_m_m_strperf_01",
+    "s_m_m_strpreach_01",
+    "s_m_m_strvend_01",
+    "s_m_m_trucker_01",
+    "s_m_m_ups_01",
+    "s_m_m_ups_02",
+    "s_m_o_busker_01",
+    "s_m_y_airworker",
+    "s_m_y_ammucity_01",
+    "s_m_y_armymech_01",
+    "s_m_y_autopsy_01",
+    "s_m_y_barman_01",
+    "s_m_y_baywatch_01",
+    "s_m_y_blackops_01",
+    "s_m_y_blackops_02",
+    "s_m_y_blackops_03",
+    "s_m_y_busboy_01",
+    "s_m_y_chef_01",
+    "s_m_y_clown_01",
+    "s_m_y_clubbar_01",
+    "s_m_y_construct_01",
+    "s_m_y_construct_02",
+    "s_m_y_cop_01",
+    "s_m_y_dealer_01",
+    "s_m_y_devinsec_01",
+    "s_m_y_dockwork_01",
+    "s_m_y_doorman_01",
+    "s_m_y_dwservice_01",
+    "s_m_y_dwservice_02",
+    "s_m_y_factory_01",
+    "s_m_y_fireman_01",
+    "s_m_y_garbage",
+    "s_m_y_grip_01",
+    "s_m_y_hwaycop_01",
+    "s_m_y_marine_01",
+    "s_m_y_marine_02",
+    "s_m_y_marine_03",
+    "s_m_y_mime",
+    "s_m_y_pestcont_01",
+    "s_m_y_pilot_01",
+    "s_m_y_prismuscl_01",
+    "s_m_y_prisoner_01",
+    "s_m_y_ranger_01",
+    "s_m_y_robber_01",
+    "s_m_y_sheriff_01",
+    "s_m_y_shop_mask",
+    "s_m_y_strvend_01",
+    "s_m_y_swat_01",
+    "s_m_y_uscg_01",
+    "s_m_y_valet_01",
+    "s_m_y_waiter_01",
+    "s_m_y_waretech_01",
+    "s_m_y_winclean_01",
+    "s_m_y_xmech_01",
+    "s_m_y_xmech_02_mp",
+    "s_m_y_xmech_02",
+    "u_f_m_corpse_01",
+    "u_f_m_drowned_01",
+    "u_f_m_miranda",
+    "u_f_m_miranda_02",
+    "u_f_m_promourn_01",
+    "u_f_o_moviestar",
+    "u_f_o_prolhost_01",
+    "u_f_y_bikerchic",
+    "u_f_y_comjane",
+    "u_f_y_corpse_01",
+    "u_f_y_corpse_02",
+    "u_f_y_danceburl_01",
+    "u_f_y_dancelthr_01",
+    "u_f_y_dancerave_01",
+    "u_f_y_hotposh_01",
+    "u_f_y_jewelass_01",
+    "u_f_y_mistress",
+    "u_f_y_poppymich",
+    "u_f_y_poppymich_02",
+    "u_f_y_princess",
+    "u_f_y_spyactress",
+    "u_m_m_aldinapoli",
+    "u_m_m_bankman",
+    "u_m_m_bikehire_01",
+    "u_m_m_doa_01",
+    "u_m_m_edtoh",
+    "u_m_m_fibarchitect",
+    "u_m_m_filmdirector",
+    "u_m_m_glenstank_01",
+    "u_m_m_griff_01",
+    "u_m_m_jesus_01",
+    "u_m_m_jewelsec_01",
+    "u_m_m_jewelthief",
+    "u_m_m_markfost",
+    "u_m_m_partytarget",
+    "u_m_m_prolsec_01",
+    "u_m_m_promourn_01",
+    "u_m_m_rivalpap",
+    "u_m_m_spyactor",
+    "u_m_m_streetart_01",
+    "u_m_m_willyfist",
+    "u_m_o_filmnoir",
+    "u_m_o_finguru_01",
+    "u_m_o_taphillbilly",
+    "u_m_o_tramp_01",
+    "u_m_y_abner",
+    "u_m_y_antonb",
+    "u_m_y_babyd",
+    "u_m_y_baygor",
+    "u_m_y_burgerdrug_01",
+    "u_m_y_chip",
+    "u_m_y_corpse_01",
+    "u_m_y_cyclist_01",
+    "u_m_y_danceburl_01",
+    "u_m_y_dancelthr_01",
+    "u_m_y_dancerave_01",
+    "u_m_y_fibmugger_01",
+    "u_m_y_guido_01",
+    "u_m_y_gunvend_01",
+    "u_m_y_hippie_01",
+    "u_m_y_imporage",
+    "u_m_y_juggernaut_01",
+    "u_m_y_justin",
+    "u_m_y_mani",
+    "u_m_y_militarybum",
+    "u_m_y_paparazzi",
+    "u_m_y_party_01",
+    "u_m_y_pogo_01",
+    "u_m_y_prisoner_01",
+    "u_m_y_proldriver_01",
+    "u_m_y_rsranger_01",
+    "u_m_y_sbike",
+    "u_m_y_smugmech_01",
+    "u_m_y_staggrm_01",
+    "u_m_y_tattoo_01",
+    "u_m_y_zombie_01",
+    "Player_Zero",
+    "Player_One",
+    "Player_Two",
+    "A_C_Westy",
+    "A_C_TigerShark",
+    "A_C_Shepherd",
+    "A_C_Rottweiler",
+    "A_C_Rat",
+    "A_C_Rhesus",
+    "A_C_Retriever",
+    "A_C_Rabbit",
+    "A_C_Pug",
+    "A_C_Poodle",
+    "A_C_Pigeon",
+    "A_C_Pig",
+    "A_C_OrleansCutscene",
+    "A_C_Orleans",
+    "A_C_MountainLion",
+    "A_C_KillerWhale",
+    "A_C_Husky",
+    "A_C_Humpback",
+    "A_C_Hen",
+    "A_C_HammerShark",
+    "A_C_Fish",
+    "A_C_Dolphin",
+    "A_C_Deer",
+    "A_C_Crow",
+    "A_C_Coyote",
+    "A_C_Cow",
+    "A_C_Cormorant",
+    "A_C_Chop",
+    "A_C_Chimp",
+    "A_C_Chimp_02",
+    "A_C_ChickenHawk",
+    "A_C_Cat",
+    "A_C_Boar",
+}
+
+
 array_kick = function(pid)
     for i, v in pairs(kicks) do
         arg1 = math.random(-2147483647, 2147483647)
@@ -4233,33 +5105,60 @@ menu.toggle_loop(helpful_trolling, "Give Wanted", {}, "", function()
     end
 end)
 
-menu.divider(helpful_trolling, "Helpful")
 
-
-menu.action(helpful_trolling, "Give A UFO", {"giveufoto"}, "", function()
+menu.action(helpful_trolling, "Give Vehicle Godmode Off", {"givegodmodeoffall"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giveufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giveufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
+menu.divider(helpful_trolling, "Helpful")
 
-menu.action(helpful_trolling, "Infinity Ammo", {"infintyammoto"}, "", function()
+menu.toggle(helpful_trolling, "Give Godmode", {"givegodmodeall"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("givegodmode" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("autoammo" .. PLAYER.GET_PLAYER_NAME(pids))
+                menu.trigger_commands("givegodmode" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
+menu.action(helpful_trolling, "Give Vehicle Godmode", {"givegodmodeall"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
+
+menu.action(helpful_trolling, "Max Player", {"maxall"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                menu.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
@@ -5365,7 +6264,7 @@ menu.toggle(weapons, 'Max Damage', {'maxdamage'}, 'Maxes damage multiplier and t
         menu.trigger_commands("rangemultiplier" .. " 1.50")
         --util.toast("Damage set to: 10000.00") -- Got sick of the notifications when restarting the script.
     else
-        menu.trigger_commands("damagemultiplier" .. " 0")
+        menu.trigger_commands("damagemultiplier" .. " 1.00")
         --util.toast("Damage reset to: 0") -- Got sick of the notifications when restarting the script.
     end
 end)
@@ -7664,6 +8563,37 @@ end
     end)
 
     
+    local aicrashes = menu.list(worldchaos, "A.I. Entities", {"aicrashes"}, "")
+
+    menu.toggle_loop(aicrashes,"A.I. Entity Fuck", {"aient"}, "Toggle all of them but doesn't work the same as if toggled individually. Code generated by a.i.", function()
+        entity_fuck(pid)
+    end)
+
+    menu.toggle_loop(aicrashes,"A.I. Vehicle Fly", {"aivehfly"}, "Code generated by a.i.", function()
+        veh_entity_fly(pid)
+    end)
+    
+    menu.toggle_loop(aicrashes,"A.I. Vehicle Fuck", {"aiveh"}, "Code generated by a.i.", function()
+        veh_entity_fuck(pid)
+    end)
+    
+    menu.toggle_loop(aicrashes,"A.I. Object Fuck", {"aiobj"}, "Code generated by a.i.", function()
+        obj_entity_fuck(pid)
+    end)
+    
+    menu.toggle_loop(aicrashes,"A.I. Ped Fuck", {"aiped"}, "Code generated by a.i.", function()
+        ped_entity_fuck(pid)
+    end)
+    
+    menu.toggle_loop(aicrashes,"A.I. Pickup Fuck", {"aipickup"}, "Code generated by a.i.", function()
+        pickup_entity_fuck(pid)
+    end)
+    
+    menu.action(aicrashes, "Restart Script To Stop Fuckery", {"restartfuckery"}, "", function ()
+        util.restart_script()
+    end)
+
+    
     function get_entity_player_is_aiming_at(player)
         if not PLAYER.IS_PLAYER_FREE_AIMING(player) then
             return NULL
@@ -7997,6 +8927,21 @@ end)
     	menu.slider(worldchaos, "Blackhole Offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
     	hole_zoff = s
 	end)
+
+    local getEntityCoords = ENTITY.GET_ENTITY_COORDS
+    local getPlayerPed = PLAYER.GET_PLAYER_PED
+    function explodeAndDelete(entity, exploID, ownerPed, dmgscale, audible, invisible, camshake)
+        local ec = getEntityCoords(entity)
+        FIRE.ADD_OWNED_EXPLOSION(ownerPed, ec.x, ec.y, ec.z, exploID, dmgscale, audible, invisible, camshake)
+    end
+
+    menu.toggle_loop(worldchaos, "Explode Map", {""}, "", function()
+        local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local c = ENTITY.GET_ENTITY_COORDS(p)
+        local height = 0
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(p, c.x + math.random(-100, 100), c.y + math.random(-100, 100), height)
+        explodeAndDelete(p, 47, getPlayerPed(players.user()), 5, true, false, 3)
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 	menu.toggle_loop(worldchaos,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
@@ -8362,8 +9307,6 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    
-
 	menu.toggle_loop(health_sub_vehicle_tab,"Repair", {"repairloop"}, "Repairs player's vehicle every 1 minute. Note: It will lag them a bit if you hold the toggle on", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
@@ -8399,10 +9342,24 @@ GenerateFeatures = function(pid)
         upgrade_vehicle(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
     
-	menu.action(health_sub_vehicle_tab,"GodVeh On", {"invon"}, "Gives invincibility to player's vehicle",function()
+	menu.action(health_sub_vehicle_tab,"GodVeh On", {"invon"}, "Gives invincibility to player's vehicle",function(vehicle)
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then	
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
+            ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
@@ -8423,6 +9380,20 @@ GenerateFeatures = function(pid)
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then	
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
+            ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
@@ -9008,7 +9979,7 @@ read_global = {
         return player_index
     end
 
-    local function get_player_vehicle(pid, with_access)
+    function get_player_vehicle(pid, with_access)
         local player_index = player_index(pid)
         if PED.IS_PED_IN_ANY_VEHICLE(player_index, true) then
             local vehicle = PED.GET_VEHICLE_PED_IS_IN(player_index, false)
@@ -10902,918 +11873,6 @@ menu.action(Attacker_Tanks, "Delete Tanks", {"deletetanks"}, "Deletes all tanks 
     menu.trigger_commands("superc")
 end)
 
-local all_weapons_list = {
-    "weapon_unarmed",
-    "weapon_digiscanner",
-    "weapon_raypistol",
-    "weapon_firework",
-    "weapon_stungun",
-    "weapon_switchblade",
-    "weapon_emplauncher",
-    "weapon_railgun",
-    "weapon_flare",
-    "weapon_knife",
-    "weapon_NIGHTSTICK",
-    "weapon_bottle",
-    "weapon_HAMMER",
-    "weapon_BAT",
-    "weapon_GOLFCLUB",
-    "weapon_CROWBAR",
-    "weapon_PISTOL",
-    "weapon_COMBATPISTOL",
-    "weapon_APPISTOL",
-    "weapon_PISTOL50",
-    "weapon_MICROSMG",
-    "weapon_SMG",
-    "weapon_ASSAULTSMG",
-    "weapon_ASSAULTRIFLE",
-    "weapon_hatchet",
-    "weapon_knuckle",
-    "weapon_machete",
-    "weapon_dagger",
-    "weapon_wrench",
-    "weapon_battleaxe",
-    "weapon_poolcue",
-    "weapon_pistol_mk2",
-    "weapon_snspistol",
-    "weapon_snspistol_mk2",
-    "weapon_heavypistol",
-    "weapon_vintagepistol",
-    "weapon_flaregun",
-    "weapon_marksmanpistol",
-    "weapon_revolver",
-    "weapon_revolver_mk2",
-    "weapon_doubleaction",
-    "weapon_ceramicpistol",
-    "weapon_navyrevolver",
-    "weapon_smg_mk2",
-    "weapon_combatpdw",
-    "weapon_machinepistol",
-    "weapon_minismg",
-    "weapon_raycarbine",
-    "weapon_pumpshotgun",
-    "weapon_pumpshotgun_mk2",
-    "weapon_sawnoffshotgun",
-    "weapon_assaultshotgun",
-    "weapon_bullpupshotgun",
-    "weapon_musket",
-    "weapon_heavyshotgun",
-    "weapon_dbshotgun",
-    "weapon_autoshotgun",
-    "weapon_assaultrifle",
-    "weapon_assaultrifle_mk2",
-    "weapon_carbinerifle",
-    "weapon_carbinerifle_mk2",
-    "weapon_advancedrifle",
-    "weapon_specialcarbine",
-    "weapon_specialcarbine_mk2",
-    "weapon_bullpuprifle",
-    "weapon_bullpuprifle_mk2",
-    "weapon_compactrifle",
-    "weapon_mg",
-    "weapon_combatmg",
-    "weapon_combatmg_mk2",
-    "weapon_gusenberg",
-    "weapon_sniperrifle",
-    "weapon_heavysniper",
-    "weapon_heavysniper_mk2",
-    "weapon_marksmanrifle",
-    "weapon_marksmanrifle_mk2",
-    "weapon_rpg",
-    "weapon_grenadelauncher",
-    "weapon_grenadelauncher_smoke",
-    "weapon_minigun",
-    "weapon_hominglauncher",
-    "weapon_compactlauncher",
-    "weapon_rayminigun",
-    "weapon_grenade",
-    "weapon_bzgas",
-    "weapon_molotov",
-    "weapon_proxmine",
-    "weapon_snowball",
-    "weapon_pipebomb",
-    "weapon_ball",
-    "weapon_smokegrenade",
-    "weapon_stickybomb",
-    "weapon_petrolcan",
-    "weapon_parachute",
-    "weapon_fireextinguisher",
-    "weapon_hazardcan",
-}
-
-local all_peds_list = {
-    "Player_Zero",
-    "Player_One",
-    "Player_Two",
-    "a_f_m_beach_01",
-    "a_f_m_bevhills_01",
-    "a_f_m_bevhills_02",
-    "a_f_m_bodybuild_01",
-    "a_f_m_business_02",
-    "a_f_m_downtown_01",
-    "a_f_m_eastsa_01",
-    "a_f_m_eastsa_02",
-    "a_f_m_fatbla_01",
-    "a_f_m_fatcult_01",
-    "a_f_m_fatwhite_01",
-    "a_f_m_ktown_01",
-    "a_f_m_ktown_02",
-    "a_f_m_prolhost_01",
-    "a_f_m_salton_01",
-    "a_f_m_skidrow_01",
-    "a_f_m_soucent_01",
-    "a_f_m_soucent_02",
-    "a_f_m_soucentmc_01",
-    "a_f_m_tourist_01",
-    "a_f_m_tramp_01",
-    "a_f_m_trampbeac_01",
-    "a_f_o_genstreet_01",
-    "a_f_o_indian_01",
-    "a_f_o_ktown_01",
-    "a_f_o_salton_01",
-    "a_f_o_soucent_01",
-    "a_f_o_soucent_02",
-    "a_f_y_beach_01",
-    "a_f_y_bevhills_01",
-    "a_f_y_bevhills_02",
-    "a_f_y_bevhills_03",
-    "a_f_y_bevhills_04",
-    "a_f_y_business_01",
-    "a_f_y_business_02",
-    "a_f_y_business_03",
-    "a_f_y_business_04",
-    "a_f_y_clubcust_01",
-    "a_f_y_clubcust_02",
-    "a_f_y_clubcust_03",
-    "a_f_y_eastsa_01",
-    "a_f_y_eastsa_02",
-    "a_f_y_eastsa_03",
-    "a_f_y_epsilon_01",
-    "a_f_y_femaleagent",
-    "a_f_y_fitness_01",
-    "a_f_y_fitness_02",
-    "a_f_y_genhot_01",
-    "a_f_y_golfer_01",
-    "a_f_y_hiker_01",
-    "a_f_y_hippie_01",
-    "a_f_y_hipster_01",
-    "a_f_y_hipster_02",
-    "a_f_y_hipster_03",
-    "a_f_y_hipster_04",
-    "a_f_y_indian_01",
-    "a_f_y_juggalo_01",
-    "a_f_y_runner_01",
-    "a_f_y_rurmeth_01",
-    "a_f_y_scdressy_01",
-    "a_f_y_skater_01",
-    "a_f_y_soucent_01",
-    "a_f_y_soucent_02",
-    "a_f_y_soucent_03",
-    "a_f_y_tennis_01",
-    "a_f_y_topless_01",
-    "a_f_y_tourist_01",
-    "a_f_y_tourist_02",
-    "a_f_y_vinewood_01",
-    "a_f_y_vinewood_02",
-    "a_f_y_vinewood_03",
-    "a_f_y_vinewood_04",
-    "a_f_y_yoga_01",
-    "a_m_m_acult_01",
-    "a_m_m_afriamer_01",
-    "a_m_m_beach_01",
-    "a_m_m_beach_02",
-    "a_m_m_bevhills_01",
-    "a_m_m_bevhills_02",
-    "a_m_m_business_01",
-    "a_m_m_eastsa_01",
-    "a_m_m_eastsa_02",
-    "a_m_m_farmer_01",
-    "a_m_m_fatlatin_01",
-    "a_m_m_genfat_01",
-    "a_m_m_genfat_02",
-    "a_m_m_golfer_01",
-    "a_m_m_hasjew_01",
-    "a_m_m_hillbilly_01",
-    "a_m_m_hillbilly_02",
-    "a_m_m_indian_01",
-    "a_m_m_ktown_01",
-    "a_m_m_malibu_01",
-    "a_m_m_mexcntry_01",
-    "a_m_m_mexlabor_01",
-    "a_m_m_og_boss_01",
-    "a_m_m_paparazzi_01",
-    "a_m_m_polynesian_01",
-    "a_m_m_prolhost_01",
-    "a_m_m_rurmeth_01",
-    "a_m_m_salton_01",
-    "a_m_m_salton_02",
-    "a_m_m_salton_03",
-    "a_m_m_salton_04",
-    "a_m_m_skater_01",
-    "a_m_m_skidrow_01",
-    "a_m_m_socenlat_01",
-    "a_m_m_soucent_01",
-    "a_m_m_soucent_02",
-    "a_m_m_soucent_03",
-    "a_m_m_soucent_04",
-    "a_m_m_stlat_02",
-    "a_m_m_tennis_01",
-    "a_m_m_tourist_01",
-    "a_m_m_tramp_01",
-    "a_m_m_trampbeac_01",
-    "a_m_m_tranvest_01",
-    "a_m_m_tranvest_02",
-    "a_m_o_acult_01",
-    "a_m_o_acult_02",
-    "a_m_o_beach_01",
-    "a_m_o_genstreet_01",
-    "a_m_o_ktown_01",
-    "a_m_o_salton_01",
-    "a_m_o_soucent_01",
-    "a_m_o_soucent_02",
-    "a_m_o_soucent_03",
-    "a_m_o_tramp_01",
-    "a_m_y_acult_01",
-    "a_m_y_acult_02",
-    "a_m_y_beach_01",
-    "a_m_y_beach_02",
-    "a_m_y_beach_03",
-    "a_m_y_beachvesp_01",
-    "a_m_y_beachvesp_02",
-    "a_m_y_bevhills_01",
-    "a_m_y_bevhills_02",
-    "a_m_y_breakdance_01",
-    "a_m_y_busicas_01",
-    "a_m_y_business_01",
-    "a_m_y_business_02",
-    "a_m_y_business_03",
-    "a_m_y_clubcust_01",
-    "a_m_y_clubcust_02",
-    "a_m_y_clubcust_03",
-    "a_m_y_cyclist_01",
-    "a_m_y_dhill_01",
-    "a_m_y_downtown_01",
-    "a_m_y_eastsa_01",
-    "a_m_y_eastsa_02",
-    "a_m_y_epsilon_01",
-    "a_m_y_epsilon_02",
-    "a_m_y_gay_01",
-    "a_m_y_gay_02",
-    "a_m_y_genstreet_01",
-    "a_m_y_genstreet_02",
-    "a_m_y_golfer_01",
-    "a_m_y_hasjew_01",
-    "a_m_y_hiker_01",
-    "a_m_y_hippy_01",
-    "a_m_y_hipster_01",
-    "a_m_y_hipster_02",
-    "a_m_y_hipster_03",
-    "a_m_y_indian_01",
-    "a_m_y_jetski_01",
-    "a_m_y_juggalo_01",
-    "a_m_y_ktown_01",
-    "a_m_y_ktown_02",
-    "a_m_y_latino_01",
-    "a_m_y_methhead_01",
-    "a_m_y_mexthug_01",
-    "a_m_y_motox_01",
-    "a_m_y_motox_02",
-    "a_m_y_musclbeac_01",
-    "a_m_y_musclbeac_02",
-    "a_m_y_polynesian_01",
-    "a_m_y_roadcyc_01",
-    "a_m_y_runner_01",
-    "a_m_y_runner_02",
-    "a_m_y_salton_01",
-    "a_m_y_skater_01",
-    "a_m_y_skater_02",
-    "a_m_y_soucent_01",
-    "a_m_y_soucent_02",
-    "a_m_y_soucent_03",
-    "a_m_y_soucent_04",
-    "a_m_y_stbla_01",
-    "a_m_y_stbla_02",
-    "a_m_y_stlat_01",
-    "a_m_y_stwhi_01",
-    "a_m_y_stwhi_02",
-    "a_m_y_sunbathe_01",
-    "a_m_y_surfer_01",
-    "a_m_y_vindouche_01",
-    "a_m_y_vinewood_01",
-    "a_m_y_vinewood_02",
-    "a_m_y_vinewood_03",
-    "a_m_y_vinewood_04",
-    "a_m_y_yoga_01",
-    "cs_amandatownley",
-    "cs_andreas",
-    "cs_ashley",
-    "cs_bankman",
-    "cs_barry",
-    "cs_barry_p",
-    "cs_beverly",
-    "cs_beverly_p",
-    "cs_brad",
-    "cs_bradcadaver",
-    "cs_carbuyer",
-    "cs_casey",
-    "cs_chengsr",
-    "cs_chrisformage",
-    "cs_clay",
-    "cs_dale",
-    "cs_davenorton",
-    "cs_debra",
-    "cs_denise",
-    "cs_devin",
-    "cs_dom",
-    "cs_dreyfuss",
-    "cs_drfriedlander",
-    "cs_fabien",
-    "cs_fbisuit_01",
-    "cs_floyd",
-    "cs_guadalope",
-    "cs_gurk",
-    "cs_hunter",
-    "cs_janet",
-    "cs_jewelass",
-    "cs_jimmyboston",
-    "cs_jimmydisanto",
-    "cs_joeminuteman",
-    "cs_johnnyklebitz",
-    "cs_josef",
-    "cs_josh",
-    "cs_karen_daniels",
-    "cs_lamardavis",
-    "cs_lazlow",
-    "cs_lestercrest",
-    "cs_lifeinvad_01",
-    "cs_magenta",
-    "cs_manuel",
-    "cs_marnie",
-    "cs_martinmadrazo",
-    "cs_maryann",
-    "cs_michelle",
-    "cs_milton",
-    "cs_molly",
-    "cs_movpremf_01",
-    "cs_movpremmale",
-    "cs_mrk",
-    "cs_mrs_thornhill",
-    "cs_mrsphillips",
-    "cs_natalia",
-    "cs_nervousron",
-    "cs_nigel",
-    "cs_old_man1a",
-    "cs_old_man2",
-    "cs_omega",
-    "cs_orleans",
-    "cs_paper",
-    "cs_paper_p",
-    "cs_patricia",
-    "cs_priest",
-    "cs_prolsec_02",
-    "cs_russiandrunk",
-    "cs_siemonyetarian",
-    "cs_solomon",
-    "cs_stevehains",
-    "cs_stretch",
-    "cs_tanisha",
-    "cs_taocheng",
-    "cs_taostranslator",
-    "cs_tenniscoach",
-    "cs_terry",
-    "cs_tom",
-    "cs_tomepsilon",
-    "cs_tracydisanto",
-    "cs_wade",
-    "cs_zimbor",
-    "csb_abigail",
-    "csb_agent",
-    "csb_anita",
-    "csb_anton",
-    "csb_avon",
-    "csb_ballasog",
-    "csb_bogdan",
-    "csb_bride",
-    "csb_burgerdrug",
-    "csb_car3guy1",
-    "csb_car3guy2",
-    "csb_chef2",
-    "csb_chef",
-    "csb_chin_goon",
-    "csb_cletus",
-    "csb_cop",
-    "csb_customer",
-    "csb_denise_friend",
-    "csb_dix",
-    "csb_djblamadon",
-    "csb_englishdave",
-    "csb_fos_rep",
-    "csb_g",
-    "csb_groom",
-    "csb_grove_str_dlr",
-    "csb_hao",
-    "csb_hugh",
-    "csb_imran",
-    "csb_jackhowitzer",
-    "csb_janitor",
-    "csb_maude",
-    "csb_money",
-    "csb_mp_agent14",
-    "csb_mrs_r",
-    "csb_mweather",
-    "csb_ortega",
-    "csb_oscar",
-    "csb_paige",
-    "csb_popov",
-    "csb_porndudes",
-    "csb_porndudes_p",
-    "csb_prologuedriver",
-    "csb_prolsec",
-    "csb_ramp_gang",
-    "csb_ramp_hic",
-    "csb_ramp_hipster",
-    "csb_ramp_marine",
-    "csb_ramp_mex",
-    "csb_rashcosvki",
-    "csb_reporter",
-    "csb_roccopelosi",
-    "csb_screen_writer",
-    "csb_sol",
-    "csb_stripper_01",
-    "csb_stripper_02",
-    "csb_talcc",
-    "csb_talmm",
-    "csb_tonya",
-    "csb_tonyprince",
-    "csb_trafficwarden",
-    "csb_undercover",
-    "csb_vagspeak",
-    "g_f_importexport_01",
-    "g_f_y_ballas_01",
-    "g_f_y_families_01",
-    "g_f_y_lost_01",
-    "g_f_y_vagos_01",
-    "g_m_importexport_01",
-    "g_m_m_armboss_01",
-    "g_m_m_armgoon_01",
-    "g_m_m_armlieut_01",
-    "g_m_m_chemwork_01_p",
-    "g_m_m_chemwork_01",
-    "g_m_m_chiboss_01",
-    "g_m_m_chiboss_01_p",
-    "g_m_m_chicold_01",
-    "g_m_m_chicold_01_p",
-    "g_m_m_chigoon_01",
-    "g_m_m_chigoon_01_p",
-    "g_m_m_chigoon_02",
-    "g_m_m_korboss_01",
-    "g_m_m_mexboss_01",
-    "g_m_m_mexboss_02",
-    "g_m_y_armgoon_02",
-    "g_m_y_azteca_01",
-    "g_m_y_ballaeast_01",
-    "g_m_y_ballaorig_01",
-    "g_m_y_ballasout_01",
-    "g_m_y_famca_01",
-    "g_m_y_famdnf_01",
-    "g_m_y_famfor_01",
-    "g_m_y_korean_01",
-    "g_m_y_korean_02",
-    "g_m_y_korlieut_01",
-    "g_m_y_lost_01",
-    "g_m_y_lost_02",
-    "g_m_y_lost_03",
-    "g_m_y_mexgang_01",
-    "g_m_y_mexgoon_01",
-    "g_m_y_mexgoon_02",
-    "g_m_y_mexgoon_03",
-    "g_m_y_mexgoon_03_p",
-    "g_m_y_pologoon_01_p",
-    "g_m_y_pologoon_01",
-    "g_m_y_pologoon_02_p",
-    "g_m_y_pologoon_02",
-    "g_m_y_salvaboss_01",
-    "g_m_y_salvagoon_01",
-    "g_m_y_salvagoon_02",
-    "g_m_y_salvagoon_03_p",
-    "g_m_y_salvagoon_03",
-    "g_m_y_strpunk_01",
-    "g_m_y_strpunk_02",
-    "hc_driver",
-    "hc_gunman",
-    "hc_hacker",
-    "ig_abigail",
-    "ig_agent",
-    "ig_amandatownley",
-    "ig_andreas",
-    "ig_ashley",
-    "ig_avon",
-    "ig_ballasog",
-    "ig_bankman",
-    "ig_barry",
-    "ig_barry_p",
-    "ig_benny",
-    "ig_bestmen",
-    "ig_beverly",
-    "ig_beverly_p",
-    "ig_brad",
-    "ig_bride",
-    "ig_car3guy1",
-    "ig_car3guy2",
-    "ig_casey",
-    "ig_chef2",
-    "ig_chef",
-    "ig_chengsr",
-    "ig_chrisformage",
-    "ig_clay",
-    "ig_claypain",
-    "ig_cletus",
-    "ig_dale",
-    "ig_davenorton",
-    "ig_denise",
-    "ig_devin",
-    "ig_dix",
-    "ig_djblamadon",
-    "ig_djblamrupert",
-    "ig_djblamryanh",
-    "ig_djblamryans",
-    "ig_djdixmanager",
-    "ig_djgeneric_01",
-    "ig_djsolfotios",
-    "ig_djsoljakob",
-    "ig_djsolmanager",
-    "ig_djsolmike",
-    "ig_djsolrobt",
-    "ig_djtalaurelia",
-    "ig_djtalignazio",
-    "ig_dom",
-    "ig_dreyfuss",
-    "ig_drfriedlander",
-    "ig_englishdave",
-    "ig_fabien",
-    "ig_fbisuit_01",
-    "ig_floyd",
-    "ig_g",
-    "ig_groom",
-    "ig_hao",
-    "ig_hunter",
-    "ig_janet",
-    "ig_jay_norris",
-    "ig_jewelass",
-    "ig_jimmyboston",
-    "ig_jimmyboston_02",
-    "ig_jimmydisanto",
-    "ig_joeminuteman",
-    "ig_johnnyklebitz",
-    "ig_josef",
-    "ig_josh",
-    "ig_karen_daniels",
-    "ig_kerrymcintosh",
-    "ig_kerrymcintosh_02",
-    "ig_lacey_jones_02",
-    "ig_lamardavis",
-    "ig_lazlow",
-    "ig_lazlow_2",
-    "ig_lestercrest",
-    "ig_lestercrest_2",
-    "ig_lifeinvad_01",
-    "ig_lifeinvad_02",
-    "ig_magenta",
-    "ig_malc",
-    "ig_manuel",
-    "ig_marnie",
-    "ig_maryann",
-    "ig_maude",
-    "ig_michelle",
-    "ig_milton",
-    "ig_molly",
-    "ig_money",
-    "ig_mp_agent14",
-    "ig_mrk",
-    "ig_mrs_thornhill",
-    "ig_mrsphillips",
-    "ig_natalia",
-    "ig_nervousron",
-    "ig_nigel",
-    "ig_old_man1a",
-    "ig_old_man2",
-    "ig_omega",
-    "ig_oneil",
-    "ig_orleans",
-    "ig_ortega",
-    "ig_paige",
-    "ig_paper",
-    "ig_patricia",
-    "ig_popov",
-    "ig_priest",
-    "ig_prolsec_02",
-    "ig_ramp_gang",
-    "ig_ramp_hic",
-    "ig_ramp_hipster",
-    "ig_ramp_mex",
-    "ig_rashcosvki",
-    "ig_roccopelosi",
-    "ig_russiandrunk",
-    "ig_screen_writer",
-    "ig_siemonyetarian",
-    "ig_sol",
-    "ig_solomon",
-    "ig_stevehains",
-    "ig_stretch",
-    "ig_talcc",
-    "ig_talina",
-    "ig_talmm",
-    "ig_tanisha",
-    "ig_taocheng",
-    "ig_taostranslator",
-    "ig_taostranslator_p",
-    "ig_tenniscoach",
-    "ig_terry",
-    "ig_tomepsilon",
-    "ig_tonya",
-    "ig_tonyprince",
-    "ig_tracydisanto",
-    "ig_trafficwarden",
-    "ig_tylerdix",
-    "ig_tylerdix_02",
-    "ig_vagspeak",
-    "ig_wade",
-    "ig_zimbor",
-    "mp_f_boatstaff_01",
-    "mp_f_cardesign_01",
-    "mp_f_chbar_01",
-    "mp_f_cocaine_01",
-    "mp_f_counterfeit_01",
-    "mp_f_deadhooker",
-    "mp_f_execpa_01",
-    "mp_f_execpa_02",
-    "mp_f_forgery_01",
-    "mp_f_freemode_01",
-    "mp_f_helistaff_01",
-    "mp_f_meth_01",
-    "mp_f_misty_01",
-    "mp_f_stripperlite",
-    "mp_f_weed_01",
-    "mp_g_m_pros_01",
-    "mp_headtargets",
-    "mp_m_avongoon",
-    "mp_m_boatstaff_01",
-    "mp_m_bogdangoon",
-    "mp_m_claude_01",
-    "mp_m_cocaine_01",
-    "mp_m_counterfeit_01",
-    "mp_m_exarmy_01",
-    "mp_m_execpa_01",
-    "mp_m_famdd_01",
-    "mp_m_fibsec_01",
-    "mp_m_forgery_01",
-    "mp_m_freemode_01",
-    "mp_m_g_vagfun_01",
-    "mp_m_marston_01",
-    "mp_m_meth_01",
-    "mp_m_niko_01",
-    "mp_m_securoguard_01",
-    "mp_m_shopkeep_01",
-    "mp_m_waremech_01",
-    "mp_m_weapexp_01",
-    "mp_m_weapexp_01_p",
-    "mp_m_weapwork_01",
-    "mp_m_weapwork_01_p",
-    "mp_m_weed_01",
-    "mp_s_m_armoured_01",
-    "s_f_m_fembarber",
-    "s_f_m_maid_01",
-    "s_f_m_shop_high",
-    "s_f_m_sweatshop_01",
-    "s_f_y_airhostess_01",
-    "s_f_y_bartender_01",
-    "s_f_y_baywatch_01",
-    "s_f_y_clubbar_01",
-    "s_f_y_cop_01",
-    "s_f_y_factory_01",
-    "s_f_y_hooker_01",
-    "s_f_y_hooker_02",
-    "s_f_y_hooker_03",
-    "s_f_y_migrant_01",
-    "s_f_y_movprem_01",
-    "s_f_y_ranger_01",
-    "s_f_y_scrubs_01",
-    "s_f_y_sheriff_01",
-    "s_f_y_shop_low",
-    "s_f_y_shop_mid",
-    "s_f_y_stripper_01",
-    "s_f_y_stripper_02",
-    "s_f_y_stripperlite",
-    "s_f_y_sweatshop_01",
-    "s_m_m_ammucountry",
-    "s_m_m_armoured_01",
-    "s_m_m_armoured_02",
-    "s_m_m_autoshop_01",
-    "s_m_m_autoshop_02",
-    "s_m_m_bouncer_01",
-    "s_m_m_ccrew_01",
-    "s_m_m_chemsec_01",
-    "s_m_m_ciasec_01",
-    "s_m_m_cntrybar_01",
-    "s_m_m_dockwork_01",
-    "s_m_m_doctor_01",
-    "s_m_m_fiboffice_01",
-    "s_m_m_fiboffice_02",
-    "s_m_m_fibsec_01",
-    "s_m_m_gaffer_01",
-    "s_m_m_gardener_01",
-    "s_m_m_gentransport",
-    "s_m_m_hairdress_01",
-    "s_m_m_highsec_01",
-    "s_m_m_highsec_02",
-    "s_m_m_janitor",
-    "s_m_m_lathandy_01",
-    "s_m_m_lifeinvad_01",
-    "s_m_m_linecook",
-    "s_m_m_lsmetro_01",
-    "s_m_m_mariachi_01",
-    "s_m_m_marine_01",
-    "s_m_m_marine_02",
-    "s_m_m_migrant_01",
-    "s_m_m_movalien_01",
-    "s_m_m_movprem_01",
-    "s_m_m_movspace_01",
-    "s_m_m_paramedic_01",
-    "s_m_m_pilot_01",
-    "s_m_m_pilot_02",
-    "s_m_m_postal_01",
-    "s_m_m_postal_02",
-    "s_m_m_prisguard_01",
-    "s_m_m_scientist_01",
-    "s_m_m_security_01",
-    "s_m_m_snowcop_01",
-    "s_m_m_strperf_01",
-    "s_m_m_strpreach_01",
-    "s_m_m_strvend_01",
-    "s_m_m_trucker_01",
-    "s_m_m_ups_01",
-    "s_m_m_ups_02",
-    "s_m_o_busker_01",
-    "s_m_y_airworker",
-    "s_m_y_ammucity_01",
-    "s_m_y_armymech_01",
-    "s_m_y_autopsy_01",
-    "s_m_y_barman_01",
-    "s_m_y_baywatch_01",
-    "s_m_y_blackops_01",
-    "s_m_y_blackops_02",
-    "s_m_y_blackops_03",
-    "s_m_y_busboy_01",
-    "s_m_y_chef_01",
-    "s_m_y_clown_01",
-    "s_m_y_clubbar_01",
-    "s_m_y_construct_01",
-    "s_m_y_construct_02",
-    "s_m_y_cop_01",
-    "s_m_y_dealer_01",
-    "s_m_y_devinsec_01",
-    "s_m_y_dockwork_01",
-    "s_m_y_doorman_01",
-    "s_m_y_dwservice_01",
-    "s_m_y_dwservice_02",
-    "s_m_y_factory_01",
-    "s_m_y_fireman_01",
-    "s_m_y_garbage",
-    "s_m_y_grip_01",
-    "s_m_y_hwaycop_01",
-    "s_m_y_marine_01",
-    "s_m_y_marine_02",
-    "s_m_y_marine_03",
-    "s_m_y_mime",
-    "s_m_y_pestcont_01",
-    "s_m_y_pilot_01",
-    "s_m_y_prismuscl_01",
-    "s_m_y_prisoner_01",
-    "s_m_y_ranger_01",
-    "s_m_y_robber_01",
-    "s_m_y_sheriff_01",
-    "s_m_y_shop_mask",
-    "s_m_y_strvend_01",
-    "s_m_y_swat_01",
-    "s_m_y_uscg_01",
-    "s_m_y_valet_01",
-    "s_m_y_waiter_01",
-    "s_m_y_waretech_01",
-    "s_m_y_winclean_01",
-    "s_m_y_xmech_01",
-    "s_m_y_xmech_02_mp",
-    "s_m_y_xmech_02",
-    "u_f_m_corpse_01",
-    "u_f_m_drowned_01",
-    "u_f_m_miranda",
-    "u_f_m_miranda_02",
-    "u_f_m_promourn_01",
-    "u_f_o_moviestar",
-    "u_f_o_prolhost_01",
-    "u_f_y_bikerchic",
-    "u_f_y_comjane",
-    "u_f_y_corpse_01",
-    "u_f_y_corpse_02",
-    "u_f_y_danceburl_01",
-    "u_f_y_dancelthr_01",
-    "u_f_y_dancerave_01",
-    "u_f_y_hotposh_01",
-    "u_f_y_jewelass_01",
-    "u_f_y_mistress",
-    "u_f_y_poppymich",
-    "u_f_y_poppymich_02",
-    "u_f_y_princess",
-    "u_f_y_spyactress",
-    "u_m_m_aldinapoli",
-    "u_m_m_bankman",
-    "u_m_m_bikehire_01",
-    "u_m_m_doa_01",
-    "u_m_m_edtoh",
-    "u_m_m_fibarchitect",
-    "u_m_m_filmdirector",
-    "u_m_m_glenstank_01",
-    "u_m_m_griff_01",
-    "u_m_m_jesus_01",
-    "u_m_m_jewelsec_01",
-    "u_m_m_jewelthief",
-    "u_m_m_markfost",
-    "u_m_m_partytarget",
-    "u_m_m_prolsec_01",
-    "u_m_m_promourn_01",
-    "u_m_m_rivalpap",
-    "u_m_m_spyactor",
-    "u_m_m_streetart_01",
-    "u_m_m_willyfist",
-    "u_m_o_filmnoir",
-    "u_m_o_finguru_01",
-    "u_m_o_taphillbilly",
-    "u_m_o_tramp_01",
-    "u_m_y_abner",
-    "u_m_y_antonb",
-    "u_m_y_babyd",
-    "u_m_y_baygor",
-    "u_m_y_burgerdrug_01",
-    "u_m_y_chip",
-    "u_m_y_corpse_01",
-    "u_m_y_cyclist_01",
-    "u_m_y_danceburl_01",
-    "u_m_y_dancelthr_01",
-    "u_m_y_dancerave_01",
-    "u_m_y_fibmugger_01",
-    "u_m_y_guido_01",
-    "u_m_y_gunvend_01",
-    "u_m_y_hippie_01",
-    "u_m_y_imporage",
-    "u_m_y_juggernaut_01",
-    "u_m_y_justin",
-    "u_m_y_mani",
-    "u_m_y_militarybum",
-    "u_m_y_paparazzi",
-    "u_m_y_party_01",
-    "u_m_y_pogo_01",
-    "u_m_y_prisoner_01",
-    "u_m_y_proldriver_01",
-    "u_m_y_rsranger_01",
-    "u_m_y_sbike",
-    "u_m_y_smugmech_01",
-    "u_m_y_staggrm_01",
-    "u_m_y_tattoo_01",
-    "u_m_y_zombie_01",
-    "A_C_Westy",
-    "A_C_TigerShark",
-    "A_C_Shepherd",
-    "A_C_Rottweiler",
-    "A_C_Rat",
-    "A_C_Rhesus",
-    "A_C_Retriever",
-    "A_C_Rabbit",
-    "A_C_Pug",
-    "A_C_Poodle",
-    "A_C_Pigeon",
-    "A_C_Pig",
-    "A_C_OrleansCutscene",
-    "A_C_Orleans",
-    "A_C_MountainLion",
-    "A_C_KillerWhale",
-    "A_C_Husky",
-    "A_C_Humpback",
-    "A_C_Hen",
-    "A_C_HammerShark",
-    "A_C_Fish",
-    "A_C_Dolphin",
-    "A_C_Deer",
-    "A_C_Crow",
-    "A_C_Coyote",
-    "A_C_Cow",
-    "A_C_Cormorant",
-    "A_C_Chop",
-    "A_C_Chimp",
-    "A_C_Chimp_02",
-    "A_C_ChickenHawk",
-    "A_C_Cat",
-    "A_C_Boar",
-}
-
 function brish(pid)
     local selectedbritwep = 1
     local player_Brish_army = {}
@@ -12434,6 +12493,69 @@ end)
 
     local ControlEntities = menu.list(griefing, "Control Entities", {}, "")
 
+    efucks = menu.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
+
+    menu.action(ControlEntities,"Entity Dump", {"entcrash"}, "Working.", function()
+        local player_ped = PLAYER.PLAYER_PED_ID()    
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    for i=1,1  do
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -858.3132, 184.23877, 100.07001)
+        menu.trigger_commands("objfuck" .. players.get_name(pid))
+        util.yield(5000)
+        menu.trigger_commands("pedfuck" .. players.get_name(pid))
+        util.yield(1000)
+        menu.trigger_commands("vehfuck" .. players.get_name(pid))
+        end
+        util.yield(1000)
+        menu.trigger_commands("objfuck" .. players.get_name(pid))
+        menu.trigger_commands("pedfuck" .. players.get_name(pid))
+        menu.trigger_commands("vehfuck" .. players.get_name(pid))
+        menu.trigger_commands("superc")
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+    menu.toggle_loop(efucks, "Vehicle fuck", {"vehfuck"}, "", function()
+    for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
+        if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+            local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            local height = 100.0
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x, entityCoords.y , height)
+            ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+            ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+            ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+            end
+        end
+        util.yield(1)
+    end)
+
+    menu.toggle_loop(efucks, "Ped fuck", {"pedfuck"}, "", function()
+        for _, entity in ipairs(entities.get_all_peds_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x, entityCoords.y , height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end)
+
+        menu.toggle_loop(efucks, "Object fuck", {"objfuck"}, "", function()
+            for _, entity in ipairs(entities.get_all_objects_as_handles()) do
+                if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                    local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                    local height = 100.0
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x, entityCoords.y , height)
+                    ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                    ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                    ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                    end
+                end
+                util.yield(1)
+            end)
+
     local BlackholeEntities = menu.list(ControlEntities, "Blackholes", {}, "")
     
 	local dont_stop = false
@@ -12508,7 +12630,6 @@ end)
     hole_zoff = s
     end)
 
-    
 	centipedegriefing = menu.list(ControlEntities, "Human Centipede", {}, "", function(); end)
 
     menu.action(centipedegriefing, "Human Centipede", {"centipede"}, "", function()
@@ -17356,6 +17477,22 @@ end)
 		end
 	end)
 
+    function GodmodeOn(pid)
+        while true do
+            local PlayerId = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            ENTITY.SET_ENTITY_INVINCIBLE(PlayerId, true)
+            util.yield_once()
+        end
+    end
+
+    function GodmodeOff(pid)
+        while true do
+            local PlayerId = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            ENTITY.SET_ENTITY_INVINCIBLE(PlayerId, false)
+            util.yield_once()
+        end
+    end
+
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
 	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
@@ -17364,12 +17501,20 @@ end)
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("ceopay".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
-                menu.trigger_commands("autoheal".. players.get_name(pid))
+                menu.trigger_commands("givegodmode".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
         		menu.trigger_commands("paragive".. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_FRIENDLY)
-    
+
+    menu.toggle(frienm, "Godmode Player", {"givegodmode"}, "", function(on)
+        if on then
+            GodmodeOn(pid)
+        else
+            GodmodeOff(pid)
+        end
+    end)
+
     local drops = menu.list(frienm, "Addict Drops", {}, "")
 
     menu.action(drops, "Crazy Loop", {"crazyloop"}, "Gives cash, cards, rp and gives all collectibles. Might be risky but should be okay.", function()
@@ -17867,7 +18012,110 @@ function RqModel(hash)
     end
 end
 
+    function entity_fuck(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_objects_as_handles(entities.get_all_vehicles_as_handles(entities.get_all_peds_as_handles()))) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100), height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+    function veh_entity_fuck(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100), height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+    function veh_entity_fly(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                speed = 100
+                local x_vec = (holecoords['x']-vcoords['x'])*speed
+                local y_vec = (holecoords['y']-vcoords['y'])*speed
+                local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                --ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100))
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+    function obj_entity_fuck(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_objects_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100), height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+    function ped_entity_fuck(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_peds_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100), height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+    function pickup_entity_fuck(pid) -- Code generated by a.i.
+        while true do
+        for _, entity in ipairs(entities.get_all_pickups_as_handles()) do
+            if ENTITY.DOES_ENTITY_EXIST(entity) and not ENTITY.IS_ENTITY_A_MISSION_ENTITY(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
+                local entityCoords = ENTITY.GET_ENTITY_COORDS(entity)
+                local height = 100.0
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(entity, entityCoords.x + math.random(-100, 100), entityCoords.y + math.random(-100, 100), height)
+                ENTITY.SET_ENTITY_VELOCITY(entity, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+                ENTITY.SET_ENTITY_MAX_SPEED(entity, 500.0)
+                ENTITY.SET_ENTITY_ROTATION(entity, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+                end
+            end
+            util.yield(1)
+        end
+    end
+
+local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus.")
 local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
+local outfitcrash = menu.list(crash, "Outfit Crashes", {"outfitcrashcrashes"}, "")
 local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
 local MichaelCrashes = menu.list(crash, "Michael Taxi Crash", {"michaelcrashes"}, "Spawns animations next to them for crashing.")
 local craftcrash = menu.list(crash, "Vehicle Chaos Crashes", {"vehiclechaos"}, "")
@@ -17879,12 +18127,10 @@ local bigyachtycrash = menu.list(crash, "Big Yatchy Crashes", {"bigyatchycrashes
 local poodlecrash = menu.list(crash, "Poodle Bomb Crashes", {"poodlecrashes"}, "")
 local fragcrash = menu.list(crash, "Fragment Crashes", {"fragmentcrashes"}, "")
 local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {"oxcrashes"}, "From Nightfall")
-local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus. (BETA).")
 local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
 local SECrashes = menu.list(crash, "SE Crashes", {"secrashes"}, "")
 local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
 
---local TankCrash = menu.list(crash, "Tank Crashes", {"tankcrashes"}, "")
 --local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
 --local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
 
@@ -17901,197 +18147,66 @@ local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, ""
 --      \____/_/ |_/_/  |_/____/_/ /_/   
 
 --[[
-menu.action(TankCrash,"Tank Crash", {"tankcrash"}, "", function()
-    menu.trigger_commands("levitate")
-    util.yield(100)
-    menu.trigger_commands("anticrashcamera")
-    util.yield(100)
-    local self_ped = PLAYER.PLAYER_PED_ID(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user()))
-    local old_coords = ENTITY.GET_ENTITY_COORDS(self_ped)
-    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
-    V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if table_kidnap == nil then
-        table_kidnap = {}
+function kickPlayer(pid) -- Teleport the player high in the sky and then delete the player's character from the network.
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid) 
+    local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed)
+    local playerVehicle = PED.GET_VEHICLE_PED_IS_IN(playerPed, false)
+if PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) then
+    TASK.TASK_LEAVE_ANY_VEHICLE(playerPed, playerVehicle, 0, 16)
     end
-    hash = util.joaat("khanjali")
-    ped_hash = util.joaat("Player_Zero")
-    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-        STREAMING.REQUEST_MODEL(hash)
-        while not STREAMING.HAS_MODEL_LOADED(hash) do
-        util.yield_once()
-        end
-        local aab = 
-        {
-            x = -5784.258301,
-            y = -8289.385742,
-            z = -136.411270
-        }
-        ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
-        ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
-        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
-            STREAMING.REQUEST_MODEL(ped_hash)
-            util.yield_once()
-        end
-        veh_to_attach = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
-        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
-            STREAMING.REQUEST_MODEL(ped_hash)
-            util.yield_once()
-        end
-        ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], veh_to_attach, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
-        coords_ped = v3()
-        coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
-        coords_ped.x = coords_ped.x + math.random(-20, 20)
-        coords_ped.y = coords_ped.y + math.random(-20, 20)
-        coords_ped.z = coords_ped.z
-        ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
-        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_kidnap, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_drive, 0, 0, 7, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_drive, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_kidnap, 0, 0, 7, 0)
-        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
-        TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
-        TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
-        util.yield_once()
-        veh_to_attach = veh_to_attach + 1
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
-        util.yield(1500)
-        menu.trigger_commands("noentities")
-        util.yield(1000)
-        menu.trigger_commands("noentities")
-        util.yield_once()
-        menu.trigger_commands("levitate")
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, old_coords.x, old_coords.y, old_coords.z)
-        util.yield(100)
-        menu.trigger_commands("anticrashcamera")
-        util.toast(os.date("%H:%M:%S") .. " Tank Crash Finished", TOAST_ABOVE_MAP)
-    end
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
+    ENTITY.SET_ENTITY_COORDS(playerPed, playerPos.x, playerPos.y, playerPos.z + 1000.0, false, false, false, false)
+    util.yield(500)
+    NETWORK.NETWORK_FADE_OUT_ENTITY(playerPed, true, false)
+    util.yield(1000)
+    PED.DELETE_PED(playerPed)
+end
 
-menu.toggle_loop(TankCrash,"Tank Crash Loop", {"tankcrashloop"}, "", function()
-    menu.trigger_commands("levitate")
-    util.yield(100)
-    menu.trigger_commands("anticrashcamera")
-    util.yield(100)
-    local self_ped = PLAYER.PLAYER_PED_ID(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user()))
-    local old_coords = ENTITY.GET_ENTITY_COORDS(self_ped)
-    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
-    V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if table_kidnap == nil then
-        table_kidnap = {}
-    end
-    hash = util.joaat("khanjali")
-    ped_hash = util.joaat("Player_Zero")
-    if STREAMING.IS_MODEL_A_VEHICLE(hash) then
-        STREAMING.REQUEST_MODEL(hash)
-        while not STREAMING.HAS_MODEL_LOADED(hash) do
-        util.yield_once()
-        end
-        local aab = 
-        {
-            x = -5784.258301,
-            y = -8289.385742,
-            z = -136.411270
-        }
-        ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
-        ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
-        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
-            STREAMING.REQUEST_MODEL(ped_hash)
-            util.yield_once()
-        end
-        veh_to_attach = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
-        while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
-            STREAMING.REQUEST_MODEL(ped_hash)
-            util.yield_once()
-        end
-        ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], veh_to_attach, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
-        coords_ped = v3()
-        coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
-        coords_ped.x = coords_ped.x + math.random(-20, 20)
-        coords_ped.y = coords_ped.y + math.random(-20, 20)
-        coords_ped.z = coords_ped.z
-        ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
-        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_kidnap, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_drive, 0, 0, 7, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_drive, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(ped_to_kidnap, 0, 0, 7, 0)
-        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
-        TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
-        TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
-        util.yield_once()
-        veh_to_attach = veh_to_attach + 1
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
-        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
-        util.yield(1500)
-        menu.trigger_commands("noentities")
-        util.yield(1000)
-        menu.trigger_commands("noentities")
-        util.yield_once()
-        menu.trigger_commands("levitate")
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, old_coords.x, old_coords.y, old_coords.z)
-        util.yield(100)
-        menu.trigger_commands("anticrashcamera")
-        util.toast(os.date("%H:%M:%S") .. " Tank Crash Finished", TOAST_ABOVE_MAP)
-    end
+menu.toggle_loop(crash, "Kick", {""}, "AI. Generated Code.", function()
+    kickPlayer(pid)
 end)
 ]]
 
---[[
-menu.divider(BroHugCrashes, "Bro Hugs")
-
-menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modified it to be visible.", function(on)
+menu.action(outfitcrash, "Outfit crash", {"outfitcrash"}, "Changes freemode ped outfit variations. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
+    menu.trigger_commands("anticrashcamera")
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)  
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+for i=1,1  do
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
     local math_random = math.random
     local joaat = util.joaat
     util.yield(10)
-    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash1 = util.joaat("MP_F_Freemode_01")
     local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    local pedhash3 = util.joaat("MP_F_Freemode_01")
     while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
         STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
         util.yield(10)
     end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
     SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
+    local ped_amount = math_random(5, 15) -- Picks number between 5 and 15
     for i = 1, ped_amount do
         local pedtype = 0
         local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
         local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
         coords.x = coords.x
         coords.y = coords.y
         coords.z = coords.z
         if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
+            coords.x = coords.x - math_random(0, 15)
         else
-            coords.x = coords.x + math_random(1, 5)
+            coords.x = coords.x + math_random(0, 15)
         end
         if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
+            coords.y = coords.y - math_random(0, 15)
         else
-            coords.y = coords.y + math_random(1, 5)
+            coords.y = coords.y + math_random(0, 15)
         end
         if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
+            coords.z = coords.z - math_random(0, 15)
         else
-            coords.z = coords.z + math_random(3, 5)
+            coords.z = coords.z + math_random(0, 15)
         end
         if pedt == 1 then
             pedtype = 0
@@ -18103,24 +18218,24 @@ menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modifi
         for i = 1, ped_amount do
             local pedtype = 0
             local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
             coords.x = coords.x
             coords.y = coords.y
             coords.z = coords.z
             if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
+                coords.x = coords.x - math_random(0, 15)
             else
-                coords.x = coords.x + math_random(1, 5)
+                coords.x = coords.x + math_random(0, 15)
             end
             if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
+                coords.y = coords.y - math_random(0, 15)
             else
-                coords.y = coords.y + math_random(1, 5)
+                coords.y = coords.y + math_random(0, 15)
             end
             if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
+                coords.z = coords.z - math_random(0, 15)
             else
-                coords.z = coords.z + math_random(3, 5)
+                coords.z = coords.z + math_random(0, 15)
             end
             if pedt == 1 then
                 pedtype = 0
@@ -18132,24 +18247,24 @@ menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modifi
             for i = 1, ped_amount do
                 local pedtype = 0
                 local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
                 coords.x = coords.x
                 coords.y = coords.y
                 coords.z = coords.z
                 if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
+                    coords.x = coords.x - math_random(0, 15)
                 else
-                    coords.x = coords.x + math_random(1, 5)
+                    coords.x = coords.x + math_random(0, 15)
                 end
                 if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
+                    coords.y = coords.y - math_random(0, 15)
                 else
-                    coords.y = coords.y + math_random(1, 5)
+                    coords.y = coords.y + math_random(0, 15)
                 end
                 if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
+                    coords.z = coords.z - math_random(0, 15)
                 else
-                    coords.z = coords.z + math_random(3, 5)
+                    coords.z = coords.z + math_random(0, 15)
                 end
                 if pedt == 1 then
                     pedtype = 0
@@ -18161,66 +18276,83 @@ menu.action(BroHugCrashes, "Bro Hug", {"brohug"}, "Logged from 2take1 and modifi
         SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
         ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
         TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 1, coords.x, coords.y, coords.z, 0, true, util.joaat("weapon_stungun"), players.user_ped(), false, true, 1.0)
         util.yield(5)
     end
     for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(player_ped, 0)
+        PED.SET_PED_COMPONENT_VARIATION(player_ped, 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds1[i], 0)
         PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds2[i], 0)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds3[i], 0)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 0, 1, 0)
         util.yield()
         end
         util.yield(10)
         end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+        menu.trigger_commands("superc")
+        end
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
+        util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle_loop(BroHugCrashes, "Bro Hug", {"brohugloop"}, "Logged from 2take1 and modified it to be visible.", function(on)
+menu.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes freemode ped outfit variations and gives them homing launchers. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
+    menu.trigger_commands("anticrashcamera")
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+for i=1,1  do
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
     local math_random = math.random
     local joaat = util.joaat
     util.yield(10)
-    local pedhash1 = util.joaat("A_F_M_FatCult_01")
+    local pedhash1 = util.joaat("MP_F_Freemode_01")
     local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("A_F_M_FatCult_01")
+    local pedhash3 = util.joaat("MP_F_Freemode_01")
     while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
         STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
         util.yield(10)
     end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
     SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
+    local ped_amount = math_random(5, 15) -- Picks number between 5 and 15
     for i = 1, ped_amount do
         local pedtype = 0
         local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
         local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
         coords.x = coords.x
         coords.y = coords.y
         coords.z = coords.z
         if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
+            coords.x = coords.x - math_random(0, 15)
         else
-            coords.x = coords.x + math_random(1, 5)
+            coords.x = coords.x + math_random(0, 15)
         end
         if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
+            coords.y = coords.y - math_random(0, 15)
         else
-            coords.y = coords.y + math_random(1, 5)
+            coords.y = coords.y + math_random(0, 15)
         end
         if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
+            coords.z = coords.z - math_random(0, 15)
         else
-            coords.z = coords.z + math_random(3, 5)
+            coords.z = coords.z + math_random(0, 15)
         end
         if pedt == 1 then
             pedtype = 0
@@ -18232,24 +18364,24 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug", {"brohugloop"}, "Logged from 2take1 a
         for i = 1, ped_amount do
             local pedtype = 0
             local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
             coords.x = coords.x
             coords.y = coords.y
             coords.z = coords.z
             if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
+                coords.x = coords.x - math_random(0, 15)
             else
-                coords.x = coords.x + math_random(1, 5)
+                coords.x = coords.x + math_random(0, 15)
             end
             if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
+                coords.y = coords.y - math_random(0, 15)
             else
-                coords.y = coords.y + math_random(1, 5)
+                coords.y = coords.y + math_random(0, 15)
             end
             if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
+                coords.z = coords.z - math_random(0, 15)
             else
-                coords.z = coords.z + math_random(3, 5)
+                coords.z = coords.z + math_random(0, 15)
             end
             if pedt == 1 then
                 pedtype = 0
@@ -18261,24 +18393,24 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug", {"brohugloop"}, "Logged from 2take1 a
             for i = 1, ped_amount do
                 local pedtype = 0
                 local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
                 coords.x = coords.x
                 coords.y = coords.y
                 coords.z = coords.z
                 if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
+                    coords.x = coords.x - math_random(0, 15)
                 else
-                    coords.x = coords.x + math_random(1, 5)
+                    coords.x = coords.x + math_random(0, 15)
                 end
                 if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
+                    coords.y = coords.y - math_random(0, 15)
                 else
-                    coords.y = coords.y + math_random(1, 5)
+                    coords.y = coords.y + math_random(0, 15)
                 end
                 if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
+                    coords.z = coords.z - math_random(0, 15)
                 else
-                    coords.z = coords.z + math_random(3, 5)
+                    coords.z = coords.z + math_random(0, 15)
                 end
                 if pedt == 1 then
                     pedtype = 0
@@ -18290,541 +18422,207 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug", {"brohugloop"}, "Logged from 2take1 a
         SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
         ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
         TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
         ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 1, coords.x, coords.y, coords.z, 0, true, util.joaat("weapon_stungun"), players.user_ped(), false, true, 1.0)
+        util.yield(5)
+        local coords = ENTITY.GET_ENTITY_COORDS(ped1, true)
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        local obj
+        repeat
+            obj = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
+        until obj ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(obj, true, true) 
+        util.yield(1)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        repeat
+            obj = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
+        until obj ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(obj, true, true) 
+        util.yield(1)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
+        repeat
+            obj = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
+        until obj ~= 0 or util.yield()
+        ENTITY.DETACH_ENTITY(obj, true, true) 
+        util.yield(1)
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
+    end
+    for i = 1, ped_amount do
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(player_ped, 0)
+        PED.SET_PED_COMPONENT_VARIATION(player_ped, 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds1[i], 0)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds2[i], 0)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds3[i], 0)
+        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 0, 1, 0)
+        util.yield()
+        end
+        util.yield(10)
+        end
+        menu.trigger_commands("superc")
+        end
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
+        util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+    end
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes their outfit variations. Lasts around 30 seconds.", function(on)
+    local math_random = math.random
+    menu.trigger_commands("mpfemale")
+    util.yield(10)
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
+    SpawnedPeds1 = {}
+    local ped_amount = math_random(7, 10) -- Picks number between 7 and 10
+    for i = 1, ped_amount do
+        local pedtype = 0
+        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local coords = PlayerPedCoords
+        local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
+        coords.x = coords.x
+        coords.y = coords.y
+        coords.z = coords.z
+        if loc1 == 1 then
+            coords.x = coords.x - math_random(0, 15)
+        else
+            coords.x = coords.x + math_random(0, 15)
+        end
+        if loc2 == 1 then
+            coords.y = coords.y - math_random(0, 15)
+        else
+            coords.y = coords.y + math_random(0, 15)
+        end
+        if loc3 == 1 then
+            coords.z = coords.z - math_random(0, 15)
+        else
+            coords.z = coords.z + math_random(0, 15)
+        end
+        if pedt == 1 then
+            pedtype = 0
+        else
+            pedtype = 3
+        end
+        SpawnedPeds2 = {}
+        local ped_amount = math_random(7, 10)
+        for i = 1, ped_amount do
+            local pedtype = 0
+            local coords = PlayerPedCoords
+            local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
+            coords.x = coords.x
+            coords.y = coords.y
+            coords.z = coords.z
+            if loc1 == 1 then
+                coords.x = coords.x - math_random(0, 15)
+            else
+                coords.x = coords.x + math_random(0, 15)
+            end
+            if loc2 == 1 then
+                coords.y = coords.y - math_random(0, 15)
+            else
+                coords.y = coords.y + math_random(0, 15)
+            end
+            if loc3 == 1 then
+                coords.z = coords.z - math_random(0, 15)
+            else
+                coords.z = coords.z + math_random(0, 15)
+            end
+            if pedt == 1 then
+                pedtype = 0
+            else
+                pedtype = 3
+            end
+            SpawnedPeds3 = {}
+            local ped_amount = math_random(7, 10)
+            for i = 1, ped_amount do
+                local pedtype = 0
+                local coords = PlayerPedCoords
+                local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
+                coords.x = coords.x
+                coords.y = coords.y
+                coords.z = coords.z
+                if loc1 == 1 then
+                    coords.x = coords.x - math_random(0, 15)
+                else
+                    coords.x = coords.x + math_random(0, 15)
+                end
+                if loc2 == 1 then
+                    coords.y = coords.y - math_random(0, 15)
+                else
+                    coords.y = coords.y + math_random(0, 15)
+                end
+                if loc3 == 1 then
+                    coords.z = coords.z - math_random(0, 15)
+                else
+                    coords.z = coords.z + math_random(0, 15)
+                end
+                if pedt == 1 then
+                    pedtype = 0
+                else
+                    pedtype = 3
+                end
+        ENTITY.SET_ENTITY_INVINCIBLE(player_ped, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(player_ped, true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(player_ped, "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_VISIBLE(player_ped, true)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 1, coords.x, coords.y, coords.z, 0, true, util.joaat("weapon_stungun"), players.user_ped(), false, true, 1.0)
         util.yield(5)
     end
     for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(player_ped, 0)
+        PED.SET_PED_COMPONENT_VARIATION(player_ped, 3, 0, 1, 0)
         util.yield()
         end
         util.yield(10)
         end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-    end
-end)
-
-menu.divider(BroHugCrashes, "Bro Hug V2's")
-
-menu.action(BroHugCrashes, "Bro Hug V2", {"brohugv2"}, "Logged from 2take1 and modified differently.", function(on)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("A_F_M_FatCult_01")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("A_F_M_FatCult_01")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
-        else
-            coords.x = coords.x + math_random(1, 5)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
-        else
-            coords.y = coords.y + math_random(1, 5)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
-        else
-            coords.z = coords.z + math_random(3, 5)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
-            else
-                coords.x = coords.x + math_random(1, 5)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
-            else
-                coords.y = coords.y + math_random(1, 5)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
-            else
-                coords.z = coords.z + math_random(3, 5)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds1
-        repeat
-            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
-        until peds1 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds1, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds2
-        repeat
-            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
-        until peds2 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds2, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds3
-        repeat
-            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
-        until peds3 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds3, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        util.yield()
-    end
-    for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-        util.yield()
-        end
-        util.yield()
-        end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-    end
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.toggle_loop(BroHugCrashes, "Bro Hug V2", {"brohugv2loop"}, "Logged from 2take1 and modified differently.", function(on)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("A_F_M_FatCult_01")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("A_F_M_FatCult_01")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
-        else
-            coords.x = coords.x + math_random(1, 5)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
-        else
-            coords.y = coords.y + math_random(1, 5)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
-        else
-            coords.z = coords.z + math_random(3, 5)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
-            else
-                coords.x = coords.x + math_random(1, 5)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
-            else
-                coords.y = coords.y + math_random(1, 5)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
-            else
-                coords.z = coords.z + math_random(3, 5)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds1
-        repeat
-            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
-        until peds1 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds1, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds2
-        repeat
-            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
-        until peds2 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds2, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds3
-        repeat
-            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
-        until peds3 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds3, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        util.yield()
-    end
-    for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-        util.yield()
-        end
-        util.yield()
-        end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-    end
-end)
-
-menu.divider(BroHugCrashes, "Bro Hug V3's")
-
-menu.action(BroHugCrashes, "Bro Hug V3", {"brohugv3+"}, "Logged from 2take1 and modified differently.", function(on)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("player_zero")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("player_zero")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
-        else
-            coords.x = coords.x + math_random(1, 5)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
-        else
-            coords.y = coords.y + math_random(1, 5)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
-        else
-            coords.z = coords.z + math_random(3, 5)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
-            else
-                coords.x = coords.x + math_random(1, 5)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
-            else
-                coords.y = coords.y + math_random(1, 5)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
-            else
-                coords.z = coords.z + math_random(3, 5)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 7, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 7, 0)
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds1
-        repeat
-            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
-        until peds1 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds1, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds2
-        repeat
-            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
-        until peds2 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds2, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds3
-        repeat
-            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
-        until peds3 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds3, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        util.yield()
-    end
-    for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-        util.yield()
-        end
-        util.yield()
-        end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
+        util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle_loop(BroHugCrashes, "Bro Hug V3", {"brohugv3loop"}, "Logged from 2take1 and modified differently.", function(on)
+menu.action(outfitcrash, "Outfit crash v4", {"outfitcrashv4"}, "Changes your outfit variations. Lasts around 30 seconds.", function(on)
     local math_random = math.random
-    local joaat = util.joaat
+    menu.trigger_commands("mpfemale")
     util.yield(10)
-    local pedhash1 = util.joaat("player_zero")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("player_zero")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
     SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
+    local ped_amount = math_random(7, 10) -- Picks number between 7 and 10
     for i = 1, ped_amount do
         local pedtype = 0
         local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
         local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+        local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
         coords.x = coords.x
         coords.y = coords.y
         coords.z = coords.z
         if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
+            coords.x = coords.x - math_random(0, 15)
         else
-            coords.x = coords.x + math_random(1, 5)
+            coords.x = coords.x + math_random(0, 15)
         end
         if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
+            coords.y = coords.y - math_random(0, 15)
         else
-            coords.y = coords.y + math_random(1, 5)
+            coords.y = coords.y + math_random(0, 15)
         end
         if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
+            coords.z = coords.z - math_random(0, 15)
         else
-            coords.z = coords.z + math_random(3, 5)
+            coords.z = coords.z + math_random(0, 15)
         end
         if pedt == 1 then
             pedtype = 0
@@ -18836,24 +18634,24 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug V3", {"brohugv3loop"}, "Logged from 2ta
         for i = 1, ped_amount do
             local pedtype = 0
             local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+            local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
             coords.x = coords.x
             coords.y = coords.y
             coords.z = coords.z
             if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
+                coords.x = coords.x - math_random(0, 15)
             else
-                coords.x = coords.x + math_random(1, 5)
+                coords.x = coords.x + math_random(0, 15)
             end
             if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
+                coords.y = coords.y - math_random(0, 15)
             else
-                coords.y = coords.y + math_random(1, 5)
+                coords.y = coords.y + math_random(0, 15)
             end
             if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
+                coords.z = coords.z - math_random(0, 15)
             else
-                coords.z = coords.z + math_random(3, 5)
+                coords.z = coords.z + math_random(0, 15)
             end
             if pedt == 1 then
                 pedtype = 0
@@ -18865,356 +18663,49 @@ menu.toggle_loop(BroHugCrashes, "Bro Hug V3", {"brohugv3loop"}, "Logged from 2ta
             for i = 1, ped_amount do
                 local pedtype = 0
                 local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
+                local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
                 coords.x = coords.x
                 coords.y = coords.y
                 coords.z = coords.z
                 if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
+                    coords.x = coords.x - math_random(0, 15)
                 else
-                    coords.x = coords.x + math_random(1, 5)
+                    coords.x = coords.x + math_random(0, 15)
                 end
                 if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
+                    coords.y = coords.y - math_random(0, 15)
                 else
-                    coords.y = coords.y + math_random(1, 5)
+                    coords.y = coords.y + math_random(0, 15)
                 end
                 if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
+                    coords.z = coords.z - math_random(0, 15)
                 else
-                    coords.z = coords.z + math_random(3, 5)
+                    coords.z = coords.z + math_random(0, 15)
                 end
                 if pedt == 1 then
                     pedtype = 0
                 else
                     pedtype = 3
                 end
-        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 7, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 6, 0)
-        PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 7, 0)
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds1[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds1
-        repeat
-            peds1 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds1[i], 0)
-        until peds1 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds1, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds2[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds2
-        repeat
-            peds2 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds2[i], 0)
-        until peds2 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds2, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        WEAPON.GIVE_WEAPON_TO_PED(SpawnedPeds3[i], util.joaat('WEAPON_HOMINGLAUNCHER'), 9999, true, true)
-        local peds3
-        repeat
-            peds3 = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(SpawnedPeds3[i], 0)
-        until peds3 ~= 0 or util.yield()
-        ENTITY.DETACH_ENTITY(peds3, true, true) 
-        util.yield(100)
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1.0, false, true, 0.0, false)
-
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        util.yield()
+        ENTITY.SET_ENTITY_INVINCIBLE(player_ped, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(player_ped, true, true)
+        TASK.TASK_START_SCENARIO_IN_PLACE(player_ped, "Walk_Facility", 0, false)
+        ENTITY.SET_ENTITY_VISIBLE(player_ped, true)
+        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 1, coords.x, coords.y, coords.z, 0, true, util.joaat("weapon_stungun"), players.user_ped(), false, true, 1.0)
+        util.yield(5)
     end
     for i = 1, ped_amount do
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
+        PED.SET_PED_RANDOM_COMPONENT_VARIATION(player_ped, 0)
+        PED.SET_PED_COMPONENT_VARIATION(player_ped, 3, 0, 1, 0)
         util.yield()
         end
-        util.yield()
-        end
-        menu.trigger_commands("clean")
-        util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-    end
-end)
-
-menu.divider(BroHugCrashes, "Bro Hug V4's")
-
-menu.action(BroHugCrashes, "Bro Hug V4", {"brohugv4"}, "Logged from 2take1 and modified differently.", function(on)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("player_zero")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("player_zero")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
         util.yield(10)
+        end
+        util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
     end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
-        else
-            coords.x = coords.x + math_random(1, 5)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
-        else
-            coords.y = coords.y + math_random(1, 5)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
-        else
-            coords.z = coords.z + math_random(3, 5)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
-            else
-                coords.x = coords.x + math_random(1, 5)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
-            else
-                coords.y = coords.y + math_random(1, 5)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
-            else
-                coords.z = coords.z + math_random(3, 5)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-                SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-                SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 6, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 7, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 6, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 7, 0)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                util.yield()
-                end
-                util.yield(10)
-                end
-                menu.trigger_commands("clean")
-                util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-            end
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
+end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle_loop(BroHugCrashes, "Bro Hug V4", {"brohugv4loop"}, "Logged from 2take1 and modified differently.", function(on)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("player_zero")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("player_zero")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(7, 10)
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(1, 5)
-        else
-            coords.x = coords.x + math_random(1, 5)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(1, 5)
-        else
-            coords.y = coords.y + math_random(1, 5)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(3, 5)
-        else
-            coords.z = coords.z + math_random(3, 5)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(1, 5)
-            else
-                coords.x = coords.x + math_random(1, 5)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(1, 5)
-            else
-                coords.y = coords.y + math_random(1, 5)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(3, 5)
-            else
-                coords.z = coords.z + math_random(3, 5)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(1,2), math_random(1,2), math_random(1,2), math_random(1,2)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(1, 5)
-                else
-                    coords.x = coords.x + math_random(1, 5)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(1, 5)
-                else
-                    coords.y = coords.y + math_random(1, 5)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(3, 5)
-                else
-                    coords.z = coords.z + math_random(3, 5)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-                SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-                SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-                SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 6, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash1, 0, 0, 7, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 6, 0)
-                PED.SET_PED_COMPONENT_VARIATION(pedhash3, 0, 0, 7, 0)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-                TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-                util.yield(5)
-            end
-            for i = 1, ped_amount do
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-                ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-                PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-                util.yield()
-                end
-                util.yield(10)
-                end
-                menu.trigger_commands("clean")
-                util.toast("Shitty Bro Hug Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-            end
-        end, nil, nil, COMMANDPERM_AGGRESSIVE)
-]]
-        
     menu.action(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxi"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task.", function()
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
@@ -19921,7 +19412,7 @@ menu.toggle_loop(badheadcrash, "Bad Head Blend v2", {"outfitcrashv2"}, "", funct
     end)
 end)
 
-local function RequestModel(Hash, timeout)
+function RequestModel(Hash, timeout)
     STREAMING.REQUEST_MODEL(Hash)
     local time = util.current_time_millis() + (timeout or 1000)
     while time > util.current_time_millis() and not STREAMING.HAS_MODEL_LOADED(Hash) do
@@ -19929,7 +19420,7 @@ local function RequestModel(Hash, timeout)
     end
     return STREAMING.HAS_MODEL_LOADED(Hash)
 end
-local function ClearEntities(list)
+function ClearEntities(list)
     for _, entity in pairs(list) do
         if ENTITY.DOES_ENTITY_EXIST(entity) then
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
@@ -19938,11 +19429,17 @@ local function ClearEntities(list)
         end
     end
 end
-local function CreateObject(Hash, Pos, static)
+function CreateObject(Hash, Pos, static)
     RequestModel(Hash)
     local Object = entities.create_object(Hash, Pos)
     ENTITY.FREEZE_ENTITY_POSITION(Object, (static or false))
     return Object
+end
+function CreateVehicle(Hash, Pos, static)
+    RequestModel(Hash)
+    local Vehicle = entities.create_vehicle(Hash, Pos)
+    ENTITY.FREEZE_ENTITY_POSITION(Vehicle, (static or false))
+    return Vehicle
 end
 
     local selecteddildo = 3831526183
@@ -20191,54 +19688,575 @@ menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event cra
     end
 end)
 
-local standcrashes = menu.list(MenuCrashes, "Stand Crashes", {}, "")
+-----------------------------------------------------------------------------------------------------------
 
-menu.action(standcrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
-    util.toast("Stand Crash Sent to " .. players.get_name(pid))
-    util.log("Stand Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
+local crash_ents = {}
+   local BrokenScenarioPeds = {
+       "s_m_y_construct_01",
+       "s_m_y_construct_02",
+       "csb_janitor",
+       "ig_russiandrunk",
+       "s_m_m_gardener_01",
+       "s_m_y_winclean_01",
+       "a_f_m_bodybuild_01",
+       "s_m_m_cntrybar_01",
+       "s_m_y_chef_01",
+       "ig_abigail",
+   }
+   local BrokenScenarios = {
+       "WORLD_HUMAN_CONST_DRILL",
+       "WORLD_HUMAN_HAMMERING",
+       "WORLD_HUMAN_JANITOR",
+       "WORLD_HUMAN_DRINKING",
+       "WORLD_HUMAN_GARDENER_PLANT",
+       "WORLD_HUMAN_MAID_CLEAN",
+       "WORLD_HUMAN_MUSCLE_FREE_WEIGHTS",
+       "WORLD_HUMAN_STAND_FISHING",
+       "PROP_HUMAN_BBQ",
+       "WORLD_HUMAN_WELDING",
+   }
+   local BrokenScenariosProps = {
+       "prop_tool_jackham",
+       "prop_tool_hammer",
+       "prop_tool_broom",
+       "prop_amb_40oz_02",
+       "prop_cs_trowel",
+       "prop_rag_01",
+       "prop_curl_bar_01",
+       "prop_fishing_rod_01",
+       "prop_fish_slice_01",
+       "prop_weld_torch",
+       "p_amb_coffeecup_01",
+   }
 
-menu.toggle_loop(standcrashes,"Stand Crash", {"standcrash"}, "Not coded Yet.", function()
-    if pid ~= players.user() then
-    util.toast("Stand Crash Sent to " .. players.get_name(pid))
-    util.log("Stand Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
+   
+   function TnT_Crash(pid)
+    while true do
+        local playerPed = PLAYER.PLAYER_PED_ID()
+        local vehicleCoords = ENTITY.GET_ENTITY_COORDS(playerPed)
+
+        local vehicleHash1 = util.joaat("kosatka")
+        util.request_model(vehicleHash1)
+        local vehicle1 = entities.create_vehicle(vehicleHash1, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash2 = util.joaat("luxor")
+        util.request_model(vehicleHash2)
+        local vehicle2 = entities.create_vehicle(vehicleHash2, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash3 = util.joaat("cargoplane")
+        util.request_model(vehicleHash3)
+        local vehicle3 = entities.create_vehicle(vehicleHash3, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash4 = util.joaat("cargoplane2")
+        util.request_model(vehicleHash4)
+        local vehicle4 = entities.create_vehicle(vehicleHash4, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash5 = util.joaat("hydra")
+        util.request_model(vehicleHash5)
+        local vehicle5 = entities.create_vehicle(vehicleHash5, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash6 = util.joaat("tug")
+        util.request_model(vehicleHash6)
+        local vehicle6 = entities.create_vehicle(vehicleHash6, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash7 = util.joaat("firetruk")
+        util.request_model(vehicleHash7)
+        local vehicle7 = entities.create_vehicle(vehicleHash7, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash8 = util.joaat("lazer")
+        util.request_model(vehicleHash8)
+        local vehicle8 = entities.create_vehicle(vehicleHash8, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash9 = util.joaat("khanjali")
+        util.request_model(vehicleHash9)
+        local vehicle9 = entities.create_vehicle(vehicleHash9, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash10 = util.joaat("armytrailer")
+        util.request_model(vehicleHash10)
+        local vehicle10 = entities.create_vehicle(vehicleHash10, vehicleCoords, 0.0, true, false)
+
+---------------------------------------------------------------------------------------------------------
+
+        local vehicleHash11 = util.joaat("bombushka")
+        util.request_model(vehicleHash11)
+        local vehicle11 = entities.create_vehicle(vehicleHash11, vehicleCoords, 0.0, true, false)
+
+        local vehicleHash12 = util.joaat("volatol")
+        util.request_model(vehicleHash12)
+        local vehicle12 = entities.create_vehicle(vehicleHash12, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash13 = util.joaat("armytrailer2")
+        util.request_model(vehicleHash13)
+        local vehicle13 = entities.create_vehicle(vehicleHash13, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash14 = util.joaat("flatbed")
+        util.request_model(vehicleHash14)
+        local vehicle14 = entities.create_vehicle(vehicleHash14, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash15 = util.joaat("cargobob")
+        util.request_model(vehicleHash15)
+        local vehicle15 = entities.create_vehicle(vehicleHash15, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash16 = util.joaat("cargobob2")
+        util.request_model(vehicleHash16)
+        local vehicle16 = entities.create_vehicle(vehicleHash16, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash17 = util.joaat("cuban800")
+        util.request_model(vehicleHash17)
+        local vehicle17 = entities.create_vehicle(vehicleHash17, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash18 = util.joaat("titan")
+        util.request_model(vehicleHash18)
+        local vehicle18 = entities.create_vehicle(vehicleHash18, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash19 = util.joaat("mammatus")
+        util.request_model(vehicleHash19)
+        local vehicle19 = entities.create_vehicle(vehicleHash19, vehicleCoords, 0.0, true, false)
+
+
+        local vehicleHash20 = util.joaat("velum2")
+        util.request_model(vehicleHash20)
+        local vehicle20 = entities.create_vehicle(vehicleHash20, vehicleCoords, 0.0, true, false)
+
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle1, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle2, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle3, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle4, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle5, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle6, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle7, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle8, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle9, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle10, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle11, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle12, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle13, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle14, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle15, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle16, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle17, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle18, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle19, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle20, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+        util.yield(2000)
+        menu.trigger_commands("superc")
+        return
+    end
+end
+
+    local MostMenuCrash = menu.list(MenuCrashes, "Most Menu Crashes", {}, "")
+
+    menu.toggle_loop(MostMenuCrash, "TnT Crash", {"tntcrash"}, "Use anticrashcamera for this.", function()
+        TnT_Crash(pid)
+        menu.trigger_commands("scenariocrash" .. PLAYER.GET_PLAYER_NAME(pid))
+        menu.trigger_commands("entcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    end)
+
+local kachowlatest = menu.list(MostMenuCrash, "Ka-Chow", {}, "")
+
+local planes = {'hydra','volatol','duster','luxor','Lazer','mammatus','velum','Shamal','Stunt','vestra','titan','besra',
+'dodo','alkonost','velum2','cuban800','luxor2','nimbus','howard','alphaz1','seabreeze','nokota','molotok','starling','tula',
+'microlight','rogue','pyro','mogul','strikeforce','avenger','avenger2','bombushka'}
+local coords = {
+    {-1718.5878, -982.02405, 322.83115},
+    {-2671.5007, 3404.2637, 455.1972},
+    {9.977266, 6621.406, 306.46536 },
+    {3529.1458, 3754.5452, 109.96472},
+    {252, 2815, 120},
+}
+local to_ply = 1
+
+function RqModel(hash)
+    STREAMING.REQUEST_MODEL(hash)
+    local count = 0
+    util.toast("Requesting model...")
+    while not STREAMING.HAS_MODEL_LOADED(hash) and count < 100 do
+        STREAMING.REQUEST_MODEL(hash)
+        count = count + 1
+        util.yield(10)
+    end
+    if not STREAMING.HAS_MODEL_LOADED(hash) then
+        util.toast("Tried for 1 second, couldn't load this specified model!")
+    end
+end
+
+function GetLocalPed()
+    return PLAYER.PLAYER_PED_ID()
+end
+
+G_GeneratedList = false --
+
+function AddEntityToList(listName, handle, generatedCheck)
+    if ((not G_GeneratedList) and generatedCheck) or (not generatedCheck) then
+        G_GeneratedList = true
+        local lis = menu.list(kachowlatest, listName .. " handle " .. handle, {}, "")
+        menu.action(lis, "Delete", {"delcrashes"}, "", function()
+            entities.delete_by_handle(handle)
+            menu.delete(lis)
+            G_GeneratedList = false
+        end)
+        menu.action(lis, "Teleport to entity", {"tptoentity"}, "", function()
+            local pos = ENTITY.GET_ENTITY_COORDS(handle)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(GetLocalPed(), pos.x, pos.y, pos.z + 1, false, false, false)
+        end)
+        menu.action(lis, "Drive Entity", {"driveentity"}, "", function()
+            PED.SET_PED_INTO_VEHICLE(GetLocalPed(), handle, -1)
+        end)
+        menu.action(lis, "Teleport to you", {"tpentitytome"}, "", function()
+            local pos = ENTITY.GET_ENTITY_COORDS(GetLocalPed())
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(handle, pos.x, pos.y, pos.z + 1, false, false, false)
+        end)
+    end
+end
+
+menu.toggle_loop(kachowlatest, "Boosted Ka-Chow", {"boostkachow"}, "", function()
+    menu.trigger_commands("kachowcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    menu.trigger_commands("morevehicles" .. PLAYER.GET_PLAYER_NAME(pid))
+end)
+
+-- local jet_netID;
+menu.toggle_loop(kachowlatest, "Ka-Chow", {"kachowcrash"}, "Press and hold down the enter button", function()
+    menu.trigger_commands("anticrashcamera on")
+    if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
+        local jet = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+        -- if VEHICLE.GET_VEHICLE_CLASS(jet) == 16 then --16 class is planes
+        -- jet_netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(jet)
+        ENTITY.SET_ENTITY_PROOFS(jet, true, true, true, true, true, true, true, true)
+        -- ENTITY.SET_ENTITY_ROTATION(jet, 0, 0, 0, 2, true) -- rotation sync fuck
+        -- local let_coords = coords[math.random(1, #coords)]--function() for i =1, 32 do if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i) then return ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)) end end end
+        if players.exists(to_ply) then 
+            local asda = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(to_ply)) 
+            util.toast('Player ID: '..to_ply..' | asda.x: '.. asda.x.. 'asda.y: '.. asda.y..'asda.z: '.. asda.z)
+            ENTITY.SET_ENTITY_COORDS(jet, asda.x, asda.y, asda.z + 50, false, false, false, true) 
+            to_ply = to_ply +1
+        else 
+            if to_ply >= 32 then to_ply = 0 end
+            to_ply = to_ply +1 
+            local let_coords = coords[math.random(1, #coords)]
+            ENTITY.SET_ENTITY_COORDS(jet, let_coords[1], let_coords[2], let_coords[3], false, false, false, true) 
+        end
+            
+        ENTITY.SET_ENTITY_VELOCITY(jet, 0, 0, 0) -- velocity sync fuck
+        ENTITY.SET_ENTITY_ROTATION(jet, 0, 0, 0, 2, true) -- rotation sync fuck
+        local pedpos = ENTITY.GET_ENTITY_COORDS(GetLocalPed())
+        pedpos.z = pedpos.z + 10
+        for i = 1, 2 do
+            local s_plane = planes[math.random(1, #planes)]
+            RqModel(util.joaat(s_plane))
+            local veha1 = entities.create_vehicle(util.joaat(s_plane), pedpos, 0)
+
+            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, jet, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true,
+                true, true, true, 2)
+        end
+        AddEntityToList("Plane: ", jet, true)
+        util.toast("Waiting 5sec for syncs...")
+        util.yield(3500) -- 5k is original
+        for i = 1, 25 do -- 50 is original
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+            --ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, 252, 2815, 120, false, false, false) -- far away teleport (sync fuck)
+            util.yield()
+        end
+    else
+        util.toast("Alert | You are not in a vehicle")
+        RqModel(util.joaat('lazer'))
+        local spawn_in = entities.create_vehicle(util.joaat('lazer'), ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID()), 0.0)
+        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), spawn_in, -1)
     end
 end)
 
-local Takecrash = menu.list(MenuCrashes, "2Take1 Crashes", {}, "")
-
-menu.action(Takecrash,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
-    util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
-    util.log("2Take1 Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.toggle_loop(Takecrash,"2Take1 Crash", {"2take1crash"}, "Not coded Yet.", function()
-    if pid ~= players.user() then
-    util.toast("2Take1 Crash Sent to " .. players.get_name(pid))
-    util.log("2Take1 Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-    end
+menu.toggle_loop(kachowlatest, "Spawn Others", {"morevehicles"}, "May improve crashing.", function()
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " cuban800")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " titan")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " duster")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Stunt")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Shamal")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Lazer")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " vestra")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " volatol")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " besra")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " dodo")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alkonost")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum2")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor2")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nimbus")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " howard")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alphaz1")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " seabreeze")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nokota")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " molotok")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " tula")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " rogue")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " mogul")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " strikeforce")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger2")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " bombushka")
+    util.yield(10)
+    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
 end)
 
-local XForcecrash = menu.list(MenuCrashes, "X-Force Crashes", {}, "")
 
-menu.action(XForcecrash,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
-    util.toast("X-Force Crash Sent to " .. players.get_name(pid))
-    util.log("X-Force Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.toggle_loop(XForcecrash,"X-Force Crash", {"xforcecrash"}, "Not coded Yet.", function()
-    if pid ~= players.user() then
-    util.toast("X-Force Crash Sent to " .. players.get_name(pid))
-    util.log("X-Force Crash Sent to " .. players.get_name(pid))
-    util.toast(":/ Failed to crash as this is not coded yet :/ ")
-    end
+menu.toggle_loop(kachowlatest, "Delete Crash Every 15 Seconds", {"delcrash"}, "Delete every 15 seconds.", function()
+    menu.trigger_commands("delcrashes")
+    menu.trigger_commands("noentities")
+    util.yield(1000)
+    menu.trigger_commands("noentities")
+    util.yield(15000)
 end)
 
+
+menu.toggle_loop(kachowlatest, "Crash Cam", {}, "", function()
+    menu.trigger_commands("anticrashcamera")
+end)
+
+menu.toggle_loop(kachowlatest, "TP On Ped Loop", {"tploops"}, "If they dont crash use this.", function()
+    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pids))
+    util.yield(1)
+end)
+
+-----------------------------------------------------------------------------------------------------------
+function deletehandlers(list)
+    for _, entity in pairs(list) do
+        if ENTITY.DOES_ENTITY_EXIST(entity) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
+            NetworkControl(entity)
+            entities.delete_by_handle(entity)
+        end
+    end
+end
+
+function RqModel(hash)
+    STREAMING.REQUEST_MODEL(hash)
+    local count = 0
+    util.toast("Requesting model...")
+    while not STREAMING.HAS_MODEL_LOADED(hash) and count < 100 do
+        STREAMING.REQUEST_MODEL(hash)
+        count = count + 1
+        util.yield(10)
+    end
+    if not STREAMING.HAS_MODEL_LOADED(hash) then
+        util.toast("Tried for 1 second, couldn't load this specified model!")
+    end
+end
+
+function GetLocalPed()
+    return PLAYER.PLAYER_PED_ID()
+end
+
+local vehicleType = { 'kosatka', 'hydra', 'cargoplane', 'cargoplane2', 'luxor', 'bombushka', 'volatol', 'armytrailer2', 'flatbed', 'tug', 'cargobob', 'cargobob2'}
+ local coords = {
+    {-1718.5878, -982.02405, 322.83115},
+    {-2671.5007, 3404.2637, 455.1972},
+    {9.977266, 6621.406, 306.46536 },
+    {3529.1458, 3754.5452, 109.96472},
+    {252, 2815, 120},
+}
+local selectedwep = 1
+local ped1 = {}
+local spawnDistance = 0
+local to_ply = 1
+local selected = 1
+local spawnedPlanes = {}
+
+local aicrashes = menu.list(MostMenuCrash, "A.I. Crashes", {}, "")
+
+menu.toggle_loop(aicrashes, "Start A.I. Fuck", {"aifuckcrash"}, "", function (on_toggle)
+    local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
+    TargetPlayerPos.x = TargetPlayerPos.x
+    TargetPlayerPos.y = TargetPlayerPos.y + 10
+    TargetPlayerPos.z = TargetPlayerPos.z
+    local WepHash <const> = util.joaat(math.random(1, #all_weapons_list[selectedwep]))
+    local modelHash <const> = util.joaat(all_peds_list[selected])
+    local WepmodelHash <const> = util.joaat(vehicleType[selected])
+    local startTime = util.current_time_millis()
+    local lastExplosion
+    local lastSpawn
+    local height = 100.0
+        STREAMING.REQUEST_MODEL(modelHash, WepHash)
+        while not STREAMING.HAS_MODEL_LOADED(modelHash, WepHash) do
+            util.yield_once()
+            end
+        if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
+            local sat_in_veh = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+            ENTITY.SET_ENTITY_PROOFS(sat_in_veh, true, true, true, true, true, true, true, true)
+            ENTITY.SET_ENTITY_QUATERNION(sat_in_veh, 0, 0, 0, 2, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(sat_in_veh, TargetPlayerPos.x + math.random(-100, 100), TargetPlayerPos.y + math.random(-100, 100), height)
+            ENTITY.SET_ENTITY_VELOCITY(sat_in_veh, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+            ENTITY.SET_ENTITY_MAX_SPEED(sat_in_veh, 500.0)
+            ENTITY.SET_ENTITY_ROTATION(sat_in_veh, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+            local let_coords = coords[math.random(1, #coords)]
+        if players.exists(to_ply) then 
+            local asda = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(to_ply)) 
+            util.toast('Player ID: '..to_ply..' | asda.x: '.. asda.x.. 'asda.y: '.. asda.y..'asda.z: '.. asda.z)
+            ENTITY.SET_ENTITY_COORDS(sat_in_veh, asda.x, asda.y, asda.z + 50, false, false, false, true) 
+            to_ply = to_ply +1
+        else 
+            if to_ply >= 32 then to_ply = 0 end
+            to_ply = to_ply +1 
+            local let_coords = coords[math.random(1, #coords)]
+            ENTITY.SET_ENTITY_COORDS(sat_in_veh, let_coords[1], let_coords[2], let_coords[3], false, false, false, true) 
+        end
+            ENTITY.SET_ENTITY_VELOCITY(sat_in_veh, 0, 0, 0)
+            ENTITY.SET_ENTITY_ROTATION(sat_in_veh, 0, 0, 0, 2, true)
+            ENTITY.SET_ENTITY_QUATERNION(sat_in_veh, 0, 0, 0, 2, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(sat_in_veh, TargetPlayerPos.x + math.random(-100, 100), TargetPlayerPos.y + math.random(-100, 100), height)
+            ENTITY.SET_ENTITY_VELOCITY(sat_in_veh, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+            ENTITY.SET_ENTITY_MAX_SPEED(sat_in_veh, 500.0)
+            ENTITY.SET_ENTITY_ROTATION(sat_in_veh, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+            local pedpos = ENTITY.GET_ENTITY_COORDS(GetLocalPed())
+            pedpos.z = pedpos.z + 10
+        for i = 1, 2 do
+            local s_plane = all_peds_list[math.random(1, #all_peds_list)]
+            RqModel(util.joaat(s_plane))
+            local ped1 = entities.create_ped(28, util.joaat(s_plane), pedpos, 0)
+            local s_plane3 = vehicleType[math.random(1, #vehicleType)]
+            RqModel(util.joaat(s_plane3))
+            local veha1 = entities.create_vehicle(util.joaat(s_plane3), pedpos, 0)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, TargetPlayerPos, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
+        for i = 1, 1 do
+            local plane1 = entities.create_vehicle(368211810, TargetPlayerPos, 0.0)
+            local object = entities.create_object(2099682835, TargetPlayerPos, 0.0)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(plane1, TargetPlayerPos.x + math.random(-100, 100), TargetPlayerPos.y + math.random(-100, 100), height)
+            ENTITY.SET_ENTITY_VELOCITY(object, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+            ENTITY.SET_ENTITY_VELOCITY(plane1, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+            ENTITY.SET_ENTITY_MAX_SPEED(object, 500.0)
+            ENTITY.SET_ENTITY_ROTATION(object, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+            ENTITY.SET_ENTITY_MAX_SPEED(plane1, 500.0)
+            ENTITY.SET_ENTITY_ROTATION(plane1, math.random(-180, 180), math.random(-180, 180), math.random(-180, 180), 0, 1)
+            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(plane1, 1, 0, -100, 0, true, false, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(plane1, object, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        end
+        for i = 1, 1 do
+            local plane2 = entities.create_vehicle(368211810, TargetPlayerPos, 0.0)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(plane2, object, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object, plane1, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(plane1, plane2, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(plane, 1, 0, -100, 0, true, false, true)
+            util.yield(300)
+        end
+            local agroup = "missfbi3ig_0"
+            local anim = "shit_loop_trev"
+            local mshit = util.joaat("p_ld_soc_ball_01")
+            local rshit = util.joaat("prop_toiletfoot_static")
+            STREAMING.HAS_ANIM_DICT_LOADED(agroup)
+            STREAMING.REQUEST_ANIM_DICT(agroup)
+            util.yield()
+            TASK.TASK_PLAY_ANIM(ped1, agroup, anim, 8.0, 8.0, 3000, 0, 0, true, true, true)
+            object1 = entities.create_object(rshit, pedpos)
+            object2 = entities.create_object(mshit, pedpos)
+            PED.SET_PED_MAX_HEALTH(ped1, 100)
+            ENTITY.SET_ENTITY_HEALTH(ped1, 100)
+            ENTITY.SET_ENTITY_INVINCIBLE(ped1, true)
+            PED.SET_PED_AS_ENEMY(ped1, true)
+            PED.SET_PED_FLEE_ATTRIBUTES(ped1, 0, false)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped1, 46, true)
+            WEAPON.GIVE_WEAPON_TO_PED(ped1, WepHash, 9999, true, true)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped1, ped, 0, 16)
+            PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped1, util.joaat("HATES_PLAYER"))
+            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(ped1, TargetPlayerPos, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(ped1, TargetPlayerPos, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+        end
+        for i = 1, 2 do
+            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(object1, TargetPlayerPos, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, ped1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(object2, ped1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+        end
+        util.yield(3500)
+        for i = 1, 25 do
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(sat_in_veh, TargetPlayerPos.x + math.random(-100, 100), TargetPlayerPos.y + math.random(-100, 100), height)
+            util.yield()
+        end
+    else
+        RqModel(util.joaat('hydra'))
+        local spawn_in = entities.create_vehicle(util.joaat('hydra'), ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID()), 0.0)
+        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), spawn_in, -1)
+    end
+    util.yield(1000)
+    local ct = 0
+    for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+        entities.delete_by_handle(ent)
+        return
+    end
+    while util.current_time_millis() - startTime < 20000 do
+        local pos = playerposition(playerPed, spawnDistance)
+        pos.z = pos.z + 30.0
+        if not lastSpawn or util.current_time_millis() - lastSpawn > 10 then
+            local plane = entities.create_vehicle(modelHash, pos, 0.0)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(plane), true)
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(plane, false, true)
+            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(plane), players.user(), true)
+            table.insert(spawnedPlanes, plane)
+            lastSpawn = util.current_time_millis()
+        end
+        if not NETWORK.NETWORK_IS_PLAYER_CONNECTED(pid) then break end
+        util.yield_once()
+    end
+    deletehandlers(spawnedPlanes)
+    spawnedPlanes = {}
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
+end)
+
+menu.toggle_loop(aicrashes, "Boosted A.I. Fuck", {"boostaifuck"}, "", function()
+    menu.trigger_commands("aifuckcrash" .. players.get_name(pid))
+end)
+
+menu.toggle_loop(aicrashes, "Delete Crash Every 15 Seconds", {"deletingaicrash"}, "Delete every 15 seconds.", function()
+    menu.trigger_commands("noentities")
+    util.yield(1000)
+    menu.trigger_commands("noentities")
+    util.yield(15000)
+end)
+-----------------------------------------------------------------------------------------------------------
 local Reboundcrash = menu.list(MenuCrashes, "Rebound Crashes", {}, "")
 
 menu.action(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working.", function()
@@ -20294,7 +20312,7 @@ menu.toggle_loop(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working. Can't
     util.log("Rebound Crash Sent to " .. players.get_name(pid))
     end
 end)
-
+-----------------------------------------------------------------------------------------------------------
 local Cheraxcrash = menu.list(MenuCrashes, "Cherax Crashes", {}, "")
 
 menu.action(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
@@ -20318,7 +20336,7 @@ menu.toggle_loop(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", functi
     util.log("Cherax Crash Sent to " .. players.get_name(pid))
     end
 end)
-
+-----------------------------------------------------------------------------------------------------------
 local Northcrash = menu.list(MenuCrashes, "North Crashes", {}, "")
 
 menu.action(Northcrash,"North Crash", {"northcrash"}, "Working.", function()
@@ -20358,21 +20376,7 @@ menu.toggle_loop(Northcrash,"North Crash", {"northcrash"}, "Working. Can't crash
     util.log("North Crash Sent to " .. players.get_name(pid))
     end
 end)
-
-local NightfallCrash = menu.list(MenuCrashes, "Nightfall Crashes", {}, "")
-
-menu.action(NightfallCrash,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
-    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
-    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.toggle_loop(NightfallCrash,"Nightfall Crash", {"nightfallcrash"}, "Not coded Yet.", function()
-    if pid ~= players.user() then
-    util.toast("Nightfall Crash Sent to " .. players.get_name(pid))
-    util.log("Nightfall Crash Sent to " .. players.get_name(pid))
-    end
-end)
-
+-----------------------------------------------------------------------------------------------------------
 local KiddionsCrash = menu.list(MenuCrashes, "Kiddions Crashes", {}, "")
 
 menu.action(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
@@ -20389,18 +20393,6 @@ menu.toggle_loop(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LM
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
     end
-end)
-
-local AnyMenuCrash = menu.list(MenuCrashes, "Any Menu Crashes", {}, "")
-
-menu.action(AnyMenuCrash, "Any Menu Crash", {"anymenucrash"}, "", function()
-    util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
-    util.log("Any Menu Crash Sent to " .. players.get_name(pid))
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.toggle_loop(AnyMenuCrash, "Any Menu Crash", {"anymenucrash"}, "", function()
-    util.toast("Any Menu Crash Sent to " .. players.get_name(pid))
-    util.log("Any Menu Crash Sent to " .. players.get_name(pid))
 end)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20908,16 +20900,16 @@ local object_names = {
 }
 
 local AntiCrashCam <const> = menu.ref_by_path("Game>Camera>Anti-Crash Camera", 38)
-local function RequestModel(Hash, timeout)
+function RequestModel(Hash, timeout)
     STREAMING.REQUEST_MODEL(Hash)
-    local time = util.current_time_millis() + (timeout or 1000)
+    time = util.current_time_millis() + (timeout or 1000)
     while time > util.current_time_millis() and not STREAMING.HAS_MODEL_LOADED(Hash) do
         util.yield()
     end
     return STREAMING.HAS_MODEL_LOADED(Hash)
 end
 
-local function ClearEntities(list)
+function ClearEntities(list)
     for _, entity in pairs(list) do
         if ENTITY.DOES_ENTITY_EXIST(entity) then
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(entity, false, false)
@@ -21147,6 +21139,104 @@ end)
             menu.trigger_commands("noentities")
             util.yield()
             menu.trigger_commands("anticrashcamera")
+            end
+        end)
+
+        menu.divider(TaskCrashes, "_________________________________________")
+
+        local ents = {}
+        local thingy = false
+        menu.toggle(TaskCrashes, "Muscle Crash", {"musclecrash"}, "Do not spectate them or stand near whilst using this.", function(val,cl)
+            thingy = val
+            BlockSyncs(pid, function()
+                if val then
+                    local number_of_things = 30
+                    local ped_mdl = util.joaat("ig_siemonyetarian")
+                    local ply_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                    local ped_pos = ENTITY.GET_ENTITY_COORDS(ply_ped)
+                    ped_pos.z += 3
+                    request_model(ped_mdl)
+                    for i=1,number_of_things do
+                        local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                        ents[i] = ped
+                        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                        TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                        ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                        ENTITY.SET_ENTITY_VISIBLE(ped, false)
+                    end
+                    repeat
+                        for k, ped in ents do
+                            TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(ped, "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS", 0, false)  
+                        end
+                        for k, v in entities.get_all_objects_as_pointers() do
+                            if entities.get_model_hash(v) == util.joaat("ig_siemonyetarian") then
+                                entities.delete_by_pointer(v)
+                            end
+                        end
+                        util.yield_once()
+                        util.yield_once()
+                    until not (thingy and players.exists(pid))
+                    thingy = false
+                    for k, obj in ents do
+                        entities.delete_by_handle(obj)
+                    end
+                    ents = {}
+                else
+                    for k, obj in ents do
+                        entities.delete_by_handle(obj)
+                    end
+                    ents = {}
+                end
+            end)
+        end)
+
+        menu.divider(TaskCrashes, "_________________________________________")
+    
+    local crash_toggle = false
+    menu.toggle(TaskCrashes, "Scenario Crash", {"scenariocrash"}, "Do not spectate them or stand near whilst using this. Made By Aplics.", function(val)
+        crash_toggle = val
+            if val then
+                local ped_pos = players.get_position(pid)
+                ped_pos.z += 3
+                for i = 1, 10 do
+                    local ped_mdl = util.joaat(BrokenScenarioPeds[i])
+                    request_model(ped_mdl)
+                    local ped = entities.create_ped(26, ped_mdl, ped_pos, 0)
+                    crash_ents[i] = ped
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+                    ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                    
+                end
+                repeat
+                    for i=1, #crash_ents do
+                        TASK.CLEAR_PED_TASKS_IMMEDIATELY(crash_ents[i])
+                        TASK.TASK_START_SCENARIO_IN_PLACE(crash_ents[i], BrokenScenarios[i], 0, false)
+                    end
+                    for i=1, #BrokenScenariosProps do
+                        for k, v in entities.get_all_objects_as_pointers() do
+                            if entities.get_model_hash(v) == util.joaat(BrokenScenariosProps[i]) then
+                            end
+                        end
+                    end
+                    util.yield_once()
+                    util.yield_once()
+                until not (crash_toggle and players.exists(pid))
+                crash_toggle = false
+                for k, obj in crash_ents do
+                end
+                crash_ents = {}
+            else
+                for k, obj in crash_ents do
+                end
+                for i=1, #BrokenScenariosProps do
+                    for k, v in entities.get_all_objects_as_pointers() do
+                        if entities.get_model_hash(v) == util.joaat(BrokenScenariosProps[i]) then
+                        end
+                    end
+                end
+                crash_ents = {}
             end
         end)
        
@@ -21807,6 +21897,324 @@ menu.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectat
             end
             crash_ents = {}
         end
+end)
+
+request_stream_of_entity = function(entity, time)
+    local unixtime = util.current_unix_time_seconds()
+    local seconds = unixtime + time
+    STREAMING.REQUEST_MODEL(entity)
+    while not STREAMING.HAS_MODEL_LOADED(entity) and unixtime < seconds do
+        STREAMING.REQUEST_MODEL(entity)
+        util.yield()
+    end
+    if STREAMING.HAS_MODEL_LOADED(entity) then
+        return entity
+    else
+        return 0
+    end
+end
+
+player_coords = function(pid)
+    local player_coords = ENTITY.GET_ENTITY_COORDS(player_index(pid), true)
+    return player_coords
+end
+
+local hashes = {
+    -877478386,
+    2099682835,
+}
+
+local para_crash = menu.list(lobbycrash, "Parachute Crashes", {}, "")
+
+
+menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
+    while on do
+        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
+            GRAPHICS.ANIMPOSTFX_STOP_ALL()
+            memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
+        end
+        for n = 0 , 1 do
+            PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+            ------------------------------------------------------------------------ Para 1
+            object_hash1 = 2099682835 -- Pipes
+                STREAMING.REQUEST_MODEL(object_hash1)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash1) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash1)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 2
+            object_hash2 = 3601491972 -- Crack Pipe
+                STREAMING.REQUEST_MODEL(object_hash2)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash2) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash2)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 3
+                object_hash3 = 452618762 -- Weed Plant  
+                STREAMING.REQUEST_MODEL(object_hash3)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash3) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash3)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 4
+                object_hash4 = 322248450 -- Pooltable
+                STREAMING.REQUEST_MODEL(object_hash4)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash4) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash4)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 5
+                object_hash5 = 2223607550 -- Massive Shit
+                STREAMING.REQUEST_MODEL(object_hash5)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash5) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash5)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 6
+                object_hash6 = 2452367939 -- Normal Shit
+                STREAMING.REQUEST_MODEL(object_hash6)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash6) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash6)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 7
+                object_hash7 = 1043035044 -- Traffic Post
+                STREAMING.REQUEST_MODEL(object_hash7)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash7) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash7)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Para 8
+                object_hash8 = 1585741317 -- Flag
+                STREAMING.REQUEST_MODEL(object_hash8)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash8) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(), object_hash8)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+            for i = 0 , 1 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                end
+                util.yield(1000)
+                menu.trigger_commands("tpmazehelipad")
+                ------------------------------------------------------------------------ Ropes 1
+                local hash = 0X187D938D
+                local pos = players.get_position(pid)
+                local veh = VEHICLE.CREATE_VEHICLE(hash, pos.x + 5, pos.y, pos.z, 0, true, true, false)
+                local ped = PED.CREATE_PED(26, hash, pos.x, pos.y, pos.z + 1, 0, true, false)
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+                ENTITY.SET_ENTITY_INVINCIBLE(ped, true)
+                ENTITY.SET_ENTITY_VISIBLE(ped, false, 0)
+                ENTITY.SET_ENTITY_VISIBLE(veh, false, 0)
+                local rope = PHYSICS.ADD_ROPE(pos.x, pos.y, pos.z, 0.0, 0.0, 10.0, 1.0, 1, 0.0, 1.0, 1.0, false, false, false, 1.0, false, 0)
+                local vehc = getEntityCoords(veh); local pedc = getEntityCoords(ped)
+                PHYSICS.ATTACH_ENTITIES_TO_ROPE(rope, veh, ped, vehc.x, vehc.y, vehc.z, pedc.x, pedc.y, pedc.z, 2, 0, 0, "Center", "Center")
+                -- Attach Object Parachutes
+                PHYSICS.ATTACH_ROPE_TO_ENTITY(rope, object_hash1, pedc.x, pedc.y, pedc.z, 2, 0, 0, "Center", "Center")
+                util.yield(1000)
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
+                ------------------------------------------------------------------------
+                menu.trigger_commands("tpmazehelipad")
+        end
+    end
+local gwobaw = memory.script_global(2672505 + 1685 + 756)
+memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
+end)
+
+
+    -- Parachute Crash
+
+	menu.toggle(para_crash, "Para Crash", {"ParaCrash"}, "", function(on)
+        if on then
+		for n = 0 , 1 do
+			PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+				object_hash = 1043035044
+					STREAMING.REQUEST_MODEL(object_hash)
+				while not STREAMING.HAS_MODEL_LOADED(object_hash) do
+					util.yield()
+					end
+					PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),object_hash)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, 0,0,500, 0, 0, 1) -- Original Code
+					WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+					util.yield(1000)
+				for i = 0 , 1 do
+					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+					end
+					util.yield(1000)
+					menu.trigger_commands("tplsia")
+				bush_hash = 1585741317
+					STREAMING.REQUEST_MODEL(bush_hash)
+				while not STREAMING.HAS_MODEL_LOADED(bush_hash) do
+					util.yield()
+					end
+					PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),bush_hash)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, 0,0,500, 0, 0, 1) -- Original Code
+					WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+					util.yield(1000)
+				for i = 0 , 1 do
+					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+					end
+					util.yield(1000)
+					menu.trigger_commands("tplsia")
+                    end
+                else
+                    menu.trigger_commands("tpmazehelipad")
+                    util.restart_script()
+                end
+			end)
+
+    -- Parachute Crash 1
+
+	menu.toggle(para_crash, "Para Crash V1", {"paracrashv1"}, "", function(on)
+        if on then
+		for n = 0 , 1 do
+			PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+				object_hash = 1043035044
+					STREAMING.REQUEST_MODEL(object_hash)
+				while not STREAMING.HAS_MODEL_LOADED(object_hash) do
+					util.yield()
+					end
+					PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),object_hash)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                    --ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, 0,0,500, 0, 0, 1) -- Original Code
+					WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+					util.yield(1000)
+				for i = 0 , 1 do
+					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+					end
+					util.yield(1000)
+					menu.trigger_commands("tplsia")
+				bush_hash = 1585741317
+					STREAMING.REQUEST_MODEL(bush_hash)
+				while not STREAMING.HAS_MODEL_LOADED(bush_hash) do
+					util.yield()
+					end
+					PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),bush_hash)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+                    --ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, 0,0,500, 0, 0, 1) -- Original Code
+					WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+					util.yield(1000)
+				for i = 0 , 1 do
+					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+					end
+					util.yield(1000)
+					menu.trigger_commands("tplsia")
+                    end
+                else
+                    menu.trigger_commands("tpmazehelipad")
+                    util.restart_script()
+                end
+			end)
+
+        -- Parachute Crash 2
+                
+menu.toggle_loop(para_crash, "Para Crash V2", {"paracrashv2"}, "", function()
+    local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+    local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    BlockSyncs(pid, function()
+        util.yield(500)
+
+        local crash_parachute = util.joaat("prop_logpile_06b")
+        local parachute = util.joaat("p_parachute1_mp_dec")
+
+        STREAMING.REQUEST_MODEL(crash_parachute)
+        STREAMING.REQUEST_MODEL(parachute)
+
+        for i = 1, 1 do
+            PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(pid, crash_parachute)
+            WEAPON.GIVE_DELAYED_WEAPON_TO_PED(player, 0xFBAB5776, 1000, false)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player, pos.x, pos.y, pos.z + 100, 0, 0, 1)
+            util.yield(1000)
+            PED.FORCE_PED_TO_OPEN_PARACHUTE(player)
+            util.yield(1000)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(player)
+        end
+
+        PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(pid, parachute)
+        util.yield(500)
+    end)
+end)
+                
+
+menu.toggle_loop(para_crash, "Para Crash V3", {"paracrashv3"}, "", function()
+    local ped = PLAYER.PLAYER_PED_ID()
+    local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+    local hashes = {util.joaat("prop_beach_parasol_02"), util.joaat("prop_parasol_04c")}
+    for i = 1, #hashes do
+        RqModel(hashes[i])
+        PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(pid, hashes[i])
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped, 0, 0, 500, false, true, true)
+        WEAPON.GIVE_DELAYED_WEAPON_TO_PED(ped, 0xFBAB5776, 1000, false)
+        util.yield(200)
+        for i = 0 , 20 do
+            PED.FORCE_PED_TO_OPEN_PARACHUTE(ped)
+        end
+        util.yield(1200)
+    end
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped, pos.x, pos.y, pos.z, false, true, true)
+end)
+
+menu.action(para_crash, "Restart Script To Stop Fuckery", {"restartparas"}, "", function ()
+    util.restart_script()
 end)
 
 local Five_G_Crashes = menu.list(lobbycrash, "5G Crashes", {}, "")
