@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.7"
+local local_menu_version = "1.1.8"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -9143,6 +9143,33 @@ GenerateFeatures = function(pid)
 	menu.action(vehopts,"Spawn them a vehicle", {}, "Spawns a vehicle on target player", function()
 		menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(troll_sub_vehicle_tab, "Attach Cop Sirons", {"siron"}, "Attaches annoying cop car under there car with the sirons on. Skidded idea from 2take1 PoliceCar.lua", function()
+        if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
+            local sat_in_veh = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+            local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local playerpos = ENTITY.GET_ENTITY_COORDS(id)
+            playerpos.z = playerpos.z + 3
+            local copcar = util.joaat("policeold2")
+            local model = util.joaat("mp_m_freemode_01")
+            STREAMING.REQUEST_MODEL(copcar)
+            while not STREAMING.HAS_MODEL_LOADED(copcar) do
+                util.yield()
+            end
+            local vehicle1 = entities.create_vehicle(copcar, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+            local pedspawn = PED.CREATE_PED(26, model, playerpos.x, playerpos.y, playerpos.z, 0, true, false)
+            PED.SET_PED_INTO_VEHICLE(pedspawn, vehicle1, -1)
+            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
+            VEHICLE.SET_VEHICLE_SIREN(vehicle1, true)
+            VEHICLE.SET_VEHICLE_WILL_FORCE_OTHER_VEHICLES_TO_STOP(vehicle1, true)
+            ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(vehicle1, sat_in_veh, true)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, sat_in_veh, 0, 0, 0, -2, 0, 0, 0, 0, false, true, false, 0, true)
+            ENTITY.SET_ENTITY_VISIBLE(vehicle1, false, 0)
+            ENTITY.SET_ENTITY_VISIBLE(pedspawn, false, 0)
+        else
+            util.toast("Player is not in a vehicle. :/")
+        end
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 	menu.toggle_loop(troll_sub_vehicle_tab,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
