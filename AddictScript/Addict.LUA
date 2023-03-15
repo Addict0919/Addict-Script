@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.1.5"
+local local_menu_version = "1.1.6"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -17495,12 +17495,13 @@ end)
 
     local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
 
-	menu.action(frienm, "Max Player", {"max"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
+	menu.action(frienm, "Max Player", {"max"}, "Turns on Godmode, auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
         		menu.trigger_commands("arm".. players.get_name(pid))
                 menu.trigger_commands("bail".. players.get_name(pid))
                 menu.trigger_commands("boost".. players.get_name(pid))
                 menu.trigger_commands("ceopay".. players.get_name(pid))
                 menu.trigger_commands("autoammo".. players.get_name(pid))
+                menu.trigger_commands("autoheal".. players.get_name(pid))
                 menu.trigger_commands("givegodmode".. players.get_name(pid))
                 menu.trigger_commands("removestickys".. players.get_name(pid))
                 menu.trigger_commands("givevehgodmode".. players.get_name(pid))
