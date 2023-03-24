@@ -7,3 +7,7 @@ Added Drop Guns & Shit
 Added All Money Drop Methods In Addict Drops
 
 Added Ped Cash Boost
+________________________
+v1.2.3
+________________________
+Added 3 Sync Crashes > In Crashes
