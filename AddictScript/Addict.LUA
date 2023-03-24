@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.2.2"
+local local_menu_version = "1.2.3"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -9202,6 +9202,19 @@ GenerateFeatures = function(pid)
         end
     end)
 
+    menu.action(troll_sub_vehicle_tab, "Phantom fuck", {"phantomram"}, "Sends 10 per loop.", function()
+        local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local vehicle_req = util.joaat("phantom2")
+        util.request_model(vehicle_req)
+    for i = 1, 10 do
+        local vehicle = entities.create_vehicle(vehicle_req, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 1, 1), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
+        util.yield(500)
+        entities.delete_by_handle(vehicle)
+        end
+    end)
+
     menu.action(troll_sub_vehicle_tab, "Attach Sirens Under Car", {"siren"}, "Attaches annoying cop car under there car with the sirens on. Skidded idea from 2take1 PoliceCar.lua", function()
         if not PED.IS_PED_IN_ANY_VEHICLE(pid) then
             local player_vehicle = get_player_vehicle(pid, true)
@@ -11960,7 +11973,7 @@ menu.action(Attacker_Tanks, "Delete Tanks", {"deletetanks"}, "Deletes all tanks 
 end)
 
 function brish(pid)
-    local selectedbritwep = 28
+    local selectedbritwep = 30
     local player_Brish_army = {}
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -12000,7 +12013,7 @@ menu.action(British_Attack, "Bri' 'ish Attack", {"brish"}, "", function()
     brish(pid)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.list_select(British_Attack, 'Weapon Select', {}, "", all_weapons_list, 28, function (opt)
+menu.list_select(British_Attack, 'Weapon Select', {}, "", all_weapons_list, 30, function (opt)
     selectedbritwep = opt
 end)
 
@@ -12828,7 +12841,7 @@ end)
             util.yield()
         end
         TASK.TASK_PLAY_ANIM(player, agroup, anim, 8.0, 8.0, 3000, 0, 0, true, true, true)
-        util.yield(100)
+        util.yield(1000)
         entities.create_object(mshit, c)
         end)
     
@@ -12841,7 +12854,7 @@ end)
             util.yield()
         end
         TASK.TASK_PLAY_ANIM(player, agroup, anim, 8.0, 8.0, 3000, 0, 0, true, true, true)
-        util.yield(100)
+        util.yield(1000)
         entities.create_object(rshit, c)
     end)
 
@@ -18945,6 +18958,7 @@ local fragcrash = menu.list(crash, "Fragment Crashes", {"fragmentcrashes"}, "")
 local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {"oxcrashes"}, "From Nightfall")
 local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
 local SECrashes = menu.list(crash, "SE Crashes", {"secrashes"}, "")
+local synccrashes = menu.list(crash, "Sync Crashes", {}, "")
 local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
 
 --local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
@@ -20361,6 +20375,100 @@ menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stoo
     menu.trigger_commands("cancelanim")
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
+menu.toggle_loop(synccrashes, "Sync Crash v1", {"synccrashv1"}, "", function()
+    local cord = getEntityCoords(getPlayerPed(pid))
+    local object = entities.create_object(util.joaat("virgo"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("swift2"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("osiris"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_firealarm"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_bs_cond"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_bs_foamx3"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor07"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor06"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor05"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_bs_gelx3"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor01"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("feltzer3"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor02"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("windsor"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_ct_monitor03"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_serv_bs_clutter"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(object, true, true)
+    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(object, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
+    ENTITY.SET_ENTITY_ROTATION(object, math.random(0, 360), math.random(0, 360), math.random(0, 360), 0, true)
+    ENTITY.SET_ENTITY_VELOCITY(object, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, object, 0, 0, -1, 2.5, 0, 180, 0, 0, false, true, false, 0, true)
+    util.yield(300)
+    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
+    ENTITY.DETACH_ENTITY(object, object)
+    entities.delete_by_handle(object)
+    menu.trigger_commands("superc 3")
+    menu.trigger_commands("superc 4")
+end)
+
+menu.toggle_loop(synccrashes, "Sync Crash v2", {"synccrashv2"}, "", function()
+    local cord = getEntityCoords(getPlayerPed(pid))
+    local object = entities.create_object(util.joaat("prop_off_chair_04"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_parknmeter_01"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_busstop_02"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_bench_11"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_off_chair_01"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_table_06_chr"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_res_kitchnstool"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("hei_int_heist_bath_delta"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(object, true, true)
+    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(object, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
+    ENTITY.SET_ENTITY_ROTATION(object, math.random(0, 360), math.random(0, 360), math.random(0, 360), 0, true)
+    ENTITY.SET_ENTITY_VELOCITY(object, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, object, 0, 0, -1, 2.5, 0, 180, 0, 0, false, true, false, 0, true)
+    util.yield(300)
+    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
+    ENTITY.DETACH_ENTITY(object, object)
+    entities.delete_by_handle(object)
+    menu.trigger_commands("superc 3")
+    menu.trigger_commands("superc 4")
+end)
+
+menu.toggle_loop(synccrashes, "Sync Crash v3", {"synccrashv3"}, "", function()
+    local cord = getEntityCoords(getPlayerPed(pid))
+    local object = entities.create_object(util.joaat("docktrailer"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("docktug"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("trailers2"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("tvtrailer"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("trflat"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("hei_prop_carrier_trailer_01"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("cs2_02_temp_trailer"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("tr_prop_tr_truktrailer_01a"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("trailer_casting"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("trailer_casting_int"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("dubsta"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("hydra"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("sm_prop_smug_havok"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("dt1_11_heliport"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("dt1_11_heliport_st"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("sf_prop_sf_heli_blade_b_02a"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("w_ex_snowball"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("w_ex_apmine"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("w_lr_homing_rocket"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_xmas_tree_int"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("prop_xmas_ext"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("v_31a_jh_tunn_03aextra"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("issi8"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    local object = entities.create_object(util.joaat("kosatka"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(object, true, true)
+    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(object, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
+    ENTITY.SET_ENTITY_ROTATION(object, math.random(0, 360), math.random(0, 360), math.random(0, 360), 0, true)
+    ENTITY.SET_ENTITY_VELOCITY(object, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(object, object, 0, 0, -1, 2.5, 0, 180, 0, 0, false, true, false, 0, true)
+    util.yield(300)
+    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
+    ENTITY.DETACH_ENTITY(object, object)
+    entities.delete_by_handle(object)
+    menu.trigger_commands("superc 3")
+    menu.trigger_commands("superc 4")
+end)
+
 menu.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from x-force.", function()
     util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655}) -- Crash Event S1
     util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
@@ -20501,41 +20609,6 @@ menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event cra
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
-    end
-end)
-
-
-menu.toggle_loop(SECrashes, "SE Test 1", {""}, "", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-    end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-    end
-end)
-
-menu.toggle_loop(SECrashes, "SE Test 2", {""}, "", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6})
-    end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6})
     end
 end)
 
