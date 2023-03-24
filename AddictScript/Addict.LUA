@@ -29,7 +29,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.2.1"
+local local_menu_version = "1.2.2"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -1587,7 +1587,26 @@ players.on_join(function(player_id)
         util.yield(1000)
     end)
 
-    menu.toggle(Recovery, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function (on_toggle)
+    
+	Ped_Cash = menu.list(Recovery, "Ped Cash", {}, "", function(); end)
+
+    menu.divider(Ped_Cash, "Ped Cash")
+
+    menu.toggle(Ped_Cash, "Ped Cash Boost", {"pedboost"}, "Enable the modifcation of ped cash dropped. You may crash after 1 minute using it offline.", function()
+        local _peds = entities.get_all_peds_as_handles()
+        for i, _ped in pairs(_peds) do
+            if _ped and not PED.IS_PED_A_PLAYER(_ped) then
+                    PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
+                    PED.SET_PED_MONEY(_ped, 2000)
+                else
+                    PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
+                    PED.SET_PED_MONEY(_ped, 2000)
+                end
+            end
+        end)
+
+
+    menu.toggle(Ped_Cash, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function (on_toggle)
         if on_toggle then
             local AnyPickUp = menu.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
             menu.trigger_command(AnyPickUp)
@@ -3957,6 +3976,8 @@ notification("Addict Script has been successfully loaded!", colors.green)
 
 local all_weapons_list = {
     "weapon_unarmed",
+    "weapon_briefcase",
+    "weapon_briefcase_02",
     "weapon_digiscanner",
     "weapon_raypistol",
     "weapon_firework",
@@ -9169,14 +9190,11 @@ GenerateFeatures = function(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
     menu.action(troll_sub_vehicle_tab, "Ramp Buggy fuck", {"rampbuggyram"}, "Sends 10 per loop.", function()
-        local coords = player_coords(pid)
-        coords.x = coords.x
-        coords.y = coords.y + -30
-        coords.z = coords.z
+        local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle_req = util.joaat("dune5")
         util.request_model(vehicle_req)
     for i = 1, 10 do
-        local vehicle = entities.create_vehicle(vehicle_req, coords, 0.0)
+        local vehicle = entities.create_vehicle(vehicle_req, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 1, 1), ENTITY.GET_ENTITY_HEADING(id))
         ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
         ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
         util.yield(500)
@@ -12013,7 +12031,6 @@ menu.click_slider(CustomArmy, "Spawn Custom Army", {"customarmy"}, "Max set to 4
         PED.SET_PED_FLEE_ATTRIBUTES(player_Custom_army[i], 0, false)
         PED.SET_PED_COMBAT_ATTRIBUTES(player_Custom_army[i], 46, true)
         WEAPON.GIVE_WEAPON_TO_PED(player_Custom_army[i], modelHash, 9999, true, true)
-        PED.SET_PED_COMBAT_ATTRIBUTES(player_Custom_army[i], ped, 0, 16)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_Custom_army[i], util.joaat("HATES_PLAYER"))
         util.yield()
     end 
@@ -12028,11 +12045,7 @@ menu.list_select(CustomArmy, 'Weapon Select', {}, "", all_weapons_list, 1, funct
 end)
 
 menu.action(CustomArmy, "Clear Peds", {"clearpeds"}, "", function()
-    for i, ped in ipairs(entities.get_all_peds_as_handles()) do
-        if PED.IS_PED_MODEL(ped, PedHash) then
-            entities.delete_by_handle(ped)
-        end
-    end
+    menu.trigger_commands("superc 5")
 end)
 
 local selectedwep1 = 1
@@ -18019,11 +18032,13 @@ end)
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
     
-    menu.action(drops, "Give All Collectibles", {"collects"}, "", function()
+    menu.action(drops, "All Collectibles", {"collects"}, "", function()
         menu.trigger_commands("givecollectibles" .. players.get_name(pid))
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.action(drops, "Drop Cash", {"dropcash"}, "So friends can type this in chat commands. It will also send the target a text message saying this. (You may see a transaction error when receiving cash, message me to turn it off or rejoin.)", function()
+    local cash_drops = menu.list(drops, "Cash Drops", {}, "")
+
+menu.action(cash_drops, "Drop Cash", {"dropcash"}, "It will send the target a text message saying this 'You may see a transaction error when receiving cash, message me to turn it off or rejoin.'", function()
     menu.trigger_commands("cashloop" .. players.get_name(pid))
     menu.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash, message me to turn it off or rejoin.")
     util.yield(500)
@@ -18031,10 +18046,10 @@ menu.action(drops, "Drop Cash", {"dropcash"}, "So friends can type this in chat 
     util.toast("Text message sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(drops, "Drop Cash Loop", {"cashloop"}, "No errors, 3600ms cash drops. Risky...", function()
+menu.toggle_loop(cash_drops, "Drop Cash Loop", {"cashloop"}, "Less errors, 3600ms cash drops.", function()
     local coords = players.get_position(pid)
-    coords.z = coords.z + 0.5
-    local cash = MISC.GET_HASH_KEY("prop_anim_cash_pile_02")
+    coords.z = coords.z + 1.5
+    local cash = MISC.GET_HASH_KEY("PICKUP_VEHICLE_MONEY_VARIABLE")
     STREAMING.REQUEST_MODEL(cash)
     if STREAMING.HAS_MODEL_LOADED(cash) == false then  
         STREAMING.REQUEST_MODEL(cash)
@@ -18044,10 +18059,10 @@ menu.toggle_loop(drops, "Drop Cash Loop", {"cashloop"}, "No errors, 3600ms cash 
     util.yield(3600)
 end)
 
-menu.toggle_loop(drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with errors. Risky...", function()
+menu.toggle_loop(cash_drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with errors.", function()
     local coords = players.get_position(pid)
-    coords.z = coords.z + 0.5
-    local cash = MISC.GET_HASH_KEY("prop_anim_cash_pile_02")
+    coords.z = coords.z + 1.5
+    local cash = MISC.GET_HASH_KEY("PICKUP_VEHICLE_MONEY_VARIABLE")
     STREAMING.REQUEST_MODEL(cash)
     if STREAMING.HAS_MODEL_LOADED(cash) == false then  
         STREAMING.REQUEST_MODEL(cash)
@@ -18056,7 +18071,130 @@ menu.toggle_loop(drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with e
     util.toast("Cash Dropping To " .. players.get_name(pid))
 end)
 
-    menu.toggle_loop(drops, "Drop RP (Attach)", {"dropfigures"}, "Spam twice to detach.", function()
+menu.toggle_loop(cash_drops, "Drop Gang Money", {"gangmoney"}, "Drops gang attack money.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_GANG_ATTACK_MONEY")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.toast("Cash Dropping To " .. players.get_name(pid))
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Money Security Case", {"seccase"}, "Drops money security cases.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_SECURITY_CASE")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Money Paper Bag", {"paperbags"}, "Drops money paper bag.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_PAPER_BAG")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Med Paper Bag", {"medpaperbags"}, "Drops med paper bag.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_MED_BAG")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Dep Bag", {"depbags"}, "Drops dep bag.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_DEP_BAG")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Money Purse", {"droppurses"}, "Drops money purse.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_PURSE")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Money Wallet", {"dropwallets"}, "Drops money wallet.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_WALLET")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+menu.toggle_loop(cash_drops, "Drop Money Case", {"dropcases"}, "Drops money case.", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_CASE")
+    STREAMING.REQUEST_MODEL(cash_drop)
+    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
+        STREAMING.REQUEST_MODEL(cash_drop)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
+    util.yield(3600)
+end)
+
+local PedCash = menu.list(cash_drops, "Ped Cash Loop", {}, "")
+
+menu.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash for friends to enable themselves using commands. Might be risky but should be okay.", function()
+        menu.trigger_commands("pedcashloops" .. players.get_name(pid))
+end, nil, nil, COMMANDPERM_FRIENDLY)
+
+menu.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped cash. Might be risky but should be okay.", function()
+    menu.trigger_commands("pedboost")
+    menu.trigger_commands("toggletppeds" .. players.get_name(pid))
+    menu.trigger_commands("writherpeds" .. players.get_name(pid))
+    menu.trigger_commands("yoinkpickuploop" .. players.get_name(pid))
+    util.yield(500)
+    ent = entities.get_all_peds_as_handles()
+    if not PED.IS_PED_A_PLAYER(ent) then
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+    for k,ent in pairs(entities.get_all_peds_as_handles()) do
+        if not PED.IS_PED_A_PLAYER(ent) then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+            end
+        end
+    end
+end)
+
+local rp_drops = menu.list(drops, "RP Drops", {}, "")
+
+    menu.toggle_loop(rp_drops, "Drop RP (Attach)", {"dropfigures"}, "Spam twice to detach.", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -18088,7 +18226,7 @@ end)
         util.yield()
     end)
 
-    menu.toggle_loop(drops, "Drop RP Stedily", {"dropfigures"}, "", function()
+    menu.toggle_loop(rp_drops, "Drop RP Stedily", {"dropfigures"}, "", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -18118,6 +18256,7 @@ end)
         util.yield(300)
     end)
 
+
 local yoinkpickup = menu.list(drops, "Pickup Yoinker", {}, "")
 
 menu.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
@@ -18132,28 +18271,165 @@ menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", fu
         end
 end)
 
-
-local PedCash = menu.list(drops, "Ped Cash Loop", {}, "")
-
-menu.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash. Might be risky but should be okay.", function()
-        menu.trigger_commands("pedcashloops" .. players.get_name(pid))
-end, nil, nil, COMMANDPERM_FRIENDLY)
-
-menu.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped cash. Might be risky but should be okay.", function()
-    menu.trigger_commands("toggletppeds" .. players.get_name(pid))
-    menu.trigger_commands("writherpeds" .. players.get_name(pid))
-    menu.trigger_commands("yoinkpickuploop" .. players.get_name(pid))
-    util.yield(500)
-    ent = entities.get_all_peds_as_handles()
-    if not PED.IS_PED_A_PLAYER(ent) then
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-    for k,ent in pairs(entities.get_all_peds_as_handles()) do
-        if not PED.IS_PED_A_PLAYER(ent) then
-            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-            entities.delete_by_handle(ent)
-            end
-        end
+menu.toggle_loop(drops, "Drop Guns & Shit", {"dropguns"}, "", function()
+    local coords = players.get_position(pid)
+    coords.z = coords.z + 1.5
+    local random_hash = 0x6E4E65C2
+    local random_int = math.random(1, 75)
+    if random_int == 1 then
+        random_hash = 0x741C684A
+    elseif random_int == 2 then
+        random_hash = 0x68605A36
+    elseif random_int == 3 then
+        random_hash = 0x6C5B941A
+    elseif random_int == 4 then
+        random_hash = 0xD3A39366
+    elseif random_int == 5 then
+        random_hash = 0x550447A9
+    elseif random_int == 6 then
+        random_hash = 0xF99E15D0
+    elseif random_int == 7 then
+        random_hash = 0xA421A532
+    elseif random_int == 8 then
+        random_hash = 0xF33C83B0
+    elseif random_int == 10 then
+        random_hash = 0xDF711959
+    elseif random_int == 11 then
+        random_hash = 0xB2B5325E
+    elseif random_int == 12 then
+        random_hash = 0x85CAA9B1
+    elseif random_int == 13 then
+        random_hash = 0xB2930A14
+    elseif random_int == 14 then
+        random_hash = 0xFE2A352C
+    elseif random_int == 15 then
+        random_hash = 0x693583AD
+    elseif random_int == 16 then
+        random_hash = 0x1D9588D3
+    elseif random_int == 17 then
+        random_hash = 0x3A4C2AD2
+    elseif random_int == 18 then
+        random_hash = 0x4BFB42D1
+    elseif random_int == 19 then
+        random_hash = 0x4D36C349
+    elseif random_int == 20 then
+        random_hash = 0x2F36B434
+    elseif random_int == 21 then
+        random_hash = 0x8F707C18
+    elseif random_int == 22 then
+        random_hash = 0xA9355DCD
+    elseif random_int == 23 then
+        random_hash = 0x96B412A3
+    elseif random_int == 24 then
+        random_hash = 0x9299C95B
+    elseif random_int == 25 then
+        random_hash = 0x5E0683A1
+    elseif random_int == 26 then
+        random_hash = 0x2DD30479
+    elseif random_int == 27 then
+        random_hash = 0x1CD604C7
+    elseif random_int == 28 then
+        random_hash = 0x7C119D58
+    elseif random_int == 29 then
+        random_hash = 0xF9AFB48F
+    elseif random_int == 30 then
+        random_hash = 0x8967B4F3
+    elseif random_int == 31 then
+        random_hash = 0x3B662889
+    elseif random_int == 32 then
+        random_hash = 0x2E764125
+    elseif random_int == 33 then
+        random_hash = 0xFD16169E
+    elseif random_int == 34 then
+        random_hash = 0xCB13D282
+    elseif random_int == 35 then
+        random_hash = 0xC69DE3FF
+    elseif random_int == 36 then
+        random_hash = 0x278D8734
+    elseif random_int == 37 then
+        random_hash = 0x295691A9
+    elseif random_int == 38 then
+        random_hash = 0x81EE601E
+    elseif random_int == 39 then
+        random_hash = 0x88EAACA7
+    elseif random_int == 40 then
+        random_hash = 0x872DC888
+    elseif random_int == 41 then
+        random_hash = 0x094AA1CF
+    elseif random_int == 42 then
+        random_hash = 0xE33D8630
+    elseif random_int == 43 then
+        random_hash = 0x80AB931C
+    elseif random_int == 44 then
+        random_hash = 0x6E717A95
+    elseif random_int == 45 then
+        random_hash = 0x1CD2CF66
+    elseif random_int == 46 then
+        random_hash = 0x6773257D
+    elseif random_int == 47 then
+        random_hash = 0x20796A82
+    elseif random_int == 48 then
+        random_hash = 0x116FC4E6
+    elseif random_int == 49 then
+        random_hash = 0xE4BD2FC6
+    elseif random_int == 50 then
+        random_hash = 0xDE58E0B3
+    elseif random_int == 51 then
+        random_hash = 0x77F3F2DD
+    elseif random_int == 52 then
+        random_hash = 0xC02CF125
+    elseif random_int == 53 then
+        random_hash = 0x881AB0A8
+    elseif random_int == 54 then
+        random_hash = 0x84837FD7
+    elseif random_int == 55 then
+        random_hash = 0xF25A01B9
+    elseif random_int == 56 then
+        random_hash = 0x815D66E8
+    elseif random_int == 57 then
+        random_hash = 0xFA51ABF5
+    elseif random_int == 58 then
+        random_hash = 0xC5B72713
+    elseif random_int == 59 then
+        random_hash = 0x5307A4EC
+    elseif random_int == 60 then
+        random_hash = 0x9CF13918
+    elseif random_int == 61 then
+        random_hash = 0x0968339D
+    elseif random_int == 62 then
+        random_hash = 0xBFEE6C3B
+    elseif random_int == 63 then
+        random_hash = 0xEBF89D5F
+    elseif random_int == 64 then
+        random_hash = 0x22B15640
+    elseif random_int == 65 then
+        random_hash = 0x763F7121
+    elseif random_int == 66 then
+        random_hash = 0xF92F486C
+    elseif random_int == 67 then
+        random_hash = 0x602941D0
+    elseif random_int == 68 then
+        random_hash = 0x31EA45C9
+    elseif random_int == 69 then
+        random_hash = 0xBED46EC5
+    elseif random_int == 70 then
+        random_hash = 0x079284A9
+    elseif random_int == 71 then
+        random_hash = 0x624F7213
+    elseif random_int == 72 then
+        random_hash = 0xC01EB678
+    elseif random_int == 73 then
+        random_hash = 0x5C517D97
+    elseif random_int == 74 then
+        random_hash = 0xBD4DE242
+    elseif random_int == 75 then
+        random_hash = 0xE013E01C
     end
+    STREAMING.REQUEST_MODEL(random_hash)
+    if STREAMING.HAS_MODEL_LOADED(random_hash) == true then  
+        STREAMING.REQUEST_MODEL(random_hash)
+    end
+    OBJECT.CREATE_AMBIENT_PICKUP(random_hash, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
 end)
 
 menu.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
@@ -20225,6 +20501,41 @@ menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event cra
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
+    end
+end)
+
+
+menu.toggle_loop(SECrashes, "SE Test 1", {""}, "", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {45913685, 6, 12, 76200, 1, 78225582, -2085313189, 1, 1671640801, 537254313, 0, 0, 4, 3, 0, 1, 53316, -1911610418, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+    end
+end)
+
+menu.toggle_loop(SECrashes, "SE Test 2", {""}, "", function()
+    local int_min = -2147483647
+    local int_max = 2147483647
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6, math.random(int_min, int_max), math.random(int_min, int_max), 
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6})
+    end
+    menu.trigger_commands("givesh" .. players.get_name(pid))
+    util.yield()
+    for i = 1, 15 do
+        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6, pid, math.random(int_min, int_max)})
+        util.trigger_script_event(1 << pid, {501821859, 6, 1, 0, 0, 1, 0, 0, 6})
     end
 end)
 
