@@ -7840,13 +7840,6 @@ menu.toggle(playermode, "Auto Run", {"autorun"}, "Suicide or use command 'ewo' t
     pos.z = pos.z + 1
     for i, peds in ipairs(entities.get_all_peds_as_handles()) do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(peds)
-        ENTITY.SET_ENTITY_INVINCIBLE(peds, true)
-        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 5, true)
-        PED.SET_PED_FLEE_ATTRIBUTES(peds, 0, false)
-        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 46, true)
-        PED.SET_PED_ACCURACY(peds, 100)
-        PED.SET_PED_COMBAT_ABILITY(peds, 3)
-        PED.SET_PED_AS_ENEMY(peds, true)
         TASK.TASK_COMBAT_PED(peds, ped, 0, 16)
         util.yield()
     end 
@@ -10060,12 +10053,8 @@ end)
 		tp_veh_to(pid,coords.x,coords.y,coords.z)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2sea"}, "Tries to teleport player's vehicle to the ocean",function()	
-		tp_veh_to(pid, -7473.746, 15999.379, -199.34)
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-	menu.action(mov_sub_vehicle_tab,"Teleport to ocean respawn barrier", {"tp2seab"}, "Tries to teleport player's vehicle to the ocean",function()	
-		tp_veh_to(pid, -2350.6865, -2350.4207, -1400.707, -300.23203)
+	menu.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2seab"}, "Tries to teleport player's vehicle to the ocean",function()	
+		tp_veh_to(pid, -2168.3025, -1512.401, -232.03241)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     local function spawn_object_in_front_of_ped(ped, hash, ang, room, zoff, setonground)
