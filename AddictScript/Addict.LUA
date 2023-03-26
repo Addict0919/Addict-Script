@@ -1,4 +1,12 @@
---[[
+util.keep_running()
+util.require_natives("natives-1663599433-uno")
+util.require_natives("natives-1640181023")
+util.require_natives("natives-1651208000")
+util.require_natives("natives-1663599433")
+guidedMissile = require "ToxTool"
+
+-- Addict Script™ Copyright© 2023 
+--[[ -- Coded By Candy
 WE HAVE TAKEN OVER░ \☻/\☻/
 ░░░░░░░░░░░░░░░░░░░▌░ ▌
 ░░░░░░░░░░░░░░░░░░ / \░ / \
@@ -6,13 +14,15 @@ WE HAVE TAKEN OVER░ \☻/\☻/
 ░░░░░░░░░░░░▂▄▅█████████▅▄▃▂
 ░░░░░░░░░░░I███████████████████].
 ]]
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-util.keep_running()
-util.require_natives("natives-1663599433-uno")
-util.require_natives("natives-1640181023")
-util.require_natives("natives-1651208000")
-util.require_natives("natives-1663599433")
-guidedMissile = require "ToxTool"
+
+-- Credits 🧐🔽🔽🔽
+local Credits_To = {
+    "Acjoker",
+    "Tox1cEssent1als",
+    "(0)Lens",
+    "Fuck the Stand staff tho.✌",
+}
+-- Credits 🧐🔼🔼🔼
 
 local github = menu.list(menu.my_root(), "Updates", {"addictupdates"})
 
@@ -29,7 +39,7 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 
-local local_menu_version = "1.2.3"
+local local_menu_version = "1.2.4"
 
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
@@ -106,14 +116,6 @@ function getVehicleModelHandlingData(modelInfo)
 	return util.call_foreign_function(GetHandlingDataFromIndex, memory.read_uint(modelInfo + 0x4B8))
 end
 
-myModule("NOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
-	CNetworkObjectMgr = memory.rip(address + 3)
-end)
-
-myModule("GNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
-	GetNetGamePlayer_addr = address
-end)
-
 p_getModelInfo = 0
 myModule("GVMI", "48 89 5C 24 ? 57 48 83 EC 20 8B 8A ? ? ? ? 48 8B DA", function (address)
 	p_getModelInfo = memory.rip(address + 0x2A)
@@ -158,8 +160,8 @@ util.log("▒▒▒▒▒▒▒▒▒▒███████▒▒▒▒▒▒�
 util.log("▒▒▒▒▄▄▄██▒▒█▀█▀█▒▒██▄▄▄▒▒▒▒")
 util.log("▒▒▒▒▀▀██▒▒▒▒▒▒▒▒▒▒▒██▀▀▒▒▒▒")
 util.log("▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▀▀▒▒▒▒▒▒")
-util.log("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-util.toast("Welcome To Addict Script! v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.log("Welcome To Addict Script!™ v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.toast("Welcome To Addict Script!™ v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
@@ -6661,6 +6663,17 @@ local driveshit = menu.list(funfun, "Driving Shit", {}, "")
 menu.action(driveshit, "Candy Paint", {"candypaint"}, "", function()
     candy_paint(true)
 end)
+
+menu.action(driveshit,"Tp into nearest vehicle", {"tptonearveh"}, "",function()
+    local player = PLAYER.PLAYER_PED_ID(pid)
+    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+    local P_Coords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+    local vehicles = entities.get_all_vehicles_as_handles()
+    local vehicle = get_closest_vehicle(vehicles)
+if ENTITY.DOES_ENTITY_EXIST(vehicle) then
+    PED.SET_PED_INTO_VEHICLE(player, vehicle, -1)
+    end
+end)
     
 menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 7, -1, 1, function(seatnumber)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
@@ -6973,7 +6986,7 @@ end, function ()
     AUDIO.SET_VEHICLE_RADIO_ENABLED(veh, true)
 end)
 
-        menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo (BETA), there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
+        menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo, there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
                 local vehicleHash = util.joaat("hydra")
                 request_model(vehicleHash)
@@ -7820,6 +7833,25 @@ menu.action(list, "Normal shit", {"nshit"}, "Make a normale sized shit", functio
     entities.create_object(rshit, c)
 end)
 
+menu.toggle(playermode, "Auto Run", {"autorun"}, "Suicide or use command 'ewo' to suicide yourself.", function()
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
+    pos.y = pos.y - 5
+    pos.z = pos.z + 1
+    for i, peds in ipairs(entities.get_all_peds_as_handles()) do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(peds)
+        ENTITY.SET_ENTITY_INVINCIBLE(peds, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 5, true)
+        PED.SET_PED_FLEE_ATTRIBUTES(peds, 0, false)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 46, true)
+        PED.SET_PED_ACCURACY(peds, 100)
+        PED.SET_PED_COMBAT_ABILITY(peds, 3)
+        PED.SET_PED_AS_ENEMY(peds, true)
+        TASK.TASK_COMBAT_PED(peds, ped, 0, 16)
+        util.yield()
+    end 
+end)
+
 local lazereyes = false
 coords_ped = v3()
 coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
@@ -8400,6 +8432,26 @@ function mod_uses(type, incr)
         object_uses = object_uses + incr
     end
 end
+    
+function Destruct()
+    local coords = player_coords(pid)
+    coords.x = coords.x
+    coords.y = coords.y + -30
+    coords.z = coords.z
+    vehicles = entities.get_all_vehicles_as_handles()
+for i, ent in pairs(vehicles) do
+    if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ent)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(object1, coords.x, coords.y, coords.z, false, false, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK.VEH_TO_NET(ent), true)
+        NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(NETWORK.VEH_TO_NET(ent), players.user(), true)
+        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(ent, 1, 0.0, 10000.0, 0.0, 0.0, 0.0, 0.0, false, true, true, false, true)
+        ENTITY.SET_ENTITY_ROTATION(ent, math.random(0, 360), math.random(0, 360), math.random(0, 360), 0, true)
+        ENTITY.SET_ENTITY_VELOCITY(ent, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+        end
+    end
+end
 
 	worldchaos = menu.list(menu.my_root(), "Chaos Shit", {}, "", function(); end)
 
@@ -8598,26 +8650,34 @@ end
 
     menu.toggle_loop(aicrashes,"A.I. Entity Fuck", {"aient"}, "Toggle all of them but doesn't work the same as if toggled individually. Code generated by a.i.", function()
         entity_fuck(pid)
+        Draw_Box_Peds()
+        Draw_Box_Objects()
+        Draw_Box_Vehicles()
     end)
 
     menu.toggle_loop(aicrashes,"A.I. Vehicle Fly", {"aivehfly"}, "Code generated by a.i.", function()
         veh_entity_fly(pid)
+        Draw_Box_Vehicles()
     end)
     
     menu.toggle_loop(aicrashes,"A.I. Vehicle Fuck", {"aiveh"}, "Code generated by a.i.", function()
         veh_entity_fuck(pid)
+        Draw_Box_Vehicles()
     end)
     
     menu.toggle_loop(aicrashes,"A.I. Object Fuck", {"aiobj"}, "Code generated by a.i.", function()
         obj_entity_fuck(pid)
+        Draw_Box_Objects()
     end)
     
     menu.toggle_loop(aicrashes,"A.I. Ped Fuck", {"aiped"}, "Code generated by a.i.", function()
         ped_entity_fuck(pid)
+        Draw_Box_Peds()
     end)
     
     menu.toggle_loop(aicrashes,"A.I. Pickup Fuck", {"aipickup"}, "Code generated by a.i.", function()
         pickup_entity_fuck(pid)
+        Draw_Box_Pickups()
     end)
     
     menu.action(aicrashes, "Restart Script To Stop Fuckery", {"restartfuckery"}, "", function ()
@@ -8643,48 +8703,173 @@ end
         PlayerIsPointing = memory.read_int(memory.script_global(4521801 + 930)) == 3
     end
 
-    --[[
-    chaosguns = menu.list(worldchaos, "Commanded Guns", {}, "", function(); end)
-    
-    local shotEntities = {}
-    local counter = 0
+    function Draw_Box_Peds()
+        if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
+            local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
+            local raycastResult = get_raycast_result(500.0, flag)
+            if raycastResult.didHit and ENTITY.DOES_ENTITY_EXIST(raycastResult.hitEntity) then
+                targetEntity = raycastResult.hitEntity
+            end
+        else
+            for k, veh in pairs(entities.get_all_peds_as_handles()) do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                draw_bounding_box(veh, true, {r = 80, g = 0, b = 255, a = 80})
+                end
+                local myPos = players.get_position(players.user())
+                local entityPos = ENTITY.GET_ENTITY_COORDS(targetEntity, true)
+                local camDir = CAM.GET_GAMEPLAY_CAM_ROT(0):toDir()
+                local distance = myPos:distance(entityPos)
+                if distance > 30.0 then distance = 30.0
+                elseif distance < 10.0 then distance = 10.0 end
+                local targetPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), camDir, true)
+                targetPos:mul(distance)
+                targetPos:add(myPos)
+                local direction = ENTITY.GET_ENTITY_COORDS(players.user_ped(), targetPos, true)
+                direction:sub(entityPos)
+                direction:normalise()
+            if ENTITY.IS_ENTITY_A_PED(targetEntity) then
+                direction:mul(1.0)
+                local explosionPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), entityPos, true)
+                explosionPos:sub(direction)
+                draw_bounding_box(targetEntity, false, {r = 80, g = 0, b = 255, a = 255})
+            end
+        end
+    end
 
-    menu.toggle_loop(chaosguns, "Shoot and delete", {"shootdelete"}, "Deletes everything.", function()
-        local entity = get_entity_player_is_aiming_at(players.user())
-        if entity ~= 0 and ENTITY.DOES_ENTITY_EXIST(entity) then
-            if PED.IS_PED_SHOOTING(players.user_ped()) and
-            not (shotEntities[1] and shotEntities[1] == entity) then
-                counter = counter + 1
-                shotEntities[counter] = entity
-                menu.trigger_commands("superc")
+    function Draw_Box_Pickups()
+        if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
+            local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
+            local raycastResult = get_raycast_result(500.0, flag)
+            if raycastResult.didHit and ENTITY.DOES_ENTITY_EXIST(raycastResult.hitEntity) then
+                targetEntity = raycastResult.hitEntity
+            end
+        else
+            for k, veh in pairs(entities.get_all_pickups_as_handles()) do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                draw_bounding_box(veh, true, {r = 80, g = 0, b = 255, a = 80})
+                end
+                local myPos = players.get_position(players.user())
+                local entityPos = ENTITY.GET_ENTITY_COORDS(targetEntity, true)
+                local camDir = CAM.GET_GAMEPLAY_CAM_ROT(0):toDir()
+                local distance = myPos:distance(entityPos)
+                if distance > 30.0 then distance = 30.0
+                elseif distance < 10.0 then distance = 10.0 end
+                local targetPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), camDir, true)
+                targetPos:mul(distance)
+                targetPos:add(myPos)
+                local direction = ENTITY.GET_ENTITY_COORDS(players.user_ped(), targetPos, true)
+                direction:sub(entityPos)
+                direction:normalise()
+            if ENTITY.IS_ENTITY_A_PED(targetEntity) then
+                direction:mul(1.0)
+                local explosionPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), entityPos, true)
+                explosionPos:sub(direction)
+                draw_bounding_box(targetEntity, false, {r = 80, g = 0, b = 255, a = 255})
             end
         end
-    end)
-    
-    menu.toggle_loop(chaosguns, "Kick at shoot", {"shootkick"}, "Uses breakup kick.", function()
-        local entity = get_entity_player_is_aiming_at(players.user())
-        if entity ~= 0 and ENTITY.DOES_ENTITY_EXIST(entity) then
-            if PED.IS_PED_SHOOTING(players.user_ped()) and
-            not (shotEntities[1] and shotEntities[1] == entity) then
-                counter = counter + 1
-                shotEntities[counter] = entity
-                menu.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pid))
+    end
+
+    function Draw_Box_Objects()
+        if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
+            local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
+            local raycastResult = get_raycast_result(500.0, flag)
+            if raycastResult.didHit and ENTITY.DOES_ENTITY_EXIST(raycastResult.hitEntity) then
+                targetEntity = raycastResult.hitEntity
+            end
+        else
+            for k, veh in pairs(entities.get_all_objects_as_handles()) do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                draw_bounding_box(veh, true, {r = 80, g = 0, b = 255, a = 80})
+                end
+                local myPos = players.get_position(players.user())
+                local entityPos = ENTITY.GET_ENTITY_COORDS(targetEntity, true)
+                local camDir = CAM.GET_GAMEPLAY_CAM_ROT(0):toDir()
+                local distance = myPos:distance(entityPos)
+                if distance > 30.0 then distance = 30.0
+                elseif distance < 10.0 then distance = 10.0 end
+                local targetPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), camDir, true)
+                targetPos:mul(distance)
+                targetPos:add(myPos)
+                local direction = ENTITY.GET_ENTITY_COORDS(players.user_ped(), targetPos, true)
+                direction:sub(entityPos)
+                direction:normalise()
+            if ENTITY.IS_ENTITY_A_PED(targetEntity) then
+                direction:mul(1.0)
+                local explosionPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), entityPos, true)
+                explosionPos:sub(direction)
+                draw_bounding_box(targetEntity, false, {r = 80, g = 0, b = 255, a = 255})
             end
         end
+    end
+
+    function Draw_Box_Vehicles()
+        if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
+            local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
+            local raycastResult = get_raycast_result(500.0, flag)
+            if raycastResult.didHit and ENTITY.DOES_ENTITY_EXIST(raycastResult.hitEntity) then
+                targetEntity = raycastResult.hitEntity
+            end
+        else
+            for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                draw_bounding_box(veh, true, {r = 80, g = 0, b = 255, a = 80})
+                end
+                local myPos = players.get_position(players.user())
+                local entityPos = ENTITY.GET_ENTITY_COORDS(targetEntity, true)
+                local camDir = CAM.GET_GAMEPLAY_CAM_ROT(0):toDir()
+                local distance = myPos:distance(entityPos)
+                if distance > 30.0 then distance = 30.0
+                elseif distance < 10.0 then distance = 10.0 end
+                local targetPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), camDir, true)
+                targetPos:mul(distance)
+                targetPos:add(myPos)
+                local direction = ENTITY.GET_ENTITY_COORDS(players.user_ped(), targetPos, true)
+                direction:sub(entityPos)
+                direction:normalise()
+            if ENTITY.IS_ENTITY_A_PED(targetEntity) then
+                direction:mul(1.0)
+                local explosionPos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), entityPos, true)
+                explosionPos:sub(direction)
+                draw_bounding_box(targetEntity, false, {r = 80, g = 0, b = 255, a = 255})
+            end
+        end
+    end
+
+    local ESP_World = menu.list(worldchaos, "World ESP", {"esp"})
+
+    menu.toggle_loop(ESP_World,"Draw Box Around Peds", {""}, "",function()
+        Draw_Box_Peds()
     end)
 
-    menu.toggle_loop(chaosguns, "Crash at shoot", {"shootcrash"}, "Uses sex crash.", function()
-        local entity = get_entity_player_is_aiming_at(players.user())
-        if entity ~= 0 and ENTITY.DOES_ENTITY_EXIST(entity) then
-            if PED.IS_PED_SHOOTING(players.user_ped()) and
-            not (shotEntities[1] and shotEntities[1] == entity) then
-                counter = counter + 1
-                shotEntities[counter] = entity
-                menu.trigger_commands("sexcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-            end
+    menu.toggle_loop(ESP_World,"Draw Box Around Pickups", {""}, "",function()
+        Draw_Box_Pickups()
+    end)
+
+    menu.toggle_loop(ESP_World,"Draw Box Around Objects", {""}, "",function()
+        Draw_Box_Objects()
+    end)
+
+    menu.toggle_loop(ESP_World,"Draw Box Around Vehicles", {""}, "",function()
+        Draw_Box_Vehicles()
+    end)
+
+    menu.toggle_loop(worldchaos,"Teleport into all vehicles", {""}, "",function()
+        Draw_Box_Vehicles()
+        local player = PLAYER.PLAYER_PED_ID(pid)
+        local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
+        local P_Coords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
+        local vehicles = entities.get_all_vehicles_as_handles()
+        local vehicle = get_closest_vehicle(vehicles)
+    if ENTITY.DOES_ENTITY_EXIST(vehicle) then
+        PED.SET_PED_INTO_VEHICLE(player, vehicle, -1)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle, P_Coords.x + math.random(20, 500), P_Coords.y + math.random(20, 500), P_Coords.z + math.random(20, 500), true, false, false)
+        util.yield(1)
         end
     end)
-    ]]
 
     menu.toggle(worldchaos, "Party At Escipse Towers", {"eclipseparty"}, "Warning! This will block eclipse towers then turns you invisable off the radar, at same time teleports all players to eclipse towers.", function(on_toggle)
         if on_toggle then
@@ -8712,8 +8897,6 @@ end
     end, false)
 
     menu.toggle_loop(worldchaos, "Invisible Peds", {"invisiblepeds"}, "", function(on_toggle)
-        local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-        local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
             all_peds = entities.get_all_peds_as_handles()
         for k,ped in pairs(all_peds) do
             if not PED.IS_PED_A_PLAYER(ped) then
@@ -8743,6 +8926,16 @@ end
     end)
     ]]
 
+    menu.toggle_loop(worldchaos,"Spinbot Peds", {"spinbotself"}, "Use levitate to move...", function(on)
+        for k, peds in pairs(entities.get_all_peds_as_handles()) do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(peds)
+        local rand_1 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(peds, math.random(-500, 500), math.random(-500, 500), 300.0)
+            if not PAD.IS_CONTROL_PRESSED(71, 71) then
+                ENTITY.SET_ENTITY_ROTATION(peds, rand_1['x'], rand_1['y'], rand_1['z'])
+            end
+        end
+    end)
+
     menu.toggle_loop(worldchaos,"Spinbot Self Ped", {"spinbotself"}, "", function(on)
         local self_ped = players.user_ped()
         local rand_1 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.PLAYER_PED_ID(), math.random(-500, 500), math.random(-500, 500), 300.0)
@@ -8754,6 +8947,7 @@ end
     end)
 
     menu.toggle_loop(worldchaos,"Spinbot Nearby Vehicles", {"glitchall"}, "", function()
+        Draw_Box_Vehicles()
         for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
             if not PED.IS_PED_A_PLAYER(PedInSeat) then
@@ -8782,6 +8976,7 @@ end
     end)
     
     menu.toggle_loop(worldchaos,"360 Nearby Vehicles", {"360vehicles"}, "", function()
+        Draw_Box_Vehicles()
         for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
             if not PED.IS_PED_A_PLAYER(PedInSeat) then
@@ -8811,6 +9006,7 @@ menu.toggle_loop(worldchaos,"Bounce Nearby Vehicles", {"bounceall"}, "", functio
 end)
 
 menu.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "", function()
+    Draw_Box_Vehicles()
     for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
         local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
         if not PED.IS_PED_A_PLAYER(PedInSeat) then
@@ -8820,6 +9016,7 @@ menu.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "",
             if veh ~= 0 and not PED.IS_PED_DEAD_OR_DYING(PedInSeat, veh) and NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(PedInSeat, veh) then
                 ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, 0, 0, 100, true, false, true)
                 util.yield(10)
+                Draw_Box_Vehicles()
             end
         end
     end
@@ -8827,6 +9024,7 @@ end)
 
 	local dont_stop = false
 	menu.toggle_loop(worldchaos,"Fly Nearby vehicles", {"vehflyall"}, "Basically 'impulse like sport mode' but applied to every vehicle", function()
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			if not PED.IS_PED_A_PLAYER(PedInSeat) then
@@ -8887,68 +9085,76 @@ end)
 	end)
 
 
+    menu.toggle_loop(worldchaos,"Destruction", {"destuct"}, "", function()
+        util.show_corner_help("~r~Don't use this if your alone it will cause a prevented crash (A0:32).")
+        Destruct()
+    end)
+
 	local dont_stop = false
 	menu.toggle_loop(worldchaos,"Blackhole Vehicles", {"blackholeveh"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        speed = 100
-                        local x_vec = (holecoords['x']-vcoords['x'])*speed
-                        local y_vec = (holecoords['y']-vcoords['y'])*speed
-                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
-                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
-                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
-				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                speed = 100
+                local x_vec = (holecoords['x']-vcoords['x'])*speed
+                local y_vec = (holecoords['y']-vcoords['y'])*speed
+                local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
 	end)
 
     menu.toggle_loop(worldchaos,"Blackhole Peds", {"pedblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+        Draw_Box_Peds()
 		for k, veh in pairs(entities.get_all_peds_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        speed = 100
-                        local x_vec = (holecoords['x']-vcoords['x'])*speed
-                        local y_vec = (holecoords['y']-vcoords['y'])*speed
-                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
-                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
-                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
-				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                speed = 100
+                local x_vec = (holecoords['x']-vcoords['x'])*speed
+                local y_vec = (holecoords['y']-vcoords['y'])*speed
+                local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
 	end)
 
     menu.toggle_loop(worldchaos,"Blackhole Objects", {"objectblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+        Draw_Box_Objects()
 		for k, veh in pairs(entities.get_all_objects_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        speed = 100
-                        local x_vec = (holecoords['x']-vcoords['x'])*speed
-                        local y_vec = (holecoords['y']-vcoords['y'])*speed
-                        local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
-                        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
-                        ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
-				if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-					VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                speed = 100
+                local x_vec = (holecoords['x']-vcoords['x'])*speed
+                local y_vec = (holecoords['y']-vcoords['y'])*speed
+                local z_vec = ((holecoords['z']+hole_zoff)-vcoords['z'])*speed
+                ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+                ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, x_vec, y_vec, z_vec, true, false, true, true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
@@ -8961,6 +9167,7 @@ end)
 
     local getEntityCoords = ENTITY.GET_ENTITY_COORDS
     local getPlayerPed = PLAYER.GET_PLAYER_PED
+
     function explodeAndDelete(entity, exploID, ownerPed, dmgscale, audible, invisible, camshake)
         local ec = getEntityCoords(entity)
         FIRE.ADD_OWNED_EXPLOSION(ownerPed, ec.x, ec.y, ec.z, exploID, dmgscale, audible, invisible, camshake)
@@ -8975,51 +9182,54 @@ end)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 	menu.toggle_loop(worldchaos,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        VEHICLE.SET_VEHICLE_DAMAGE(veh, math.random(-5.0, 5.0), math.random(-5.0, 5.0), math.random(-5.0,5.0), 200.0, 10000.0, true)
-	      if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-	      VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                VEHICLE.SET_VEHICLE_DAMAGE(veh, math.random(-5.0, 5.0), math.random(-5.0, 5.0), math.random(-5.0,5.0), 200.0, 10000.0, true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
 	end)
 
 	menu.toggle_loop(worldchaos,"Honk all cars", {"honkallcars"}, "Honkss the SHIT out of all nearby cars.", function(on)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        VEHICLE.START_VEHICLE_HORN(veh, 200, util.joaat("HELDDOWN"), true)
-	      if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-	      VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                VEHICLE.START_VEHICLE_HORN(veh, 200, util.joaat("HELDDOWN"), true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
 	end)
 
 	menu.toggle_loop(worldchaos,"Blow up all cars", {"Blow up all cars"}, "Blows the SHIT out of all nearby cars.", function(on)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        FIRE.ADD_EXPLOSION(vcoords['x'], vcoords['y'], vcoords['z'], 7, 100.0, true, false, 1.0)
-	      if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-	      VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                FIRE.ADD_EXPLOSION(vcoords['x'], vcoords['y'], vcoords['z'], 7, 100.0, true, false, 1.0)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
@@ -9027,17 +9237,18 @@ end)
 
     
 	menu.toggle_loop(worldchaos, "All cars sink", {"sinkcars"}, "All cars sink.", function(on_toggle)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
-			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-			local locspeed2 = speed
-        			local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
-			if not PED.IS_PED_A_PLAYER(PedInSeat) then
-				NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
-	      ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
-                        vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
-                        VEHICLE.SET_DISABLE_MAP_COLLISION(veh, vcoords, true)
-	      if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
-	      VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            local locspeed2 = speed
+            local holecoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh)
+                ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(bh_target), true)
+                vcoords = ENTITY.GET_ENTITY_COORDS(veh, true)
+                VEHICLE.SET_DISABLE_MAP_COLLISION(veh, vcoords, true)
+            if not dont_stop and not PAD.IS_CONTROL_PRESSED(2, 71) and not PAD.IS_CONTROL_PRESSED(2, 72) then
+                VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, 0.0);
 				end
 			end
 		end
@@ -9045,6 +9256,7 @@ end)
 
 
 	menu.action(worldchaos, "Remove Wheels", {"removewheels"}, "removes your wheels and has various side effects depending on the vehicle", function()
+        Draw_Box_Vehicles()
 		local veh = entities.get_user_vehicle_as_handle()
 		if veh ~= 0 then
 			native_invoker.begin_call()
@@ -9055,6 +9267,7 @@ end)
 	end)
 
 	menu.action(worldchaos,"Kill all Engines", {"killall"}, "",function()
+        Draw_Box_Vehicles()
 		local local_veh = get_player_veh(PLAYER.PLAYER_ID(),false)
 		for_table_do(entities.get_all_vehicles_as_handles(),true,function(ent) 
 			if ent == local_veh then return end
@@ -9133,11 +9346,6 @@ function update_leave(pid)
 end
 
 GenerateFeatures = function(pid)
-	cage = util.joaat("prop_gascage01")
-	ladder = 1888301071
-	ground = -1951226014
-	attach = 1
-	veh_to_attach = 1
 
 	function v3_2(x, y, z)
         if x == nil then
@@ -9184,6 +9392,86 @@ GenerateFeatures = function(pid)
 	detach_sub_vehicle_tab = menu.list(vehopts, "Detach Options", {}, "", function(); end)
 	plane_sub_vehicle_tab = menu.list(vehopts, "Plane and Helicopter Options", {}, "", function(); end)
 
+    
+    givevehicle = menu.list(vehopts, "Give Player A Vehicle", {}, "", function(); end)
+
+    menu.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
+        menu.trigger_commands("stopspectating")
+        menu.trigger_commands("spectate" .. players.get_name(pid))
+        menu.trigger_commands("giveotr" .. players.get_name(pid))
+        util.yield(2000)
+        local vehicleHash = util.joaat("hydra")
+        request_model(vehicleHash)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+        jet = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(jet, true, true, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(jet, true)
+        VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(jet, 0.0)
+------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
+        local id = get_closest_vehicle(entity)
+        local playerpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+        playerpos.z = playerpos.z + 3
+        local ufo_object = util.joaat("sum_prop_dufocore_01a")
+        STREAMING.REQUEST_MODEL(ufo_object)
+        while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
+            util.yield()
+        end
+        local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
+        util.yield(500)
+        menu.trigger_commands("stopspectating")
+end)
+
+    menu.action(givevehicle, "Give A MK2", {"givemk2"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " oppressor2")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Festival Bus", {"givefestivalbus"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pbus2")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+    
+    menu.action(givevehicle, "Give A Forklift", {"giveforklift"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " forklift")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Khanjali", {"givekhanjali"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " khanjali")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Future Shock Sasquatch", {"givesasquatch"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " monster4")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Future Shock Scarab", {"givescarab"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " scarab2")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give Aqua Blazer", {"giveblazer"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " blazer5")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Lazer", {"givelazer"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " lazer")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Hydra", {"givehydra"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Starling", {"givestarling"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    menu.action(givevehicle, "Give A Pyro", {"givepyro"}, "", function()
+        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
 
 	menu.action(vehopts,"Spawn them a vehicle", {}, "Spawns a vehicle on target player", function()
 		menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
@@ -9773,7 +10061,11 @@ GenerateFeatures = function(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 	menu.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2sea"}, "Tries to teleport player's vehicle to the ocean",function()	
-		tp_veh_to(pid, -15000, -15000,0)
+		tp_veh_to(pid, -7473.746, 15999.379, -199.34)
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+	menu.action(mov_sub_vehicle_tab,"Teleport to ocean respawn barrier", {"tp2seab"}, "Tries to teleport player's vehicle to the ocean",function()	
+		tp_veh_to(pid, -2350.6865, -2350.4207, -1400.707, -300.23203)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     local function spawn_object_in_front_of_ped(ped, hash, ang, room, zoff, setonground)
@@ -10713,22 +11005,6 @@ end)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
         util.yield(100)
     end)
-
-    menu.toggle_loop(attachoptions, "Attach Dunce Hat", {"attachduncehat"}, "", function()
-        local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-        local playerpos = ENTITY.GET_ENTITY_COORDS(id)
-        playerpos.z = playerpos.z + 3
-        local candyattach = util.joaat("prop_mk_cone")
-        STREAMING.REQUEST_MODEL(candyattach)
-        while not STREAMING.HAS_MODEL_LOADED(candyattach) do
-            util.yield()
-        end
-        local cane1 = entities.create_object(candyattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(cane1, id, playerpos, 0, 0, 1.5, 0, 180, 0, -180, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_VISIBLE(cane1, true, 0)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(cane1)
-        util.yield(100)
-    end)
     
     menu.toggle_loop(attachoptions, "Attach A Ramp", {"attachramp"}, "Works best on vehicles", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -10762,47 +11038,7 @@ end)
         util.yield(100)
     end)
 
-    menu.action(attachoptions, "Clear Objects", {"clearobjects"}, "", function()
-        local count = 0
-        for k,ent in pairs(entities.get_all_objects_as_handles()) do
-            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-            entities.delete_by_handle(ent)
-            count = count + 1
-            util.yield()
-        end
-    end)
-
-    menu.action(attachoptions, "Clear Vehicles", {"clearvehicles"}, "", function()
-        local count = 0
-        for k, ent in pairs(entities.get_all_vehicles_as_handles()) do
-            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1, false)
-            if not PED.IS_PED_A_PLAYER(PedInSeat) then
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
-                entities.delete_by_handle(ent)
-                count = count + 1
-                util.yield()
-            end
-        end
-    end)
-
-    menu.action(attachoptions, "Custom Object Model", {"customattmodel"}, "", function(on_click)
-        util.toast("Please input the model name")
-        menu.show_command_box("customattmodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
-    end, function(on_command)
-        local hash = util.joaat(on_command)
-        request_model_load(hash)
-        attachto(0.0, 0.0, 0.0, pid, 90.0, 0.0, 0.0, hash, false)
-    end)
     
-    menu.action(attachoptions, "Custom Vehicle Model", {"customvemodel"}, "", function(on_click)
-        util.toast("Please input the model name")
-        menu.show_command_box("customvemodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
-    end, function(on_command)
-        local hash = util.joaat(on_command)
-        request_model_load(hash)
-        attachto(0.0, 0.0, 0.0, pid, 0.0, 0.0, 0.0, hash, false, true)
-    end)
-
     menu.toggle(attachoptions, "Attach To Player", {"attachto"}, "", function(on)
         if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid) == players.user_ped() then 
             return
@@ -10813,7 +11049,37 @@ end)
             ENTITY.DETACH_ENTITY(players.user_ped(), false, false)
             end
         end)
-    
+
+        menu.toggle_loop(attachoptions, "Attach All Vehicles", {"attachallvehs"}, "", function(on_toggle)
+                local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                vehicles = entities.get_all_vehicles_as_handles()
+                for i, ent in pairs(vehicles) do
+                    if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+                        ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                    end
+                end
+            end)
+
+            menu.toggle_loop(attachoptions, "Attach All Objects", {"attachallobjects"}, "", function(on_toggle)
+                local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                objects = entities.get_all_objects_as_handles()
+                for i, ent in pairs(objects) do
+                    if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+                        ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                    end
+                end
+            end)
+
+            menu.toggle_loop(attachoptions, "Attach All Peds", {"attachallpeds"}, "", function(on_toggle)
+                local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+                peds = entities.get_all_peds_as_handles()
+                for i, ent in pairs(peds) do
+                    if not is_ped_player(VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)) then
+                        ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
+                    end
+                end
+            end)
+
     menu.toggle_loop(attachoptions, "Attach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
         local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         objects = entities.get_all_objects_as_handles()
@@ -10894,6 +11160,47 @@ end)
 			ENTITY.DETACH_ENTITY(players.user_ped(), true, false)
 		end
 	end)
+
+    menu.action(attachoptions, "Custom Object Model", {"customattmodel"}, "", function(on_click)
+        util.toast("Please input the model name")
+        menu.show_command_box("customattmodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
+    end, function(on_command)
+        local hash = util.joaat(on_command)
+        request_model_load(hash)
+        attachto(0.0, 0.0, 0.0, pid, 90.0, 0.0, 0.0, hash, false)
+    end)
+    
+    menu.action(attachoptions, "Custom Vehicle Model", {"customvemodel"}, "", function(on_click)
+        util.toast("Please input the model name")
+        menu.show_command_box("customvemodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
+    end, function(on_command)
+        local hash = util.joaat(on_command)
+        request_model_load(hash)
+        attachto(0.0, 0.0, 0.0, pid, 0.0, 0.0, 0.0, hash, false, true)
+    end)
+
+    menu.action(attachoptions, "Clear Objects", {"clearobjects"}, "", function()
+        local count = 0
+        for k,ent in pairs(entities.get_all_objects_as_handles()) do
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+            entities.delete_by_handle(ent)
+            count = count + 1
+            util.yield()
+        end
+    end)
+
+    menu.action(attachoptions, "Clear Vehicles", {"clearvehicles"}, "", function()
+        local count = 0
+        for k, ent in pairs(entities.get_all_vehicles_as_handles()) do
+            local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1, false)
+            if not PED.IS_PED_A_PLAYER(PedInSeat) then
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+                entities.delete_by_handle(ent)
+                count = count + 1
+                util.yield()
+            end
+        end
+    end)
 
     stopato = true
 
@@ -12007,15 +12314,45 @@ menu.action(Attackers_trollys, "Delete All Attackers", {"deleteattacks"}, "Delet
     menu.trigger_commands("superc")
 end)
 
+local Nearby_Armys = menu.list(Armys, "Nearby Peds Attack")
+
+local selweapon = 1
+menu.toggle_loop(Nearby_Armys, "Nearby Peds Attack", {"pedsattack"}, "", function()
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
+    pos.y = pos.y - 5
+    pos.z = pos.z + 1
+    local modelHash <const> = util.joaat(all_weapons_list[selweapon])
+    for i, peds in ipairs(entities.get_all_peds_as_handles()) do
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(peds)
+    if PED.IS_PED_IN_ANY_VEHICLE(peds) then
+        WEAPON.GIVE_WEAPON_TO_PED(peds, modelHash, 9999, true, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 5, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 46, true)
+        TASK.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(peds, 0.0)
+        TASK.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(peds, 1, true)
+        TASK.TASK_COMBAT_PED(peds, ped, 0, 16)
+        TASK.TASK_VEHICLE_CHASE(peds, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pos))
+        ENTITY.SET_ENTITY_INVINCIBLE(peds, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 5, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(peds, 46, true)
+        PED.SET_PED_ACCURACY(peds, 100)
+        PED.SET_PED_COMBAT_ABILITY(peds, 3)
+        PED.SET_PED_AS_ENEMY(peds, true)
+        util.yield()
+        end 
+    end 
+end)
+
+menu.list_select(Nearby_Armys, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+    selweapon = opt
+end)
+
 local British_Attack = menu.list(Armys, "Bri' 'ish Attack")
 
 menu.action(British_Attack, "Bri' 'ish Attack", {"brish"}, "", function()
     brish(pid)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-menu.list_select(British_Attack, 'Weapon Select', {}, "", all_weapons_list, 30, function (opt)
-    selectedbritwep = opt
-end)
 
 menu.action(British_Attack, "Clear Brits", {"clearbrits"}, "", function()
     menu.trigger_commands("superc 5")
@@ -12586,6 +12923,8 @@ end)
     local ControlEntities = menu.list(griefing, "Control Entities", {}, "")
 
     menu.action(ControlEntities,"Entity Dump", {"entcrash"}, "Working.", function()
+        Draw_Box_Vehicles()
+        Draw_Box_Objects()
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
     for i=1,1  do
@@ -12604,6 +12943,7 @@ end)
     efucks = menu.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
 
     menu.toggle_loop(efucks, "Vehicle fuck", {"vehfuck"}, "", function()
+        Draw_Box_Vehicles()
     for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
         if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
             local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -12618,6 +12958,7 @@ end)
     end)
 
     menu.toggle_loop(efucks, "Ped fuck", {"pedfuck"}, "", function()
+        Draw_Box_Peds()
         for _, entity in ipairs(entities.get_all_peds_as_handles()) do
             if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
                 local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -12632,6 +12973,7 @@ end)
         end)
 
         menu.toggle_loop(efucks, "Object fuck", {"objfuck"}, "", function()
+            Draw_Box_Objects()
             for _, entity in ipairs(entities.get_all_objects_as_handles()) do
                 if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
                     local entityCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -12649,6 +12991,7 @@ end)
     
 	local dont_stop = false
 	menu.toggle_loop(BlackholeEntities,"Vehicle Blackhole", {"vehicleblackholes"}, "Basically 'impulse like sport mode. but applied to every vehicle.", function(on)
+        Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -12671,6 +13014,7 @@ end)
 	end)
 
     menu.toggle_loop(BlackholeEntities,"Object Blackhole", {"objectblackholes"}, "Basically 'impulse like sport mode. but applied to every object.", function(on)
+        Draw_Box_Objects()
 		for k, veh in pairs(entities.get_all_objects_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -12693,6 +13037,7 @@ end)
 	end)
 
     menu.toggle_loop(BlackholeEntities,"Ped Blackhole", {"pedblackholes"}, "Turn on undead to not effect you. Basically 'impulse like sport mode. but applied to every ped.", function(on)
+        Draw_Box_Peds()
 		for k, veh in pairs(entities.get_all_peds_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -18084,103 +18429,6 @@ menu.toggle_loop(cash_drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes w
     util.toast("Cash Dropping To " .. players.get_name(pid))
 end)
 
-menu.toggle_loop(cash_drops, "Drop Gang Money", {"gangmoney"}, "Drops gang attack money.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_GANG_ATTACK_MONEY")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.toast("Cash Dropping To " .. players.get_name(pid))
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Money Security Case", {"seccase"}, "Drops money security cases.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_SECURITY_CASE")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Money Paper Bag", {"paperbags"}, "Drops money paper bag.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_PAPER_BAG")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Med Paper Bag", {"medpaperbags"}, "Drops med paper bag.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_MED_BAG")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Dep Bag", {"depbags"}, "Drops dep bag.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_DEP_BAG")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Money Purse", {"droppurses"}, "Drops money purse.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_PURSE")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Money Wallet", {"dropwallets"}, "Drops money wallet.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_WALLET")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
-menu.toggle_loop(cash_drops, "Drop Money Case", {"dropcases"}, "Drops money case.", function()
-    local coords = players.get_position(pid)
-    coords.z = coords.z + 1.5
-    local cash_drop = MISC.GET_HASH_KEY("PICKUP_MONEY_CASE")
-    STREAMING.REQUEST_MODEL(cash_drop)
-    if STREAMING.HAS_MODEL_LOADED(cash_drop) == false then  
-        STREAMING.REQUEST_MODEL(cash_drop)
-    end
-    OBJECT.CREATE_AMBIENT_PICKUP(cash_drop, coords.x, coords.y, coords.z, 0, 2000, true, cash_drop)
-    util.yield(3600)
-end)
-
 local PedCash = menu.list(cash_drops, "Ped Cash Loop", {}, "")
 
 menu.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash for friends to enable themselves using commands. Might be risky but should be okay.", function()
@@ -18516,86 +18764,6 @@ end)
         menu.action(tpthem, "Fix loading screen", {"fixme"}, "Try to fix player's infinite loading screen by giving him script host and teleporting to nearest apartment.", function()
             menu.trigger_commands("givesh" .. players.get_name(pid))
             menu.trigger_commands("aptme" .. players.get_name(pid))
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            givevehicle = menu.list(frienm, "Give Player A Vehicle", {}, "", function(); end)
-
-            menu.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
-                menu.trigger_commands("stopspectating")
-                menu.trigger_commands("spectate" .. players.get_name(pid))
-                menu.trigger_commands("giveotr" .. players.get_name(pid))
-                util.yield(2000)
-                local vehicleHash = util.joaat("hydra")
-                request_model(vehicleHash)
-                local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
-                jet = entities.create_vehicle(vehicleHash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-                VEHICLE.SET_VEHICLE_ENGINE_ON(jet, true, true, true)
-                ENTITY.SET_ENTITY_INVINCIBLE(jet, true)
-                VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(jet, 0.0)
-    ------------Ufo Object------------------------------------------------------------------------------------------------------------------------------------------------------------
-                local id = get_closest_vehicle(entity)
-                local playerpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
-                playerpos.z = playerpos.z + 3
-                local ufo_object = util.joaat("sum_prop_dufocore_01a")
-                STREAMING.REQUEST_MODEL(ufo_object)
-                while not STREAMING.HAS_MODEL_LOADED(ufo_object) do
-                    util.yield()
-                end
-                local object1 = entities.create_object(ufo_object, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-                NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(object1, jet)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
-                util.yield(500)
-                menu.trigger_commands("stopspectating")
-        end)
-
-            menu.action(givevehicle, "Give A MK2", {"givemk2"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " oppressor2")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Festival Bus", {"givefestivalbus"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pbus2")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-            
-            menu.action(givevehicle, "Give A Forklift", {"giveforklift"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " forklift")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-      
-            menu.action(givevehicle, "Give A Khanjali", {"givekhanjali"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " khanjali")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Future Shock Sasquatch", {"givesasquatch"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " monster4")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Future Shock Scarab", {"givescarab"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " scarab2")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give Aqua Blazer", {"giveblazer"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " blazer5")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Lazer", {"givelazer"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " lazer")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Hydra", {"givehydra"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Starling", {"givestarling"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
-            end, nil, nil, COMMANDPERM_FRIENDLY)
-
-            menu.action(givevehicle, "Give A Pyro", {"givepyro"}, "", function()
-                menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
 
@@ -18996,153 +19164,8 @@ menu.toggle_loop(crash, "Kick", {""}, "AI. Generated Code.", function()
 end)
 ]]
 
-menu.action(outfitcrash, "Outfit crash", {"outfitcrash"}, "Changes freemode ped outfit variations. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
-    menu.trigger_commands("anticrashcamera")
-    local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)  
-    local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-for i=1,1  do
-    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
-    local math_random = math.random
-    local joaat = util.joaat
-    util.yield(10)
-    local pedhash1 = util.joaat("MP_F_Freemode_01")
-    local pedhash2 = util.joaat("MP_F_Freemode_01")
-    local pedhash3 = util.joaat("MP_F_Freemode_01")
-    while not STREAMING.HAS_MODEL_LOADED(pedhash1, pedhash2, pedhash3) do
-        STREAMING.REQUEST_MODEL(pedhash1, pedhash2, pedhash3)
-        util.yield(10)
-    end
-    local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
-    SpawnedPeds1 = {}
-    local ped_amount = math_random(5, 15) -- Picks number between 5 and 15
-    for i = 1, ped_amount do
-        local pedtype = 0
-        local PlayerPedCoords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
-        local coords = PlayerPedCoords
-        local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
-        coords.x = coords.x
-        coords.y = coords.y
-        coords.z = coords.z
-        if loc1 == 1 then
-            coords.x = coords.x - math_random(0, 15)
-        else
-            coords.x = coords.x + math_random(0, 15)
-        end
-        if loc2 == 1 then
-            coords.y = coords.y - math_random(0, 15)
-        else
-            coords.y = coords.y + math_random(0, 15)
-        end
-        if loc3 == 1 then
-            coords.z = coords.z - math_random(0, 15)
-        else
-            coords.z = coords.z + math_random(0, 15)
-        end
-        if pedt == 1 then
-            pedtype = 0
-        else
-            pedtype = 3
-        end
-        SpawnedPeds2 = {}
-        local ped_amount = math_random(7, 10)
-        for i = 1, ped_amount do
-            local pedtype = 0
-            local coords = PlayerPedCoords
-            local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
-            coords.x = coords.x
-            coords.y = coords.y
-            coords.z = coords.z
-            if loc1 == 1 then
-                coords.x = coords.x - math_random(0, 15)
-            else
-                coords.x = coords.x + math_random(0, 15)
-            end
-            if loc2 == 1 then
-                coords.y = coords.y - math_random(0, 15)
-            else
-                coords.y = coords.y + math_random(0, 15)
-            end
-            if loc3 == 1 then
-                coords.z = coords.z - math_random(0, 15)
-            else
-                coords.z = coords.z + math_random(0, 15)
-            end
-            if pedt == 1 then
-                pedtype = 0
-            else
-                pedtype = 3
-            end
-            SpawnedPeds3 = {}
-            local ped_amount = math_random(7, 10)
-            for i = 1, ped_amount do
-                local pedtype = 0
-                local coords = PlayerPedCoords
-                local loc1, loc2, loc3, pedt = math_random(0, 15), math_random(0, 15), math_random(0, 15), math_random(0, 15)
-                coords.x = coords.x
-                coords.y = coords.y
-                coords.z = coords.z
-                if loc1 == 1 then
-                    coords.x = coords.x - math_random(0, 15)
-                else
-                    coords.x = coords.x + math_random(0, 15)
-                end
-                if loc2 == 1 then
-                    coords.y = coords.y - math_random(0, 15)
-                else
-                    coords.y = coords.y + math_random(0, 15)
-                end
-                if loc3 == 1 then
-                    coords.z = coords.z - math_random(0, 15)
-                else
-                    coords.z = coords.z + math_random(0, 15)
-                end
-                if pedt == 1 then
-                    pedtype = 0
-                else
-                    pedtype = 3
-                end
-        SpawnedPeds1[i] = entities.create_ped(pedtype, pedhash1, coords, FinalRenderedCamRot)
-        SpawnedPeds2[i] = entities.create_ped(pedtype, pedhash2, coords, FinalRenderedCamRot)
-        SpawnedPeds3[i] = entities.create_ped(pedtype, pedhash3, coords, FinalRenderedCamRot)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds1[i], SpawnedPeds2[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(SpawnedPeds2[i], SpawnedPeds3[i], PlayerPedCoords, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds1[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds1[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds2[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds2[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedPeds3[i], true)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(SpawnedPeds3[i], true, true)
-        TASK.TASK_START_SCENARIO_IN_PLACE(SpawnedPeds3[i], "Walk_Facility", 0, false)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds1[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds2[i], true)
-        ENTITY.SET_ENTITY_VISIBLE(SpawnedPeds3[i], true)
-        MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 1, coords.x, coords.y, coords.z, 0, true, util.joaat("weapon_stungun"), players.user_ped(), false, true, 1.0)
-        util.yield(5)
-    end
-    for i = 1, ped_amount do
-        PED.SET_PED_RANDOM_COMPONENT_VARIATION(player_ped, 0)
-        PED.SET_PED_COMPONENT_VARIATION(player_ped, 3, 0, 1, 0)
-        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds1[i], 0)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds1[i], 3, 0, 1, 0)
-        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds2[i], 0)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds2[i], 3, 0, 1, 0)
-        PED.SET_PED_RANDOM_COMPONENT_VARIATION(SpawnedPeds3[i], 0)
-        PED.SET_PED_COMPONENT_VARIATION(SpawnedPeds3[i], 3, 0, 1, 0)
-        util.yield()
-        end
-        util.yield(10)
-        end
-        menu.trigger_commands("superc")
-        end
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-        util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
-    end
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-
-menu.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes freemode ped outfit variations and gives them homing launchers. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
+menu.action(outfitcrash, "Outfit crash v1", {"outfitcrashv1"}, "Changes freemode ped outfit variations and gives them homing launchers. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
     menu.trigger_commands("anticrashcamera")
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
@@ -19310,7 +19333,7 @@ for i=1,1  do
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes their outfit variations. Lasts around 30 seconds.", function(on)
+menu.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes their outfit variations. Lasts around 30 seconds.", function(on)
     local math_random = math.random
     menu.trigger_commands("mpfemale")
     util.yield(10)
@@ -19423,7 +19446,7 @@ menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes their ou
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.action(outfitcrash, "Outfit crash v4", {"outfitcrashv4"}, "Changes your outfit variations. Lasts around 30 seconds.", function(on)
+menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes your outfit variations. Lasts around 30 seconds.", function(on)
     local math_random = math.random
     menu.trigger_commands("mpfemale")
     util.yield(10)
@@ -20654,129 +20677,129 @@ local crash_ents = {}
    }
 
    
-   function TnT_Crash(pid)
-    while true do
-        local playerPed = PLAYER.PLAYER_PED_ID()
-        local vehicleCoords = ENTITY.GET_ENTITY_COORDS(playerPed)
+    function TnT_Crash(pid)
+        while true do
+            local playerPed = PLAYER.PLAYER_PED_ID()
+            local vehicleCoords = ENTITY.GET_ENTITY_COORDS(playerPed)
 
-        local vehicleHash1 = util.joaat("kosatka")
-        util.request_model(vehicleHash1)
-        local vehicle1 = entities.create_vehicle(vehicleHash1, vehicleCoords, 0.0, true, false)
+            local vehicleHash1 = util.joaat("kosatka")
+            util.request_model(vehicleHash1)
+            local vehicle1 = entities.create_vehicle(vehicleHash1, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash2 = util.joaat("luxor")
-        util.request_model(vehicleHash2)
-        local vehicle2 = entities.create_vehicle(vehicleHash2, vehicleCoords, 0.0, true, false)
+            local vehicleHash2 = util.joaat("luxor")
+            util.request_model(vehicleHash2)
+            local vehicle2 = entities.create_vehicle(vehicleHash2, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash3 = util.joaat("cargoplane")
-        util.request_model(vehicleHash3)
-        local vehicle3 = entities.create_vehicle(vehicleHash3, vehicleCoords, 0.0, true, false)
+            local vehicleHash3 = util.joaat("cargoplane")
+            util.request_model(vehicleHash3)
+            local vehicle3 = entities.create_vehicle(vehicleHash3, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash4 = util.joaat("cargoplane2")
-        util.request_model(vehicleHash4)
-        local vehicle4 = entities.create_vehicle(vehicleHash4, vehicleCoords, 0.0, true, false)
+            local vehicleHash4 = util.joaat("cargoplane2")
+            util.request_model(vehicleHash4)
+            local vehicle4 = entities.create_vehicle(vehicleHash4, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash5 = util.joaat("hydra")
-        util.request_model(vehicleHash5)
-        local vehicle5 = entities.create_vehicle(vehicleHash5, vehicleCoords, 0.0, true, false)
+            local vehicleHash5 = util.joaat("hydra")
+            util.request_model(vehicleHash5)
+            local vehicle5 = entities.create_vehicle(vehicleHash5, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash6 = util.joaat("tug")
-        util.request_model(vehicleHash6)
-        local vehicle6 = entities.create_vehicle(vehicleHash6, vehicleCoords, 0.0, true, false)
+            local vehicleHash6 = util.joaat("tug")
+            util.request_model(vehicleHash6)
+            local vehicle6 = entities.create_vehicle(vehicleHash6, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash7 = util.joaat("firetruk")
-        util.request_model(vehicleHash7)
-        local vehicle7 = entities.create_vehicle(vehicleHash7, vehicleCoords, 0.0, true, false)
+            local vehicleHash7 = util.joaat("firetruk")
+            util.request_model(vehicleHash7)
+            local vehicle7 = entities.create_vehicle(vehicleHash7, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash8 = util.joaat("lazer")
-        util.request_model(vehicleHash8)
-        local vehicle8 = entities.create_vehicle(vehicleHash8, vehicleCoords, 0.0, true, false)
+            local vehicleHash8 = util.joaat("lazer")
+            util.request_model(vehicleHash8)
+            local vehicle8 = entities.create_vehicle(vehicleHash8, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash9 = util.joaat("khanjali")
-        util.request_model(vehicleHash9)
-        local vehicle9 = entities.create_vehicle(vehicleHash9, vehicleCoords, 0.0, true, false)
+            local vehicleHash9 = util.joaat("khanjali")
+            util.request_model(vehicleHash9)
+            local vehicle9 = entities.create_vehicle(vehicleHash9, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash10 = util.joaat("armytrailer")
-        util.request_model(vehicleHash10)
-        local vehicle10 = entities.create_vehicle(vehicleHash10, vehicleCoords, 0.0, true, false)
+            local vehicleHash10 = util.joaat("armytrailer")
+            util.request_model(vehicleHash10)
+            local vehicle10 = entities.create_vehicle(vehicleHash10, vehicleCoords, 0.0, true, false)
 
----------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------------------------------------
 
-        local vehicleHash11 = util.joaat("bombushka")
-        util.request_model(vehicleHash11)
-        local vehicle11 = entities.create_vehicle(vehicleHash11, vehicleCoords, 0.0, true, false)
+            local vehicleHash11 = util.joaat("bombushka")
+            util.request_model(vehicleHash11)
+            local vehicle11 = entities.create_vehicle(vehicleHash11, vehicleCoords, 0.0, true, false)
 
-        local vehicleHash12 = util.joaat("volatol")
-        util.request_model(vehicleHash12)
-        local vehicle12 = entities.create_vehicle(vehicleHash12, vehicleCoords, 0.0, true, false)
-
-
-        local vehicleHash13 = util.joaat("armytrailer2")
-        util.request_model(vehicleHash13)
-        local vehicle13 = entities.create_vehicle(vehicleHash13, vehicleCoords, 0.0, true, false)
+            local vehicleHash12 = util.joaat("volatol")
+            util.request_model(vehicleHash12)
+            local vehicle12 = entities.create_vehicle(vehicleHash12, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash14 = util.joaat("flatbed")
-        util.request_model(vehicleHash14)
-        local vehicle14 = entities.create_vehicle(vehicleHash14, vehicleCoords, 0.0, true, false)
+            local vehicleHash13 = util.joaat("armytrailer2")
+            util.request_model(vehicleHash13)
+            local vehicle13 = entities.create_vehicle(vehicleHash13, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash15 = util.joaat("cargobob")
-        util.request_model(vehicleHash15)
-        local vehicle15 = entities.create_vehicle(vehicleHash15, vehicleCoords, 0.0, true, false)
+            local vehicleHash14 = util.joaat("flatbed")
+            util.request_model(vehicleHash14)
+            local vehicle14 = entities.create_vehicle(vehicleHash14, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash16 = util.joaat("cargobob2")
-        util.request_model(vehicleHash16)
-        local vehicle16 = entities.create_vehicle(vehicleHash16, vehicleCoords, 0.0, true, false)
+            local vehicleHash15 = util.joaat("cargobob")
+            util.request_model(vehicleHash15)
+            local vehicle15 = entities.create_vehicle(vehicleHash15, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash17 = util.joaat("cuban800")
-        util.request_model(vehicleHash17)
-        local vehicle17 = entities.create_vehicle(vehicleHash17, vehicleCoords, 0.0, true, false)
+            local vehicleHash16 = util.joaat("cargobob2")
+            util.request_model(vehicleHash16)
+            local vehicle16 = entities.create_vehicle(vehicleHash16, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash18 = util.joaat("titan")
-        util.request_model(vehicleHash18)
-        local vehicle18 = entities.create_vehicle(vehicleHash18, vehicleCoords, 0.0, true, false)
+            local vehicleHash17 = util.joaat("cuban800")
+            util.request_model(vehicleHash17)
+            local vehicle17 = entities.create_vehicle(vehicleHash17, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash19 = util.joaat("mammatus")
-        util.request_model(vehicleHash19)
-        local vehicle19 = entities.create_vehicle(vehicleHash19, vehicleCoords, 0.0, true, false)
+            local vehicleHash18 = util.joaat("titan")
+            util.request_model(vehicleHash18)
+            local vehicle18 = entities.create_vehicle(vehicleHash18, vehicleCoords, 0.0, true, false)
 
 
-        local vehicleHash20 = util.joaat("velum2")
-        util.request_model(vehicleHash20)
-        local vehicle20 = entities.create_vehicle(vehicleHash20, vehicleCoords, 0.0, true, false)
+            local vehicleHash19 = util.joaat("mammatus")
+            util.request_model(vehicleHash19)
+            local vehicle19 = entities.create_vehicle(vehicleHash19, vehicleCoords, 0.0, true, false)
 
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle1, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle2, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle3, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle4, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle5, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
 
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle6, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle7, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle8, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle9, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle10, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            local vehicleHash20 = util.joaat("velum2")
+            util.request_model(vehicleHash20)
+            local vehicle20 = entities.create_vehicle(vehicleHash20, vehicleCoords, 0.0, true, false)
 
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle11, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle12, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle13, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle14, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle15, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle1, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle2, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle3, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle4, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle5, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
 
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle16, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle17, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle18, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle19, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle20, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
-        util.yield(2000)
-        menu.trigger_commands("superc")
-        return
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle6, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle7, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle8, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle9, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle10, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle11, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle12, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle13, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle14, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle15, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle16, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle17, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle18, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle19, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle20, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
+            util.yield(2000)
+            menu.trigger_commands("superc")
+            return
+        end
     end
-end
 
     local MostMenuCrash = menu.list(MenuCrashes, "Most Menu Crashes", {}, "")
 
@@ -21274,7 +21297,6 @@ menu.action(Northcrash,"North Crash", {"northcrash"}, "Working.", function()
     PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 6, 0)
     PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 7, 0)
     util.yield()
-    ENTITY.SET_ENTITY_COORDS(ped, pos.x, pos.y, pos.z, true, false, false, true)
     util.yield(500)
     entities.delete_by_handle(ped)
     util.toast("North Crash Sent to " .. players.get_name(pid))
@@ -21293,7 +21315,6 @@ menu.toggle_loop(Northcrash,"North Crash", {"northcrash"}, "Working. Can't crash
     PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 6, 0)
     PED.SET_PED_COMPONENT_VARIATION(ped, 0, 0, 7, 0)
     util.yield()
-    ENTITY.SET_ENTITY_COORDS(ped, pos.x, pos.y, pos.z, true, false, false, true)
     util.yield(500)
     entities.delete_by_handle(ped)
     util.toast("North Crash Sent to " .. players.get_name(pid))
@@ -28393,22 +28414,6 @@ menu.toggle_loop(Net_Shit, "Clear All Notifications", {"clearnotifs"}, "I recomm
         util.yield(1000)
     end)
 
-menu.toggle(Net_Shit, "Mental State 100", {}, "Mental State 100 or back to 0.", function(on_toggle)
-    if on_toggle then
-        menu.trigger_commands("mentalstate" .. " 100")
-    else
-        menu.trigger_commands("mentalstate" .. " 0")
-        end
-    end)
-
-    menu.toggle(Net_Shit, "Mental State 0", {}, "Mental State 0 all the time or off.", function(on_toggle)
-    if on_toggle then
-        menu.trigger_commands("mentalstate" .. " 0")
-    else
-        menu.trigger_commands("mentalstate" .. " 0")
-        end
-    end)
-
 menu.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"}, "Automatically accept join screens and transaction errors.", function()
     local mess_hash = HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
     if mess_hash == -896436592 then
@@ -28460,15 +28465,44 @@ menu.toggle_loop(Net_Shit, 'Increase Kosatka Missile Range', {'krange'}, 'You ca
     end
 end)
 
-joining = false
-menu.toggle(Net_Shit, "Player Joining notifications", {}, "", function(on_toggle)
+--[[
+joining_log = false
+joining_toast = false
+
+menu.toggle(Net_Shit, "Join/leave notifications", {}, "", function(on_toggle)
 	if on_toggle then
-		joining = true
+		joining_log = true
+        joining_toast = true
 	else
-		joining = false
+		joining_log = false
+        joining_toast = false
 	end
 end)
 
+players.on_join(function(pid)
+	while true do
+		--if joining_toast then
+        --    util.log(PLAYER.GET_PLAYER_NAME(pid) .. " joined")
+		--end
+        --if joining_log then
+        --    util.toast(PLAYER.GET_PLAYER_NAME(pid) .. " joined")
+		--end
+		util.yield()
+	end
+end)
+
+players.on_leave(function(pid)
+	while true do
+		--if leave_toast then
+        --    util.log(PLAYER.GET_PLAYER_NAME(pid) .. " left")
+		--end
+        --if leave_log then
+        --    util.toast(PLAYER.GET_PLAYER_NAME(pid) .. " left")
+		--end
+		util.yield()
+	end
+end)
+]]
 
 local InitialPlayersList = players.list(true, true, true) -- Obtain list of players from Stand API
 for i=1, #InitialPlayersList do -- Loop through the received player list
@@ -28478,8 +28512,6 @@ InitialPlayersList = nil
 
 players.on_join(function(pid)
 	while true do
-		if joining then
-		end
 		util.yield()
 	end
 end)
@@ -29608,7 +29640,7 @@ bountyloop = menu.list(Recovery, "Bounty Loops", {}, "", function(); end)
 
 --coded by MrWall 
 
-util.show_corner_help("~s~Loaded ~o~" .. SCRIPT_FILENAME .. " ~p~;)\n~s~Let's Farm Some ~g~$$$ ~p~Or ~o~Crash ~p~Some ~o~Fools ~p~;)")
+util.show_corner_help("~p~Loaded ~r~" .. SCRIPT_FILENAME .. " ~p~;)\n~p~Let's Farm Some ~g~$$$ ~p~Or ~r~Crash ~p~Some ~r~Fools ~p~;)")
 
 
 
@@ -29679,14 +29711,14 @@ menu.toggle_loop(bountyloop, "Start Loops", {}, "Will get a random players and g
 		randomPlayer = players.get_name(playerList[math.random(1, #playerList)])
 		menu.trigger_commands("bounty" .. randomPlayer .. " " .. randomamount)
 		if notify then
-			util.show_corner_help("~o~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
+			util.show_corner_help("~r~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
 			if not util.BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED("~p~notifications ~g~On") then
-				util.show_corner_help("~o~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
+				util.show_corner_help("~r~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
 			end
 		end
 			util.yield(delay * 1000)
 	else
-		util.show_corner_help("Lobby has ~r~no ~w~other ~o~players.\n\n~w~Consider ~g~joining ~w~a ~g~new one.")
+		util.show_corner_help("Lobby has ~r~no ~w~other ~r~players.\n\n~w~Consider ~g~joining ~w~a ~g~new one.")
 		util.yield(60000)
 	end
 end)
