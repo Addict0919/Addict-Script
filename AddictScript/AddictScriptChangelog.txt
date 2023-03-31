@@ -5,3 +5,5 @@ Replaced Array Kick (New)
 Added SE Kick (S0)
 
 Added SE Kick (S3)
+
+Fixed Update Button
