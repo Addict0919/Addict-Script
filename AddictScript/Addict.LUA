@@ -24,11 +24,12 @@ local Credits_To = {
 }
 -- Credits 🧐🔼🔼🔼
 
-local github = menu.list(menu.my_root(), "Updates", {"addictupdates"})
-
+local addict = menu
+local addict_version = 1.25
+local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
     response=true;
-    menu.action(github, "Changelog", {"addictchangelog"}, b, function()
+    addict.action(github, "Changelog", {"addictchangelog"}, b, function()
         async_http.dispatch()
     end)
 end,
@@ -38,15 +39,12 @@ end)
 async_http.dispatch()
 repeat util.yield()
 until response 
-
-local local_menu_version = "1.2.4"
-
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
         currentVer=tonumber(b)
         response=true;
-        if local_menu_version~=currentVer then 
-            menu.action(github,"Update",{"updateaddict"},"If it still says 'Update' when it's been updated just ignore it I'll fix this bug in future keep your eyes peeled for updates in the changelog.",function()
+        if addict_version~=currentVer then 
+            addict.action(github,"Update",{"updateaddict"},"If it still says 'Update' when it's been updated just ignore it I'll fix this bug in future keep your eyes peeled for updates in the changelog.",function()
                 util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
@@ -160,42 +158,42 @@ util.log("▒▒▒▒▒▒▒▒▒▒███████▒▒▒▒▒▒�
 util.log("▒▒▒▒▄▄▄██▒▒█▀█▀█▒▒██▄▄▄▒▒▒▒")
 util.log("▒▒▒▒▀▀██▒▒▒▒▒▒▒▒▒▒▒██▀▀▒▒▒▒")
 util.log("▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▀▀▒▒▒▒▒▒")
-util.log("Welcome To Addict Script!™ v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-util.toast("Welcome To Addict Script!™ v" .. local_menu_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.log("Welcome To Addict Script!™ v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.toast("Welcome To Addict Script!™ v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-local Credits = menu.list(menu.my_root(), "Credits", {"addictcredits"}, "<3")
+local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
-menu.divider(Credits, "Great Coders <3")
+addict.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
-menu.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-menu.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
-menu.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
-menu.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
-menu.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
-menu.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
-menu.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
-menu.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
-menu.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-menu.action(Credits, "Jailbroken", {}, "Cool guy very fast learner, unlike some people (no names) PRISHUM.", function() end)
+addict.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
+addict.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
+addict.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
+addict.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
+addict.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
+addict.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
+addict.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
+addict.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
+addict.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
+addict.action(Credits, "Jailbroken", {}, "Cool guy very fast learner, unlike some people (no names) PRISHUM.", function() end)
 ---------------------------------------------------------------------------------
-menu.divider(Credits, "Great Supporters <3")
+addict.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
-menu.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
-menu.action(Credits, "Kwengz", {}, "This guy got me into paid menus and showed me the ropes.", function() end)
-menu.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
-menu.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
-menu.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
-menu.action(Credits, "Masi", {}, "Known long time :)", function() end)
-menu.action(Credits, "Jonash", {}, "Provided great suggestions along the way :).", function() end)
-menu.action(Credits, "Uncle", {}, "Nice guy always there to help <3.", function() end)
-menu.action(Credits, "Presidente", {}, "Fun guy to play with known a long time :).", function() end)
-menu.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking stoner <3.", function() end)
-menu.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
-menu.action(Credits, "Library", {}, "Always been there to help :).", function() end)
-menu.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
-menu.action(Credits, "Sophie", {}, "For some great ideas she likes to put forward.", function() end)
-menu.action(Credits, "Charlie", {}, "", function() end)
-menu.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
+addict.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
+addict.action(Credits, "Kwengz", {}, "This guy got me into paid addicts and showed me the ropes.", function() end)
+addict.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
+addict.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
+addict.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
+addict.action(Credits, "Masi", {}, "Known long time :)", function() end)
+addict.action(Credits, "Jonash", {}, "Provided great suggestions along the way :).", function() end)
+addict.action(Credits, "Uncle", {}, "Nice guy always there to help <3.", function() end)
+addict.action(Credits, "Presidente", {}, "Fun guy to play with known a long time :).", function() end)
+addict.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking stoner <3.", function() end)
+addict.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
+addict.action(Credits, "Library", {}, "Always been there to help :).", function() end)
+addict.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
+addict.action(Credits, "Sophie", {}, "For some great ideas she likes to put forward.", function() end)
+addict.action(Credits, "Charlie", {}, "", function() end)
+addict.action(Credits, "If I missed anyone dm me please <3", {}, "Sorry if I forgot you but if you know me ask for love.", function() end)
 
 
 local translations = {}
@@ -205,11 +203,11 @@ setmetatable(translations, {
     end
 })
 
-local festive_div = menu.divider(menu.my_root(), "Addict Script")
+local festive_div = addict.divider(addict.my_root(), "Addict Script")
 local loading_frames = {'!', '! !', '! ! !', '! ! ! !', ' ! ! ! ! ! ! ! ! !', '! ! ! !', '! ! !', '! !', '!'}
 util.create_tick_handler(function()
     for _, frame in pairs(loading_frames) do
-        menu.set_menu_name(festive_div, frame .. ' ' .. translations.Addict_Script .. ' ' .. frame)
+        addict.set_menu_name(festive_div, frame .. ' ' .. translations.Addict_Script .. ' ' .. frame)
         util.yield(100)
     end
 end)
@@ -265,14 +263,14 @@ end
 
 
 function get_hud_colour()
-    local red_command_ref <const> = menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
-    local green_command_ref <const> = menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Green")
-    local blue_command_ref <const> = menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Blue")
-    local alpha_command_ref <const> = menu.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Opacity")
-    local red <const> = menu.get_value(red_command_ref)
-    local green <const> = menu.get_value(green_command_ref)
-    local blue <const> = menu.get_value(blue_command_ref)
-    local alpha <const> = menu.get_value(alpha_command_ref)
+    local red_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
+    local green_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Green")
+    local blue_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Blue")
+    local alpha_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Opacity")
+    local red <const> = addict.get_value(red_command_ref)
+    local green <const> = addict.get_value(green_command_ref)
+    local blue <const> = addict.get_value(blue_command_ref)
+    local alpha <const> = addict.get_value(alpha_command_ref)
 
     return red, green, blue, alpha
 end
@@ -487,18 +485,18 @@ local explosion_types <const> = {
 
 --########################################################
 
-	funfun = menu.list(menu.my_root(), "Fun Shit", {}, "", function(); end)
+	funfun = addict.list(addict.my_root(), "Fun Shit", {}, "", function(); end)
 
-    menu.divider(funfun, "Fun Shit")
+    addict.divider(funfun, "Fun Shit")
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-menyoo_root = menu.list(funfun, "Menyoo", {"menyoo"}, "Menyoo support!")
-menyoovmain_root = menu.list(menyoo_root, "Vehicles", {"menyoovehicles"}, "Menyoo vehicle support!")
-menyoom1_root = menu.list(menyoo_root, "Maps", {"menyoomapsroot"}, "Menyoo maps support!")
-menyoom_root = menu.list(menyoom1_root, "Maps", {"menyooallmaps"}, "All maps in your directory")
-menyoomloaded_root = menu.list(menyoom1_root, "Currently loaded maps", {"menyooloadedmaps"}, "Maps you have loaded")
-menyoov_root = menu.list(menyoovmain_root, "All vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
-menyoovloaded_root = menu.list(menyoovmain_root, "Currently loaded vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
+menyoo_root = addict.list(funfun, "Menyoo", {"menyoo"}, "Menyoo support!")
+menyoovmain_root = addict.list(menyoo_root, "Vehicles", {"menyoovehicles"}, "Menyoo vehicle support!")
+menyoom1_root = addict.list(menyoo_root, "Maps", {"menyoomapsroot"}, "Menyoo maps support!")
+menyoom_root = addict.list(menyoom1_root, "Maps", {"menyooallmaps"}, "All maps in your directory")
+menyoomloaded_root = addict.list(menyoom1_root, "Currently loaded maps", {"menyooloadedmaps"}, "Maps you have loaded")
+menyoov_root = addict.list(menyoovmain_root, "All vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
+menyoovloaded_root = addict.list(menyoovmain_root, "Currently loaded vehicles", {"menyooloadedmaps"}, "Vehicles you have spawned")
 
 --           __  ___   ______   _   __   __  __   ____     ____              _  __    __  ___   __
 --          /  |/  /  / ____/  / | / /  / / / /  / __ \   / __ \            | |/ /   /  |/  /  / /
@@ -508,7 +506,7 @@ menyoovloaded_root = menu.list(menyoovmain_root, "Currently loaded vehicles", {"
 
 
 island_block = 0
-menu.action(menyoom1_root, "Sky Island", {""}, "", function(sky_island)
+addict.action(menyoom1_root, "Sky Island", {""}, "", function(sky_island)
     local c = {}
     c.x = 0
     c.y = 0
@@ -528,15 +526,15 @@ function setup_menyoo_vehicles_list(mainroot, player, allplayers, dotp, dir)
             ours = true 
         end
         if filesystem.is_dir(path) then
-            root = menu.list(root, path:gsub(vehicles_dir, ''), {}, "")
+            root = addict.list(root, path:gsub(vehicles_dir, ''), {}, "")
             for i,path in ipairs(filesystem.list_files(path)) do
                 if not allplayers then
-                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                    addict.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
                         log("Click type was " .. on_click)
                         menyoo_load_vehicle(path, player, dotp, ours)
                     end)
                 else
-                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                    addict.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
                         for k,v in pairs(players.list(true, true, true)) do
                             log("Click type was " .. on_click)
                             menyoo_load_vehicle(path, v, dotp, false)
@@ -547,12 +545,12 @@ function setup_menyoo_vehicles_list(mainroot, player, allplayers, dotp, dir)
         else
             if string.match(path:gsub(vehicles_dir, ''), '.xml') then
                 if not allplayers then
-                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
+                    addict.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle", function(on_click)
                         toast("Click type was " .. on_click)
                         menyoo_load_vehicle(path, player, dotp, ours)
                     end)
                 else
-                    menu.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
+                    addict.action(root, path:gsub(vehicles_dir, ''), {}, "Spawn this menyoo vehicle for all players", function(on_click)
                         for k,v in pairs(players.list(true, true, true)) do
                             toast("Click type was " .. on_click)
                             menyoo_load_vehicle(path, v, dotp, false)
@@ -567,15 +565,15 @@ end
 function setup_menyoo_maps_list()
    for i, path in ipairs(filesystem.list_files(maps_dir)) do
        if filesystem.is_dir(path) then
-           root = menu.list(menyoom_root, path:gsub(maps_dir, ''), {}, "")
+           root = addict.list(menyoom_root, path:gsub(maps_dir, ''), {}, "")
            for i,path in ipairs(filesystem.list_files(path)) do
-               menu.action(root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
+               addict.action(root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
                    menyoo_load_map(path)
                end)
            end
        else
            if string.match(path:gsub(maps_dir, ''), '.xml') then
-               menu.action(menyoom_root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
+               addict.action(menyoom_root, path:gsub(maps_dir, ''), {}, "Spawn this menyoo map", function()
                    menyoo_load_map(path)
                end)
            end
@@ -596,7 +594,7 @@ function Effect.new(asset, name)
    return inst
 end
 
-weapons = menu.list(funfun, "Weapon Shit", {}, "", function(); end)
+weapons = addict.list(funfun, "Weapon Shit", {}, "", function(); end)
 
 ----------------------------------------------- Aimbot Functions -------------------------------------------------------
     -- Credits to Acjoker Script For His Aimbot
@@ -1182,13 +1180,13 @@ local attachments_table = {
     ["0x11AE5C97"] = "Default Clip"
 }
 
-remove_attachment_tab = menu.action(weapons, "Give Ammo", {"giveammo"}, "Give ammo for current weapon (fix for stand unlimited ammo not working with special ammo)", --done
+remove_attachment_tab = addict.action(weapons, "Give Ammo", {"giveammo"}, "Give ammo for current weapon (fix for stand unlimited ammo not working with special ammo)", --done
     function(on_click)
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
         WEAPON.ADD_AMMO_TO_PED(PLAYER.GET_PLAYER_PED(players.user()), curr_equipped_weapon, 10)
     end
 )
-remove_attachment_tab = menu.action(weapons, "Give All Attachments", {"giveallattachments"}, "Give all attachments from your current weapon", --done
+remove_attachment_tab = addict.action(weapons, "Give All Attachments", {"giveallattachments"}, "Give all attachments from your current weapon", --done
     function(on_click)
         util.toast("Giving all attachments ...")
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
@@ -1198,7 +1196,7 @@ remove_attachment_tab = menu.action(weapons, "Give All Attachments", {"giveallat
         util.toast("Done :D")
     end
 )
-remove_attachment_tab = menu.action(weapons, "Remove All Attachments", {"removeallattachments"}, "Removes all attachments from your current weapon", --done
+remove_attachment_tab = addict.action(weapons, "Remove All Attachments", {"removeallattachments"}, "Removes all attachments from your current weapon", --done
     function(on_click)
         util.toast("Removing all attachments ...")
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
@@ -1209,12 +1207,12 @@ remove_attachment_tab = menu.action(weapons, "Remove All Attachments", {"removea
     end
 )
 attachment_tab =
-    menu.list(weapons, "Add Attachments", {"addattachments"}, "Add attachments to your current weapon")
+    addict.list(weapons, "Add Attachments", {"addattachments"}, "Add attachments to your current weapon")
 for key, value in pairs(attachments_table) do
     local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
     if WEAPON.DOES_WEAPON_TAKE_WEAPON_COMPONENT(curr_equipped_weapon, key) == true then --done
         --util.toast(curr_equipped_weapon .. " takes " .. key .. " as attachment") --done
-        menu.action(
+        addict.action(
             attachment_tab,
             value, --done
             {value}, --done
@@ -1429,10 +1427,10 @@ end
 SEC = ENTITY.SET_ENTITY_COORDS
 local set = {alert = false}
 local obj_hash = 'prop_container_01a'
-local objgun = menu.list(weapons, 'Custom Model Gun', {"custommodlegunloc"}, '')
+local objgun = addict.list(weapons, 'Custom Model Gun', {"custommodlegunloc"}, '')
 
 local obj = {expl = false}
-OBJgun = menu.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function ()
+OBJgun = addict.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function ()
      
    local hash = util.joaat(obj_hash)
     Streament(hash)
@@ -1457,12 +1455,12 @@ OBJgun = menu.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the mod
     end
 end)
 
-    menu.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
+    addict.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
         obj.expl =  on
     end)
 
 
-  menu.text_input(objgun, 'Custom Model Gun', {'customgun'}, 'Enter the model name of a model to change the object you shoot example "prop_keg_01"', function(cusobj)
+  addict.text_input(objgun, 'Custom Model Gun', {'customgun'}, 'Enter the model name of a model to change the object you shoot example "prop_keg_01"', function(cusobj)
 
     if STREAMING.IS_MODEL_A_VEHICLE(util.joaat(cusobj)) then
         obj_hash = cusobj
@@ -1477,22 +1475,22 @@ end)
     end
 end, 'prop_container_01a')
 
-menu.action(objgun, "Clear All", {"clearshit"}, "", function()
-    menu.trigger_commands("superc")
+addict.action(objgun, "Clear All", {"clearshit"}, "", function()
+    addict.trigger_commands("superc")
 end)
 
-menu.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
+addict.hyperlink(objgun, "Get Model Names", "https://forge.plebmasters.de/")
 
 
 players.on_join(function(player_id)
 
-	menu.divider(menu.player_root(player_id), "Addict Script")
+	addict.divider(addict.player_root(player_id), "Addict Script")
 
     local net_lists <const> = {
-        ["Explosions"] = menu.list(menu.player_root(player_id), "Explosions"),
+        ["Explosions"] = addict.list(addict.player_root(player_id), "Explosions"),
     }
     ------------------------------
-    -- Explosions Menu
+    -- Explosions addict
     ------------------------------
 
     local explosion = {
@@ -1522,13 +1520,13 @@ players.on_join(function(player_id)
         end
     end
 
-    menu.divider(net_lists["Explosions"], "Explosions")
+    addict.divider(net_lists["Explosions"], "Explosions")
 
-    menu.action(net_lists["Explosions"], "Explode", {"ssexplode"}, "", function()
+    addict.action(net_lists["Explosions"], "Explode", {"ssexplode"}, "", function()
         add_explosion()
     end)
 
-    menu.toggle(net_lists["Explosions"], "Explode Loop", {"explodeloop"}, "", function(state)
+    addict.toggle(net_lists["Explosions"], "Explode Loop", {"explodeloop"}, "", function(state)
         explosion.loop = state
 
         while explosion.loop and players.exists(player_id) do
@@ -1537,64 +1535,63 @@ players.on_join(function(player_id)
         end
     end)
 
-    menu.list_select(net_lists["Explosions"], "Explosion Type", {"explosiontype"}, "", explosion_types, 0, function(value)
+    addict.list_select(net_lists["Explosions"], "Explosion Type", {"explosiontype"}, "", explosion_types, 0, function(value)
             explosion.type = value
     end)
 
-    local explosion_other_net_list <const> = menu.list(net_lists["Explosions"], "Other Settings")
-    menu.divider(explosion_other_net_list, "Other Settings")
+    local explosion_other_net_list <const> = addict.list(net_lists["Explosions"], "Other Settings")
+    addict.divider(explosion_other_net_list, "Other Settings")
 
-    menu.slider(explosion_other_net_list, "Explosion Delay", {"explosiondelay"}, "", 50, 1000, 50, 50, function(value)
+    addict.slider(explosion_other_net_list, "Explosion Delay", {"explosiondelay"}, "", 50, 1000, 50, 50, function(value)
         explosion.delay = value
     end)
 
-    menu.slider(explosion_other_net_list, "Explosion Shake", {"explosionshake"}, "", 0, 10, 1, 1, function(value)
+    addict.slider(explosion_other_net_list, "Explosion Shake", {"explosionshake"}, "", 0, 10, 1, 1, function(value)
         explosion.shake = value
     end)
 
-    menu.toggle(explosion_other_net_list, "Explosion Blamed", {"explosionblamed"}, "", function(state)
+    addict.toggle(explosion_other_net_list, "Explosion Blamed", {"explosionblamed"}, "", function(state)
         explosion.blamed = state
     end)
 
-    menu.toggle(explosion_other_net_list, "Explosion Audible", {"explosionaudible"}, "", function(state)
+    addict.toggle(explosion_other_net_list, "Explosion Audible", {"explosionaudible"}, "", function(state)
         explosion.audible = state
     end, true)
 
-    menu.toggle(explosion_other_net_list, "Explosion Visible", {"explosionvisible"}, "", function(state)
+    addict.toggle(explosion_other_net_list, "Explosion Visible", {"explosionvisible"}, "", function(state)
         explosion.visible = state
     end, true)
 
-    menu.toggle(explosion_other_net_list, "Explosion Damage", {"explosiondamage"}, "If Explosion Blamed is on, turning this off won't have any effect.", function(state)
+    addict.toggle(explosion_other_net_list, "Explosion Damage", {"explosiondamage"}, "If Explosion Blamed is on, turning this off won't have any effect.", function(state)
         explosion.damage = state
     end)
     end, true)
    
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	Recovery = menu.list(menu.my_root(), "Recovery", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
+	Recovery = addict.list(addict.my_root(), "Recovery", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
 
-    menu.toggle(Recovery, "Money Drop All", {"cashloopall"}, "Money drops all players", function()
+    addict.toggle(Recovery, "Money Drop All", {"cashloopall"}, "Money drops all players", function()
         for _, pid in players.list(false, true, true) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local pos = players.get_position(pid)
             if ENTITY.DOES_ENTITY_EXIST(ped) then
-            menu.trigger_commands("cashloop " .. players.get_name(pid))
+            addict.trigger_commands("cashloop " .. players.get_name(pid))
             end
         end
     end)
     
-    menu.toggle_loop(Recovery, "Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100% every second.",function()
-        local popularity_loop_command_ref = menu.ref_by_path("Online>Quick Progress>Set Nightclub Popularity", 38)
-        menu.trigger_command(popularity_loop_command_ref, 100)
+    addict.toggle_loop(Recovery, "Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100% every second.",function()
+        local popularity_loop_command_ref = addict.ref_by_path("Online>Quick Progress>Set Nightclub Popularity", 38)
+        addict.trigger_command(popularity_loop_command_ref, 100)
         util.yield(1000)
     end)
 
-    
-	Ped_Cash = menu.list(Recovery, "Ped Cash", {}, "", function(); end)
+	Ped_Cash = addict.list(Recovery, "Ped Cash", {}, "", function(); end)
 
-    menu.divider(Ped_Cash, "Ped Cash")
+    addict.divider(Ped_Cash, "Ped Cash")
 
-    menu.toggle(Ped_Cash, "Ped Cash Boost", {"pedboost"}, "Enable the modifcation of ped cash dropped. You may crash after 1 minute using it offline.", function()
+    addict.toggle(Ped_Cash, "Ped Cash Boost", {"pedboost"}, "Enable the modifcation of ped cash dropped. You may crash after 1 minute using it offline.", function()
         local _peds = entities.get_all_peds_as_handles()
         for i, _ped in pairs(_peds) do
             if _ped and not PED.IS_PED_A_PLAYER(_ped) then
@@ -1608,35 +1605,35 @@ players.on_join(function(player_id)
         end)
 
 
-    menu.toggle(Ped_Cash, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function (on_toggle)
+    addict.toggle(Ped_Cash, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function (on_toggle)
         if on_toggle then
-            local AnyPickUp = menu.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
-            menu.trigger_command(AnyPickUp)
-            local CashPickUp = menu.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
-            menu.trigger_command(CashPickUp)
-            menu.trigger_commands("bealone")
-            menu.trigger_commands("levitate")
-            menu.trigger_commands("supercloop")
-            menu.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
+            local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
+            addict.trigger_command(AnyPickUp)
+            local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
+            addict.trigger_command(CashPickUp)
+            addict.trigger_commands("bealone")
+            addict.trigger_commands("levitate")
+            addict.trigger_commands("supercloop")
+            addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
         else
-            local AnyPickUp = menu.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
-            menu.trigger_command(AnyPickUp)
-            local CashPickUp = menu.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
-            menu.trigger_command(CashPickUp)
-            menu.trigger_commands("levitate")
-            menu.trigger_commands("supercloop")
-            menu.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("superc")
+            local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
+            addict.trigger_command(AnyPickUp)
+            local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
+            addict.trigger_command(CashPickUp)
+            addict.trigger_commands("levitate")
+            addict.trigger_commands("supercloop")
+            addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("superc")
         end
     end)
 
-    taximoney = menu.list(Recovery, "Auto TP to Taxi Pickup", {}, "", function(); end)
+    taximoney = addict.list(Recovery, "Auto TP to Taxi Pickup", {}, "", function(); end)
 
-    menu.action(taximoney, 'Auto TP to Taxi Pickup', {'tptaxifair'}, 'Auto teleports to the Taxi Pickup Person, picks them up and drops them off until you are not in a taxi anymore, skidded from ajoker script.', function()
+    addict.action(taximoney, 'Auto TP to Taxi Pickup', {'tptaxifair'}, 'Auto teleports to the Taxi Pickup Person, picks them up and drops them off until you are not in a taxi anymore, skidded from ajoker script.', function()
         util.create_tick_handler(function ()
             local play_car = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
             local vhash = ENTITY.GET_ENTITY_MODEL(play_car)
@@ -1657,7 +1654,7 @@ players.on_join(function(player_id)
                         util.yield()
                     end
                     util.yield(500)
-                    menu.trigger_commands('tpobjective')
+                    addict.trigger_commands('tpobjective')
                 else
                     if set.alert then
                     util.toast('No Person Found')
@@ -1669,10 +1666,10 @@ players.on_join(function(player_id)
         end)
         end)
 
-        Mors_Mutual = menu.list(Recovery, "Mors Mutual", {"morsmutual"}, "", function(); end)
+        Mors_Mutual = addict.list(Recovery, "Mors Mutual", {"morsmutual"}, "", function(); end)
 
         
-        menu.divider(Mors_Mutual, "Vehicle Gifting")
+        addict.divider(Mors_Mutual, "Vehicle Gifting")
         
         check = memory.script_global(78558)
 
@@ -1688,19 +1685,19 @@ players.on_join(function(player_id)
             return value & ~(1 << bit)
         end
 
-        menu.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
+        addict.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
             veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield | 0xC)
         end)
 
-        menu.toggle_loop(Mors_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
-            menu.trigger_commands("addins")
+        addict.toggle_loop(Mors_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
+            addict.trigger_commands("addins")
             util.yield(1000)
         end)
 
-        menu.toggle_loop(Mors_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
+        addict.toggle_loop(Mors_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
             ped = players.user_ped()
             hash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(players.user())
             veh = entities.get_user_vehicle_as_pointer(false)
@@ -1735,10 +1732,10 @@ players.on_join(function(player_id)
                             util.yield(1000)
                         end
                         util.toast("You can drive in your garage now!")
-                        menu.trigger_commands("clearblockage")
+                        addict.trigger_commands("clearblockage")
                         util.yield(1000)
-                        menu.trigger_commands("clearblockage")
-                        menu.trigger_commands("addins")
+                        addict.trigger_commands("clearblockage")
+                        addict.trigger_commands("addins")
                     end
                 end
             else
@@ -1746,7 +1743,7 @@ players.on_join(function(player_id)
             end
         end)
 
-        menu.toggle_loop(Mors_Mutual, "Clear Blockage", {"clearblockage"}, "Clears the blockage infront of your garage every 1 second.", function()
+        addict.toggle_loop(Mors_Mutual, "Clear Blockage", {"clearblockage"}, "Clears the blockage infront of your garage every 1 second.", function()
             for i, veh in pairs(entities.get_all_vehicles_as_handles()) do
                 if not ENTITY.IS_ENTITY_VISIBLE(veh) then
                     entities.delete_by_handle(veh)
@@ -1756,10 +1753,10 @@ players.on_join(function(player_id)
             end
         end)
 
-        menu.divider(Mors_Mutual, "Claim Vehicles")
+        addict.divider(Mors_Mutual, "Claim Vehicles")
 
     
-        menu.action(Mors_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
+        addict.action(Mors_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
             for slot = 0, 415 do
                 veh = memory.script_global(1586468 + 1 + (slot * 142) + 103)
                 bitfield = memory.read_int(veh)
@@ -1767,53 +1764,53 @@ players.on_join(function(player_id)
             end
         end)
     
-        menu.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
+        addict.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
             veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
         end)
     
-        menu.toggle_loop(Mors_Mutual, "Auto Claim All Personal Vehicles", {"autoclaimall"}, "Automatically claims all destroyed/impounded personal vehicles.", function()
-            menu.trigger_commands("claimallveh")
+        addict.toggle_loop(Mors_Mutual, "Auto Claim All Personal Vehicles", {"autoclaimall"}, "Automatically claims all destroyed/impounded personal vehicles.", function()
+            addict.trigger_commands("claimallveh")
             util.yield(1000)
         end, true)
     
-        menu.toggle_loop(Mors_Mutual, "Auto Claim Personal Vehicle", {"autoclaimpersonal"}, "Automatically claims the current active personal vehicle.", function()
-            menu.trigger_commands("claimpersonal")
+        addict.toggle_loop(Mors_Mutual, "Auto Claim Personal Vehicle", {"autoclaimpersonal"}, "Automatically claims the current active personal vehicle.", function()
+            addict.trigger_commands("claimpersonal")
             util.yield(1000)
         end, true)
 
 
-    acidlabmanager = menu.list(Recovery, "Acid Lab Manager", {}, "", function(); end)
+    acidlabmanager = addict.list(Recovery, "Acid Lab Manager", {}, "", function(); end)
 
-menu.divider(acidlabmanager, "Acid Lab Manager")
-menu.click_slider(acidlabmanager, "Product Capacity", {"productcapacity"}, "", 0, 1000, 160, 1, function(capacity)
+addict.divider(acidlabmanager, "Acid Lab Manager")
+addict.click_slider(acidlabmanager, "Product Capacity", {"productcapacity"}, "", 0, 1000, 160, 1, function(capacity)
     memory.write_int(memory.script_global(262145 + 18949), capacity) 
 end)
 
-menu.toggle(acidlabmanager, "Make Supplies Free", {"supplycost"}, "", function()
+addict.toggle(acidlabmanager, "Make Supplies Free", {"supplycost"}, "", function()
     memory.write_int(memory.script_global(262145 + 21869), 0)
 end, function()
     memory.write_int(memory.script_global(262145 + 21869), 60000)
 end)
 
-menu.toggle(acidlabmanager, "Increase Production Speed", {"increaseproductionspeed"}, "", function()
+addict.toggle(acidlabmanager, "Increase Production Speed", {"increaseproductionspeed"}, "", function()
     memory.write_int(memory.script_global(262145 + 17396), 100) 
 end, function()
     memory.write_int(memory.script_global(262145 + 17396), 135000) 
 end)
 
-menu.action(acidlabmanager, "Resupply Acid", {"resupplyacid"}, "", function()
+addict.action(acidlabmanager, "Resupply Acid", {"resupplyacid"}, "", function()
     local time = NETWORK.GET_CLOUD_TIME_AS_INT() - memory.read_int(memory.script_global(262145 + 18954))
     memory.write_int(memory.script_global(1648637 + 1 + 6), time)
 end)
 
-menu.click_slider(acidlabmanager, "Sell Value Multiplier", {"value"}, "Warning: Tested safe amount is ~2 million. Try not to exceed unless you're bored and don't care about your account.", 0, 10000, 1, 1, function(value)
+addict.click_slider(acidlabmanager, "Sell Value Multiplier", {"value"}, "Warning: Tested safe amount is ~2 million. Try not to exceed unless you're bored and don't care about your account.", 0, 10000, 1, 1, function(value)
     memory.write_int(memory.script_global(262145 + 17425), value * 1485) 
 end)
  
-cashskids = menu.list(Recovery, "Recovery Loops", {}, "Skidded of course.", function(); end)
+cashskids = addict.list(Recovery, "Recovery Loops", {}, "Skidded of course.", function(); end)
 
 local root = cashskids
 
@@ -2011,9 +2008,9 @@ afk_meta:add_nightclub(0.479, 0.54, "Vespucci Canals", 10, function()
 end)
 
 function afk_meta:open_internet(is_loop=false)
-    while menu.is_open() do
+    while addict.is_open() do
         if is_loop then
-            util.toast("[Recovery] Close Stand menu to start AFK loop")
+            util.toast("[Recovery] Close Stand addict to start AFK loop")
         end
         util.yield()
     end
@@ -2277,7 +2274,7 @@ items.presets.agency.root = items.presets.root:list("Agency", {}, "Preset values
 items.presets.nightclub.root:divider("Nightclub", "Nightclub")
 items.presets.nightclub.choice = items.presets.nightclub.root:list_select("Money", {}, "The nightclub trade-in price", options, 1, function(index) end)
 items.presets.nightclub.root:toggle("Enable", {}, "Enable the preset value for your nightclub", function()
-    local ref =  menu.ref_by_rel_path(items.presets.nightclub.root, "Enable")
+    local ref =  addict.ref_by_rel_path(items.presets.nightclub.root, "Enable")
     local value = convert_value(options[items.presets.nightclub.choice.value])
 
     if settings.ownership_check then
@@ -2333,8 +2330,8 @@ items.presets.nightclub.root:action("Buy Nightclub", {}, "Automatically purchase
         return
     end
 
-    while menu.is_open() do
-        util.toast("[Recovery]: Close Stand menu to continue")
+    while addict.is_open() do
+        util.toast("[Recovery]: Close Stand addict to continue")
         util.yield()
     end
 
@@ -2352,10 +2349,10 @@ items.presets.nightclub.root:toggle_loop("Modify Value $1.07B", {}, "Modify the 
 end)
 
 items.presets.nightclub.root:toggle_loop("AFK Loop", {}, "AFK money loop", function()
-    local afk_loop =  menu.ref_by_rel_path(items.presets.nightclub.root, "AFK Loop")
+    local afk_loop =  addict.ref_by_rel_path(items.presets.nightclub.root, "AFK Loop")
     local first_nc_name = nc_options.first[tonumber(items.presets.nightclub.first_nightclub.value)]
     local second_nc_name = nc_options.second[tonumber(items.presets.nightclub.second_nightclub.value)]
-    local enable =  menu.ref_by_rel_path(items.presets.nightclub.root, "Enable")
+    local enable =  addict.ref_by_rel_path(items.presets.nightclub.root, "Enable")
     enable.value = false
 
     if first_nc_name == nc_owned then
@@ -2398,7 +2395,7 @@ items.presets.nightclub.root:action("Unlock Arcades On MazeBank", {}, "Unlocks a
     PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 51, 1)
     ENTITY.SET_ENTITY_COORDS(players.user_ped(), lester_coords.x, lester_coords.y, lester_coords.z, true, true, true, true)
     util.yield(500)
-    menu.trigger_commands("skipcutscene")
+    addict.trigger_commands("skipcutscene")
     util.yield(100)
     ENTITY.SET_ENTITY_COORDS(players.user_ped(), current_pos.x, current_pos.y, current_pos.z, true, true, true, true)
 
@@ -2412,7 +2409,7 @@ end)
 
 items.presets.arcade.choice = items.presets.arcade.root:list_select("Money", {}, "The arcade trade-in price", options, 1, function() end)
 items.presets.arcade.root:toggle_loop("Enable", {}, "Enable the preset value for your arcade", function()
-    local ref =  menu.ref_by_rel_path(items.presets.arcade.root, "Enable")
+    local ref =  addict.ref_by_rel_path(items.presets.arcade.root, "Enable")
     local value = convert_value(options[items.presets.arcade.choice.value]) 
 
     if settings.ownership_check then
@@ -2424,7 +2421,7 @@ items.presets.arcade.root:toggle_loop("Enable", {}, "Enable the preset value for
     end
 
     if not STATS.STAT_SET_INT(stats.arcade, ((value - 255000) * 2) + 4500000, true) then
-        menu.ref_by_rel_path(items.presets.arcade.root, "Enable").value = false
+        addict.ref_by_rel_path(items.presets.arcade.root, "Enable").value = false
         util.toast("[Recovery]: Failed to set arcade trade-in price")
     end
 
@@ -2436,7 +2433,7 @@ end)
 
 items.presets.autoshop.choice = items.presets.autoshop.root:list_select("Money", {}, "The autoshop trade-in price", options, 1, function() end)
 items.presets.autoshop.root:toggle_loop("Enable", {}, "Enable the preset value for your autoshop", function()
-    local ref = menu.ref_by_rel_path(items.presets.autoshop.root, "Enable")
+    local ref = addict.ref_by_rel_path(items.presets.autoshop.root, "Enable")
     local value = convert_value(options[items.presets.autoshop.choice.value])
     
     if settings.ownership_check then
@@ -2448,7 +2445,7 @@ items.presets.autoshop.root:toggle_loop("Enable", {}, "Enable the preset value f
     end
 
     if not STATS.STAT_SET_INT(stats.autoshop, (value * 2) + 4500000, true) then
-        menu.ref_by_rel_path(items.presets.autoshop.root, "Enable").value = false
+        addict.ref_by_rel_path(items.presets.autoshop.root, "Enable").value = false
         util.toast("[Recovery]: Failed to set autoshop trade-in price")
     end
 
@@ -2460,7 +2457,7 @@ end)
 
 items.presets.hanger.choice = items.presets.hanger.root:list_select("Money", {}, "The hanger trade-in price", options, 1, function() end)
 items.presets.hanger.root:toggle_loop("Enable", {}, "Enable the preset value for your hanger", function()
-    local ref = menu.ref_by_rel_path(items.presets.hanger.root, "Enable")
+    local ref = addict.ref_by_rel_path(items.presets.hanger.root, "Enable")
     local value = convert_value(options[items.presets.hanger.choice.value])
 
     if settings.ownership_check then
@@ -2472,7 +2469,7 @@ items.presets.hanger.root:toggle_loop("Enable", {}, "Enable the preset value for
     end
 
     if not STATS.STAT_SET_INT(stats.hanger, ((value - 645000) * 2) + 4500000, true) then
-        menu.ref_by_rel_path(items.presets.hanger.root, "Enable").value = false
+        addict.ref_by_rel_path(items.presets.hanger.root, "Enable").value = false
         util.toast("[Recovery]: Failed to set hanger trade-in price")
     end
 
@@ -2484,7 +2481,7 @@ end)
 
 items.presets.facility.choice = items.presets.facility.root:list_select("Money", {}, "The facility trade-in price", options, 1, function() end)
 items.presets.facility.root:toggle_loop("Enable", {}, "Enable the preset value for your facility", function()
-    local ref = menu.ref_by_rel_path(items.presets.facility.root, "Enable")
+    local ref = addict.ref_by_rel_path(items.presets.facility.root, "Enable")
     local value = convert_value(options[items.presets.facility.choice.value])
 
     if settings.ownership_check then
@@ -2496,7 +2493,7 @@ items.presets.facility.root:toggle_loop("Enable", {}, "Enable the preset value f
     end
 
     if not STATS.STAT_SET_INT(stats.facility, (value * 2) + 4500000, true) then
-        menu.ref_by_rel_path(items.presets.facility.root, "Enable").value = false
+        addict.ref_by_rel_path(items.presets.facility.root, "Enable").value = false
         util.toast("[Recovery]: Failed to set facility trade-in price")
     end
 
@@ -2508,7 +2505,7 @@ end)
 
 items.presets.agency.choice = items.presets.agency.root:list_select("Money", {}, "The agency trade-in price", options, 1, function() end)
 items.presets.agency.root:toggle_loop("Enable", {}, "Enable the preset value for your agency", function()
-    local ref = menu.ref_by_rel_path(items.presets.agency.root, "Enable")
+    local ref = addict.ref_by_rel_path(items.presets.agency.root, "Enable")
     local value = convert_value(options[items.presets.agency.choice.value])
     
     if settings.ownership_check then
@@ -2520,7 +2517,7 @@ items.presets.agency.root:toggle_loop("Enable", {}, "Enable the preset value for
     end
 
     if not STATS.STAT_SET_INT(stats.agency, ((value - 897500) * 2) + 4500000, true) then
-        menu.ref_by_rel_path(items.presets.agency.root, "Enable").value = false
+        addict.ref_by_rel_path(items.presets.agency.root, "Enable").value = false
         util.toast("[Recovery]: Failed to set agency trade-in price")
     end
 
@@ -2558,8 +2555,8 @@ items.custom.nightclub.root:text_input("Money", {"nightclubvalue"}, "The nightcl
 end, "0")
 
 items.custom.nightclub.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.nightclub.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.nightclub.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.nightclub.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.nightclub.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.nightclub_owned) then
@@ -2599,8 +2596,8 @@ items.custom.arcade.root:text_input("Money", {"arcadevalue"}, "The arcade trade-
 end, "0")
 
 items.custom.arcade.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.arcade.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.arcade.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.arcade.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.arcade.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.arcade_owned) then
@@ -2640,8 +2637,8 @@ items.custom.autoshop.root:text_input("Money", {"autoshopvalue"}, "The autoshop 
 end, "0")
 
 items.custom.autoshop.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.autoshop.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.autoshop.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.autoshop.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.autoshop.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.autoshop_owned) then
@@ -2681,8 +2678,8 @@ items.custom.hanger.root:text_input("Money", {"hangervalue"}, "The hanger trade-
 end, "0")
 
 items.custom.hanger.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.hanger.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.hanger.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.hanger.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.hanger.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.hanger_owned) then
@@ -2722,8 +2719,8 @@ items.custom.facility.root:text_input("Money", {"facilityvalue"}, "The facility 
 end, "0")
 
 items.custom.facility.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.facility.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.facility.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.facility.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.facility.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.facility_owned) then
@@ -2763,8 +2760,8 @@ items.custom.agency.root:text_input("Money", {"agencyvalue"}, "The agency trade-
 end, "0")
 
 items.custom.agency.root:toggle_loop("Enable", {}, "", function()
-    local ref = menu.ref_by_rel_path(items.custom.agency.root, "Enable")
-    local value = tonumber(menu.ref_by_rel_path(items.custom.agency.root, "Money").value)
+    local ref = addict.ref_by_rel_path(items.custom.agency.root, "Enable")
+    local value = tonumber(addict.ref_by_rel_path(items.custom.agency.root, "Money").value)
     
     if settings.ownership_check then
         if not is_owned(stats.agency_owned) then
@@ -2786,7 +2783,7 @@ items.custom.agency.root:toggle_loop("Enable", {}, "", function()
 end)
 
 items.dax_mission.root = root:list("Dax Mission", {"daxmission"}, "Make easy money from the dax mission required to unlock the freakshop", function() util.show_corner_help("Check 'enable cash boost' option and start one of the new dax missions (if you haven't completed the first mission the 'Start Mission' will automatically start the first mission for you, the R on the map at sandy shores), once the mission has started you need to kill yourself immediately to fail the mission and you will recieve $1,000,000, take too long to kill yourself during the mission and you won\'t get any money") end)
-items.dax_mission.root:divider("Help", "How to use this menu")
+items.dax_mission.root:divider("Help", "How to use this addict")
 items.dax_mission.root:action("How To Use", {}, "", function()
     util.show_corner_help("Check 'enable cash boost' option and start one of the new dax missions (if you haven't completed the first mission the 'Start Mission' will automatically start the first mission for you, the R on the map at sandy shores), once the mission has started you need to kill yourself immediately to fail the mission and you will recieve $1,000,000, take too long to kill yourself during the mission and you won\'t get any money")
 end)
@@ -2801,7 +2798,7 @@ end)
 
 items.dax_mission.root:toggle_loop("Enable Cash Boost", {}, "", function()
     local cash = tunable(0)
-    local ref = menu.ref_by_rel_path(items.dax_mission.root, "Enable RP Boost")
+    local ref = addict.ref_by_rel_path(items.dax_mission.root, "Enable RP Boost")
     
     if not ref.value then
         memory.write_float(cash, 5000.0) -- setting this value higher causes you to get no money (1m is the limit)
@@ -2811,7 +2808,7 @@ end)
 items.dax_mission.root:toggle_loop("Enable RP Boost", {}, "", function()
     local cash = tunable(0)
     local rp = tunable(1)
-    local ref = menu.ref_by_rel_path(items.dax_mission.root, "Enable Cash Boost")
+    local ref = addict.ref_by_rel_path(items.dax_mission.root, "Enable Cash Boost")
     
     memory.write_float(rp, 2000.0)
     if ref.value then
@@ -2824,12 +2821,12 @@ items.casino_figures.root:toggle_loop("Enable", {}, "Drops figures that give you
     local cash = tunable(27123)
 
     memory.write_int(cash, 200000)
-    menu.trigger_commands("rp" .. players.get_name(players.user()) .. " on")
+    addict.trigger_commands("rp" .. players.get_name(players.user()) .. " on")
 end, function()
     local cash = tunable(27123)
 
     memory.write_int(cash, 1000)
-    menu.trigger_commands("rp" .. players.get_name(players.user()) .. " off")
+    addict.trigger_commands("rp" .. players.get_name(players.user()) .. " off")
 end)
 
 items.casino_figures.root:toggle("Disable RP", {}, "Disables RP from casino figures", function(state)
@@ -2843,28 +2840,28 @@ items.casino_figures.root:toggle("Disable RP", {}, "Disables RP from casino figu
 end)
 
 
-	cargoloo = menu.list(Recovery, "Cargo Loop (Open MB First)", {}, "", function(); end)
+	cargoloo = addict.list(Recovery, "Cargo Loop (Open MB First)", {}, "", function(); end)
 
-	menu.hyperlink(cargoloo, "How to Use Tutorial", "https://drive.google.com/file/d/1GTggKA5O1Tl2IHvrH-WeV83XoAw26Y-s/view?usp=sharing")
+	addict.hyperlink(cargoloo, "How to Use Tutorial", "https://drive.google.com/file/d/1GTggKA5O1Tl2IHvrH-WeV83XoAw26Y-s/view?usp=sharing")
 
-local main_menu = menu.list(cargoloo, "Options", {}, "")
+local main_addict = addict.list(cargoloo, "Options", {}, "")
 
-menu.divider(main_menu, "Settings")
-opti_settings = menu.toggle(main_menu,'Optimised Settings', {""}, 'Improve FPS and stability of the lua.\nNOTE: Reducing resolution and play on windowed mode also helps a lot.', function()
-	if menu.get_value(opti_settings) then
+addict.divider(main_addict, "Settings")
+opti_settings = addict.toggle(main_addict,'Optimised Settings', {""}, 'Improve FPS and stability of the lua.\nNOTE: Reducing resolution and play on windowed mode also helps a lot.', function()
+	if addict.get_value(opti_settings) then
         opti_value = "on"
     else
         opti_value = "off"
     end
-    menu.trigger_commands("anticrashcamera "..opti_value)
-    menu.trigger_commands("potatomode "..opti_value)
-    menu.trigger_commands("nosky "..opti_value)
-    menu.trigger_commands("noidlekick "..opti_value)
-    menu.trigger_commands("noidlecam "..opti_value)
+    addict.trigger_commands("anticrashcamera "..opti_value)
+    addict.trigger_commands("potatomode "..opti_value)
+    addict.trigger_commands("nosky "..opti_value)
+    addict.trigger_commands("noidlekick "..opti_value)
+    addict.trigger_commands("noidlecam "..opti_value)
 end)
 
-moneyMultiplier = menu.toggle_loop(main_menu, 'Disable RP', {""}, 'Dont earn anymore RP with cargo sells.', function()
-	if menu.get_value(moneyMultiplier) then
+moneyMultiplier = addict.toggle_loop(main_addict, 'Disable RP', {""}, 'Dont earn anymore RP with cargo sells.', function()
+	if addict.get_value(moneyMultiplier) then
         util.draw_debug_text("RP Disabled")
 		memory.write_float(memory.script_global(262145 + 1), 0)
 	else
@@ -2872,13 +2869,13 @@ moneyMultiplier = menu.toggle_loop(main_menu, 'Disable RP', {""}, 'Dont earn any
 	end
 end)
 
-menu.action(main_menu,'Solo Spoofed Session', {""}, 'Reduces even more risks.\nNOTE: Will make you go in solo session with spoofed session so you cant be crashed or checked by R* Admins.', function()
-    menu.trigger_commands("spoofsession storymode")
-    menu.trigger_commands("go solo")
+addict.action(main_addict,'Solo Spoofed Session', {""}, 'Reduces even more risks.\nNOTE: Will make you go in solo session with spoofed session so you cant be crashed or checked by R* Admins.', function()
+    addict.trigger_commands("spoofsession storymode")
+    addict.trigger_commands("go solo")
 end)
 
-menu.action(main_menu, "Send To Storymode If Stuck", {"gostorymode"}, "Press if the warehouse screen/scaleform gets stuck. It will forcequit you to SP, but you at least wont have to restart your game.", function()
-    menu.trigger_commands("forcequittosp")
+addict.action(main_addict, "Send To Storymode If Stuck", {"gostorymode"}, "Press if the warehouse screen/scaleform gets stuck. It will forcequit you to SP, but you at least wont have to restart your game.", function()
+    addict.trigger_commands("forcequittosp")
 end)
 
 
@@ -2895,7 +2892,7 @@ local function BitTest(address, offset)
 end
 
 local function does_path_exist(path)
-    return menu.ref_by_path(path):isValid()
+    return addict.ref_by_path(path):isValid()
 end
 
 local function wait_until_path_is_available(path, message)
@@ -2957,21 +2954,21 @@ elseif idiot_proof and not SCRIPT_SILENT_START then
     util.toast("MB is already loaded. Nice!")
 end
 
-local selected_whouse_ref = menu.ref_by_path(main_mb_path .. relative_paths.selected_whouse)
-local tp_to_whouse_ref = menu.ref_by_path(main_mb_path .. relative_paths.teleport_to_whouse)
-local sell_a_crate_ref = menu.ref_by_path(main_mb_path .. relative_paths.sellcrate)
+local selected_whouse_ref = addict.ref_by_path(main_mb_path .. relative_paths.selected_whouse)
+local tp_to_whouse_ref = addict.ref_by_path(main_mb_path .. relative_paths.teleport_to_whouse)
+local sell_a_crate_ref = addict.ref_by_path(main_mb_path .. relative_paths.sellcrate)
 
 local settings_to_apply = {
-    ["noidlekick"] = {ref=menu.ref_by_path("Online>Enhancements>Disable Idle/AFK Kick", 38),         state=true},
-    ["noidlecam"] = {ref=menu.ref_by_path("Game>Disables>Disable Idle Camera", 38),                 state=true},
-    ["monitorcargo"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.monitor_cargo),            state=true},
-    ["maxsellprice"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.max_sell_price),           state=true},
-    ["nobuycd"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.nobuycd),                  state=true},
-    ["nosellcd"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.nosellcd),                 state=true},
-    ["acbuy"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.acbuy),                    state=true},
-    ["acsell"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.acsell),                   state=true},
-    ["max_crate_sourcing_amount"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.max_crate_sourcing_amount),state=true},
-    ["minimize_delivery_time"] = {ref=menu.ref_by_path(main_mb_path .. relative_paths.minimize_delivery_time),   state=true},
+    ["noidlekick"] = {ref=addict.ref_by_path("Online>Enhancements>Disable Idle/AFK Kick", 38),         state=true},
+    ["noidlecam"] = {ref=addict.ref_by_path("Game>Disables>Disable Idle Camera", 38),                 state=true},
+    ["monitorcargo"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.monitor_cargo),            state=true},
+    ["maxsellprice"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.max_sell_price),           state=true},
+    ["nobuycd"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.nobuycd),                  state=true},
+    ["nosellcd"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.nosellcd),                 state=true},
+    ["acbuy"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.acbuy),                    state=true},
+    ["acsell"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.acsell),                   state=true},
+    ["max_crate_sourcing_amount"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.max_crate_sourcing_amount),state=true},
+    ["minimize_delivery_time"] = {ref=addict.ref_by_path(main_mb_path .. relative_paths.minimize_delivery_time),   state=true},
 }
 
 local my_root = cargoloo
@@ -2982,9 +2979,9 @@ my_root:slider("Sell delay", {"crateselldelay"}, "The delay in MS to sell crates
 end)
 my_root:action("Get crates", {"fillcurrentwhouse"}, "", function()
     if util.is_session_started() then
-        menu.set_value(settings_to_apply.max_crate_sourcing_amount.ref, true)
-        menu.set_value(settings_to_apply.minimize_delivery_time.ref, true)
-        STATS.SET_PACKED_STAT_BOOL_CODE(32359 + menu.get_value(selected_whouse_ref), true, -1)
+        addict.set_value(settings_to_apply.max_crate_sourcing_amount.ref, true)
+        addict.set_value(settings_to_apply.minimize_delivery_time.ref, true)
+        STATS.SET_PACKED_STAT_BOOL_CODE(32359 + addict.get_value(selected_whouse_ref), true, -1)
     end
 end)
 local appsecuroserv = util.joaat("appsecuroserv")
@@ -2992,7 +2989,7 @@ local money_loop = false
 my_root:toggle("Sell crates loop", {"sellcratesloop"}, "Note: Auto-sells the crates of the CURRENTLY SELECTED WAREHOUSE IN MB, and skips transaction errors.", function(on)
     util.toast("Warning! Do not tab out of GTA V or you will have to force quit to story mode!")
     util.show_corner_help("Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.")
-    menu.trigger_commands("accepterrors")
+    addict.trigger_commands("accepterrors")
     money_loop = on
     while true do 
         if not money_loop then 
@@ -3002,12 +2999,12 @@ my_root:toggle("Sell crates loop", {"sellcratesloop"}, "Note: Auto-sells the cra
             -- force required settings
             for _, data in pairs(settings_to_apply) do
                 assert(data.ref:isValid(), "MusinessBanager is not started")
-                if menu.get_value(data.ref) ~= data.state then
-                    menu.set_value(data.ref, data.state)
+                if addict.get_value(data.ref) ~= data.state then
+                    addict.set_value(data.ref, data.state)
                 end
             end
-            STATS.SET_PACKED_STAT_BOOL_CODE(32359 + menu.get_value(selected_whouse_ref), true, -1)
-            menu.trigger_command(sell_a_crate_ref)
+            STATS.SET_PACKED_STAT_BOOL_CODE(32359 + addict.get_value(selected_whouse_ref), true, -1)
+            addict.trigger_command(sell_a_crate_ref)
             util.yield(800)
             PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 238, 1.0)
             local end_time = os.time() + 2
@@ -3179,40 +3176,40 @@ function create_timer_entry(data)
     local this_timer_path = store_dir .. '\\' .. timer_name .. '.lua'
     local fmt_name = timer_name:gsub(' ', '')
     if all_timer_lists[timer_name] == nil then
-        local this_timer_root = menu.list(menu.my_root(), timer_name, {'Addict' .. fmt_name}, timer_desc)
+        local this_timer_root = addict.list(addict.my_root(), timer_name, {'Addict' .. fmt_name}, timer_desc)
         all_timer_lists[timer_name] = this_timer_root
-        menu.toggle_loop(this_timer_root, "Run timer", {"runtimer" .. timer_name}, "", function(click_type)
-            menu.trigger_commands(timer_commands)
+        addict.toggle_loop(this_timer_root, "Run timer", {"runtimer" .. timer_name}, "", function(click_type)
+            addict.trigger_commands(timer_commands)
             util.yield(timer_delay)
         end)
 
-        menu.text_input(this_timer_root, "Description", {"Addictsetdesc" .. fmt_name}, "", function(on_input)
+        addict.text_input(this_timer_root, "Description", {"Addictsetdesc" .. fmt_name}, "", function(on_input)
             timer_desc = on_input
             data_copy['timer_desc'] = on_input
             table.save(data_copy, this_timer_path)
-            menu.set_help_text(this_timer_root, timer_desc)
+            addict.set_help_text(this_timer_root, timer_desc)
         end, timer_desc)
 
-        menu.text_input(this_timer_root, "Command(s)", {"Addictsetcommands" .. fmt_name}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
+        addict.text_input(this_timer_root, "Command(s)", {"Addictsetcommands" .. fmt_name}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
             timer_commands = on_input
             data_copy['timer_commands'] = on_input
             table.save(data_copy, this_timer_path)
         end, timer_commands)
 
-        menu.slider(this_timer_root, "Timer delay (MS)", {fmt_name .. "delay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
+        addict.slider(this_timer_root, "Timer delay (MS)", {fmt_name .. "delay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
             timer_delay = s
             data_copy['timer_delay'] = s
             table.save(data_copy, this_timer_path)
         end)
 
-        menu.action(this_timer_root, "Delete timer", {}, "Delete this timer\'s file.", function(click_type)
+        addict.action(this_timer_root, "Delete timer", {}, "Delete this timer\'s file.", function(click_type)
             ok, err = os.remove(this_timer_path)
             if not ok then
                 util.toast("Timer could not be removed: " .. err)
             else
                 all_timer_lists[timer_name] = nil
                 util.toast("Timer removed.")
-                menu.delete(this_timer_root)
+                addict.delete(this_timer_root)
                 parse_all_timer_files()
             end
         end)
@@ -3232,31 +3229,18 @@ function SET_INT_GLOBAL(global, value)
     memory.write_int(memory.script_global(global), value)
 end
 
-function STEALTH_LOOP_COMBINED()
+cashloop = addict.list(Recovery, "$500k + $750k Loop", {}, "", function(); end)
+
+addict.toggle_loop(cashloop, "Start $500k + $750k Loop", {""}, "500k + 750k Loop Every 10 Seconds. Warning! Dont spend over 50 million a day. If cash stops it will start again in 60 seconds.", function()
     SET_INT_GLOBAL(1968313, 1)
- util.log("$ 500K Added")
-  util.yield(1)
+    util.log("$ 500K Added")
+    util.yield(1)
     SET_INT_GLOBAL(1968313, 2)
     util.log("$ 750K Added")
-  util.yield(1)
- end
- function timer(timer)
-     i = timer * 1400
-     x = 0
-     while(x < i)
-     do
-         wait()
-         x = x + 1
-     end
- end
-
-cashloop = menu.list(Recovery, "500k + 750k Loop", {}, "$$$ Loop", function(); end)
-
-menu.toggle_loop(cashloop, 'Start $$$ Loop', {""}, '500k + 750k Loop Every 10 Seconds. Warning! Dont spend over 50 million a day. If cash stops it will start again in 60 seconds.', function()
-    STEALTH_LOOP_COMBINED()
-    menu.trigger_commands("accepterrors")
+    util.yield(1)
+    addict.trigger_commands("accepterrors")
     util.yield(10000)
-    menu.trigger_commands("accepterrors")
+    addict.trigger_commands("accepterrors")
 end)
 
 util.create_thread(function()
@@ -3267,8 +3251,8 @@ util.create_thread(function()
 end
 )
 
-local function player_toggle_loop(root, pid, menu_name, command_names, help_text, callback)
-    return menu.toggle_loop(root, menu_name, command_names, help_text, function()
+local function player_toggle_loop(root, pid, addict_name, command_names, help_text, callback)
+    return addict.toggle_loop(root, addict_name, command_names, help_text, function()
         if not players.exists(pid) then util.stop_thread() end
         callback()
     end)
@@ -3358,7 +3342,7 @@ end
 function do_fade_in(pid) 
     CAM.DO_SCREEN_FADE_OUT(500)
     util.yield(500)
-    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " on")
+    addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " on")
     orbital_cannon_effects(true)
     util.yield(1000)
     CAM.DO_SCREEN_FADE_IN(1000)
@@ -3369,16 +3353,16 @@ function do_fade_out(pid)
     CAM.DO_SCREEN_FADE_OUT(1000)
     util.yield(1000)
     orbital_cannon_effects(false)
-    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off;nightvision off")
+    addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off;nightvision off")
     util.yield(1000)
     CAM.DO_SCREEN_FADE_IN(1000)
     waiting = false
 end
 function orbital_cannon_effects(on)
     if on then
-        menu.trigger_commands("becomeorbitalcannon on;nightvision on;fov 130")
+        addict.trigger_commands("becomeorbitalcannon on;nightvision on;fov 130")
     else 
-        menu.trigger_commands("becomeorbitalcannon off;fov 0;nightvision off")
+        addict.trigger_commands("becomeorbitalcannon off;fov 0;nightvision off")
     end
 end
 function orbital(pid) 
@@ -3508,38 +3492,38 @@ function upgrade_vehicle(player)
 end
 
 function candy_paint(player)
-    menu.trigger_commands("perfwithspoiler")
-    menu.trigger_commands("vehprimaryred" .. " 80")
-    menu.trigger_commands("vehprimarygreen" .. " 0")
-    menu.trigger_commands("vehprimaryblue" .. " 255")
-    local Chrome_Paint_Primary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
+    addict.trigger_commands("perfwithspoiler")
+    addict.trigger_commands("vehprimaryred" .. " 80")
+    addict.trigger_commands("vehprimarygreen" .. " 0")
+    addict.trigger_commands("vehprimaryblue" .. " 255")
+    local Chrome_Paint_Primary = addict.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
     util.yield(500)
-    menu.trigger_command(Chrome_Paint_Primary)
-    local Chrome_Paint_Secondary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
-    menu.trigger_commands("vehsecondaryred" .. " 80")
-    menu.trigger_commands("vehsecondarygreen" .. " 0")
-    menu.trigger_commands("vehsecondaryblue" .. " 255")
+    addict.trigger_command(Chrome_Paint_Primary)
+    local Chrome_Paint_Secondary = addict.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
+    addict.trigger_commands("vehsecondaryred" .. " 80")
+    addict.trigger_commands("vehsecondarygreen" .. " 0")
+    addict.trigger_commands("vehsecondaryblue" .. " 255")
     util.yield(500)
-    menu.trigger_command(Chrome_Paint_Secondary)
+    addict.trigger_command(Chrome_Paint_Secondary)
     VEHICLE.SET_VEHICLE_WINDOW_TINT(vehicle, 1)
     VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "xCandyx")
 end
 
 function upgrade_own_vehicle_random(player)
         util.yield(1000)
-        menu.trigger_commands("tune")
-        menu.trigger_commands("vehprimaryred" .. " 80")
-        menu.trigger_commands("vehprimarygreen" .. " 0")
-        menu.trigger_commands("vehprimaryblue" .. " 255")
-        local Chrome_Paint_Primary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
+        addict.trigger_commands("tune")
+        addict.trigger_commands("vehprimaryred" .. " 80")
+        addict.trigger_commands("vehprimarygreen" .. " 0")
+        addict.trigger_commands("vehprimaryblue" .. " 255")
+        local Chrome_Paint_Primary = addict.ref_by_path("Vehicle>Los Santos Customs>Appearance>Primary Colour>Finish>Chrome")
         util.yield(3000)
-        menu.trigger_command(Chrome_Paint_Primary)
-        local Chrome_Paint_Secondary = menu.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
-        menu.trigger_commands("vehsecondaryred" .. " 80")
-        menu.trigger_commands("vehsecondarygreen" .. " 0")
-        menu.trigger_commands("vehsecondaryblue" .. " 255")
+        addict.trigger_command(Chrome_Paint_Primary)
+        local Chrome_Paint_Secondary = addict.ref_by_path("Vehicle>Los Santos Customs>Appearance>Secondary Colour>Finish>Chrome")
+        addict.trigger_commands("vehsecondaryred" .. " 80")
+        addict.trigger_commands("vehsecondarygreen" .. " 0")
+        addict.trigger_commands("vehsecondaryblue" .. " 255")
         util.yield(3000)
-        menu.trigger_command(Chrome_Paint_Secondary)
+        addict.trigger_command(Chrome_Paint_Secondary)
         VEHICLE.SET_VEHICLE_WINDOW_TINT(vehicle, 1)
         VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Addict")
         util.toast("RC Bombs are now ready")
@@ -4890,28 +4874,15 @@ local all_peds_list = {
     "A_C_Boar",
 }
 
-
-array_kick = function(pid)
-    for i, v in pairs(kicks) do
-        arg1 = math.random(-2147483647, 2147483647)
-        arg2 = math.random(-1987543, 1987543)
-        arg3 = math.random(-19, 19)
-        util.trigger_script_event(1 << pid, {v, pid, arg1, arg3, arg2, arg2, arg1, arg1, arg3, arg3, arg1, arg3, arg2, arg3, arg1, arg1, arg2, arg3, arg1, arg2, arg2, arg3, arg3})
-        util.yield()
-    end
-    util.toast("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
-    util.log("Kicked " .. PLAYER.GET_PLAYER_NAME(pid))
-end
-
 local resolves = {
 	"Hahaha",
 	"Bitch!",
     "Whatever Fuck This! :P"
 }
 
-custselc = menu.list(menu.my_root(), "Select Pussies", {}, "", function(); end)
+custselc = addict.list(addict.my_root(), "Select Pussies", {}, "", function(); end)
 
-menu.toggle(custselc, "Exclude Selected", {"excludepussies"}, "If toggled it will select all players apart from selected players.", function(on_toggle)
+addict.toggle(custselc, "Exclude Selected", {"excludepussies"}, "If toggled it will select all players apart from selected players.", function(on_toggle)
     if on_toggle then
         excludeselected = true
     else
@@ -4932,457 +4903,457 @@ end
 
 local chaos, gravity, speed = false, true, 100
 
-menu.action(custselc, "Go to Players List", {"gotopl"}, "Shotcut for players list.", function()
-    menu.trigger_commands("playerlist")
+addict.action(custselc, "Go to Players List", {"gotopl"}, "Shotcut for players list.", function()
+    addict.trigger_commands("playerlist")
 end)
 
-menu.divider(custselc, "Slap Man")
+addict.divider(custselc, "Slap Man")
 
 
-rp_cash_loops = menu.list(custselc, "Cash & RP Loops", {}, "", function(); end)
+rp_cash_loops = addict.list(custselc, "Cash & RP Loops", {}, "", function(); end)
 
-menu.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
+addict.action(rp_cash_loops, "Give Crazy Loop", {"crazyloopto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("crazyloop" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(rp_cash_loops, "Drop Cash", {"dropcashto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
+addict.action(rp_cash_loops, "Drop Cash", {"dropcashto"}, "Warning! 8 People Max Or Script Will Not Cope.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("dropcash" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(rp_cash_loops, "Give RP Steadily", {"giverpstedto"}, "", function()
+addict.action(rp_cash_loops, "Give RP Steadily", {"giverpstedto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("giverpsted" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(rp_cash_loops, "Give RP Loop", {"giverpto"}, "", function()
+addict.action(rp_cash_loops, "Give RP Loop", {"giverpto"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("rp" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-helpful_trolling = menu.list(custselc, "Trolling Or Helpful", {}, "", function(); end)
+helpful_trolling = addict.list(custselc, "Trolling Or Helpful", {}, "", function(); end)
 
-menu.divider(helpful_trolling, "Trolling")
+addict.divider(helpful_trolling, "Trolling")
 
-menu.action(helpful_trolling, "Candy Upgrade Vehicle", {"candyvehs"}, "Sets vehicle modifications to pink with candy canes.", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        end
-    end
-end)
-
-menu.action(helpful_trolling, "Send UFO Attacker", {"sendufo"}, "Sends a ufo to hunt them and kil them.", function()
+addict.action(helpful_trolling, "Candy Upgrade Vehicle", {"candyvehs"}, "Sets vehicle modifications to pink with candy canes.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ugveh" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Bounty All", {}, "", function()
+addict.action(helpful_trolling, "Send UFO Attacker", {"sendufo"}, "Sends a ufo to hunt them and kil them.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("bountyall 10000" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("bountyall 10000" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("sendufo" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Steal All Vehicles", {"stealall"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
+addict.action(helpful_trolling, "Bounty All", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("bountyall 10000" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("bountyall 10000" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Kick From Vehicle", {}, "", function()
+addict.action(helpful_trolling, "Steal All Vehicles", {"stealall"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
-                menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("steal" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Kick From Interior", {}, "", function()
+addict.action(helpful_trolling, "Kick From Vehicle", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("interiorkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("interiorkick" .. PLAYER.GET_PLAYER_NAME(pids))
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pids)
+                addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Ceo Kick", {}, "", function()
+addict.action(helpful_trolling, "Kick From Interior", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("interiorkick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("interiorkick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Give Sirens", {}, "", function()
+addict.action(helpful_trolling, "Ceo Kick", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Give Wanted", {}, "", function()
+addict.action(helpful_trolling, "Give Sirens", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("siren" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-
-menu.action(helpful_trolling, "Give Vehicle Godmode Off", {"givegodmodeoffall"}, "", function()
+addict.action(helpful_trolling, "Give Wanted", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("givewanted" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.divider(helpful_trolling, "Helpful")
 
-menu.action(helpful_trolling, "Give Vehicle Godmode", {"givegodmodeall"}, "", function()
+addict.action(helpful_trolling, "Give Vehicle Godmode Off", {"givegodmodeoffall"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("invoff" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Max Player", {"maxall"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function()
+addict.divider(helpful_trolling, "Helpful")
+
+addict.action(helpful_trolling, "Give Vehicle Godmode", {"givegodmodeall"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("invon" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(helpful_trolling, "Send Friend Request", {"sendfriend"}, "", function()
+addict.action(helpful_trolling, "Max Player", {"maxall"}, "Turns on auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("max" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-tp_players = menu.list(custselc, "Teleports", {}, "", function(); end)
+addict.action(helpful_trolling, "Send Friend Request", {"sendfriend"}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("befriend" .. PLAYER.GET_PLAYER_NAME(pids))
+            end
+        end
+    end
+end)
 
-menu.action(tp_players, "TP Players", {"tpplayers"}, "Teleports to you.", function()
+tp_players = addict.list(custselc, "Teleports", {}, "", function(); end)
+
+addict.action(tp_players, "TP Players", {"tpplayers"}, "Teleports to you.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("summon " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("summon " .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("summon " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("summon " .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Give them a second to get on..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(tp_players, "TP Players Near Me", {"tpplayersnear"}, "Teleports near to you.", function()
+addict.action(tp_players, "TP Players Near Me", {"tpplayersnear"}, "Teleports near to you.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("aptme " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("aptme " .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
                 util.yield(2000)
-                menu.trigger_commands("aptme " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("aptme " .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(tp_players, "TP Players To Casino", {"autocasinoall"}, "It will send your selected players to the table.", function()
+addict.action(tp_players, "TP Players To Casino", {"autocasinoall"}, "It will send your selected players to the table.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("autocasino " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("autocasino " .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("autocasino " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("autocasino " .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(tp_players, "TP Players To Their Waypoint", {"towaypoints"}, "", function()
+addict.action(tp_players, "TP Players To Their Waypoint", {"towaypoints"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("wptp " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("wptp " .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("wptp " .. PLAYER.GET_PLAYER_NAME(pids))
-                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        end
-    end
-end)
-
-menu.action(tp_players, "TP Players To My Waypoint", {"tomywaypoint"}, "", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("wpsummon " .. PLAYER.GET_PLAYER_NAME(pids))
-                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("wpsummon " .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("wptp " .. PLAYER.GET_PLAYER_NAME(pids))
                 util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(tp_players, "TP Player To MazeBank", {"tpplayersmazebank"}, "", function()
-    menu.trigger_commands("apt90all " .. PLAYER.GET_PLAYER_NAME(pids))
-end)
-
-crashes_kicks = menu.list(custselc, "Crashes & Kicks", {}, "", function(); end)
-
-menu.action(crashes_kicks, "Next Gen Crash", {}, "", function()
+addict.action(tp_players, "TP Players To My Waypoint", {"tomywaypoint"}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("wpsummon " .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("wpsummon " .. PLAYER.GET_PLAYER_NAME(pids))
+                util.toast("Teleporting..." .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(crashes_kicks, "Steamroller Crash", {}, "", function()
+addict.action(tp_players, "TP Player To MazeBank", {"tpplayersmazebank"}, "", function()
+    addict.trigger_commands("apt90all " .. PLAYER.GET_PLAYER_NAME(pids))
+end)
+
+crashes_kicks = addict.list(custselc, "Crashes & Kicks", {}, "", function(); end)
+
+addict.action(crashes_kicks, "Next Gen Crash", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(crashes_kicks, "Desync Kick", {desynckick}, "", function()
+addict.action(crashes_kicks, "Steamroller Crash", {}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("steamroll" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(crashes_kicks, "Breakup Kick", {"break"}, "Kicks Them.", function()
+addict.action(crashes_kicks, "Desync Kick", {desynckick}, "", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
-                util.yield()
+                addict.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
-                util.yield()
+                addict.trigger_commands("desynckick" .. PLAYER.GET_PLAYER_NAME(pids))
             end
         end
     end
 end)
 
-menu.action(crashes_kicks, "Blast Kick", {}, "Blocks Joins And Kicks Them.", function()
+addict.action(crashes_kicks, "Breakup Kick", {"break"}, "Kicks Them.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.yield()
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
-                util.yield()
-            end
-        end
-    end
-end)
-
-menu.action(crashes_kicks, "Block Player", {}, "", function()
-    for pids = 0, 31 do
-        if excludeselected then
-            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
-                util.yield()
-            end
-        else
-            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                menu.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.yield()
             end
         end
     end
 end)
 
-menu.divider(custselc, "GG's")
+addict.action(crashes_kicks, "Blast Kick", {}, "Blocks Joins And Kicks Them.", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("blast" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        end
+    end
+end)
+
+addict.action(crashes_kicks, "Block Player", {}, "", function()
+    for pids = 0, 31 do
+        if excludeselected then
+            if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        else
+            if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
+                addict.trigger_commands("historyblock" .. PLAYER.GET_PLAYER_NAME(pids))
+                util.yield()
+            end
+        end
+    end
+end)
+
+addict.divider(custselc, "GG's")
 
 for pids = 0, 31 do
     if players.exists(pids) then
-        cmd_id[pids] = menu.toggle(custselc, tostring(PLAYER.GET_PLAYER_NAME(pids)), {}, "PID - ".. pids, function(on_toggle)
+        cmd_id[pids] = addict.toggle(custselc, tostring(PLAYER.GET_PLAYER_NAME(pids)), {}, "PID - ".. pids, function(on_toggle)
             if on_toggle then
                 selectedplayer[pids] = true
             else
@@ -5396,109 +5367,109 @@ end
 
 function do_label_preset(label, text)
     --util.log("Set label " .. label .. " > " .. text)
-    menu.trigger_commands("addlabel " .. label)
+    addict.trigger_commands("addlabel " .. label)
     local prep = "edit" .. string.gsub(label, "_", "") .. " " .. text
-    menu.trigger_commands(prep)
+    addict.trigger_commands(prep)
 
-    menu.trigger_commands("addictlabelpresets")
-    --local Player_List = menu.ref_by_path("Players")
-    --menu.trigger_command(Player_List)
+    addict.trigger_commands("addictlabelpresets")
+    --local Player_List = addict.ref_by_path("Players")
+    --addict.trigger_command(Player_List)
     util.toast("Label Set!")
 end
 
-Net_Shit = menu.list(menu.my_root(), "Net Shit", {"netshit"}, "", function(); end)
+Net_Shit = addict.list(addict.my_root(), "Net Shit", {"netshit"}, "", function(); end)
 
-menu.action(Net_Shit, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
+addict.action(Net_Shit, "Tp Casino", {"tpincasino"}, "Faster alternative way of teleporting into the casino.", function(on_toggle)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     for i = 1 , 7  do
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1112.384, 225.92778, -48.758114)
-        menu.trigger_commands("levitate")
+        addict.trigger_commands("levitate")
         util.yield(1000)
-        menu.trigger_commands("levitate")
+        addict.trigger_commands("levitate")
     end
 end)
 
-menu.action(Net_Shit, "Fix Casino Heist", {}, "If you've bricked your casino heist by not doing the scoping mission, give this a try :)", function()
+addict.action(Net_Shit, "Fix Casino Heist", {}, "If you've bricked your casino heist by not doing the scoping mission, give this a try :)", function()
 	STATS.STAT_SET_INT(util.joaat("MP0_H3OPT_POI"), 0, true)
 	STATS.STAT_SET_INT(util.joaat("MP0_H3OPT_ACCESSPOINTS"), 0, true)
 end)
 
-labelpresets = menu.list(Net_Shit, "Label Presets", {"addictlabelpresets"}, "", function(); end)
+labelpresets = addict.list(Net_Shit, "Label Presets", {"addictlabelpresets"}, "", function(); end)
 
-menu.action(labelpresets, "Set all labels", {"autolabel"}, "Auto set all the labels. Note: Save you're profile to keep set.", function()
-        menu.trigger_commands("joinlabel") -- 1
+addict.action(labelpresets, "Set all labels", {"autolabel"}, "Auto set all the labels. Note: Save you're profile to keep set.", function()
+        addict.trigger_commands("joinlabel") -- 1
         util.yield_once()
-        menu.trigger_commands("initiallabel") -- 2
+        addict.trigger_commands("initiallabel") -- 2
         util.yield_once()
-        menu.trigger_commands("loadlabel") -- 3
+        addict.trigger_commands("loadlabel") -- 3
         util.yield_once()
-        menu.trigger_commands("onlinelabel") -- 4
+        addict.trigger_commands("onlinelabel") -- 4
         util.yield_once()
-        menu.trigger_commands("diedlabel") -- 5
+        addict.trigger_commands("diedlabel") -- 5
         util.yield_once()
-        menu.trigger_commands("dippedlabel") -- 6
+        addict.trigger_commands("dippedlabel") -- 6
         util.yield_once()
-        menu.trigger_commands("bannedlabel") -- 7
+        addict.trigger_commands("bannedlabel") -- 7
         util.yield_once()
-        menu.trigger_commands("loadstorylabel") -- 8
+        addict.trigger_commands("loadstorylabel") -- 8
         util.yield_once()
-        menu.trigger_commands("muglabel") -- 9
+        addict.trigger_commands("muglabel") -- 9
         util.yield_once()
-        menu.trigger_commands("killlabel") -- 10
+        addict.trigger_commands("killlabel") -- 10
         util.yield_once()
-        menu.trigger_commands("radarlabel") -- 11
+        addict.trigger_commands("radarlabel") -- 11
         util.yield_once()
-        menu.trigger_commands("translabel") -- 12
+        addict.trigger_commands("translabel") -- 12
         util.yield_once()
-        menu.trigger_commands("ceolabel") -- 13
+        addict.trigger_commands("ceolabel") -- 13
         util.yield_once()
-        menu.trigger_commands("viplabel") -- 14
+        addict.trigger_commands("viplabel") -- 14
         util.yield_once()
-        menu.trigger_commands("vipglabel") -- 15
+        addict.trigger_commands("vipglabel") -- 15
         util.yield_once()
-        menu.trigger_commands("mclabel") -- 16
+        addict.trigger_commands("mclabel") -- 16
         util.yield_once()
-        menu.trigger_commands("regceoglabel") -- 17
+        addict.trigger_commands("regceoglabel") -- 17
         util.yield_once()
-        menu.trigger_commands("associatelabel") -- 18
+        addict.trigger_commands("associatelabel") -- 18
         util.yield_once()
-        menu.trigger_commands("ceogodlabel") -- 19
+        addict.trigger_commands("ceogodlabel") -- 19
         util.yield_once()
-        menu.trigger_commands("secceogodlabel") -- 20
+        addict.trigger_commands("secceogodlabel") -- 20
         util.yield_once()
-        menu.trigger_commands("isoffradarlabel") -- 21
+        addict.trigger_commands("isoffradarlabel") -- 21
         util.yield_once()
-        menu.trigger_commands("quitasslabel") -- 22
+        addict.trigger_commands("quitasslabel") -- 22
         util.yield_once()
-        menu.trigger_commands("joinminlabel") -- 23
+        addict.trigger_commands("joinminlabel") -- 23
         util.yield_once()
-        menu.trigger_commands("ceogodoflabel") -- 24
+        addict.trigger_commands("ceogodoflabel") -- 24
         util.yield_once()
-        menu.trigger_commands("hireminlabel") -- 25
+        addict.trigger_commands("hireminlabel") -- 25
         util.yield_once()
-        menu.trigger_commands("hireminslabel") -- 26
+        addict.trigger_commands("hireminslabel") -- 26
         util.yield_once()
-        menu.trigger_commands("retirelabel") -- 27
+        addict.trigger_commands("retirelabel") -- 27
         util.yield_once()
-        menu.trigger_commands("nearlabel") -- 28
+        addict.trigger_commands("nearlabel") -- 28
         util.toast("All 28 Labels Set!")
 end)
 
-menu.hyperlink(labelpresets, "Label List", "https://gist.githubusercontent.com/aaronlink127/afc889be7d52146a76bab72ede0512c7/raw")
+addict.hyperlink(labelpresets, "Label List", "https://gist.githubusercontent.com/aaronlink127/afc889be7d52146a76bab72ede0512c7/raw")
 
-menu.action(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function()
+addict.action(labelpresets, "Joining GTA Online with Addict Script", {"joinlabel"}, "Usually says: \"Joining GTA online\"", function()
     do_label_preset("HUD_JOINING", "Joining GTA Online With Addict Script!") -- 1
 end)
 
-menu.action(labelpresets, "Initializing fuck all really...", {"initiallabel"}, "Usually says: \"Initializing\"", function()
+addict.action(labelpresets, "Initializing fuck all really...", {"initiallabel"}, "Usually says: \"Initializing\"", function()
     do_label_preset("FMMC_PLYLOAD", "Initializing fuck all really...") -- 2
 end)
 
-menu.action(labelpresets, "Taking forever to load... AUUUUUGH!", {"loadlabel"}, "Usually says: \"Loading\"", function()
+addict.action(labelpresets, "Taking forever to load... AUUUUUGH!", {"loadlabel"}, "Usually says: \"Loading\"", function()
     do_label_preset("MP_SPINLOADING", "Taking forever to load... AUUUUUGH!") -- 3
 end)
 
-menu.action(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA online\"", function()
+addict.action(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA online\"", function()
     do_label_preset("HUD_LBD_FMF", "Addict Online (Invite, ~1~)") -- 4
     do_label_preset("HUD_LBD_FMP", "Addict Online (Public, ~1~)")
     do_label_preset("HUD_LBD_FMS", "Addict Online (Solo, ~1~)")
@@ -5509,100 +5480,100 @@ menu.action(labelpresets, "Addict Online", {"onlinelabel"}, "Usually says: \"GTA
     do_label_preset("LOADING_MPLAYER", "Addict Online")
 end)
 
-menu.action(labelpresets, "Yeeted", {"diedlabel"}, "Usually says: \"-playername- died.\"", function()
+addict.action(labelpresets, "Yeeted", {"diedlabel"}, "Usually says: \"-playername- died.\"", function()
     do_label_preset("TICK_DIED", "~a~~HUD_COLOUR_RED~ yeeted.") -- 5
 end)
 
-menu.action(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function()
+addict.action(labelpresets, "Player dipped", {"dippedlabel"}, "Usually says: \"-playername- left.\"", function()
     do_label_preset("TICK_LEFT", "~a~~HUD_COLOUR_RED~ dipped.") -- 6
 end)
 
-menu.action(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "Usually says: \"You have been banned from Grand Theft Auto Online.\" Hopefully you never see this one.", function()
+addict.action(labelpresets, "You finally got banned. Oh well.", {"bannedlabel"}, "Usually says: \"You have been banned from Grand Theft Auto Online.\" Hopefully you never see this one.", function()
     do_label_preset("HUD_ROSBANNED", "You finally got banned. Oh well.") -- 7
     do_label_preset("HUD_ROSBANPERM", "You finally got banned. Oh well.")
 end)
 
-menu.action(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function()
+addict.action(labelpresets, "Going offline...", {"loadstorylabel"}, "Usually says: \"Entering Story Mode\"", function()
     do_label_preset("LOADING_SPLAYER_L", "Going offline...") -- 8
 end)
 
-menu.action(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function()
+addict.action(labelpresets, "You fucked up the piss flap that mugged you.", {"muglabel"}, "Usually says: \"You killed the thief that mugged you\"", function()
     do_label_preset("ACH47_DESC", "You fucked up the piss flap that mugged you.") -- 9
 end)
 
-menu.action(labelpresets, "Player fucked up player", {"killlabel"}, "Usually says: \"Player Killed Player\"", function()
+addict.action(labelpresets, "Player fucked up player", {"killlabel"}, "Usually says: \"Player Killed Player\"", function()
     do_label_preset("TICK_KILL", "~a~~HUD_COLOUR_RED~ fucked up ~a~") -- 10
 end)
 
-menu.action(labelpresets, "Some Players Are Off The Radar Hiding Like Bitches.", {"radarlabel"}, "Usually says: \"Some players are Off the Radar.\"", function()
+addict.action(labelpresets, "Some Players Are Off The Radar Hiding Like Bitches.", {"radarlabel"}, "Usually says: \"Some players are Off the Radar.\"", function()
     do_label_preset("GC_TCK_95", "~a~~HUD_COLOUR_RED~ Some Players Are Off The Radar Hiding Like Bitches. ~a~") -- 11
 end)
 
-menu.action(labelpresets, "Transaction Pending Forever & Ever & Ever & Ever...", {"translabel"}, "Usually says: \"Transaction Pending.\"", function()
+addict.action(labelpresets, "Transaction Pending Forever & Ever & Ever & Ever...", {"translabel"}, "Usually says: \"Transaction Pending.\"", function()
     do_label_preset("HUD_TRANSP", "Transaction Pending Forever & Ever & Ever & Ever...") -- 12
 end)
 
-menu.action(labelpresets, "Murdered a CEO", {"ceolabel"}, "Usually says: \"killed a CEO\"", function()
+addict.action(labelpresets, "Murdered a CEO", {"ceolabel"}, "Usually says: \"killed a CEO\"", function()
     do_label_preset("GB_TICK_KILLC", "<C>~a~</C>~a~~HUD_COLOUR_RED~ Murdered a CEO ~a~<C>~a~</C>.") -- 13
 end)
 
-menu.action(labelpresets, "Murdered a VIP", {"viplabel"}, "Usually says: \"killed a VIP\"", function()
+addict.action(labelpresets, "Murdered a VIP", {"viplabel"}, "Usually says: \"killed a VIP\"", function()
     do_label_preset("GB_TICK_KILLB", "<C>~a~</C>~a~~HUD_COLOUR_RED~ Murdered a VIP ~a~<C>~a~</C>.") -- 14
 end)
 
-menu.action(labelpresets, "has registered as a VIP Gangster", {"vipglabel"}, "Usually says: \"has registered as a VIP\"", function()
+addict.action(labelpresets, "has registered as a VIP Gangster", {"vipglabel"}, "Usually says: \"has registered as a VIP\"", function()
     do_label_preset("GB_UBECOME", "~a~ ~s~~a~~HUD_COLOUR_PURPLE~ has registered as a VIP Gangster.~a~") -- 155
 end)
 
-menu.action(labelpresets, "has registered as an MC Goth", {"mclabel"}, "Usually says: \"has registered as an MC President\"", function()
+addict.action(labelpresets, "has registered as an MC Goth", {"mclabel"}, "Usually says: \"has registered as an MC President\"", function()
     do_label_preset("GB_UBECOMEB", "~a~ ~s~~a~~HUD_COLOUR_RED~ has registered as a MC Goth.~a~") -- 16
 end)
 
-menu.action(labelpresets, "has registered as a CEO God", {"regceoglabel"}, "Usually says: \"has registered as a CEO\"", function()
+addict.action(labelpresets, "has registered as a CEO God", {"regceoglabel"}, "Usually says: \"has registered as a CEO\"", function()
     do_label_preset("GB_UBECOMEC", "~a~ ~s~~a~~HUD_COLOUR_PURPLE~ has registered as a CEO God.~a~") -- 17
 end)
 
-menu.action(labelpresets, "is now your Minion", {"associatelabel"}, "Usually says: \"is now your Associate\"", function()
+addict.action(labelpresets, "is now your Minion", {"associatelabel"}, "Usually says: \"is now your Associate\"", function()
     do_label_preset("GB_JOINEDC", "~a~ ~s~is now your ~a~~HUD_COLOUR_YELLOW~Minion~a~") -- 18
 end)
 
-menu.action(labelpresets, "You are no longer a CEO God", {"ceogodlabel"}, "Usually says: \"You are no longer a CEO\"", function()
+addict.action(labelpresets, "You are no longer a CEO God", {"ceogodlabel"}, "Usually says: \"You are no longer a CEO\"", function()
     do_label_preset("GB_NOLONGERC", "~a~~HUD_COLOUR_RED~You are no longer a CEO God~a~") -- 19
 end)
 
-menu.action(labelpresets, "SecuroServ CEO God", {"secceogodlabel"}, "Usually says: \"SecuroServ CEO\"", function()
+addict.action(labelpresets, "SecuroServ CEO God", {"secceogodlabel"}, "Usually says: \"SecuroServ CEO\"", function()
     do_label_preset("PIM_MAGBC", "~a~~HUD_COLOUR_PURPLE~SecuroServ CEO God~a~") -- 20
 end)
 
-menu.action(labelpresets, "is Off the Radar Like A Bitch.", {"isoffradarlabel"}, "Usually says: \"is Off the Radar.\"", function()
+addict.action(labelpresets, "is Off the Radar Like A Bitch.", {"isoffradarlabel"}, "Usually says: \"is Off the Radar.\"", function()
     do_label_preset("GC_TCK_94", "~s~~a~~s~ ~a~~HUD_COLOUR_RED~ is Off the Radar Hiding Like A Bitch!~a~") -- 21
 end)
 
-menu.action(labelpresets, "You quit as a Minion", {"quitasslabel"}, "Usually says: \"You quit as an Associate\"", function()
+addict.action(labelpresets, "You quit as a Minion", {"quitasslabel"}, "Usually says: \"You quit as an Associate\"", function()
     do_label_preset("GBCGOONLEFTB", "~s~~a~~s~ ~a~~HUD_COLOUR_RED~ You quit ~a~~s~ as a Minion~a~") -- 22
 end)
 
-menu.action(labelpresets, "joined as a Minion", {"joinminlabel"}, "Usually says: \"joined as an Associate\"", function()
+addict.action(labelpresets, "joined as a Minion", {"joinminlabel"}, "Usually says: \"joined as an Associate\"", function()
     do_label_preset("GBGOONJOINEDC", "<C>~a~</C> ~a~~HUD_COLOUR_PURPLE~ joined~a~ ~a~~s~ ~a~~HUD_COLOUR_YELLOW~as a Minion.~a~") -- 23
 end)
 
-menu.action(labelpresets, "You just became the God of CEO's", {"ceogodoflabel"}, "Usually says: \"You are now the CEO of\"", function()
+addict.action(labelpresets, "You just became the God of CEO's", {"ceogodoflabel"}, "Usually says: \"You are now the CEO of\"", function()
     do_label_preset("GB_BECOMEC", "~a~~HUD_COLOUR_PURPLE~ Active! You just became the God of CEO's~a~ ~a~~s~") -- 24
 end)
 
-menu.action(labelpresets, "Hire Minions", {"hireminlabel"}, "Usually says: \"Hire Associates in interaction menu\"", function()
+addict.action(labelpresets, "Hire Minions", {"hireminlabel"}, "Usually says: \"Hire Associates in interaction addict\"", function()
     do_label_preset("PIM_MAGM100C", "~a~~HUD_COLOUR_YELLOW~Hire Minions~a~") -- 25
 end)
 
-menu.action(labelpresets, "Hire Minions", {"hireminslabel"}, "Usually says: \"HIRE ASSOCIATES (ABOVE LABEL)\"", function()
+addict.action(labelpresets, "Hire Minions", {"hireminslabel"}, "Usually says: \"HIRE ASSOCIATES (ABOVE LABEL)\"", function()
     do_label_preset("PIM_MAGHGTC", "~a~~HUD_COLOUR_YELLOW~Hire Minions~a~") -- 26
 end)
 
-menu.action(labelpresets, "Quit Being A God", {"retirelabel"}, "Usually says: \"Retire\"", function()
+addict.action(labelpresets, "Quit Being A God", {"retirelabel"}, "Usually says: \"Retire\"", function()
     do_label_preset("PIM_MAGM0B", "~a~~HUD_COLOUR_RED~Quit Being A God~a~") -- 27
 end)
 
-menu.action(labelpresets, "Nearby Minions", {"nearlabel"}, "Usually says: \"Nearby\"", function()
+addict.action(labelpresets, "Nearby Minions", {"nearlabel"}, "Usually says: \"Nearby\"", function()
     do_label_preset("PIM_MAGM103A", "~a~~HUD_COLOUR_YELLOW~Nearby Minions~a~") -- 28
 end)
 
@@ -5610,14 +5581,14 @@ end)
 ----- Chat Spamers ------
 -------------------------
 
-spams = menu.list(Net_Shit, "Chat Spammers", {}, "", function(); end)
-menu.divider(spams, "Chat Spammers")
+spams = addict.list(Net_Shit, "Chat Spammers", {}, "", function(); end)
+addict.divider(spams, "Chat Spammers")
 
-helpcommands = menu.list(spams, "Help Commands", {}, "Command: help", function(); end)
+helpcommands = addict.list(spams, "Help Commands", {}, "Command: help", function(); end)
 
-menu.action(helpcommands, "Help Commands", {"help"}, "", function()
+addict.action(helpcommands, "Help Commands", {"help"}, "", function()
 chat.send_message(
-    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whataddict",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5625,9 +5596,9 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(helpcommands, "Help Commands", {"helpcommand"}, "", function(on_toggle)
+addict.toggle_loop(helpcommands, "Help Commands", {"helpcommand"}, "", function(on_toggle)
 chat.send_message(
-    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whataddict",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5635,7 +5606,7 @@ chat.send_message(
 util.yield(150000)
 end)
 
-menu.toggle_loop(helpcommands, "Type Help Commands", {"typehelpcommand"}, "", function(on_toggle)
+addict.toggle_loop(helpcommands, "Type Help Commands", {"typehelpcommand"}, "", function(on_toggle)
 chat.send_message(
     "Type /help for help",
     false, -- in team chat
@@ -5645,9 +5616,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-carhelpa = menu.list(spams, "Gift Car A", {}, "Command: carhelpa", function(); end)
+carhelpa = addict.list(spams, "Gift Car A", {}, "Command: carhelpa", function(); end)
 
-menu.action(carhelpa, "Gift Car A", {"carhelpa"}, "", function()
+addict.action(carhelpa, "Gift Car A", {"carhelpa"}, "", function()
 chat.send_message(
     "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
     false, -- in team chat
@@ -5657,7 +5628,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(carhelpa, "Gift Car A", {"carhelpa"}, "", function(on_toggle)
+addict.toggle_loop(carhelpa, "Gift Car A", {"carhelpa"}, "", function(on_toggle)
 chat.send_message(
     "Fill a garage with LOW END/FREE cars in a 2 car garage order 2 free or cars steal them!",
     false, -- in team chat
@@ -5667,9 +5638,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-carhelpb = menu.list(spams, "Gift Car B", {}, "Command: carhelpb", function(); end)
+carhelpb = addict.list(spams, "Gift Car B", {}, "Command: carhelpb", function(); end)
 
-menu.action(carhelpb, "Gift Car B", {"carhelpb"}, "", function()
+addict.action(carhelpb, "Gift Car B", {"carhelpb"}, "", function()
 chat.send_message(
     "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
     false, -- in team chat
@@ -5679,7 +5650,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(carhelpb, "Gift Car B", {"carhelpb"}, "", function(on_toggle)
+addict.toggle_loop(carhelpb, "Gift Car B", {"carhelpb"}, "", function(on_toggle)
 chat.send_message(
     "Put away all your personal vehicles! Type: /spawn NAME then go to garage and type /gift YOURNAME",
     false, -- in team chat
@@ -5689,9 +5660,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-carhelpc = menu.list(spams, "Gift Car C", {}, "Command: carhelpc", function(); end)
+carhelpc = addict.list(spams, "Gift Car C", {}, "Command: carhelpc", function(); end)
 
-menu.action(carhelpc, "Gift Car C", {"carhelpc"}, "", function()
+addict.action(carhelpc, "Gift Car C", {"carhelpc"}, "", function()
 chat.send_message(
     "Repete first steps to do it again",
     false, -- in team chat
@@ -5701,7 +5672,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(carhelpc, "Gift Car C", {"carhelpc"}, "", function(on_toggle)
+addict.toggle_loop(carhelpc, "Gift Car C", {"carhelpc"}, "", function(on_toggle)
 chat.send_message(
     "Repete first steps to do it again",
     false, -- in team chat
@@ -5711,9 +5682,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-help1 = menu.list(spams, "Commands A", {}, "Command: help1", function(); end)
+help1 = addict.list(spams, "Commands A", {}, "Command: help1", function(); end)
 
-menu.action(help1, "Commands A", {"help1"}, "", function()
+addict.action(help1, "Commands A", {"help1"}, "", function()
 chat.send_message(
     "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
     false, -- in team chat
@@ -5723,7 +5694,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
+addict.toggle_loop(help1, "Commands A", {}, "", function(on_toggle)
 chat.send_message(
     "/max NAME /ceopay NAME /dropcash NAME /givecollectibles NAME /rp NAME /crazyloop NAME",
     false, -- in team chat
@@ -5733,9 +5704,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-help2 = menu.list(spams, "Commands B", {}, "Command: help2", function(); end)
+help2 = addict.list(spams, "Commands B", {}, "Command: help2", function(); end)
 
-menu.action(help2, "Commands B", {"help2"}, "", function()
+addict.action(help2, "Commands B", {"help2"}, "", function()
 chat.send_message(
     "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
     false, -- in team chat
@@ -5745,7 +5716,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(help2, "Commands B", {}, "", function(on_toggle)
+addict.toggle_loop(help2, "Commands B", {}, "", function(on_toggle)
 chat.send_message(
     "/boost NAME /Addictboost NAME /resetacc NAME /repair NAME /invon NAME /invoff NAME",
     false, -- in team chat
@@ -5755,9 +5726,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-help3 = menu.list(spams, "Commands C", {}, "Command: help3", function(); end)
+help3 = addict.list(spams, "Commands C", {}, "Command: help3", function(); end)
 
-menu.action(help3, "Commands C", {"help3"}, "", function()
+addict.action(help3, "Commands C", {"help3"}, "", function()
 chat.send_message(
     "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
     false, -- in team chat
@@ -5767,7 +5738,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(help3, "Commands C", {}, "", function(on_toggle)
+addict.toggle_loop(help3, "Commands C", {}, "", function(on_toggle)
 chat.send_message(
     "/arm NAME /ammo NAME /autoheal NAME /bail NAME /giveotr NAME",
     false, -- in team chat
@@ -5777,9 +5748,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-help4 = menu.list(spams, "Commands D", {}, "Command: help4", function(); end)
+help4 = addict.list(spams, "Commands D", {}, "Command: help4", function(); end)
 
-menu.action(help4, "Commands D", {"help4"}, "", function()
+addict.action(help4, "Commands D", {"help4"}, "", function()
 chat.send_message(
     "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
     false, -- in team chat
@@ -5789,7 +5760,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(help4, "Commands D", {}, "", function(on_toggle)
+addict.toggle_loop(help4, "Commands D", {}, "", function(on_toggle)
 chat.send_message(
     "/blast NAME /boop NAME /invkick1 NAME /arraykickv1 NAME /sekick NAME",
     false, -- in team chat
@@ -5799,9 +5770,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-help5 = menu.list(spams, "Commands E", {}, "Command: help5", function(); end)
+help5 = addict.list(spams, "Commands E", {}, "Command: help5", function(); end)
 
-menu.action(help5, "Commands E", {"help5"}, "", function()
+addict.action(help5, "Commands E", {"help5"}, "", function()
 chat.send_message(
     "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
     false, -- in team chat
@@ -5811,7 +5782,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(help5, "Commands E", {}, "", function(on_toggle)
+addict.toggle_loop(help5, "Commands E", {}, "", function(on_toggle)
 chat.send_message(
     "/gotowaypoint NAME /alltowaypoint NAME /fixme NAME /yoinkpickups NAME",
     false, -- in team chat
@@ -5822,9 +5793,9 @@ util.yield(150000)
 end)
 
 
-casinohelp1 = menu.list(spams, "Roulette Method", {}, "Command: casinohelp1", function(); end)
+casinohelp1 = addict.list(spams, "Roulette Method", {}, "Command: casinohelp1", function(); end)
 
-menu.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
+addict.action(casinohelp1, "Roulette Method", {"casinohelp1"}, "", function()
 chat.send_message(
     "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
     false, -- in team chat
@@ -5834,7 +5805,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(casinohelp1, "Roulette Method", {"togglecasinohelp1"}, "", function(on_toggle)
+addict.toggle_loop(casinohelp1, "Roulette Method", {"togglecasinohelp1"}, "", function(on_toggle)
 chat.send_message(
     "If you want to make money come to casino play roulette and bet max on 1st 12(50k) and Red 1(5k), win 3 loose 1 550k a minute",
     false, -- in team chat
@@ -5844,9 +5815,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-casinohelp2 = menu.list(spams, "Blackjack Method", {}, "Command: casinohelp2", function(); end)
+casinohelp2 = addict.list(spams, "Blackjack Method", {}, "Command: casinohelp2", function(); end)
 
-menu.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
+addict.action(casinohelp2, "Blackjack Method", {"casinohelp2"}, "", function()
 chat.send_message(
     "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
     false, -- in team chat
@@ -5856,7 +5827,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(casinohelp2, "Blackjack Method", {"togglecasinohelp2"}, "", function(on_toggle)
+addict.toggle_loop(casinohelp2, "Blackjack Method", {"togglecasinohelp2"}, "", function(on_toggle)
 chat.send_message(
     "If you want to make money come to casino play blackjack! Click max bet then hit stand and win 2x your bet!",
     false, -- in team chat
@@ -5866,11 +5837,11 @@ chat.send_message(
 util.yield(150000)
 end)
 
-whatmenu = menu.list(spams, "What Menu Do I Use?", {}, "Command: whatmenu", function(); end)
+whataddict = addict.list(spams, "What addict Do I Use?", {}, "Command: whataddict", function(); end)
 
-menu.action(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function()
+addict.action(whataddict, "What addict Do I Use?", {"whataddict"}, "", function()
 chat.send_message(
-    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
+    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other addict's.",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5878,9 +5849,9 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(whatmenu, "What Menu Do I Use?", {"whatmenu"}, "", function(on_toggle)
+addict.toggle_loop(whataddict, "What addict Do I Use?", {"whataddict"}, "", function(on_toggle)
 chat.send_message(
-    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other menu's.",
+    "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other addict's.",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5888,9 +5859,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-imfuckinggod = menu.list(spams, "I'm Fucking God", {}, "Command: imfuckinggod", function(); end)
+imfuckinggod = addict.list(spams, "I'm Fucking God", {}, "Command: imfuckinggod", function(); end)
 
-menu.action(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function()
+addict.action(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function()
 chat.send_message(
     "I'M FUCKING GOD!!!",
     false, -- in team chat
@@ -5900,7 +5871,7 @@ chat.send_message(
 util.yield(50)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function(on_toggle)
+addict.toggle_loop(imfuckinggod, "I'm Fucking God", {"imfuckinggod"}, "", function(on_toggle)
 chat.send_message(
     "I'M FUCKING GOD!!!",
     false, -- in team chat
@@ -5910,9 +5881,9 @@ chat.send_message(
 util.yield(50)
 end)
 
-reportme = menu.list(spams, "Report Me", {}, "Command: reportme", function(); end)
+reportme = addict.list(spams, "Report Me", {}, "Command: reportme", function(); end)
 
-menu.action(reportme, "Report Me", {"reportme"}, "", function()
+addict.action(reportme, "Report Me", {"reportme"}, "", function()
 chat.send_message(
     "REPORT ME!!!",
     false, -- in team chat
@@ -5922,7 +5893,7 @@ chat.send_message(
 util.yield(50)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(reportme, "Report Me", {"reportme"}, "", function(on_toggle)
+addict.toggle_loop(reportme, "Report Me", {"reportme"}, "", function(on_toggle)
 chat.send_message(
     "REPORT ME!!!",
     false, -- in team chat
@@ -5932,9 +5903,9 @@ chat.send_message(
 util.yield(50)
 end)
 
-ilovezelensky = menu.list(spams, "I <3 ZELEN", {}, "Command: ilovezelensky", function(); end)
+ilovezelensky = addict.list(spams, "I <3 ZELEN", {}, "Command: ilovezelensky", function(); end)
 
-menu.action(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function()
+addict.action(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function()
 chat.send_message(
     "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
     false, -- in team chat
@@ -5944,7 +5915,7 @@ chat.send_message(
 util.yield(50)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function(on_toggle)
+addict.toggle_loop(ilovezelensky, "I <3 ZELEN", {"ilovezelensky"}, "Russians hate this ;)", function(on_toggle)
 chat.send_message(
     "I <3 PRESIDENT VOLODYMYR ZELENSKYY",
     false, -- in team chat
@@ -5954,9 +5925,9 @@ chat.send_message(
 util.yield(50)
 end)
 
-iloveputin = menu.list(spams, "I <3 PUTIN", {}, "Command: iloveputin", function(); end)
+iloveputin = addict.list(spams, "I <3 PUTIN", {}, "Command: iloveputin", function(); end)
 
-menu.action(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function()
+addict.action(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function()
 chat.send_message(
     "I <3 PRESIDENT VOLODYMYR PUTIN",
     false, -- in team chat
@@ -5966,7 +5937,7 @@ chat.send_message(
 util.yield(50)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function(on_toggle)
+addict.toggle_loop(iloveputin, "I <3 PUTIN", {"iloveputin"}, "Ukranians hate this ;)", function(on_toggle)
 chat.send_message(
     "I <3 PRESIDENT VOLODYMYR PUTIN",
     false, -- in team chat
@@ -5976,9 +5947,9 @@ chat.send_message(
 util.yield(50)
 end)
 
-yuminwoman = menu.list(spams, "Yumin Woman", {}, "Command: yuminwoman", function(); end)
+yuminwoman = addict.list(spams, "Yumin Woman", {}, "Command: yuminwoman", function(); end)
 
-menu.action(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function()
+addict.action(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function()
 chat.send_message(
     "Yumin woman! AUUUUUUUUUGGHH!!!",
     false, -- in team chat
@@ -5988,7 +5959,7 @@ chat.send_message(
 util.yield(50)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function(on_toggle)
+addict.toggle_loop(yuminwoman, "Yumin Woman", {"yuminwoman"}, "AUUUUUUUUUGGHH", function(on_toggle)
 chat.send_message(
     "Yumin woman! AUUUUUUUUUGGHH!!!",
     false, -- in team chat
@@ -5998,36 +5969,36 @@ chat.send_message(
 util.yield(50)
 end)
 
-local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+local BlockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+local UnblockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+local BlockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+local UnblockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
 
 
-local create_timer_root = menu.list(Net_Shit, "Create new timer", {'Addictcreate'}, "")
+local create_timer_root = addict.list(Net_Shit, "Create new timer", {'Addictcreate'}, "")
 ----
 
 local new_timer_name = "My new timer"
-menu.text_input(create_timer_root, "Name", {"Addictsetname"}, "", function(on_input)
+addict.text_input(create_timer_root, "Name", {"Addictsetname"}, "", function(on_input)
     new_timer_name = on_input
 end, new_timer_name)
 
 local new_timer_desc = "Your description goes here."
-menu.text_input(create_timer_root, "Description", {"Addictsetdesc"}, "", function(on_input)
+addict.text_input(create_timer_root, "Description", {"Addictsetdesc"}, "", function(on_input)
     new_timer_desc = on_input
 end, new_timer_desc)
 
 local new_timer_commands = "crashall"
-menu.text_input(create_timer_root, "Command(s)", {"Addictsetcommands"}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
+addict.text_input(create_timer_root, "Command(s)", {"Addictsetcommands"}, "The commands for this timer. You can specify multiple by putting semicolons in between each.", function(on_input)
     new_timer_commands = on_input
 end, new_timer_commands)
 
 local new_timer_delay = 100
-menu.slider(create_timer_root, "Timer delay (MS)", {"Addictsetdelay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
+addict.slider(create_timer_root, "Timer delay (MS)", {"Addictsetdelay"}, "The timer delay, in milliseconds. 1000 ms = 1 second.", 0, max_timer_time, 100, 1, function(s)
     new_timer_delay = s
 end)
 
-menu.action(create_timer_root, "Create timer", {}, "Create and save this timer as a file.", function(click_type)
+addict.action(create_timer_root, "Create timer", {}, "Create and save this timer as a file.", function(click_type)
     local new_timer_data = {
         timer_name = new_timer_name,
         timer_desc = new_timer_desc,
@@ -6041,7 +6012,7 @@ menu.action(create_timer_root, "Create timer", {}, "Create and save this timer a
     else
         table.save(new_timer_data, timer_path)
         parse_all_timer_files()
-        menu.trigger_commands("Addict" .. new_timer_name:gsub(' ', ''))
+        addict.trigger_commands("Addict" .. new_timer_name:gsub(' ', ''))
         util.toast("Timer created! I\'ve opened it for you :)")
     end
 end)
@@ -6059,10 +6030,10 @@ Yoinkshit = false
 local getEntityCoords = ENTITY.GET_ENTITY_COORDS
 local getPlayerPed = PLAYER.GET_PLAYER_PED
 
-local yoinkSettings = menu.list(Net_Shit, "Force Request Control Settings", {}, "")
+local yoinkSettings = addict.list(Net_Shit, "Force Request Control Settings", {}, "")
 
 
-menu.toggle(yoinkSettings, "Force Request Control", {"controlall"}, "", function (yoink)
+addict.toggle(yoinkSettings, "Force Request Control", {"controlall"}, "", function (yoink)
     if yoink then
         Yoinkshit = true
         util.create_thread(function()
@@ -6130,19 +6101,19 @@ menu.toggle(yoinkSettings, "Force Request Control", {"controlall"}, "", function
     end
 end)
 
-menu.slider(yoinkSettings, "Range For Request Control", {"controlrange"}, "", 1, 5000, 5000, 10, function (value)
+addict.slider(yoinkSettings, "Range For Request Control", {"controlrange"}, "", 1, 5000, 5000, 10, function (value)
     YOINK_RANGE = value
 end)
-menu.toggle(yoinkSettings, "Peds", {}, "", function (peds)
+addict.toggle(yoinkSettings, "Peds", {}, "", function (peds)
     YOINK_PEDS = peds
 end)
-menu.toggle(yoinkSettings, "Vehicles", {}, "", function (vehs)
+addict.toggle(yoinkSettings, "Vehicles", {}, "", function (vehs)
     YOINK_VEHICLES = vehs
 end)
-menu.toggle(yoinkSettings, "Objects", {}, "", function (objs)
+addict.toggle(yoinkSettings, "Objects", {}, "", function (objs)
     YOINK_OBJECTS = objs
 end)
-menu.toggle(yoinkSettings, "Pickups", {}, "", function (pick)
+addict.toggle(yoinkSettings, "Pickups", {}, "", function (pick)
     YOINK_PICKUPS = pick
 end)
 
@@ -6226,11 +6197,11 @@ local function executeNuke(pos)
 end
 
 --credit to lance for the entity gun, but i edited it a bit
-local nuke_gun_root = menu.list(weapons, 'Nuke options', {}, '')
-local nuke_gun_toggle = menu.toggle(weapons, 'Nuke gun', {'nukeGun'}, 'Upgrade RPG grenade then atomic bomb', function(toggle)
+local nuke_gun_root = addict.list(weapons, 'Nuke options', {}, '')
+local nuke_gun_toggle = addict.toggle(weapons, 'Nuke gun', {'nukeGun'}, 'Upgrade RPG grenade then atomic bomb', function(toggle)
     nuke_running = toggle
     if nuke_running then
-        if animals_running then menu.trigger_command(exp_animal_toggle, 'off') end
+        if animals_running then addict.trigger_command(exp_animal_toggle, 'off') end
         util.create_tick_handler(function()
             if WEAPON.GET_SELECTED_PED_WEAPON(players.user_ped()) == -1312131151 then --if holding homing launcher
                 if PED.IS_PED_SHOOTING(players.user_ped()) then
@@ -6262,7 +6233,7 @@ local nuke_gun_toggle = menu.toggle(weapons, 'Nuke gun', {'nukeGun'}, 'Upgrade R
     end
 end)
 
-menu.toggle_loop(weapons, 'Aimbot', {'aimbot'}, 'Activates Aimbot with your settings', function ()
+addict.toggle_loop(weapons, 'Aimbot', {'aimbot'}, 'Activates Aimbot with your settings', function ()
     if PLAYER.IS_PLAYER_FREE_AIMING(players.user()) then
         Ped_aim_pool(aimbot.fov)
     else
@@ -6271,7 +6242,7 @@ menu.toggle_loop(weapons, 'Aimbot', {'aimbot'}, 'Activates Aimbot with your sett
 end)
 
 esp_box = false
-menu.toggle_loop(weapons, 'Esp Box', {'aimbotesp'}, 'Activates Aimbot ESP Box.', function (esp_box)
+addict.toggle_loop(weapons, 'Esp Box', {'aimbotesp'}, 'Activates Aimbot ESP Box.', function (esp_box)
     if esp_box then
         esp_box = true
         draw_bounding_box(aim_target, color)
@@ -6280,34 +6251,34 @@ menu.toggle_loop(weapons, 'Esp Box', {'aimbotesp'}, 'Activates Aimbot ESP Box.',
     end
 end)
 
-menu.toggle(weapons, 'Max Damage', {'maxdamage'}, 'Maxes damage multiplier and turns up range multiplier', function (on_toggle)
+addict.toggle(weapons, 'Max Damage', {'maxdamage'}, 'Maxes damage multiplier and turns up range multiplier', function (on_toggle)
     if on_toggle then
-        menu.trigger_commands("damagemultiplier" .. " 10000.00")
-        menu.trigger_commands("rangemultiplier" .. " 1.50")
+        addict.trigger_commands("damagemultiplier" .. " 10000.00")
+        addict.trigger_commands("rangemultiplier" .. " 1.50")
         --util.toast("Damage set to: 10000.00") -- Got sick of the notifications when restarting the script.
     else
-        menu.trigger_commands("damagemultiplier" .. " 1.00")
+        addict.trigger_commands("damagemultiplier" .. " 1.00")
         --util.toast("Damage reset to: 0") -- Got sick of the notifications when restarting the script.
     end
 end)
 
 
-menu.toggle_loop(weapons, "Always Unarmed", {"alwaysunarmed"}, "If your player is frozen on unarmed toggle this off and on to fix without suicide.", function(on_loop)
+addict.toggle_loop(weapons, "Always Unarmed", {"alwaysunarmed"}, "If your player is frozen on unarmed toggle this off and on to fix without suicide.", function(on_loop)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     WEAPON.GIVE_WEAPON_TO_PED(player_ped, util.joaat('WEAPON_COUGAR'), 1, true, true)
 end)
 
 
-menu.toggle(weapons, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the weapons everytime you join a new session.", function(state)
+addict.toggle(weapons, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the weapons everytime you join a new session.", function(state)
     if state then
         players.on_join(function(player_id)
             local my_player_id <const> = players.user()
 
             if player_id == my_player_id then
-                local all_weapons_command_ref <const> = menu.ref_by_path("Self>Weapons>Get Weapons>All Weapons")
+                local all_weapons_command_ref <const> = addict.ref_by_path("Self>Weapons>Get Weapons>All Weapons")
 
                 wait_session_transition()
-                menu.trigger_command(all_weapons_command_ref)
+                addict.trigger_command(all_weapons_command_ref)
                 --util.toast("Weapons loaded successfully. :)")
             end
         end)
@@ -6315,7 +6286,7 @@ menu.toggle(weapons, "Autoload Weapons", {"autoloadweapons"}, "Autoload all the 
 end)
 
 
-menu.toggle(weapons, "Upgrade firewerk launcher to ATGM", {"ATGM"}, "Firework upgrade to guided anti-tank missile", function(toggle)
+addict.toggle(weapons, "Upgrade firewerk launcher to ATGM", {"ATGM"}, "Firework upgrade to guided anti-tank missile", function(toggle)
 	gUsingValkRocket = toggle
 	if gUsingValkRocket then
 		local rocket
@@ -6437,7 +6408,7 @@ local function get_waypoint_pos(pos)
     end
 end
 
-menu.action(nuke_gun_root, 'Nuke waypoint', {'nukeWP'}, 'Drop the bomb on the specified point on the map.', function()
+addict.action(nuke_gun_root, 'Nuke waypoint', {'nukeWP'}, 'Drop the bomb on the specified point on the map.', function()
     local waypointPos = get_waypoint_pos()
     if waypointPos then
         local hash = util.joaat('w_arena_airmissile_01a')
@@ -6455,7 +6426,7 @@ menu.action(nuke_gun_root, 'Nuke waypoint', {'nukeWP'}, 'Drop the bomb on the sp
 end)
 
 
-menu.slider(nuke_gun_root, 'Nuke height', {'nukeHeight'}, 'mushroom height.', 10, 100, nuke_height, 10, function(value)
+addict.slider(nuke_gun_root, 'Nuke height', {'nukeHeight'}, 'mushroom height.', 10, 100, nuke_height, 10, function(value)
     nuke_height = value
 end)
 
@@ -6510,12 +6481,12 @@ function get_my_driver()
     return VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1), vehicle
 end
 
-function setup_choose_player_menu(rootMenu, menuList, callback, pid)
-    menu.on_focus(rootMenu, function(_)
-        for _, m in ipairs(menuList) do
-            menu.delete(m)
+function setup_choose_player_addict(rootaddict, addictList, callback, pid)
+    addict.on_focus(rootaddict, function(_)
+        for _, m in ipairs(addictList) do
+            addict.delete(m)
         end
-        menuList = {}
+        addictList = {}
         local cur_players = players.list(true, true, true)
         local my_pid = players.user()
         for _, target_pid in ipairs(cur_players) do
@@ -6526,7 +6497,7 @@ function setup_choose_player_menu(rootMenu, menuList, callback, pid)
                 name = name .. " (" .. ("M") .. ")"
             end
             local m = callback(target_pid, name)
-            table.insert(menuList, m)
+            table.insert(addictList, m)
         end
     end)
 end
@@ -6590,7 +6561,7 @@ function rcbombkeyboard(toggle)
                     local c = ENTITY.GET_ENTITY_COORDS(p)
                     FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 0, false, false, 0)
                     util.yield()
-                    menu.trigger_commands("fixvehicle")
+                    addict.trigger_commands("fixvehicle")
 				end
 			end        
 			util.yield()
@@ -6658,13 +6629,13 @@ function max_out_car(veh)
     end
 end
 
-local driveshit = menu.list(funfun, "Driving Shit", {}, "")
+local driveshit = addict.list(funfun, "Driving Shit", {}, "")
 
-menu.action(driveshit, "Candy Paint", {"candypaint"}, "", function()
+addict.action(driveshit, "Candy Paint", {"candypaint"}, "", function()
     candy_paint(true)
 end)
 
-menu.action(driveshit,"Tp into nearest vehicle", {"tptonearveh"}, "",function()
+addict.action(driveshit,"Tp into nearest vehicle", {"tptonearveh"}, "",function()
     local player = PLAYER.PLAYER_PED_ID(pid)
     local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
     local P_Coords = ENTITY.GET_ENTITY_COORDS(player_ped, true)
@@ -6675,15 +6646,15 @@ if ENTITY.DOES_ENTITY_EXIST(vehicle) then
     end
 end)
     
-menu.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 7, -1, 1, function(seatnumber)
+addict.slider(driveshit, "Change seat", {"switchseat"}, "DriverSeat = -1 Passenger = 0 Left Rear = 1 RightRear = 2", -1, 7, -1, 1, function(seatnumber)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
     local vehicle = entities.get_user_vehicle_as_handle()
     PED.SET_PED_INTO_VEHICLE(ped, vehicle, seatnumber)
 end)
 
-local autodrive = menu.list(driveshit, "Auto Drive", {"autodrive"}, "")
+local autodrive = addict.list(driveshit, "Auto Drive", {"autodrive"}, "")
 
-chauffeur_root = menu.list(autodrive, "Chauffeur", {"chauffeur"}, "") -- Thanks again Lance 👍
+chauffeur_root = addict.list(autodrive, "Chauffeur", {"chauffeur"}, "") -- Thanks again Lance 👍
 
 taxi_ped = 0
 taxi_veh = 0
@@ -6691,7 +6662,7 @@ taxi_blip = -1
 
 taxi_veh_options = {"Taxi", "Eudora", "Broadway"}
 
-menu.list_action(chauffeur_root, "Taxi Vehicles", {"taxiveh"}, "", taxi_veh_options, function(index, value, click_type)
+addict.list_action(chauffeur_root, "Taxi Vehicles", {"taxiveh"}, "", taxi_veh_options, function(index, value, click_type)
     vhash = util.joaat(value)
     phash = util.joaat("s_m_y_casino_01")
     if taxi_veh ~= 0 then
@@ -6720,13 +6691,13 @@ menu.list_action(chauffeur_root, "Taxi Vehicles", {"taxiveh"}, "", taxi_veh_opti
     ENTITY.SET_ENTITY_INVINCIBLE(taxi_ped, true)
     PED.SET_PED_INTO_VEHICLE(players.user_ped(), taxi_veh, 0)
     util.yield(500)
-    menu.trigger_commands("tune")
-    menu.trigger_commands("frontwheels" .. " 18")
-    menu.trigger_commands("wheeltype" .. " 9")
-    menu.trigger_commands("wheelcolour" .. " 42")
-    menu.trigger_commands("headlights" .. " 0")
-    menu.trigger_commands("windowtint" .. " 1")
-    menu.trigger_commands("livery" .. " 11")
+    addict.trigger_commands("tune")
+    addict.trigger_commands("frontwheels" .. " 18")
+    addict.trigger_commands("wheeltype" .. " 9")
+    addict.trigger_commands("wheelcolour" .. " 42")
+    addict.trigger_commands("headlights" .. " 0")
+    addict.trigger_commands("windowtint" .. " 1")
+    addict.trigger_commands("livery" .. " 11")
     VEHICLE.SET_VEHICLE_WINDOW_TINT(taxi_veh, 1)
     VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(taxi_veh, "Addict")
     util.toast("Taxi driver created!")
@@ -6734,7 +6705,7 @@ end)
 
 Boat_veh_options = {"Avisa", "Kosatka", "Submersible2", "Tug", "Seashark3"}
 
-menu.list_action(chauffeur_root, "Sea Vehicles", {"seaveh"}, "", Boat_veh_options, function(index, value, click_type)
+addict.list_action(chauffeur_root, "Sea Vehicles", {"seaveh"}, "", Boat_veh_options, function(index, value, click_type)
     vhash = util.joaat(value)
     phash = util.joaat("s_m_y_casino_01")
     if taxi_veh ~= 0 then
@@ -6763,14 +6734,14 @@ menu.list_action(chauffeur_root, "Sea Vehicles", {"seaveh"}, "", Boat_veh_option
     ENTITY.SET_ENTITY_INVINCIBLE(taxi_ped, true)
     PED.SET_PED_INTO_VEHICLE(players.user_ped(), taxi_veh, 2)
     util.yield(500)
-    menu.trigger_commands("tune")
-    menu.trigger_commands("frontwheels" .. " 18")
-    menu.trigger_commands("wheeltype" .. " 9")
-    menu.trigger_commands("wheelcolour" .. " 42")
-    menu.trigger_commands("headlights" .. " 0")
-    menu.trigger_commands("windowtint" .. " 1")
-    menu.trigger_commands("livery" .. " 11")
-    menu.trigger_commands("livery" .. " 11")
+    addict.trigger_commands("tune")
+    addict.trigger_commands("frontwheels" .. " 18")
+    addict.trigger_commands("wheeltype" .. " 9")
+    addict.trigger_commands("wheelcolour" .. " 42")
+    addict.trigger_commands("headlights" .. " 0")
+    addict.trigger_commands("windowtint" .. " 1")
+    addict.trigger_commands("livery" .. " 11")
+    addict.trigger_commands("livery" .. " 11")
     VEHICLE.SET_VEHICLE_WINDOW_TINT(taxi_veh, 1)
     VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(taxi_veh, "Addict")
     util.toast("Boat driver created!")
@@ -6780,7 +6751,7 @@ chauffeur_veh_options = {"T20", "Sm722", "Btype3", "Btype2", "Tenf2", "Stretch",
 "Weevil2", "Journey2", "Surfer3", "Manchez2", "Manchez", "Vagner", "Zhaba", "Apc", "Chernobog", "Khanjali", "Rhino", "Halftrack", "Faggio3", "Hakuchou2", 
 "Mesa2", "Ambulance", "Windsor2", "Asbo", "Issi5", "Issi3", "Dilettante2", "Cerberus2", "Phantom2"}
 
-menu.list_action(chauffeur_root, "Chauffeur Vehicles", {"chauffeurveh"}, "", chauffeur_veh_options, function(index, value, click_type)
+addict.list_action(chauffeur_root, "Chauffeur Vehicles", {"chauffeurveh"}, "", chauffeur_veh_options, function(index, value, click_type)
     vhash = util.joaat(value)
     phash = util.joaat("s_m_y_casino_01")
     if taxi_veh ~= 0 then
@@ -6811,23 +6782,23 @@ menu.list_action(chauffeur_root, "Chauffeur Vehicles", {"chauffeurveh"}, "", cha
     PED.SET_PED_INTO_VEHICLE(taxi_ped, taxi_veh, -1)
     ENTITY.SET_ENTITY_INVINCIBLE(taxi_ped, true)
     PED.SET_PED_INTO_VEHICLE(players.user_ped(), taxi_veh, 2)
-    menu.trigger_commands("livery" .. " 11")
+    addict.trigger_commands("livery" .. " 11")
     VEHICLE.SET_VEHICLE_WINDOW_TINT(taxi_veh, 1)
     VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(taxi_veh, "Addict")
     util.toast("Chauffeur driver created!")
 end)
 
-menu.divider(chauffeur_root, "_________________________________________")
+addict.divider(chauffeur_root, "_________________________________________")
 
 local drive_speed = 15.0
 local drive_style = 0
 local is_driving = false
 
-menu.slider(chauffeur_root, "Driving Speed", {"setaispeed"}, "", 0, 200, drive_speed, 10.0, function(speed, prev)
+addict.slider(chauffeur_root, "Driving Speed", {"setaispeed"}, "", 0, 200, drive_speed, 10.0, function(speed, prev)
     drive_speed = speed
 end)
 
-menu.action(chauffeur_root, "Drive to waypoint", {"drivetowp"}, "", function(click_type)
+addict.action(chauffeur_root, "Drive to waypoint", {"drivetowp"}, "", function(click_type)
     if taxi_ped == 0 then
         util.toast("No active chauffeur you fool!")
     else
@@ -6838,7 +6809,7 @@ menu.action(chauffeur_root, "Drive to waypoint", {"drivetowp"}, "", function(cli
     end
 end)
 
-menu.action(chauffeur_root, "Wander/Hover", {"aiwandering"}, "", function(v)
+addict.action(chauffeur_root, "Wander/Hover", {"aiwandering"}, "", function(v)
     local ped, vehicle = get_my_driver()
     is_driving = true
     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
@@ -6848,12 +6819,12 @@ menu.action(chauffeur_root, "Wander/Hover", {"aiwandering"}, "", function(v)
     PED.SET_DRIVER_AGGRESSIVENESS(ped, 0.6)
 end)
 
-menu.action(chauffeur_root, "Stop Driving", {"aistops"}, "", function(v)
-    menu.trigger_commands("setaispeed" .. " 0")
-    menu.trigger_commands("aiwandering")
+addict.action(chauffeur_root, "Stop Driving", {"aistops"}, "", function(v)
+    addict.trigger_commands("setaispeed" .. " 0")
+    addict.trigger_commands("aiwandering")
 end)
 
-menu.action(chauffeur_root, "TP to chauffeur", {"tptochauffeur"}, "", function(click_type)
+addict.action(chauffeur_root, "TP to chauffeur", {"tptochauffeur"}, "", function(click_type)
     if taxi_ped == 0 then
         util.toast("No active chauffeur you fool!")
     else
@@ -6861,7 +6832,7 @@ menu.action(chauffeur_root, "TP to chauffeur", {"tptochauffeur"}, "", function(c
     end
 end)
 
-menu.action(chauffeur_root, "Self Destruct", {"selfdestruct"}, "", function(click_type)
+addict.action(chauffeur_root, "Self Destruct", {"selfdestruct"}, "", function(click_type)
     if taxi_ped == 0 then
         util.toast("No active chauffeur you fool!")
     else
@@ -6884,14 +6855,14 @@ menu.action(chauffeur_root, "Self Destruct", {"selfdestruct"}, "", function(clic
     end
 end)
 
-menu.divider(autodrive, "Drive Actions")
+addict.divider(autodrive, "Drive Actions")
 
-drivetoPlayerMenu = menu.list(autodrive, "Drive To Player", {"drivetoplayer"}, "")
+drivetoPlayeraddict = addict.list(autodrive, "Drive To Player", {"drivetoplayer"}, "")
 drivetoPlayers = {}
-setup_choose_player_menu(drivetoPlayerMenu, drivetoPlayers, function(target_pid, name)
-    return menu.action(drivetoPlayerMenu, name, {"driveto"}, "", function(_)
+setup_choose_player_addict(drivetoPlayeraddict, drivetoPlayers, function(target_pid, name)
+    return addict.action(drivetoPlayeraddict, name, {"driveto"}, "", function(_)
         ped, vehicle = get_my_driver()
-        menu.trigger_commands("autodrive")
+        addict.trigger_commands("autodrive")
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(target_pid)
         hash = ENTITY.GET_ENTITY_MODEL(vehicle)
         util.create_tick_handler(function(_)
@@ -6908,11 +6879,11 @@ local drive_speed = 15.0
 local drive_style = 0
 local is_driving = false
 
-menu.slider(autodrive, "Driving Speed", {"setaispeed"}, "", 0, 200, drive_speed, 10.0, function(speed, prev)
+addict.slider(autodrive, "Driving Speed", {"setaispeed"}, "", 0, 200, drive_speed, 10.0, function(speed, prev)
     drive_speed = speed
 end)
 
-menu.action(autodrive, "Wander/Hover", {"aiwander"}, "", function(v)
+addict.action(autodrive, "Wander/Hover", {"aiwander"}, "", function(v)
     local ped, vehicle = get_my_driver()
     is_driving = true
     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
@@ -6922,13 +6893,13 @@ menu.action(autodrive, "Wander/Hover", {"aiwander"}, "", function(v)
     PED.SET_DRIVER_AGGRESSIVENESS(ped, 0.6)
 end)
 
-menu.action(autodrive, "Stop Driving", {"aistop"}, "", function(v)
+addict.action(autodrive, "Stop Driving", {"aistop"}, "", function(v)
     local ped = get_my_driver()
     is_driving = false
     TASK.CLEAR_PED_TASKS(ped)
 end)
 
-menu.toggle_loop(driveshit, "Vehicle Jump", {"vehiclejump"}, "Lets you jump with your car if you tap 'Left Shift' or 'A' on controller.", function()
+addict.toggle_loop(driveshit, "Vehicle Jump", {"vehiclejump"}, "Lets you jump with your car if you tap 'Left Shift' or 'A' on controller.", function()
     local my_cur_car = entities.get_user_vehicle_as_handle()
     if not is_user_driving_vehicle() then return end
     local prevPress = PAD.IS_CONTROL_PRESSED(21, 21)
@@ -6939,7 +6910,7 @@ menu.toggle_loop(driveshit, "Vehicle Jump", {"vehiclejump"}, "Lets you jump with
     end
 end)
 
-menu.toggle_loop(driveshit, "Unlimited Nitro", {"unitro"}, "Enable nitro boost on any vehicle,tap 'X' or 'A' on controller. still working on how to turn it off.", function()
+addict.toggle_loop(driveshit, "Unlimited Nitro", {"unitro"}, "Enable nitro boost on any vehicle,tap 'X' or 'A' on controller. still working on how to turn it off.", function()
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED('veh_xs_vehicle_mods') then
         STREAMING.REQUEST_NAMED_PTFX_ASSET('veh_xs_vehicle_mods')
         while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED('veh_xs_vehicle_mods') do
@@ -6958,7 +6929,7 @@ menu.toggle_loop(driveshit, "Unlimited Nitro", {"unitro"}, "Enable nitro boost o
     end
 end)
 
-menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number 'Left Shift' on you're numberpad or 'A' on controller.", function(on_toggle)
+addict.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rocket boost using number 'Left Shift' on you're numberpad or 'A' on controller.", function(on_toggle)
     if on_toggle then
         boost(true)
     else
@@ -6966,7 +6937,7 @@ menu.toggle(driveshit, "Auto Rocket Recharge", {"rocketrecharge"}, "Refills rock
     end
 end)
 
-menu.toggle_loop(driveshit, "Engine Always On", {"alwayson"}, "", function()
+addict.toggle_loop(driveshit, "Engine Always On", {"alwayson"}, "", function()
     if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), false) then
         local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
         VEHICLE.SET_VEHICLE_ENGINE_ON(vehicle, true, true, true)
@@ -6975,7 +6946,7 @@ menu.toggle_loop(driveshit, "Engine Always On", {"alwayson"}, "", function()
     end
 end)
 
-menu.toggle_loop(driveshit, "Turn Radio Off", {"radiooff"}, "Turn off the radio completely (only for you).", function () -- Credits To Acjoker Script
+addict.toggle_loop(driveshit, "Turn Radio Off", {"radiooff"}, "Turn off the radio completely (only for you).", function () -- Credits To Acjoker Script
     local veh = PED.GET_VEHICLE_PED_IS_IN(players.user_ped())
     if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), false) then
         AUDIO.SET_VEHICLE_RADIO_ENABLED(veh, false)
@@ -6986,7 +6957,7 @@ end, function ()
     AUDIO.SET_VEHICLE_RADIO_ENABLED(veh, true)
 end)
 
-        menu.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo, there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
+        addict.toggle(driveshit, "Drive A UFO", {"driveufo"}, "Drive ufo, there is lots of room for improvment I just need time. Note: To use first person change camera distance back to 1.00", function(on_toggle)
             if on_toggle then
                 local vehicleHash = util.joaat("hydra")
                 request_model(vehicleHash)
@@ -7016,14 +6987,14 @@ end)
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ufo, pos.x, pos.y, pos.z + 200, false, false, true)
                 PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), ufo, -1)
                 ENTITY.SET_ENTITY_VISIBLE(object1, true)
-                menu.trigger_commands("otr" .. " on")
-                menu.trigger_commands("cameradistance" .. " 1.80")
+                addict.trigger_commands("otr" .. " on")
+                addict.trigger_commands("cameradistance" .. " 1.80")
                 DisablePhone()
             else
                 ENTITY.SET_ENTITY_VISIBLE(players.user_ped(), true, true)
-                menu.trigger_commands("otr" .. " off")
-                menu.trigger_commands("cameradistance" .. " 1.00")
-                menu.trigger_commands("deleteveh")
+                addict.trigger_commands("otr" .. " off")
+                addict.trigger_commands("cameradistance" .. " 1.00")
+                addict.trigger_commands("deleteveh")
                 for i, object in ipairs(entities.get_all_objects_as_handles()) do
                     if ENTITY.DOES_ENTITY_EXIST(object, util.joaat("sum_prop_dufocore_01a")) then
                     entities.delete_by_handle(object)
@@ -7033,7 +7004,7 @@ end)
             end
         end)
 
-        menu.toggle(driveshit, "RC bandito bomber", {"rcbomber"}, "Drive rc bandito and explode unlimited times using number 'Left Shift' on you're numberpad or toggle 'A' on controller.", function(on_toggle)
+        addict.toggle(driveshit, "RC bandito bomber", {"rcbomber"}, "Drive rc bandito and explode unlimited times using number 'Left Shift' on you're numberpad or toggle 'A' on controller.", function(on_toggle)
             if on_toggle then
                 local curcar = entities.get_user_vehicle_as_handle()
                 local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -7047,31 +7018,31 @@ end)
                 VEHICLE.SET_VEHICLE_ENGINE_ON(rcbandito, curcar, true, true, true)
                 ENTITY.SET_ENTITY_INVINCIBLE(rcbandito, curcar, true)
                 normal_boost_speed()
-                menu.trigger_commands("rc" .. " on")
-                menu.trigger_commands("otr" .. " on")
+                addict.trigger_commands("rc" .. " on")
+                addict.trigger_commands("otr" .. " on")
                 DisablePhone()
                 rcbomb(true)
             else
-                menu.trigger_commands("otr" .. " off")
-                menu.trigger_commands("rc" .. " off")
-                menu.trigger_commands("deleteveh")
+                addict.trigger_commands("otr" .. " off")
+                addict.trigger_commands("rc" .. " off")
+                addict.trigger_commands("deleteveh")
                 DisablePhone()
                 util.restart_script()
             end
         end)
     
-        menu.toggle(driveshit, "Drive Cop Heli", {"copheli"}, "Plus bodygaurds.", function(on_toggle)
+        addict.toggle(driveshit, "Drive Cop Heli", {"copheli"}, "Plus bodygaurds.", function(on_toggle)
             if on_toggle then
-                menu.trigger_commands("bodyguardmodel S_M_Y_Swat_01")
-                menu.trigger_commands("bodyguardcount 3")
-                menu.trigger_commands("bodyguardweapon smg")
-                menu.trigger_commands("spawnbodyguards")
-                menu.trigger_commands("smyswat01")
-                menu.trigger_commands("undead")
-                menu.trigger_commands("otr")
-                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
+                addict.trigger_commands("bodyguardmodel S_M_Y_Swat_01")
+                addict.trigger_commands("bodyguardcount 3")
+                addict.trigger_commands("bodyguardweapon smg")
+                addict.trigger_commands("spawnbodyguards")
+                addict.trigger_commands("smyswat01")
+                addict.trigger_commands("undead")
+                addict.trigger_commands("otr")
+                local Imortality_BodyGuards = addict.ref_by_path("Self>Bodyguards>Immortality")
                 util.yield(3000)
-                menu.trigger_command(Imortality_BodyGuards)
+                addict.trigger_command(Imortality_BodyGuards)
                 util.toast("Make way for the heli.")
                 util.yield(3000)
                 local vehicleHash = util.joaat("polmav")
@@ -7089,32 +7060,32 @@ end)
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
                 PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
                 util.yield(1500)
-                menu.trigger_commands("livery -1")
+                addict.trigger_commands("livery -1")
             else
-                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
-                menu.trigger_command(Imortality_BodyGuards)
-                menu.trigger_commands("delbodyguards")
-                menu.trigger_commands("deletevehicle")
-                menu.trigger_commands("mpfemale")
-                menu.trigger_commands("undead")
-                menu.trigger_commands("otr")
+                local Imortality_BodyGuards = addict.ref_by_path("Self>Bodyguards>Immortality")
+                addict.trigger_command(Imortality_BodyGuards)
+                addict.trigger_commands("delbodyguards")
+                addict.trigger_commands("deletevehicle")
+                addict.trigger_commands("mpfemale")
+                addict.trigger_commands("undead")
+                addict.trigger_commands("otr")
                 util.toast("Change you're outfit to get clothes normal again.")
             end
         end)
 
 
-        menu.toggle(driveshit, "Drive Cop Car", {"copcar"}, "Plus a bodygaurd.", function(on_toggle)
+        addict.toggle(driveshit, "Drive Cop Car", {"copcar"}, "Plus a bodygaurd.", function(on_toggle)
             if on_toggle then
-                menu.trigger_commands("bodyguardmodel S_M_Y_Cop_01")
-                menu.trigger_commands("bodyguardcount 1")
-                menu.trigger_commands("bodyguardweapon pistol")
-                menu.trigger_commands("spawnbodyguards")
-                menu.trigger_commands("SMYCop01")
-                menu.trigger_commands("undead")
-                menu.trigger_commands("otr")
-                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
+                addict.trigger_commands("bodyguardmodel S_M_Y_Cop_01")
+                addict.trigger_commands("bodyguardcount 1")
+                addict.trigger_commands("bodyguardweapon pistol")
+                addict.trigger_commands("spawnbodyguards")
+                addict.trigger_commands("SMYCop01")
+                addict.trigger_commands("undead")
+                addict.trigger_commands("otr")
+                local Imortality_BodyGuards = addict.ref_by_path("Self>Bodyguards>Immortality")
                 util.yield(1000)
-                menu.trigger_command(Imortality_BodyGuards)
+                addict.trigger_command(Imortality_BodyGuards)
                 local vehicleHash = util.joaat("police3")
                 request_model(vehicleHash)
                 local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
@@ -7129,19 +7100,19 @@ end)
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(copheli, pos.x, pos.y, pos.z, false, false, true)
                 PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), copheli, -1)
             else
-                local Imortality_BodyGuards = menu.ref_by_path("Self>Bodyguards>Immortality")
-                menu.trigger_command(Imortality_BodyGuards)
-                menu.trigger_commands("delbodyguards")
-                menu.trigger_commands("deletevehicle")
-                menu.trigger_commands("mpfemale")
-                menu.trigger_commands("undead")
-                menu.trigger_commands("otr")
+                local Imortality_BodyGuards = addict.ref_by_path("Self>Bodyguards>Immortality")
+                addict.trigger_command(Imortality_BodyGuards)
+                addict.trigger_commands("delbodyguards")
+                addict.trigger_commands("deletevehicle")
+                addict.trigger_commands("mpfemale")
+                addict.trigger_commands("undead")
+                addict.trigger_commands("otr")
                 util.toast("Change you're outfit to get clothes normal again.")
             end
         end)
 
         
-    menu.toggle(driveshit, "Drive A Shopping Cart", {"givecart"}, "Bmx", function(on_toggle)
+    addict.toggle(driveshit, "Drive A Shopping Cart", {"givecart"}, "Bmx", function(on_toggle)
         if on_toggle then
         local vehicleHash = util.joaat("bmx")
         request_model(vehicleHash)
@@ -7170,34 +7141,34 @@ end)
 
         DisablePhone()
     else
-        menu.trigger_commands("superc")
+        addict.trigger_commands("superc")
         entities.delete_by_handle(cart)
         end
     end)
         
-        menu.toggle(driveshit, "Super Ufo", {"superufo"}, "Toggles superdrive and super handbreak. Warning! This quite is nuts lol.", function(on_toggle)
+        addict.toggle(driveshit, "Super Ufo", {"superufo"}, "Toggles superdrive and super handbreak. Warning! This quite is nuts lol.", function(on_toggle)
             if on_toggle then
-                menu.trigger_commands("superd")
-                menu.trigger_commands("driveufo")
+                addict.trigger_commands("superd")
+                addict.trigger_commands("driveufo")
             else
-                menu.trigger_commands("superd")
-                menu.trigger_commands("driveufo")
+                addict.trigger_commands("superd")
+                addict.trigger_commands("driveufo")
             end
         end)
 
-        menu.toggle(driveshit, "Super Drive", {"superd"}, "Toggles superdrive and super handbreak.", function(on_toggle)
+        addict.toggle(driveshit, "Super Drive", {"superd"}, "Toggles superdrive and super handbreak.", function(on_toggle)
             if on_toggle then
-                menu.trigger_commands("speedlimit" .. " 10000")
-                menu.trigger_commands("superdrivespeed" .. " 3.0")
-                menu.trigger_commands("superdrive")
-                menu.trigger_commands("superhandbreak")
+                addict.trigger_commands("speedlimit" .. " 10000")
+                addict.trigger_commands("superdrivespeed" .. " 3.0")
+                addict.trigger_commands("superdrive")
+                addict.trigger_commands("superhandbreak")
             else
-                menu.trigger_commands("superdrive")
-                menu.trigger_commands("superhandbreak")
+                addict.trigger_commands("superdrive")
+                addict.trigger_commands("superhandbreak")
             end
         end)
         
-        menu.toggle_loop(driveshit, 'Stick to surface', {'stickyveh'}, 'Warning! Spawn a vehicle or self crashh! Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function(curcar)
+        addict.toggle_loop(driveshit, 'Stick to surface', {'stickyveh'}, 'Warning! Spawn a vehicle or self crashh! Makes it to where the vehicle sticks to walls(using horn boost on the lowest setting helps get up on the walls, skidded from ajoker script.', function(curcar)
             local curcar = entities.get_user_vehicle_as_handle()
             local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             if not PED.IS_PED_IN_VEHICLE(player, PED.GET_VEHICLE_PED_IS_IN(player), false) then
@@ -7208,7 +7179,7 @@ end)
                 VEHICLE.MODIFY_VEHICLE_TOP_SPEED(curcar, 40)
             end)
         
-        menu.toggle_loop(driveshit,"Horn boost", {"hornboost"}, "Gives you the ability to speed up their car by pressing honking their horn or activating the siren. Will try fix it for other players soon.", function()
+        addict.toggle_loop(driveshit,"Horn boost", {"hornboost"}, "Gives you the ability to speed up their car by pressing honking their horn or activating the siren. Will try fix it for other players soon.", function()
             local vehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
             if not (AUDIO.IS_HORN_ACTIVE(vehicle) or VEHICLE.IS_VEHICLE_SIREN_ON(vehicle)) then return end
             NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
@@ -7268,13 +7239,13 @@ local function GenerateNametagOnPed(ped, nametag)
     end)
 end
 
-local myroot = menu.list(funfun, "Spawn Pets", {}, "These are your active pets.")
+local myroot = addict.list(funfun, "Spawn Pets", {}, "These are your active pets.")
 
-local header = menu.divider(myroot, "PetScript BETA")
-local allpetsroot = menu.list(myroot, "All Pets", {}, "")
-local activepet = menu.list(myroot, "Active Pets", {}, "These are your active pets.")
+local header = addict.divider(myroot, "PetScript BETA")
+local allpetsroot = addict.list(myroot, "All Pets", {}, "")
+local activepet = addict.list(myroot, "Active Pets", {}, "These are your active pets.")
 
-        menu.toggle(allpetsroot, "Immortal", {}, "Make all your pets immortal", function(on)
+        addict.toggle(allpetsroot, "Immortal", {}, "Make all your pets immortal", function(on)
             if on then
                 for k,v in pairs(activedogs) do
                     ENTITY.SET_ENTITY_INVINCIBLE(v, true)
@@ -7286,13 +7257,13 @@ local activepet = menu.list(myroot, "Active Pets", {}, "These are your active pe
             end
         end)
 
-        menu.action(allpetsroot, "Delete All Pets", {}, "", function()
+        addict.action(allpetsroot, "Delete All Pets", {}, "", function()
             for k,v in pairs(activedogs) do
                 entities.delete_by_handle(v)
             end
         end)
         
-menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that will follow and defend you.", dogs, function(opt, breeds)
+addict.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that will follow and defend you.", dogs, function(opt, breeds)
     local hash = util.joaat("A_C_" .. breeds)
     STREAMING.REQUEST_MODEL(hash)
     while not STREAMING.HAS_MODEL_LOADED(hash) do
@@ -7309,15 +7280,15 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
         PED.SET_PED_NEVER_LEAVES_GROUP(dog_ped, true)
         PED.SET_GROUP_SEPARATION_RANGE(mygroup, 99999)
 
-        local thispet = menu.list(activepet, breeds, {}, "")
+        local thispet = addict.list(activepet, breeds, {}, "")
 
         --ANIMAL FUNCTIONS BEGIN--
 
-        menu.text_input(thispet, "Set Name", {"setname"}, "", function(name)
+        addict.text_input(thispet, "Set Name", {"setname"}, "", function(name)
             GenerateNametagOnPed(dog_ped, name)
         end)
 
-        menu.toggle(thispet, "Immortal", {}, "", function(on)
+        addict.toggle(thispet, "Immortal", {}, "", function(on)
             if on then
                 ENTITY.SET_ENTITY_INVINCIBLE(dog_ped, true)
             else
@@ -7329,7 +7300,7 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
 
         if breeds ~= "Cat_01" then
 
-            menu.toggle(thispet, "Sit", {}, "Makes your pet sit.", function(on)
+            addict.toggle(thispet, "Sit", {}, "Makes your pet sit.", function(on)
                 if on then
                     if breeds == "Rottweiler" then
                         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
@@ -7355,7 +7326,7 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
 
             --Make Ped Bark
 
-            menu.action(thispet, "Bark", {}, "Bark! Sometimes it may not bark.", function()
+            addict.action(thispet, "Bark", {}, "Bark! Sometimes it may not bark.", function()
                 if breeds == "Rottweiler" then
                     NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
                     TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_DOG_BARKING_ROTWEILER", 0, true)
@@ -7380,7 +7351,7 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
         --CAT SPECIFIC FUNCTIONS--
 
         if breeds == "Cat_01" then 
-            menu.toggle(thispet, "Lie Down and Chill", {}, "", function(on)
+            addict.toggle(thispet, "Lie Down and Chill", {}, "", function(on)
                 if on then
                     NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(dog_ped)
                     TASK.TASK_START_SCENARIO_IN_PLACE(dog_ped, "WORLD_CAT_SLEEPING_GROUND", 0, true)
@@ -7391,9 +7362,9 @@ menu.action_slider(myroot, "Spawn a Pet", {}, "Spawns a loyal companion that wil
         end
 
         --DELETE PED
-        menu.action(thispet, "Delete Pet", {}, "RIP in Peace, my furry friend.", function()
+        addict.action(thispet, "Delete Pet", {}, "RIP in Peace, my furry friend.", function()
             entities.delete_by_handle(dog_ped)
-            menu.delete(thispet)
+            addict.delete(thispet)
         end)
     end
 end)
@@ -7410,7 +7381,7 @@ local windows = {
     {name = "Mid Right", number = 7}
 }
 
-drawScriptMenu = function()
+drawScriptaddict = function()
 
 local function get_model_size(hash)
     local minptr = memory.alloc(24)
@@ -7429,50 +7400,50 @@ local function get_model_size(hash)
 end
 
 
-local wrolls = menu.list(driveshit, "Roll Windows", {}, "", function(); end)
+local wrolls = addict.list(driveshit, "Roll Windows", {}, "", function(); end)
 
-ROLL_DOWN_INDIVIDUAL = menu.list(wrolls, "Roll down individual windows")
+ROLL_DOWN_INDIVIDUAL = addict.list(wrolls, "Roll down individual windows")
     for k, v in pairs(windows) do
-        menu.action(ROLL_DOWN_INDIVIDUAL, "Roll down " .. v.name .. " window", {}, "Rolls down " .. v.name .. " window", function()
+        addict.action(ROLL_DOWN_INDIVIDUAL, "Roll down " .. v.name .. " window", {}, "Rolls down " .. v.name .. " window", function()
         currentVehicle = entities.get_user_vehicle_as_handle()
         VEHICLE.ROLL_DOWN_WINDOW(currentVehicle, v.number)
         end)
     end
 
-ROLL_UP_INDIVIDUAL = menu.list(wrolls, "Roll up individual windows")
+ROLL_UP_INDIVIDUAL = addict.list(wrolls, "Roll up individual windows")
     for k, v in pairs(windows) do
-        menu.action(ROLL_UP_INDIVIDUAL, "Roll up " .. v.name .. " window", {}, "Rolls up " .. v.name .. " window", function()
+        addict.action(ROLL_UP_INDIVIDUAL, "Roll up " .. v.name .. " window", {}, "Rolls up " .. v.name .. " window", function()
         currentVehicle = entities.get_user_vehicle_as_handle()
         VEHICLE.ROLL_UP_WINDOW(currentVehicle, v.number)
         end)
     end
 
-menu.action(wrolls, "Roll all down", {"pwcalldown"}, "Rolls all windows of the current vehicle down", function()
+addict.action(wrolls, "Roll all down", {"pwcalldown"}, "Rolls all windows of the current vehicle down", function()
     currentVehicle = entities.get_user_vehicle_as_handle()
     VEHICLE.ROLL_DOWN_WINDOWS(currentVehicle)
 end)
 
-menu.action(wrolls, "Roll all up", {"pwcallup"}, "Rolls all windows of the current vehicle up", function()
+addict.action(wrolls, "Roll all up", {"pwcallup"}, "Rolls all windows of the current vehicle up", function()
     for k, v in pairs(windows) do
         currentVehicle = entities.get_user_vehicle_as_handle()
         VEHICLE.ROLL_UP_WINDOW(currentVehicle, v.number)
     end
 end)
 
-menu.action(wrolls, "Roll down front windows", {"pwcfrontdown"}, "Rolls the front left/front right windows down. Probably the most relevant", function()
+addict.action(wrolls, "Roll down front windows", {"pwcfrontdown"}, "Rolls the front left/front right windows down. Probably the most relevant", function()
     currentVehicle = entities.get_user_vehicle_as_handle()
     VEHICLE.ROLL_DOWN_WINDOW(currentVehicle, 0)
     VEHICLE.ROLL_DOWN_WINDOW(currentVehicle, 1)
 end)
 
-menu.action(wrolls, "Roll down rear windows", {"pwcreardown"}, "Rolls the rear left/rear right windows down", function()
+addict.action(wrolls, "Roll down rear windows", {"pwcreardown"}, "Rolls the rear left/rear right windows down", function()
     currentVehicle = entities.get_user_vehicle_as_handle()
     VEHICLE.ROLL_DOWN_WINDOW(currentVehicle, 2)
     VEHICLE.ROLL_DOWN_WINDOW(currentVehicle, 3)
 end)
 
 local obj = {expl = false}
-OBJgun = menu.toggle_loop(objgun, "Money Gun", {"moneygun"}, "Real Money Gun!", function ()
+OBJgun = addict.toggle_loop(objgun, "Money Gun", {"moneygun"}, "Real Money Gun!", function ()
    local hash = util.joaat("prop_money_bag_01")
     Streament(hash)
     if PLAYER.IS_PLAYER_FREE_AIMING(players.user()) and not PED.IS_PED_IN_ANY_VEHICLE(players.user_ped()) then
@@ -7515,7 +7486,7 @@ local bones <const> = {
 }
 local colour = {r = 1.0, g = 0.0, b = 1.0, a = 1.0}
 local timer <const> = newTimer()
-local trailsOptions <const> = menu.list(funfun, "Trails", {}, "Working on a fix or this wil be removed soon.")
+local trailsOptions <const> = addict.list(funfun, "Trails", {}, "Working on a fix or this wil be removed soon.")
 local effect <const> = Effect.new("scr_rcpaparazzo1", "scr_mich4_firework_sparkle_spawn")
 local effects = {}
 
@@ -7527,7 +7498,7 @@ local function removeFxs(effects)
 	end
 end
 
-menu.toggle_loop(trailsOptions, "Trails", {"trails"}, "", function ()
+addict.toggle_loop(trailsOptions, "Trails", {"trails"}, "", function ()
 	if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect.asset) then
 		STREAMING.REQUEST_NAMED_PTFX_ASSET(effect.asset)
 		return
@@ -7562,12 +7533,12 @@ end, function ()
 end)
 
 
-local trailColour = menu.colour(trailsOptions, "Colour", {"trailcolour"}, "", colour, false, function(newColour)
+local trailColour = addict.colour(trailsOptions, "Colour", {"trailcolour"}, "", colour, false, function(newColour)
 colour = newColour end)
-menu.rainbow(trailColour)
+addict.rainbow(trailColour)
 
 end
-drawScriptMenu()
+drawScriptaddict()
 
 function attach_to_player(hash, bone, x, y, z, xrot, yrot, zrot)           --attach object to player ped
     local user_ped = PLAYER.PLAYER_PED_ID()
@@ -7710,20 +7681,20 @@ function moan(pos, gender)
     end)
 end
 
-	playermode = menu.list(funfun, "My Player", {}, "", function(); end)
+	playermode = addict.list(funfun, "My Player", {}, "", function(); end)
 
     tpf_units = 1
-menu.action(playermode, "TP Forward", {"tpforward"}, "", function(on_click)
+addict.action(playermode, "TP Forward", {"tpforward"}, "", function(on_click)
     local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
 end)
 
-menu.slider(playermode, "TP Forward", {"tpforward"}, "", 1, 100, 1, 1, function(s)
+addict.slider(playermode, "TP Forward", {"tpforward"}, "", 1, 100, 1, 1, function(s)
 tpf_units = s
 end)
 
 
-local fire_wings_list = menu.list(playermode, "Fire wings")
+local fire_wings_list = addict.list(playermode, "Fire wings")
 
 ----------------------------------------
 --Fire Wings
@@ -7746,7 +7717,7 @@ local fireWingsSettings = {
 }
 local ptfxEgg
 local firewingPtfx = 'muz_xs_turret_flamethrower_looping'
-menu.toggle(fire_wings_list, 'Fire wings', {'ToxfireWings'}, 'Put the wings on your back.', function (toggle)
+addict.toggle(fire_wings_list, 'Fire wings', {'ToxfireWings'}, 'Put the wings on your back.', function (toggle)
     fireWingsSettings.on = toggle
     if fireWingsSettings.on then
         ENTITY.SET_ENTITY_PROOFS(players.user_ped(), false, true, false, false, false, false, 1, false)
@@ -7792,11 +7763,11 @@ menu.toggle(fire_wings_list, 'Fire wings', {'ToxfireWings'}, 'Put the wings on y
     end
 end) 
 
-menu.slider(fire_wings_list, 'Fire wings scale', {'ToxfireWingsScale'}, '', 1, 100, 3, 1, function(value)
+addict.slider(fire_wings_list, 'Fire wings scale', {'ToxfireWingsScale'}, '', 1, 100, 3, 1, function(value)
     fireWingsSettings.scale = value / 10
 end)
 
-menu.rainbow(menu.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsColour'}, '', fireWingsSettings.fireColour, false, function(colour)
+addict.rainbow(addict.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsColour'}, '', fireWingsSettings.fireColour, false, function(colour)
     fireWingsSettings.fireColour = colour
 end))
 
@@ -7807,9 +7778,9 @@ local anim = "shit_loop_trev"
 local mshit = util.joaat("prop_big_shit_02")
 local rshit = util.joaat("prop_big_shit_01")
 
-list = menu.list(playermode, "Poop", {"lpoop"}, "Poo list", function(); end)
+list = addict.list(playermode, "Poop", {"lpoop"}, "Poo list", function(); end)
 
-menu.action(list, "Massive shit", {"mshit"}, "Make a massive shit", function()
+addict.action(list, "Massive shit", {"mshit"}, "Make a massive shit", function()
     local c = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     c.z = c.z -1
     while not STREAMING.HAS_ANIM_DICT_LOADED(agroup) do 
@@ -7821,7 +7792,7 @@ menu.action(list, "Massive shit", {"mshit"}, "Make a massive shit", function()
     entities.create_object(mshit, c)
 end)
 
-menu.action(list, "Normal shit", {"nshit"}, "Make a normale sized shit", function()
+addict.action(list, "Normal shit", {"nshit"}, "Make a normale sized shit", function()
     local c = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     c.z = c.z -1
     while not STREAMING.HAS_ANIM_DICT_LOADED(agroup) do 
@@ -7833,7 +7804,7 @@ menu.action(list, "Normal shit", {"nshit"}, "Make a normale sized shit", functio
     entities.create_object(rshit, c)
 end)
 
-menu.toggle(playermode, "Auto Run", {"autorun"}, "Suicide or use command 'ewo' to suicide yourself.", function()
+addict.toggle(playermode, "Auto Run", {"autorun"}, "Suicide or use command 'ewo' to suicide yourself.", function()
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -7855,7 +7826,7 @@ coords_ped.z = coords_ped.z
 --local impact = v3_2(coords_ped.x, coords_ped.y, coords_ped.z)
 local lazer = {exp = false, bull = 'WEAPON_TACTICALRIFLE', crosshair = true}
 
-menu.toggle_loop(playermode, "Lazer Eyes", {"lazereyes"}, "Shoot lazers out of your eyes also works in vehicles", function (on)
+addict.toggle_loop(playermode, "Lazer Eyes", {"lazereyes"}, "Shoot lazers out of your eyes also works in vehicles", function (on)
     lazereyes = on
     if lazer.crosshair then
         HUD.DISPLAY_SNIPER_SCOPE_THIS_FRAME()
@@ -7897,7 +7868,7 @@ function set_explosion_proof(entity, value)
 	memory.write_uint(pEntity + 0x188, damageBits)
 end
 
-menu.toggle_loop(playermode, "Superpunch", {"superpunch"}, "", function()
+addict.toggle_loop(playermode, "Superpunch", {"superpunch"}, "", function()
 	local pWeapon = memory.alloc_int()
 	WEAPON.GET_CURRENT_PED_WEAPON(players.user_ped(), pWeapon, true)
 	local weaponHash = memory.read_int(pWeapon)
@@ -7916,8 +7887,8 @@ menu.toggle_loop(playermode, "Superpunch", {"superpunch"}, "", function()
 end)
 
 local jump = {height = 0.6 }
-menu.toggle_loop(playermode, "Super Man", {}, "Keep going higher the longer you press jump (can also be used to fly), Make sure you disable lock parachutes.", function () -- Credits to Acjoker Script
-    menu.trigger_commands("paralock full")
+addict.toggle_loop(playermode, "Super Man", {}, "Keep going higher the longer you press jump (can also be used to fly), Make sure you disable lock parachutes.", function () -- Credits to Acjoker Script
+    addict.trigger_commands("paralock full")
     if PAD.IS_CONTROL_PRESSED(22, 22) or PAD.IS_CONTROL_JUST_PRESSED(21, 21) then
         PED.SET_PED_CAN_RAGDOLL(players.user_ped(), false)
         ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(players.user_ped(), 1, 0.0, 0.6, jump.height, 0, 0, 0, 0, true, true, true, true)
@@ -7927,29 +7898,29 @@ menu.toggle_loop(playermode, "Super Man", {}, "Keep going higher the longer you 
     end
 end)
 
-menu.slider(playermode, "Super Man Power", {"supermanpower"}, "Adjust the amount you move upwards. Make sure you disable lock parachutes.", 6, 1000, 6, 1, function (a) -- Credits to Acjoker Script
+addict.slider(playermode, "Super Man Power", {"supermanpower"}, "Adjust the amount you move upwards. Make sure you disable lock parachutes.", 6, 1000, 6, 1, function (a) -- Credits to Acjoker Script
     jump.height = a*0.1
 end)
 
-escort_root = menu.list(playermode, "Escort services", {"sexluaescorts"}, "")
+escort_root = addict.list(playermode, "Escort services", {"sexluaescorts"}, "")
 
-menu.toggle_loop(escort_root, "Female Moan", {"fsexmoan"}, "", function(on_click)
+addict.toggle_loop(escort_root, "Female Moan", {"fsexmoans"}, "", function(on_click)
     moan(players.get_position(players.user()), 'f')
     util.yield(1500)
 end)
 
-menu.toggle_loop(escort_root, "Male Moan", {"msexmoan"}, "", function(on_click)
+addict.toggle_loop(escort_root, "Male Moan", {"msexmoans"}, "", function(on_click)
     moan(players.get_position(players.user()), 'm')
     util.yield(1500)
 end)
 
 local custom_hooker_model = 'ig_lestercrest'
-menu.text_input(escort_root, "Custom escort model", {"customescortmdl"}, "Enter the model, then go to request escort > custom.", function(on_input)
+addict.text_input(escort_root, "Custom escort model", {"customescortmdl"}, "Enter the model, then go to request escort > custom.", function(on_input)
     custom_hooker_model = on_input
 end, 'ig_lestercrest')
 
 local custom_hooker_options = {"Topless", "Tracy", "Paige", "Bartender", "Clone of me", "Femboy", "Custom"}
-menu.list_action(escort_root, "Request escort", {"requestescort"}, "Request the most high-end escorts in Los Santos", custom_hooker_options, function(index)
+addict.list_action(escort_root, "Request escort", {"requestescort"}, "Request the most high-end escorts in Los Santos", custom_hooker_options, function(index)
     local hooker
     local c
     pluto_switch index do
@@ -7996,7 +7967,7 @@ end)
     local obj_pp = {"prop_cs_dildo_01", "prop_ld_bomb_01", "prop_sam_01"}
     local opt_pp = {"Small", "Big", "Bigger", "Delete"}
 
-    menu.list_action(playermode, "Attach Dildo", {}, "This only works on yourself.", opt_pp, function(index, value, click_type)
+    addict.list_action(playermode, "Attach Dildo", {}, "This only works on yourself.", opt_pp, function(index, value, click_type)
         pluto_switch index do
             case 1:
                 attach_to_player("prop_cs_dildo_01", 57597, -0.1, 0.15, 0, 0, 90, 90)
@@ -8015,37 +7986,37 @@ end)
             end
     end)
 
-    trevs = menu.list(playermode, "Trevor Mode", {}, "", function(); end)
+    trevs = addict.list(playermode, "Trevor Mode", {}, "", function(); end)
 
-    menu.toggle(trevs, "Trevor Mode 1", {"trevormode"}, "Activates pervy Trev off radar, then to Candy's outfit on radar.", function(on)
+    addict.toggle(trevs, "Trevor Mode 1", {"trevormode"}, "Activates pervy Trev off radar, then to Candy's outfit on radar.", function(on)
     if on then
-        menu.trigger_commands("trevor")
-        menu.trigger_commands("walkstyle verydrunk")
-        menu.trigger_commands("otr")
+        addict.trigger_commands("trevor")
+        addict.trigger_commands("walkstyle verydrunk")
+        addict.trigger_commands("otr")
     util.toast("Trevor Mode 1 On") 
     else
-        menu.trigger_commands("outfit1candydinka")
-        menu.trigger_commands("walkstyle poshfemale")
-        menu.trigger_commands("otr")
+        addict.trigger_commands("outfit1candydinka")
+        addict.trigger_commands("walkstyle poshfemale")
+        addict.trigger_commands("otr")
     util.toast("Candy Mode On")
         end 
     end)
     
-    menu.toggle(trevs, "Trevor Mode 2", {"trevormode"}, "Activates pervy Trev off radar then, to Candy's outfit on radar.", function(on)
+    addict.toggle(trevs, "Trevor Mode 2", {"trevormode"}, "Activates pervy Trev off radar then, to Candy's outfit on radar.", function(on)
     if on then
-        menu.trigger_commands("outfit1trevor")
-        menu.trigger_commands("walkstyle crouched")
-        menu.trigger_commands("otr")
+        addict.trigger_commands("outfit1trevor")
+        addict.trigger_commands("walkstyle crouched")
+        addict.trigger_commands("otr")
     util.toast("Trevor Mode 2 On") 
     else
-        menu.trigger_commands("outfit1candydinka")
-        menu.trigger_commands("walkstyle poshfemale")
-        menu.trigger_commands("otr")
+        addict.trigger_commands("outfit1candydinka")
+        addict.trigger_commands("walkstyle poshfemale")
+        addict.trigger_commands("otr")
     util.toast("Candy Mode On")
         end 
     end)
 
-    menu.toggle_loop(playermode, "Fast Respawn", {"fastrespawn"}, "", function()
+    addict.toggle_loop(playermode, "Fast Respawn", {"fastrespawn"}, "", function()
         local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
         if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
             GRAPHICS.ANIMPOSTFX_STOP_ALL()
@@ -8057,20 +8028,20 @@ end)
         memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
     end)
     
-    menu.toggle_loop(playermode, "Fast Roll", {"fastroll"}, "", function()
+    addict.toggle_loop(playermode, "Fast Roll", {"fastroll"}, "", function()
         STATS.STAT_SET_INT(util.joaat("MP"..util.get_char_slot().."_SHOOTING_ABILITY"), 200, true)
     end)
 
-    menu.toggle(playermode, "Quiet footsteps", {"quietsteps"}, "Disables the sound of your footsteps.", function(toggle)
+    addict.toggle(playermode, "Quiet footsteps", {"quietsteps"}, "Disables the sound of your footsteps.", function(toggle)
         AUDIO.SET_PED_FOOTSTEPS_EVENTS_ENABLED(players.user_ped(), not toggle)
     end)
     
 
     local max_health
-    undead_otr = menu.toggle(playermode, "Undead OTR", {"undead"}, "Turn you off the radar without notifying other players.\nNote: Trigger Modded Health detection.", function(on_toggle)
+    undead_otr = addict.toggle(playermode, "Undead OTR", {"undead"}, "Turn you off the radar without notifying other players.\nNote: Trigger Modded Health detection.", function(on_toggle)
         if on_toggle then
             max_health = ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped())
-            while menu.get_state(undead_otr) == "On" do
+            while addict.get_state(undead_otr) == "On" do
                 if ENTITY.GET_ENTITY_MAX_HEALTH(players.user_ped()) ~= 0 then
                     ENTITY.SET_ENTITY_MAX_HEALTH(players.user_ped(),0)
                 end
@@ -8081,7 +8052,7 @@ end)
         end
     end)
 
-    menu.toggle_loop(playermode, "Front Flip", {"frontflip"}, "WARNING! Do not click change outfit. Do a front flip.", function(on)
+    addict.toggle_loop(playermode, "Front Flip", {"frontflip"}, "WARNING! Do not click change outfit. Do a front flip.", function(on)
         local hash = util.joaat("prop_ecola_can")
         request_model_load(hash)
         local prop = entities.create_object(hash, players.get_position(players.user()))
@@ -8099,139 +8070,139 @@ end)
     end)
 
 
-    menu.toggle(playermode, "Furry Mode", {"spawnfurry"}, "Activates Furry, then to Candy's outfit.", function(on)
+    addict.toggle(playermode, "Furry Mode", {"spawnfurry"}, "Activates Furry, then to Candy's outfit.", function(on)
         if on then
-            menu.trigger_commands("IGFurry")
-            menu.trigger_commands("walkstyle mop")
+            addict.trigger_commands("IGFurry")
+            addict.trigger_commands("walkstyle mop")
             util.toast("Furry On") 
         else
-            menu.trigger_commands("outfit1candydinka")
-            menu.trigger_commands("walkstyle poshfemale")
+            addict.trigger_commands("outfit1candydinka")
+            addict.trigger_commands("walkstyle poshfemale")
             util.toast("Candy Mode On")
             end 
         end)
 
-    menu.toggle(playermode, "Rabbit Mode", {"spawnrabbit"}, "Activates Rabbit, then to Candy's outfit.", function(on)
+    addict.toggle(playermode, "Rabbit Mode", {"spawnrabbit"}, "Activates Rabbit, then to Candy's outfit.", function(on)
         if on then
-            menu.trigger_commands("alwaysunarmed")
-            menu.trigger_commands("ACRabbit02")
-            menu.trigger_commands("walkstyle mop")
+            addict.trigger_commands("alwaysunarmed")
+            addict.trigger_commands("ACRabbit02")
+            addict.trigger_commands("walkstyle mop")
             util.toast("Rabbit Mode On") 
         else
-            menu.trigger_commands("alwaysunarmed")
-            menu.trigger_commands("mpfemale")
-            menu.trigger_commands("walkstyle poshfemale")
+            addict.trigger_commands("alwaysunarmed")
+            addict.trigger_commands("mpfemale")
+            addict.trigger_commands("walkstyle poshfemale")
             util.toast("Change you're outfit to get clothes normal again.")
             end 
         end)
 
-    menu.toggle(playermode, "Yule Monster Mode", {"spawnyulemonster"}, "Activates Yule Monster, then to Candy's outfit.", function(on)
+    addict.toggle(playermode, "Yule Monster Mode", {"spawnyulemonster"}, "Activates Yule Monster, then to Candy's outfit.", function(on)
         if on then
-            menu.trigger_commands("UMMYuleMonster")
-            menu.trigger_commands("walkstyle mop")
+            addict.trigger_commands("UMMYuleMonster")
+            addict.trigger_commands("walkstyle mop")
             util.toast("Yule Monster Mode On") 
         else
-            menu.trigger_commands("outfit1candydinka")
-            menu.trigger_commands("walkstyle poshfemale")
+            addict.trigger_commands("outfit1candydinka")
+            addict.trigger_commands("walkstyle poshfemale")
             util.toast("Candy Mode On")
             end 
         end)
 
-menu.toggle(playermode, "Hulk Mode", {"hulkmode"}, "Makes you jump high and very strong", function(toggle)
+addict.toggle(playermode, "Hulk Mode", {"hulkmode"}, "Makes you jump high and very strong", function(toggle)
     if toggle then
-        menu.trigger_commands("damagemultiplier 10000")
-        menu.trigger_commands("superjump")
+        addict.trigger_commands("damagemultiplier 10000")
+        addict.trigger_commands("superjump")
 util.toast("Hulk Mode On")
     else
-    menu.trigger_commands("damagemultiplier 1.01")
-    menu.trigger_commands("damagemultiplier 1")
-        menu.trigger_commands("superjump")
+    addict.trigger_commands("damagemultiplier 1.01")
+    addict.trigger_commands("damagemultiplier 1")
+        addict.trigger_commands("superjump")
 util.toast("Hulk Mode Off")
     end 
 end)
 
-menu.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisible, off radar and no collisions with quietsteps...", function(on_toggle)
+addict.toggle(playermode, "Toggle Sneaky Mode", {"sneakymode"}, "Turns you invisible, off radar and no collisions with quietsteps...", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("invisibility" .. " on")
-        menu.trigger_commands("reducedcollision" .. " on")
-        menu.trigger_commands("otr")
-        menu.trigger_commands("quietsteps")
-        menu.trigger_commands("undead")
+        addict.trigger_commands("invisibility" .. " on")
+        addict.trigger_commands("reducedcollision" .. " on")
+        addict.trigger_commands("otr")
+        addict.trigger_commands("quietsteps")
+        addict.trigger_commands("undead")
         util.toast("Sneaky Mode On\n" .. "\n" .. "No one can see you now!")
     else
-        menu.trigger_commands("invisibility" .. " off")
-        menu.trigger_commands("reducedcollision" .. " off")
-        menu.trigger_commands("otr")
-        menu.trigger_commands("quietsteps")
-        menu.trigger_commands("undead")
+        addict.trigger_commands("invisibility" .. " off")
+        addict.trigger_commands("reducedcollision" .. " off")
+        addict.trigger_commands("otr")
+        addict.trigger_commands("quietsteps")
+        addict.trigger_commands("undead")
         util.toast("Sneaky Mode Off\n" .. "\n" .. "Everyone can see you now!")
         end 
 end)
 
-menu.toggle(playermode, "Toggle Pidgeon Mode", {"pidgeonmode"}, "Turns you into a Pidgeon, off radar and no collisions...", function(on_toggle)
+addict.toggle(playermode, "Toggle Pidgeon Mode", {"pidgeonmode"}, "Turns you into a Pidgeon, off radar and no collisions...", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("otr")
-        menu.trigger_commands("reducedcollision" .. " on")
-        menu.trigger_commands("acpigeon")
+        addict.trigger_commands("otr")
+        addict.trigger_commands("reducedcollision" .. " on")
+        addict.trigger_commands("acpigeon")
         util.yield(100)
-        menu.trigger_commands("alwaysunarmed")
+        addict.trigger_commands("alwaysunarmed")
         util.toast("Pidgeon Mode On") 
     else
-        menu.trigger_commands("alwaysunarmed")
-        menu.trigger_commands("otr")
-        menu.trigger_commands("reducedcollision" .. " off")
-        menu.trigger_commands("outfit1candydinka")
+        addict.trigger_commands("alwaysunarmed")
+        addict.trigger_commands("otr")
+        addict.trigger_commands("reducedcollision" .. " off")
+        addict.trigger_commands("outfit1candydinka")
         util.toast("Pidgeon Mode Off")
         end 
 end)
 
-menu.toggle(playermode, "Toggle Killer Whale Mode", {"killerwhaleonmode"}, "Turns you into a Killer Whale, off radar and no collisions...", function(on_toggle)
+addict.toggle(playermode, "Toggle Killer Whale Mode", {"killerwhaleonmode"}, "Turns you into a Killer Whale, off radar and no collisions...", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("otr")
+        addict.trigger_commands("otr")
         local player_ped = PLAYER.PLAYER_PED_ID()    
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -2592.5793, -612.5788, -34.412697)
         util.yield(1)
-        menu.trigger_commands("ackillerwhale")
+        addict.trigger_commands("ackillerwhale")
         util.yield(10)
-        menu.trigger_commands("alwaysunarmed")
+        addict.trigger_commands("alwaysunarmed")
         util.toast("Killer Whale Mode On") 
     else
-        menu.trigger_commands("alwaysunarmed")
-        menu.trigger_commands("otr")
-        menu.trigger_commands("outfit1candydinka")
+        addict.trigger_commands("alwaysunarmed")
+        addict.trigger_commands("otr")
+        addict.trigger_commands("outfit1candydinka")
         util.toast("Killer Whale Off")
         end 
 end)
 
-menu.toggle(playermode, "Big Foot Mode", {"bigfoot mode"}, "Activates Big Foot off radar and makes you strong and jump high then to Candy's outfit on radar.", function(on)
+addict.toggle(playermode, "Big Foot Mode", {"bigfoot mode"}, "Activates Big Foot off radar and makes you strong and jump high then to Candy's outfit on radar.", function(on)
 if on then
-    menu.trigger_commands("igorleans")
-        menu.trigger_commands("damagemultiplier 10000")
-        menu.trigger_commands("superjump")
-    menu.trigger_commands("walkstyle verydrunk")
-    menu.trigger_commands("otr")
+    addict.trigger_commands("igorleans")
+        addict.trigger_commands("damagemultiplier 10000")
+        addict.trigger_commands("superjump")
+    addict.trigger_commands("walkstyle verydrunk")
+    addict.trigger_commands("otr")
 util.toast("Big Foot Mode On") 
 else
-    menu.trigger_commands("outfit1candydinka")
-    menu.trigger_commands("walkstyle poshfemale")
-    menu.trigger_commands("damagemultiplier 1.01")
-    menu.trigger_commands("damagemultiplier 1")
-        menu.trigger_commands("superjump")
-    menu.trigger_commands("otr")
+    addict.trigger_commands("outfit1candydinka")
+    addict.trigger_commands("walkstyle poshfemale")
+    addict.trigger_commands("damagemultiplier 1.01")
+    addict.trigger_commands("damagemultiplier 1")
+        addict.trigger_commands("superjump")
+    addict.trigger_commands("otr")
 util.toast("Candy Mode On")
     end 
 end)
 
-menu.toggle(playermode, "Stunt Monkey Mode", {"stuntmonkey"}, "Activates Chimp and makes you jump high, then to Candy's outfit.", function(on)
+addict.toggle(playermode, "Stunt Monkey Mode", {"stuntmonkey"}, "Activates Chimp and makes you jump high, then to Candy's outfit.", function(on)
 if on then
-    menu.trigger_commands("acchimp02")
-        menu.trigger_commands("superjump")
-    menu.trigger_commands("walkstyle mop")
+    addict.trigger_commands("acchimp02")
+        addict.trigger_commands("superjump")
+    addict.trigger_commands("walkstyle mop")
 util.toast("Stunt Monkey Mode On") 
 else
-    menu.trigger_commands("outfit1candydinka")
-    menu.trigger_commands("walkstyle poshfemale")
-        menu.trigger_commands("superjump")
+    addict.trigger_commands("outfit1candydinka")
+    addict.trigger_commands("walkstyle poshfemale")
+        addict.trigger_commands("superjump")
 util.toast("Candy Mode On")
     end 
 end)
@@ -8446,56 +8417,56 @@ for i, ent in pairs(vehicles) do
     end
 end
 
-	worldchaos = menu.list(menu.my_root(), "Chaos Shit", {}, "", function(); end)
+	worldchaos = addict.list(addict.my_root(), "Chaos Shit", {}, "", function(); end)
 
-	menu.divider(worldchaos, "Chaos mode")
+	addict.divider(worldchaos, "Chaos mode")
 
-    menu.action(worldchaos, "Sirens All Nearby Players", {"sirenall"}, "", function()
+    addict.action(worldchaos, "Sirens All Nearby Players", {"sirenall"}, "", function()
         for _, pid in players.list(false, true, true) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local pos = players.get_position(pid)
             if ENTITY.DOES_ENTITY_EXIST(ped) then
-            menu.trigger_commands("siren " .. players.get_name(pid))
+            addict.trigger_commands("siren " .. players.get_name(pid))
             end
         end
     end)
 
-    projectiles = menu.list(worldchaos, "Edit Projectiles", {}, "", function(); end)
+    projectiles = addict.list(worldchaos, "Edit Projectiles", {}, "", function(); end)
 
     projectile_cleanse = false
-    menu.toggle(projectiles, "Delete Projectiles", {"deleteprojectiles"}, "This will piss people off.", function(on)
+    addict.toggle(projectiles, "Delete Projectiles", {"deleteprojectiles"}, "This will piss people off.", function(on)
         projectile_cleanse = on
         mod_uses("object", if on then 1 else -1)
     end)
 
     projectile_warn = false
-    menu.toggle(projectiles, "Draw Warning", {"drawwarning"}, "Draws a red box over projectiles to warn you of there existence.", function(on)
+    addict.toggle(projectiles, "Draw Warning", {"drawwarning"}, "Draws a red box over projectiles to warn you of there existence.", function(on)
         projectile_warn = on
         mod_uses("object", if on then 1 else -1)
     end)
 
     projectile_spaz = false
-    menu.toggle(projectiles, "Projectile Spaz", {"projectilespaz"}, "Makes projectiles follow a very unstable path.", function(on)
+    addict.toggle(projectiles, "Projectile Spaz", {"projectilespaz"}, "Makes projectiles follow a very unstable path.", function(on)
         projectile_spaz = on
         mod_uses("object", if on then 1 else -1)
     end)
 
     slow_projectiles = false
-    menu.toggle(projectiles, "Extremely Slow Projectiles", {"extremelyslowprojectiles"}, "", function(on)
+    addict.toggle(projectiles, "Extremely Slow Projectiles", {"extremelyslowprojectiles"}, "", function(on)
         slow_projectiles = on
         mod_uses("object", if on then 1 else -1)
     end)
 
     blip_projectiles = false
-    menu.toggle(projectiles, "Blips For Projectiles", {"blipsforprojectiles"}, "", function(on)
+    addict.toggle(projectiles, "Blips For Projectiles", {"blipsforprojectiles"}, "", function(on)
         blip_projectiles = on
         mod_uses("object", if on then 1 else -1)
     end)
 
 
-    areablocks = menu.list(worldchaos, "Block Entrances", {}, "", function(); end)
+    areablocks = addict.list(worldchaos, "Block Entrances", {}, "", function(); end)
 
-    menu.toggle(areablocks, "Casino", {"blockcasino"}, "", function(on_toggle)
+    addict.toggle(areablocks, "Casino", {"blockcasino"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8506,11 +8477,11 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.toggle(areablocks, "Escipse Towers", {"blockeclipse"}, "", function(on_toggle)
+    addict.toggle(areablocks, "Escipse Towers", {"blockeclipse"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8521,13 +8492,13 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    area_lsc_blocks = menu.list(areablocks, "Block LSC Entrances", {}, "", function(); end)
+    area_lsc_blocks = addict.list(areablocks, "Block LSC Entrances", {}, "", function(); end)
 
-    menu.toggle(area_lsc_blocks, "LSC Burton", {"blocklscb"}, "", function(on_toggle)
+    addict.toggle(area_lsc_blocks, "LSC Burton", {"blocklscb"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8538,11 +8509,11 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.toggle(area_lsc_blocks, "LSC La Mesa", {"blocklm"}, "", function(on_toggle)
+    addict.toggle(area_lsc_blocks, "LSC La Mesa", {"blocklm"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8553,11 +8524,11 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.toggle(area_lsc_blocks, "LSC International Airport", {"blockia"}, "", function(on_toggle)
+    addict.toggle(area_lsc_blocks, "LSC International Airport", {"blockia"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8568,11 +8539,11 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash) 
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.toggle(area_lsc_blocks, "LSC Grand Senora Desert", {"blockgsd"}, "", function(on_toggle)
+    addict.toggle(area_lsc_blocks, "LSC Grand Senora Desert", {"blockgsd"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8592,11 +8563,11 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.toggle(area_lsc_blocks, "LSC Paleto Bay", {"blockpb"}, "", function(on_toggle)
+    addict.toggle(area_lsc_blocks, "LSC Paleto Bay", {"blockpb"}, "", function(on_toggle)
         if on_toggle then
         local hash = 1952396163
         loadModel(hash)
@@ -8616,14 +8587,14 @@ end
         end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
     else
-        menu.trigger_commands("clearblocks")
+        addict.trigger_commands("clearblocks")
         end
     end)
 
-    menu.divider(areablocks, "__________________bruh__________________")
+    addict.divider(areablocks, "__________________bruh__________________")
 
 
-    menu.action(areablocks, "Clear All Blocks", {"clearblocks"}, "", function()
+    addict.action(areablocks, "Clear All Blocks", {"clearblocks"}, "", function()
         local count = 0
         for k,ent in pairs(entities.get_all_objects_as_handles()) do
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -8633,47 +8604,47 @@ end
         end
     end)
 
-    menu.action(areablocks, "Custom Bock", {"customblock"}, "Note: You can custom block entrances using a container object or something like it, Shotcut For Custom Model Gun.", function()
-        menu.trigger_commands("custommodlegunloc")
-        menu.trigger_commands("modgun")
+    addict.action(areablocks, "Custom Bock", {"customblock"}, "Note: You can custom block entrances using a container object or something like it, Shotcut For Custom Model Gun.", function()
+        addict.trigger_commands("custommodlegunloc")
+        addict.trigger_commands("modgun")
     end)
 
     
-    local aicrashes = menu.list(worldchaos, "A.I. Entities", {"aicrashes"}, "")
+    local aicrashes = addict.list(worldchaos, "A.I. Entities", {"aicrashes"}, "")
 
-    menu.toggle_loop(aicrashes,"A.I. Entity Fuck", {"aient"}, "Toggle all of them but doesn't work the same as if toggled individually. Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Entity Fuck", {"aient"}, "Toggle all of them but doesn't work the same as if toggled individually. Code generated by a.i.", function()
         entity_fuck(pid)
         Draw_Box_Peds()
         Draw_Box_Objects()
         Draw_Box_Vehicles()
     end)
 
-    menu.toggle_loop(aicrashes,"A.I. Vehicle Fly", {"aivehfly"}, "Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Vehicle Fly", {"aivehfly"}, "Code generated by a.i.", function()
         veh_entity_fly(pid)
         Draw_Box_Vehicles()
     end)
     
-    menu.toggle_loop(aicrashes,"A.I. Vehicle Fuck", {"aiveh"}, "Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Vehicle Fuck", {"aiveh"}, "Code generated by a.i.", function()
         veh_entity_fuck(pid)
         Draw_Box_Vehicles()
     end)
     
-    menu.toggle_loop(aicrashes,"A.I. Object Fuck", {"aiobj"}, "Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Object Fuck", {"aiobj"}, "Code generated by a.i.", function()
         obj_entity_fuck(pid)
         Draw_Box_Objects()
     end)
     
-    menu.toggle_loop(aicrashes,"A.I. Ped Fuck", {"aiped"}, "Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Ped Fuck", {"aiped"}, "Code generated by a.i.", function()
         ped_entity_fuck(pid)
         Draw_Box_Peds()
     end)
     
-    menu.toggle_loop(aicrashes,"A.I. Pickup Fuck", {"aipickup"}, "Code generated by a.i.", function()
+    addict.toggle_loop(aicrashes,"A.I. Pickup Fuck", {"aipickup"}, "Code generated by a.i.", function()
         pickup_entity_fuck(pid)
         Draw_Box_Pickups()
     end)
     
-    menu.action(aicrashes, "Restart Script To Stop Fuckery", {"restartfuckery"}, "", function ()
+    addict.action(aicrashes, "Restart Script To Stop Fuckery", {"restartfuckery"}, "", function ()
         util.restart_script()
     end)
 
@@ -8832,25 +8803,25 @@ end
         end
     end
 
-    local ESP_World = menu.list(worldchaos, "World ESP", {"esp"})
+    local ESP_World = addict.list(worldchaos, "World ESP", {"esp"})
 
-    menu.toggle_loop(ESP_World,"Draw Box Around Peds", {""}, "",function()
+    addict.toggle_loop(ESP_World,"Draw Box Around Peds", {""}, "",function()
         Draw_Box_Peds()
     end)
 
-    menu.toggle_loop(ESP_World,"Draw Box Around Pickups", {""}, "",function()
+    addict.toggle_loop(ESP_World,"Draw Box Around Pickups", {""}, "",function()
         Draw_Box_Pickups()
     end)
 
-    menu.toggle_loop(ESP_World,"Draw Box Around Objects", {""}, "",function()
+    addict.toggle_loop(ESP_World,"Draw Box Around Objects", {""}, "",function()
         Draw_Box_Objects()
     end)
 
-    menu.toggle_loop(ESP_World,"Draw Box Around Vehicles", {""}, "",function()
+    addict.toggle_loop(ESP_World,"Draw Box Around Vehicles", {""}, "",function()
         Draw_Box_Vehicles()
     end)
 
-    menu.toggle_loop(worldchaos,"Teleport into all vehicles", {""}, "",function()
+    addict.toggle_loop(worldchaos,"Teleport into all vehicles", {""}, "",function()
         Draw_Box_Vehicles()
         local player = PLAYER.PLAYER_PED_ID(pid)
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
@@ -8864,23 +8835,23 @@ end
         end
     end)
 
-    menu.toggle(worldchaos, "Party At Escipse Towers", {"eclipseparty"}, "Warning! This will block eclipse towers then turns you invisable off the radar, at same time teleports all players to eclipse towers.", function(on_toggle)
+    addict.toggle(worldchaos, "Party At Escipse Towers", {"eclipseparty"}, "Warning! This will block eclipse towers then turns you invisable off the radar, at same time teleports all players to eclipse towers.", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("blockeclipse")
-            menu.trigger_commands("sneakymode")
-            menu.trigger_commands("apt1all")
-            menu.trigger_commands("bountyall 10000")
+            addict.trigger_commands("blockeclipse")
+            addict.trigger_commands("sneakymode")
+            addict.trigger_commands("apt1all")
+            addict.trigger_commands("bountyall 10000")
             local player_ped = PLAYER.PLAYER_PED_ID()    
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -824.102, 272.4452, 86.288155)
         else
-            menu.trigger_commands("blockeclipse")
-            menu.trigger_commands("sneakymode")
+            addict.trigger_commands("blockeclipse")
+            addict.trigger_commands("sneakymode")
         end
     end)
 
 
         asteroids = false
-    menu.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
+    addict.toggle(worldchaos, "Asteroid Shower", {"asteroids"}, "Spawns asteroids", function(on)
         if on then
             asteroids = true
             start_asteroid_shower()
@@ -8889,7 +8860,7 @@ end
         end
     end, false)
 
-    menu.toggle_loop(worldchaos, "Invisible Peds", {"invisiblepeds"}, "", function(on_toggle)
+    addict.toggle_loop(worldchaos, "Invisible Peds", {"invisiblepeds"}, "", function(on_toggle)
             all_peds = entities.get_all_peds_as_handles()
         for k,ped in pairs(all_peds) do
             if not PED.IS_PED_A_PLAYER(ped) then
@@ -8902,12 +8873,12 @@ end
     end)
 
 	drift = false
-	menu.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
+	addict.toggle(worldchaos, "Shift to Drift", {"driftmode"}, "", function(on_toggle)
 		drift = on_toggle
 	end)
      
     --[[
-    menu.action(worldchaos,"Super Man", {""}, "", function(on)
+    addict.action(worldchaos,"Super Man", {""}, "", function(on)
         local self_ped = players.user_ped()
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
         while on do
@@ -8919,7 +8890,7 @@ end
     end)
     ]]
 
-    menu.toggle_loop(worldchaos,"Spinbot Peds", {"spinbotself"}, "Use levitate to move...", function(on)
+    addict.toggle_loop(worldchaos,"Spinbot Peds", {"spinbotself"}, "Use levitate to move...", function(on)
         for k, peds in pairs(entities.get_all_peds_as_handles()) do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(peds)
         local rand_1 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(peds, math.random(-500, 500), math.random(-500, 500), 300.0)
@@ -8929,7 +8900,7 @@ end
         end
     end)
 
-    menu.toggle_loop(worldchaos,"Spinbot Self Ped", {"spinbotself"}, "", function(on)
+    addict.toggle_loop(worldchaos,"Spinbot Self Ped", {"spinbotself"}, "", function(on)
         local self_ped = players.user_ped()
         local rand_1 = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.PLAYER_PED_ID(), math.random(-500, 500), math.random(-500, 500), 300.0)
             if not PAD.IS_CONTROL_PRESSED(71, 71) then
@@ -8939,7 +8910,7 @@ end
             return
     end)
 
-    menu.toggle_loop(worldchaos,"Spinbot Nearby Vehicles", {"glitchall"}, "", function()
+    addict.toggle_loop(worldchaos,"Spinbot Nearby Vehicles", {"glitchall"}, "", function()
         Draw_Box_Vehicles()
         for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
@@ -8959,7 +8930,7 @@ end
         end
     end)
     
-    menu.toggle_loop(worldchaos, "360 Self Vehicle", {"spinbotself"}, "", function()
+    addict.toggle_loop(worldchaos, "360 Self Vehicle", {"spinbotself"}, "", function()
         local vehicle = PED.GET_VEHICLE_PED_IS_USING(players.user_ped())
         local velocity = ENTITY.GET_ENTITY_VELOCITY(vehicle)
         local height = ENTITY.GET_ENTITY_HEIGHT_ABOVE_GROUND(vehicle)
@@ -8968,7 +8939,7 @@ end
         end
     end)
     
-    menu.toggle_loop(worldchaos,"360 Nearby Vehicles", {"360vehicles"}, "", function()
+    addict.toggle_loop(worldchaos,"360 Nearby Vehicles", {"360vehicles"}, "", function()
         Draw_Box_Vehicles()
         for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
@@ -8983,7 +8954,7 @@ end
         end
     end)
 
-menu.toggle_loop(worldchaos,"Bounce Nearby Vehicles", {"bounceall"}, "", function()
+addict.toggle_loop(worldchaos,"Bounce Nearby Vehicles", {"bounceall"}, "", function()
     for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
         local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
         if not PED.IS_PED_A_PLAYER(PedInSeat) then
@@ -8998,7 +8969,7 @@ menu.toggle_loop(worldchaos,"Bounce Nearby Vehicles", {"bounceall"}, "", functio
     end
 end)
 
-menu.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "", function()
+addict.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "", function()
     Draw_Box_Vehicles()
     for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
         local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9016,7 +8987,7 @@ menu.toggle_loop(worldchaos,"Nearby vehicles fly away", {"flyawayvehicles"}, "",
 end)
 
 	local dont_stop = false
-	menu.toggle_loop(worldchaos,"Fly Nearby vehicles", {"vehflyall"}, "Basically 'impulse like sport mode' but applied to every vehicle", function()
+	addict.toggle_loop(worldchaos,"Fly Nearby vehicles", {"vehflyall"}, "Basically 'impulse like sport mode' but applied to every vehicle", function()
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9078,13 +9049,13 @@ end)
 	end)
 
 
-    menu.toggle_loop(worldchaos,"Destruction", {"destuct"}, "", function()
+    addict.toggle_loop(worldchaos,"Destruction", {"destuct"}, "", function()
         util.show_corner_help("~r~Don't use this if your alone it will cause a prevented crash (A0:32).")
         Destruct()
     end)
 
 	local dont_stop = false
-	menu.toggle_loop(worldchaos,"Blackhole Vehicles", {"blackholeveh"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+	addict.toggle_loop(worldchaos,"Blackhole Vehicles", {"blackholeveh"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9107,7 +9078,7 @@ end)
 		end
 	end)
 
-    menu.toggle_loop(worldchaos,"Blackhole Peds", {"pedblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+    addict.toggle_loop(worldchaos,"Blackhole Peds", {"pedblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
         Draw_Box_Peds()
 		for k, veh in pairs(entities.get_all_peds_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9130,7 +9101,7 @@ end)
 		end
 	end)
 
-    menu.toggle_loop(worldchaos,"Blackhole Objects", {"objectblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
+    addict.toggle_loop(worldchaos,"Blackhole Objects", {"objectblackhole"}, "Basically 'impulse like sport mode. but applied to every vehicle", function(on)
         Draw_Box_Objects()
 		for k, veh in pairs(entities.get_all_objects_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9154,7 +9125,7 @@ end)
 	end)
 
 	hole_zoff = 50
-    	menu.slider(worldchaos, "Blackhole Offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
+    	addict.slider(worldchaos, "Blackhole Offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
     	hole_zoff = s
 	end)
 
@@ -9166,7 +9137,7 @@ end)
         FIRE.ADD_OWNED_EXPLOSION(ownerPed, ec.x, ec.y, ec.z, exploID, dmgscale, audible, invisible, camshake)
     end
 
-    menu.toggle_loop(worldchaos, "Explode Map", {""}, "", function()
+    addict.toggle_loop(worldchaos, "Explode Map", {""}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         local height = 0
@@ -9174,7 +9145,7 @@ end)
         explodeAndDelete(p, 47, getPlayerPed(players.user()), 5, true, false, 3)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.toggle_loop(worldchaos,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
+	addict.toggle_loop(worldchaos,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9192,7 +9163,7 @@ end)
 		end
 	end)
 
-	menu.toggle_loop(worldchaos,"Honk all cars", {"honkallcars"}, "Honkss the SHIT out of all nearby cars.", function(on)
+	addict.toggle_loop(worldchaos,"Honk all cars", {"honkallcars"}, "Honkss the SHIT out of all nearby cars.", function(on)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9210,7 +9181,7 @@ end)
 		end
 	end)
 
-	menu.toggle_loop(worldchaos,"Blow up all cars", {"Blow up all cars"}, "Blows the SHIT out of all nearby cars.", function(on)
+	addict.toggle_loop(worldchaos,"Blow up all cars", {"Blow up all cars"}, "Blows the SHIT out of all nearby cars.", function(on)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9229,7 +9200,7 @@ end)
 	end)
 
     
-	menu.toggle_loop(worldchaos, "All cars sink", {"sinkcars"}, "All cars sink.", function(on_toggle)
+	addict.toggle_loop(worldchaos, "All cars sink", {"sinkcars"}, "All cars sink.", function(on_toggle)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -9248,7 +9219,7 @@ end)
 	end)
 
 
-	menu.action(worldchaos, "Remove Wheels", {"removewheels"}, "removes your wheels and has various side effects depending on the vehicle", function()
+	addict.action(worldchaos, "Remove Wheels", {"removewheels"}, "removes your wheels and has various side effects depending on the vehicle", function()
         Draw_Box_Vehicles()
 		local veh = entities.get_user_vehicle_as_handle()
 		if veh ~= 0 then
@@ -9259,7 +9230,7 @@ end)
 		end
 	end)
 
-	menu.action(worldchaos,"Kill all Engines", {"killall"}, "",function()
+	addict.action(worldchaos,"Kill all Engines", {"killall"}, "",function()
         Draw_Box_Vehicles()
 		local local_veh = get_player_veh(PLAYER.PLAYER_ID(),false)
 		for_table_do(entities.get_all_vehicles_as_handles(),true,function(ent) 
@@ -9270,62 +9241,62 @@ end)
 		end)
 	end)
 
-    menu.action(worldchaos, "Steal All Player Vehicles", {"stealvehicles"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
+    addict.action(worldchaos, "Steal All Player Vehicles", {"stealvehicles"}, "Spawns a ped to take them out of their vehicle and drive away.", function()
         for _, pid in players.list(false, true, true) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local pos = players.get_position(pid)
             if ENTITY.DOES_ENTITY_EXIST(ped) and PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
-                menu.trigger_commands("steal " .. players.get_name(pid))
+                addict.trigger_commands("steal " .. players.get_name(pid))
             end
         end
     end)
 
-	menu.divider(worldchaos, "Anti-Try Hard Shit")
+	addict.divider(worldchaos, "Anti-Try Hard Shit")
 
 	oppressor_kick_players = false
-	menu.toggle(worldchaos, "Anti-Oppressor", {"antioppressor"}, "Automatically kicks players off oppressor mkii's", function(on)
+	addict.toggle(worldchaos, "Anti-Oppressor", {"antioppressor"}, "Automatically kicks players off oppressor mkii's", function(on)
 		oppressor_kick_players = on
 	end, false)
     
 	lazer_kick_players = false
-	menu.toggle(worldchaos, "Anti-Lazer", {"antilazer"}, "Automatically kicks players out lazers", function(on)
+	addict.toggle(worldchaos, "Anti-Lazer", {"antilazer"}, "Automatically kicks players out lazers", function(on)
 		lazer_kick_players = on
 	end, false)
 
     kosatka_kick_players = false
-	menu.toggle(worldchaos, "Anti-Kosatka", {"antikosatka"}, "Automatically kicks players out kosatka", function(on)
+	addict.toggle(worldchaos, "Anti-Kosatka", {"antikosatka"}, "Automatically kicks players out kosatka", function(on)
 		kosatka_kick_players = on
 	end, false)
 
     hydra_kick_players = false
-	menu.toggle(worldchaos, "Anti-Hydra", {"antihydra"}, "Automatically kicks players out hydra", function(on)
+	addict.toggle(worldchaos, "Anti-Hydra", {"antihydra"}, "Automatically kicks players out hydra", function(on)
 		hydra_kick_players = on
 	end, false)
 
     khanjali_kick_players = false
-	menu.toggle(worldchaos, "Anti-Khanjali", {"antikhanjali"}, "Automatically kicks players out khanjali", function(on)
+	addict.toggle(worldchaos, "Anti-Khanjali", {"antikhanjali"}, "Automatically kicks players out khanjali", function(on)
 		khanjali_kick_players = on
 	end, false)
 
 	lock_vehicle = false
-	menu.toggle(worldchaos, "Lock vehicle", {"lockmk2"}, "Permanently locks the vehicle to prevent further use", function(on)
+	addict.toggle(worldchaos, "Lock vehicle", {"lockmk2"}, "Permanently locks the vehicle to prevent further use", function(on)
 		lock_vehicle = on
 	end, false)
 
 	target_self = false
-	menu.toggle(worldchaos, "Target self", {"targetselfmk2"}, "Targets your mk2's as well (this is stupid)", function(on)
+	addict.toggle(worldchaos, "Target self", {"targetselfmk2"}, "Targets your mk2's as well (this is stupid)", function(on)
 		target_self = on
 	end, false)
 
 	target_friends = false
-	menu.toggle(worldchaos, "Target friends", {"targetfriendsmk2"}, "Targets your friends' mk2's as well", function(on)
+	addict.toggle(worldchaos, "Target friends", {"targetfriendsmk2"}, "Targets your friends' mk2's as well", function(on)
 		target_friends = on
 	end, false)
 
 
 function update_join(pid)
 	local name = players.get_name(pid)
-	cmd_id[pid] = menu.toggle(custselc, name, {}, "PID - ".. pid, function(on_toggle)
+	cmd_id[pid] = addict.toggle(custselc, name, {}, "PID - ".. pid, function(on_toggle)
 		if on_toggle then
 			selectedplayer[pid] = true
 		else
@@ -9335,7 +9306,7 @@ function update_join(pid)
 end
 
 function update_leave(pid)
-	menu.delete(cmd_id[pid])
+	addict.delete(cmd_id[pid])
 end
 
 GenerateFeatures = function(pid)
@@ -9376,22 +9347,22 @@ GenerateFeatures = function(pid)
 
 	end
 
-	vehopts = menu.list(menu.player_root(pid), "Vehicle Events", {}, "Works only if you are standing near to selected player", function(); end)
-    vehicle_kicks = menu.list(vehopts, "Vehicle Kicks", {"vehiclekicks"}, "", function(); end)
-	lock_sub_vehicle_tab = menu.list(vehopts, "Lock Options", {}, "", function(); end)
-	mov_sub_vehicle_tab = menu.list(vehopts, "Movement Options", {}, "", function(); end)
-	troll_sub_vehicle_tab = menu.list(vehopts, "Trolling Options", {}, "", function(); end)
-	health_sub_vehicle_tab = menu.list(vehopts, "Health and Appearance Options", {}, "", function(); end)
-	detach_sub_vehicle_tab = menu.list(vehopts, "Detach Options", {}, "", function(); end)
-	plane_sub_vehicle_tab = menu.list(vehopts, "Plane and Helicopter Options", {}, "", function(); end)
+	vehopts = addict.list(addict.player_root(pid), "Vehicle Events", {}, "Works only if you are standing near to selected player", function(); end)
+    vehicle_kicks = addict.list(vehopts, "Vehicle Kicks", {"vehiclekicks"}, "", function(); end)
+	lock_sub_vehicle_tab = addict.list(vehopts, "Lock Options", {}, "", function(); end)
+	mov_sub_vehicle_tab = addict.list(vehopts, "Movement Options", {}, "", function(); end)
+	troll_sub_vehicle_tab = addict.list(vehopts, "Trolling Options", {}, "", function(); end)
+	health_sub_vehicle_tab = addict.list(vehopts, "Health and Appearance Options", {}, "", function(); end)
+	detach_sub_vehicle_tab = addict.list(vehopts, "Detach Options", {}, "", function(); end)
+	plane_sub_vehicle_tab = addict.list(vehopts, "Plane and Helicopter Options", {}, "", function(); end)
 
     
-    givevehicle = menu.list(vehopts, "Give Player A Vehicle", {}, "", function(); end)
+    givevehicle = addict.list(vehopts, "Give Player A Vehicle", {}, "", function(); end)
 
-    menu.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
-        menu.trigger_commands("stopspectating")
-        menu.trigger_commands("spectate" .. players.get_name(pid))
-        menu.trigger_commands("giveotr" .. players.get_name(pid))
+    addict.action(givevehicle, "Give A UFO", {"giveufo"}, "", function()
+        addict.trigger_commands("stopspectating")
+        addict.trigger_commands("spectate" .. players.get_name(pid))
+        addict.trigger_commands("giveotr" .. players.get_name(pid))
         util.yield(2000)
         local vehicleHash = util.joaat("hydra")
         request_model(vehicleHash)
@@ -9415,62 +9386,62 @@ GenerateFeatures = function(pid)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(jet, object1, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
         ENTITY.ATTACH_ENTITY_TO_ENTITY(object1, jet, 0, 0, 3, 0, 0, 0, 0, 0, false, true, false, 0, true)
         util.yield(500)
-        menu.trigger_commands("stopspectating")
-end)
-
-    menu.action(givevehicle, "Give A MK2", {"givemk2"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " oppressor2")
+        addict.trigger_commands("stopspectating")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
+    addict.action(givevehicle, "Give A MK2", {"givemk2"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " oppressor2")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Festival Bus", {"givefestivalbus"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pbus2")
+    addict.action(givevehicle, "Give A Deluxo", {"givedeluxo"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " deluxo")
+    end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    addict.action(givevehicle, "Give A Festival Bus", {"givefestivalbus"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pbus2")
     end, nil, nil, COMMANDPERM_FRIENDLY)
     
-    menu.action(givevehicle, "Give A Forklift", {"giveforklift"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " forklift")
+    addict.action(givevehicle, "Give A Forklift", {"giveforklift"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " forklift")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Khanjali", {"givekhanjali"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " khanjali")
+    addict.action(givevehicle, "Give A Khanjali", {"givekhanjali"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " khanjali")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Future Shock Sasquatch", {"givesasquatch"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " monster4")
+    addict.action(givevehicle, "Give A Future Shock Sasquatch", {"givesasquatch"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " monster4")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Future Shock Scarab", {"givescarab"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " scarab2")
+    addict.action(givevehicle, "Give A Future Shock Scarab", {"givescarab"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " scarab2")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give Aqua Blazer", {"giveblazer"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " blazer5")
+    addict.action(givevehicle, "Give Aqua Blazer", {"giveblazer"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " blazer5")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Lazer", {"givelazer"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " lazer")
+    addict.action(givevehicle, "Give A Lazer", {"givelazer"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " lazer")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Hydra", {"givehydra"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
+    addict.action(givevehicle, "Give A Hydra", {"givehydra"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Starling", {"givestarling"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
+    addict.action(givevehicle, "Give A Starling", {"givestarling"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(givevehicle, "Give A Pyro", {"givepyro"}, "", function()
-        menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
+    addict.action(givevehicle, "Give A Pyro", {"givepyro"}, "", function()
+        addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(vehopts,"Spawn them a vehicle", {}, "Spawns a vehicle on target player", function()
-		menu.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
+	addict.action(vehopts,"Spawn them a vehicle", {}, "Spawns a vehicle on target player", function()
+		addict.show_command_box("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    menu.action(troll_sub_vehicle_tab, "Ramp Buggy fuck", {"rampbuggyram"}, "Sends 10 per loop.", function()
+    addict.action(troll_sub_vehicle_tab, "Ramp Buggy fuck", {"rampbuggyram"}, "Sends 10 per loop.", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle_req = util.joaat("dune5")
         util.request_model(vehicle_req)
@@ -9483,7 +9454,7 @@ end)
         end
     end)
 
-    menu.action(troll_sub_vehicle_tab, "Phantom fuck", {"phantomram"}, "Sends 10 per loop.", function()
+    addict.action(troll_sub_vehicle_tab, "Phantom fuck", {"phantomram"}, "Sends 10 per loop.", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle_req = util.joaat("phantom2")
         util.request_model(vehicle_req)
@@ -9496,7 +9467,7 @@ end)
         end
     end)
 
-    menu.action(troll_sub_vehicle_tab, "Attach Sirens Under Car", {"siren"}, "Attaches annoying cop car under there car with the sirens on. Skidded idea from 2take1 PoliceCar.lua", function()
+    addict.action(troll_sub_vehicle_tab, "Attach Sirens Under Car", {"siren"}, "Attaches annoying cop car under there car with the sirens on. Skidded idea from 2take1 PoliceCar.lua", function()
         if not PED.IS_PED_IN_ANY_VEHICLE(pid) then
             local player_vehicle = get_player_vehicle(pid, true)
             local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -9525,14 +9496,14 @@ end)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     
-	menu.action(troll_sub_vehicle_tab, "Honk", {"honk"}, "", function()
+	addict.action(troll_sub_vehicle_tab, "Honk", {"honk"}, "", function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
                             VEHICLE.START_VEHICLE_HORN(vehicle, 50000, 0)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
     
-        menu.action(troll_sub_vehicle_tab, "Sound Car Alarm", {"soundalarm"}, "", function()
+        addict.action(troll_sub_vehicle_tab, "Sound Car Alarm", {"soundalarm"}, "", function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
                             VEHICLE.SET_VEHICLE_ALARM(vehicle, true)
@@ -9540,8 +9511,8 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.action(troll_sub_vehicle_tab, "Car Ram", {"ram"}, "Don't drink and drive, folks", function()
-            menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " on")
+        addict.action(troll_sub_vehicle_tab, "Car Ram", {"ram"}, "Don't drink and drive, folks", function()
+            addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " on")
             util.yield(1500)
             local hash = util.joaat("baller")
             local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -9558,41 +9529,41 @@ end)
                 ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
             end
             util.yield(5000)
-            menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
+            addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
         end)
     
     
-    local plates = menu.list(troll_sub_vehicle_tab, "Fuck Plates", {}, "")
+    local plates = addict.list(troll_sub_vehicle_tab, "Fuck Plates", {}, "")
 
-	menu.action(plates,"Addict Plate Text", {"Addictplate"}, "Addictplate", function()
+	addict.action(plates,"Addict Plate Text", {"Addictplate"}, "Addictplate", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Addict")
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plates,"TRUMP Plate Text", {"trumpplate"}, "Sets player's vehicle plate text to TRUMP", function()
+	addict.action(plates,"TRUMP Plate Text", {"trumpplate"}, "Sets player's vehicle plate text to TRUMP", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "TRUMP") 
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plates,"TRASH Plate Text", {"trashplate"}, "Sets player's vehicle plate text to TRASH", function()
+	addict.action(plates,"TRASH Plate Text", {"trashplate"}, "Sets player's vehicle plate text to TRASH", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "TRASH")
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plates,"Bitch Plate Text", {"bitchplate"}, "Sets player's vehicle plate text to Bitch", function()
+	addict.action(plates,"Bitch Plate Text", {"bitchplate"}, "Sets player's vehicle plate text to Bitch", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Bitch")
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.toggle_loop(troll_sub_vehicle_tab,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
+	addict.toggle_loop(troll_sub_vehicle_tab,"Fuck up all cars", {"fuckupallcars"}, "Beats the SHIT out of all nearby cars. But this damage is only local.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -9609,7 +9580,7 @@ end)
 		end
 	end)
 
-	menu.toggle_loop(troll_sub_vehicle_tab,"Honk all cars", {"honkallcars"}, "Honkss the SHIT out of all nearby cars.", function(on)
+	addict.toggle_loop(troll_sub_vehicle_tab,"Honk all cars", {"honkallcars"}, "Honkss the SHIT out of all nearby cars.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -9626,7 +9597,7 @@ end)
 		end
 	end)
 
-	menu.toggle_loop(troll_sub_vehicle_tab,"Blow up all cars", {"Blow up all cars"}, "Blows the SHIT out of all nearby cars.", function(on)
+	addict.toggle_loop(troll_sub_vehicle_tab,"Blow up all cars", {"Blow up all cars"}, "Blows the SHIT out of all nearby cars.", function(on)
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
 			local locspeed2 = speed
@@ -9643,22 +9614,22 @@ end)
 		end
 	end)
 
-	menu.toggle(troll_sub_vehicle_tab, "Stealth Remote Control", {"stealthremote"}, "Enters there vehicle without them knowing and exits the same way. Note: It will disable them using that car until spawned again.", function(on_toggle)
+	addict.toggle(troll_sub_vehicle_tab, "Stealth Remote Control", {"stealthremote"}, "Enters there vehicle without them knowing and exits the same way. Note: It will disable them using that car until spawned again.", function(on_toggle)
 	if on_toggle then
-		menu.trigger_commands("tpmyspot")
-		menu.trigger_commands("invisibility" .. " On")
-                  	menu.trigger_commands("otr")
-		menu.trigger_commands("tpveh" .. players.get_name(pid))
-		menu.trigger_commands("rc" .. " On")
+		addict.trigger_commands("tpmyspot")
+		addict.trigger_commands("invisibility" .. " On")
+                  	addict.trigger_commands("otr")
+		addict.trigger_commands("tpveh" .. players.get_name(pid))
+		addict.trigger_commands("rc" .. " On")
 	else
-                  	menu.trigger_commands("otr")
-		menu.trigger_commands("rc" .. " Off")
-		menu.trigger_commands("undoteleport")
-		menu.trigger_commands("invisibility" .. " Off")
+                  	addict.trigger_commands("otr")
+		addict.trigger_commands("rc" .. " Off")
+		addict.trigger_commands("undoteleport")
+		addict.trigger_commands("invisibility" .. " Off")
 		end
 	end)
     
-    menu.toggle_loop(troll_sub_vehicle_tab, "Glitch Vehicle V1", {"glitchvehv1"}, "", function()
+    addict.toggle_loop(troll_sub_vehicle_tab, "Glitch Vehicle V1", {"glitchvehv1"}, "", function()
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
         local glitch_hash = util.joaat("p_spinning_anus_s")
@@ -9680,7 +9651,7 @@ end)
     end)
 
     
-	menu.toggle_loop(troll_sub_vehicle_tab,"Glitch Vehicle V2", {"glitchvehv2"}, "Spins them around",function()
+	addict.toggle_loop(troll_sub_vehicle_tab,"Glitch Vehicle V2", {"glitchvehv2"}, "Spins them around",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, -10, true, false, true) -- Down
@@ -9696,21 +9667,21 @@ end)
 		end
     end)
 
-	menu.action(health_sub_vehicle_tab,"Repair Vehicle", {"fixveh"}, "Repairs player's vehicle", function()
+	addict.action(health_sub_vehicle_tab,"Repair Vehicle", {"fixveh"}, "Repairs player's vehicle", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_FIXED(vehicle)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Repair Vehicle Shell", {"repair"}, "Repairs player's vehicle but don't repair it's engine", function()
+	addict.action(health_sub_vehicle_tab,"Repair Vehicle Shell", {"repair"}, "Repairs player's vehicle but don't repair it's engine", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_DEFORMATION_FIXED(vehicle)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Candy Upgrade Vehicle", {"ugveh"}, "Note: Spam it if don't work first time. Upgrades player's vehicle.",function()
+	addict.action(health_sub_vehicle_tab,"Candy Upgrade Vehicle", {"ugveh"}, "Note: Spam it if don't work first time. Upgrades player's vehicle.",function()
 		upgrade_vehicle(pid)
 		upgrade_vehicle(pid)
         upgrade_vehicle(pid)
@@ -9723,7 +9694,7 @@ end)
         upgrade_vehicle(pid)
     end, nil, nil, COMMANDPERM_FRIENDLY)
     
-	menu.action(health_sub_vehicle_tab,"GodVeh On", {"invon"}, "Gives invincibility to player's vehicle",function(vehicle)
+	addict.action(health_sub_vehicle_tab,"GodVeh On", {"invon"}, "Gives invincibility to player's vehicle",function(vehicle)
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then	
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, true)
@@ -9757,7 +9728,7 @@ end)
 		end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"GodVeh Off", {"invoff"}, "Removes invincibility from player's vehicle",function()
+	addict.action(health_sub_vehicle_tab,"GodVeh Off", {"invoff"}, "Removes invincibility from player's vehicle",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then	
 			ENTITY.SET_ENTITY_INVINCIBLE(vehicle, false)
@@ -9791,7 +9762,7 @@ end)
 		end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Destroy Engine", {"killveh"}, "Destroys vehicle engine", function()
+	addict.action(health_sub_vehicle_tab,"Destroy Engine", {"killveh"}, "Destroys vehicle engine", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_ENGINE_HEALTH(vehicle, -4000)
@@ -9801,7 +9772,7 @@ end)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(health_sub_vehicle_tab,"Revive Engine", {"reviveh"}, "Revives vehicle engine", function()
+	addict.action(health_sub_vehicle_tab,"Revive Engine", {"reviveh"}, "Revives vehicle engine", function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000)
@@ -9810,7 +9781,7 @@ end)
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(health_sub_vehicle_tab,"Explode Vehicle", {"explodeveh"}, "Explodes vehicle",function()
+	addict.action(health_sub_vehicle_tab,"Explode Vehicle", {"explodeveh"}, "Explodes vehicle",function()
 		local vehicle = get_player_veh(pid,false)
 		if vehicle then
 			--local pos = ENTITY.GET_ENTITY_COORDS(vehicle)--tried around with EXPLODE_VEHICLE but didnt work mayb im just rarted
@@ -9822,7 +9793,7 @@ end)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 --[[
-    menu.toggle_loop(mov_sub_vehicle_tab, "Give horn boost", {}, "Give the target horn-boost", function()  
+    addict.toggle_loop(mov_sub_vehicle_tab, "Give horn boost", {}, "Give the target horn-boost", function()  
         local vehicle = get_player_veh(pid,true)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
         local force = ENTITY.GET_ENTITY_FORWARD_VECTOR(vehicle)
@@ -9837,28 +9808,28 @@ end)
     end)
 ]]
 
-	menu.action(mov_sub_vehicle_tab,"Boost", {"boost"}, "Sets max speed of vehicle to 100 better for cars",function()
+	addict.action(mov_sub_vehicle_tab,"Boost", {"boost"}, "Sets max speed of vehicle to 100 better for cars",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 100) 
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(mov_sub_vehicle_tab,"Addict boost", {"Addictboost"}, "Sets max speed of vehicle to 9999999 better for bikes",function()
+	addict.action(mov_sub_vehicle_tab,"Addict boost", {"Addictboost"}, "Sets max speed of vehicle to 9999999 better for bikes",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 9999999) 
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
-	menu.action(mov_sub_vehicle_tab,"Trash Speed", {"trashaccs"}, "Sets max speed of vehicle to INT_MIN",function()
+	addict.action(mov_sub_vehicle_tab,"Trash Speed", {"trashaccs"}, "Sets max speed of vehicle to INT_MIN",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, -2147483647) 
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(mov_sub_vehicle_tab, 'Reverse Car', {'reversecars'}, "Note: Restart Addict Script if you need to reset your own speed",function()
+    addict.action(mov_sub_vehicle_tab, 'Reverse Car', {'reversecars'}, "Note: Restart Addict Script if you need to reset your own speed",function()
 	    local vehicle = get_player_veh(pid,true)
         local player_torques = 1000000
             player_torques = value
@@ -9874,56 +9845,56 @@ end)
         end)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Reset Speed", {"resetaccs"}, "Resets max speed of vehicle",function()
+	addict.action(mov_sub_vehicle_tab,"Reset Speed", {"resetaccs"}, "Resets max speed of vehicle",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 1) 
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 		
-	menu.action(mov_sub_vehicle_tab,"East", {"eastveh"}, "Boosts player's vehicle in the East direction",function()
+	addict.action(mov_sub_vehicle_tab,"East", {"eastveh"}, "Boosts player's vehicle in the East direction",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 10000, 0, 0, true, false, true)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"West", {"westveh"}, "Boosts player's vehicle in the West direction",function()
+	addict.action(mov_sub_vehicle_tab,"West", {"westveh"}, "Boosts player's vehicle in the West direction",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, -10000, 0, 0, true, false, true)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"South", {"southveh"}, "Boosts player's vehicle in the South direction",function()
+	addict.action(mov_sub_vehicle_tab,"South", {"southveh"}, "Boosts player's vehicle in the South direction",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, -10000, 0, true, false, true)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"North", {"northveh"}, "Boosts player's vehicle in the North direction",function()
+	addict.action(mov_sub_vehicle_tab,"North", {"northveh"}, "Boosts player's vehicle in the North direction",function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
             ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 10000, 0, true, false, true)
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
+	addict.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
         local vehicle = get_player_veh(pid,true)
         if vehicle then
             ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, 10000, true, false, true)
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(mov_sub_vehicle_tab,"Launch Down", {"launchdown"}, "Shoots player down",function()
+    addict.action(mov_sub_vehicle_tab,"Launch Down", {"launchdown"}, "Shoots player down",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, -10000, true, false, true)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(detach_sub_vehicle_tab,"Detach Trailer", {"detachtrailer"}, "Detaches attached trailer",function()
+	addict.action(detach_sub_vehicle_tab,"Detach Trailer", {"detachtrailer"}, "Detaches attached trailer",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.DETACH_VEHICLE_FROM_TRAILER(vehicle)
@@ -9934,7 +9905,7 @@ end)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(detach_sub_vehicle_tab,"Detach from Cargobob", {"detachcbob"}, "Detaches from Cargobob",function()
+	addict.action(detach_sub_vehicle_tab,"Detach from Cargobob", {"detachcbob"}, "Detaches from Cargobob",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.DETACH_VEHICLE_FROM_ANY_CARGOBOB(vehicle)
@@ -9945,91 +9916,91 @@ end)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Lock Doors", {"lockveh"}, "Locks the doors",function()
+	addict.action(lock_sub_vehicle_tab,"Lock Doors", {"lockveh"}, "Locks the doors",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_DOORS_LOCKED(vehicle, 4) 
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Unlock Doors", {"unlockveh"}, "Unlocks the doors",function()
+	addict.action(lock_sub_vehicle_tab,"Unlock Doors", {"unlockveh"}, "Unlocks the doors",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_DOORS_LOCKED(vehicle, 1)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Make Vehicle Drivable", {"engineon"}, "Makes player's vehicle drivable again",function()
+	addict.action(lock_sub_vehicle_tab,"Make Vehicle Drivable", {"engineon"}, "Makes player's vehicle drivable again",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_UNDRIVEABLE(vehicle, false)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Make Vehicle Undrivable", {"engineoff"}, "Makes player's vehicle undrivable",function()
+	addict.action(lock_sub_vehicle_tab,"Make Vehicle Undrivable", {"engineoff"}, "Makes player's vehicle undrivable",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_UNDRIVEABLE(vehicle, true)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Deploy Landing Gear", {"landing1"}, "",function()
+	addict.action(plane_sub_vehicle_tab,"Deploy Landing Gear", {"landing1"}, "",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.CONTROL_LANDING_GEAR(vehicle, 0)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Retract Landing Gear", {"landing0"}, "",function()
+	addict.action(plane_sub_vehicle_tab,"Retract Landing Gear", {"landing0"}, "",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.CONTROL_LANDING_GEAR(vehicle, 3)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Disable Cargobob's Hook", {"nohook"}, "Disables cargobob's hook. when used, that cargobob's hook will no longer work",function()
+	addict.action(plane_sub_vehicle_tab,"Disable Cargobob's Hook", {"nohook"}, "Disables cargobob's hook. when used, that cargobob's hook will no longer work",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.REMOVE_PICK_UP_ROPE_FOR_CARGOBOB(vehicle)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Strong Turbulence", {"turb1"}, "Makes turbulence stronger",function()
+	addict.action(plane_sub_vehicle_tab,"Strong Turbulence", {"turb1"}, "Makes turbulence stronger",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(vehicle, 1.0)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"No Turbulence", {"turb0"}, "Makes turbulence weaker",function()
+	addict.action(plane_sub_vehicle_tab,"No Turbulence", {"turb0"}, "Makes turbulence weaker",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(vehicle, 0.0)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Set Propeller Speed at 100%", {"propel100"}, "",function()
+	addict.action(plane_sub_vehicle_tab,"Set Propeller Speed at 100%", {"propel100"}, "",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_HELI_BLADES_FULL_SPEED(vehicle)	
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(plane_sub_vehicle_tab,"Set Propeller Speed at 0%", {"propel0"}, "",function()
+	addict.action(plane_sub_vehicle_tab,"Set Propeller Speed at 0%", {"propel0"}, "",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_HELI_BLADES_SPEED(vehicle, 0.0)		
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(plane_sub_vehicle_tab,"Stop Propeller Blades", {"stopheli"}, "",function()
+    addict.toggle_loop(plane_sub_vehicle_tab,"Stop Propeller Blades", {"stopheli"}, "",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
             VEHICLE.SET_HELI_BLADES_SPEED(vehicle, -9999999)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Lock that bitch in", {"lockcar"}, "Locks the doors, paints the car Hot Pink, changes plate text to 'LOCKED'",function()
+	addict.action(lock_sub_vehicle_tab,"Lock that bitch in", {"lockcar"}, "Locks the doors, paints the car Hot Pink, changes plate text to 'LOCKED'",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_DOORS_LOCKED(vehicle, 4) 
@@ -10038,7 +10009,7 @@ end)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(lock_sub_vehicle_tab,"Release that bitch out", {"bunlockcar"}, "Unlocks the doors, paints the vehicle Green, changes plate text to 'URFREE'",function()
+	addict.action(lock_sub_vehicle_tab,"Release that bitch out", {"bunlockcar"}, "Unlocks the doors, paints the vehicle Green, changes plate text to 'URFREE'",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
 			VEHICLE.SET_VEHICLE_DOORS_LOCKED(vehicle, 1)
@@ -10048,12 +10019,12 @@ end)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-	menu.action(mov_sub_vehicle_tab,"Teleport to me", {"tp2me"}, "Teleport player's vehicle to you (Better to spectate first)",function()
+	addict.action(mov_sub_vehicle_tab,"Teleport to me", {"tp2me"}, "Teleport player's vehicle to you (Better to spectate first)",function()
 		local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
 		tp_veh_to(pid,coords.x,coords.y,coords.z)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-	menu.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2seab"}, "Tries to teleport player's vehicle to the ocean",function()	
+	addict.action(mov_sub_vehicle_tab,"Teleport to ocean", {"tp2seab"}, "Tries to teleport player's vehicle to the ocean",function()	
 		tp_veh_to(pid, -2168.3025, -1512.401, -232.03241)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
@@ -10117,16 +10088,16 @@ read_global = {
         entities.delete_by_handle(ent)
     end
 
-	griefing = menu.list(menu.player_root(pid), "Griefing", {}, "", function(); end)
+	griefing = addict.list(addict.player_root(pid), "Griefing", {}, "", function(); end)
 
 
-    menu.action(griefing, "Make Player Explode All", {"makethemexplodeall"}, "", function()
-		menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " explodeall")
+    addict.action(griefing, "Make Player Explode All", {"makethemexplodeall"}, "", function()
+		addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " explodeall")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    push_ups = menu.list(griefing, "Push player up", {}, "", function(); end)
+    push_ups = addict.list(griefing, "Push player up", {}, "", function(); end)
 
-    menu.toggle_loop(push_ups, "Push player up", {"pushup"}, "Works best if the player is walking on flat ground.", function()
+    addict.toggle_loop(push_ups, "Push player up", {"pushup"}, "Works best if the player is walking on flat ground.", function()
         local vehicle = 4174679674 -- 1518533038
         STREAMING.REQUEST_MODEL(vehicle)
         while not STREAMING.HAS_MODEL_LOADED(vehicle) do
@@ -10145,88 +10116,88 @@ read_global = {
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(vehicle)
     end)
     
-    menu.toggle_loop(push_ups, "Push Player Up V2", {"pushupv2"}, "", function()
+    addict.toggle_loop(push_ups, "Push Player Up V2", {"pushupv2"}, "", function()
         Push_Player_Up(pid)
         util.yield(3000)
-        menu.trigger_commands("superc 4")
+        addict.trigger_commands("superc 4")
     end)
 
-    Owned_Anon = menu.list(griefing, "Owned & Anon", {"o&a"}, "", function(); end)
+    Owned_Anon = addict.list(griefing, "Owned & Anon", {"o&a"}, "", function(); end)
 
-    Owned_Anon_Snipe = menu.list(Owned_Anon, "Snipe", {}, "", function(); end)
+    Owned_Anon_Snipe = addict.list(Owned_Anon, "Snipe", {}, "", function(); end)
 
-    menu.divider(Owned_Anon_Snipe, "Owned & Anon")
+    addict.divider(Owned_Anon_Snipe, "Owned & Anon")
 
-    menu.action(Owned_Anon_Snipe, "Owned snipe", {"osnipe"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
+    addict.action(Owned_Anon_Snipe, "Owned snipe", {"osnipe"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
         owner = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         target = ENTITY.GET_ENTITY_COORDS(target_ped)
         MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, owner, true, false, 100.0)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(Owned_Anon_Snipe, "Anon snipe", {"asnipe"}, "Snipes the player anonymously, as if a random ped did it [The randomly selected ped needs to have LOS, I think].", function(on_click)
+    addict.action(Owned_Anon_Snipe, "Anon snipe", {"asnipe"}, "Snipes the player anonymously, as if a random ped did it [The randomly selected ped needs to have LOS, I think].", function(on_click)
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         target = ENTITY.GET_ENTITY_COORDS(target_ped)
         random_ped = get_random_ped()
         MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, random_ped, true, false, 100.0)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.divider(Owned_Anon_Snipe, "Owned & Anon Looped")
+    addict.divider(Owned_Anon_Snipe, "Owned & Anon Looped")
 
-    menu.toggle_loop(Owned_Anon_Snipe, "Owned snipe", {"osnipel"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
+    addict.toggle_loop(Owned_Anon_Snipe, "Owned snipe", {"osnipel"}, "Snipes the player with you as the attacker [Will not work if you do not have LOS with the target]. Maybe patched now.", function(on_click)
         owner = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         target = ENTITY.GET_ENTITY_COORDS(target_ped)
         MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, owner, true, false, 100.0)
     end)
 
-    menu.toggle_loop(Owned_Anon_Snipe, "Anon snipe", {"asnipel"}, "Snipes the player anonymously, as if a random ped did it [The randomly selected ped needs to have LOS, I think].", function(on_click)
+    addict.toggle_loop(Owned_Anon_Snipe, "Anon snipe", {"asnipel"}, "Snipes the player anonymously, as if a random ped did it [The randomly selected ped needs to have LOS, I think].", function(on_click)
         target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         target = ENTITY.GET_ENTITY_COORDS(target_ped)
         random_ped = get_random_ped()
         MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(target['x'], target['y'], target['z'], target['x'], target['y'], target['z']+0.1, 300.0, true, 100416529, random_ped, true, false, 100.0)
     end)
 
-    Owned_Anon_Explode = menu.list(Owned_Anon, "Explode", {}, "", function(); end)
+    Owned_Anon_Explode = addict.list(Owned_Anon, "Explode", {}, "", function(); end)
 
-    menu.divider(Owned_Anon_Explode, "Owned & Anon")
+    addict.divider(Owned_Anon_Explode, "Owned & Anon")
 
-    menu.action(Owned_Anon_Explode, "Owned Explode", {"oexplode"}, "Explode the player.", function() --owned exp
+    addict.action(Owned_Anon_Explode, "Owned Explode", {"oexplode"}, "Explode the player.", function() --owned exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(Owned_Anon_Explode, "Anon Explode", {"aexplode"}, "Explode the player anonymously.", function() --anon exp
+    addict.action(Owned_Anon_Explode, "Anon Explode", {"aexplode"}, "Explode the player anonymously.", function() --anon exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(Owned_Anon_Explode, "Owned Orbital Cannon Explode", {"orbitalbang"}, "Explode the player using become orbital cannon looped.", function() --owned exp
+    addict.action(Owned_Anon_Explode, "Owned Orbital Cannon Explode", {"orbitalbang"}, "Explode the player using become orbital cannon looped.", function() --owned exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
-        menu.trigger_commands("becomeorbitalcannon")
+        addict.trigger_commands("becomeorbitalcannon")
         FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
         util.yield(500)
-        menu.trigger_commands("becomeorbitalcannon")
+        addict.trigger_commands("becomeorbitalcannon")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.divider(Owned_Anon_Explode, "Owned & Anon Loop")
+    addict.divider(Owned_Anon_Explode, "Owned & Anon Loop")
 
-    menu.toggle_loop(Owned_Anon_Explode, "Owned Explode Loop", {"oexplodel"}, "Explode the player looped.", function() --owned exp
+    addict.toggle_loop(Owned_Anon_Explode, "Owned Explode Loop", {"oexplodel"}, "Explode the player looped.", function() --owned exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
     end)
 
-    menu.toggle_loop(Owned_Anon_Explode, "Anon Explode Loop", {"aexplodel"}, "Explode the player anonymously looped.", function() --anon exp
+    addict.toggle_loop(Owned_Anon_Explode, "Anon Explode Loop", {"aexplodel"}, "Explode the player anonymously looped.", function() --anon exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.toggle_loop(Owned_Anon_Explode,"Anon Mssile", {"amissile"}, "", function(on)
+        addict.toggle_loop(Owned_Anon_Explode,"Anon Mssile", {"amissile"}, "", function(on)
         local ped = 2459507570
         STREAMING.REQUEST_MODEL(ped)
         while not STREAMING.HAS_MODEL_LOADED(ped) do
@@ -10279,31 +10250,31 @@ read_global = {
         entities.delete_by_handle(object1)
     end)
 
-    menu.toggle_loop(Owned_Anon_Explode, "Owned Orbital Cannon Explode Loop", {"ooexplodel"}, "Explode the player using become orbital cannon looped.", function() --owned exp
+    addict.toggle_loop(Owned_Anon_Explode, "Owned Orbital Cannon Explode Loop", {"ooexplodel"}, "Explode the player using become orbital cannon looped.", function() --owned exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
-        menu.trigger_commands("becomeorbitalcannon")
+        addict.trigger_commands("becomeorbitalcannon")
         FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0)
         util.yield(500)
-        menu.trigger_commands("becomeorbitalcannon")
+        addict.trigger_commands("becomeorbitalcannon")
     end)
 
-    menu.divider(Owned_Anon_Explode, "Fake Loop")
+    addict.divider(Owned_Anon_Explode, "Fake Loop")
 
-    menu.toggle_loop(Owned_Anon_Explode, "Fake Explosion Loop", {"fakeexplode"}, "Explosion dealing no damage", function() --fake exp
+    addict.toggle_loop(Owned_Anon_Explode, "Fake Explosion Loop", {"fakeexplode"}, "Explosion dealing no damage", function() --fake exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 0.0, true, false, 1.0, false)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    killgods = menu.list(Owned_Anon, "Kill Godmode Shit", {}, "", function(); end)
+    killgods = addict.list(Owned_Anon, "Kill Godmode Shit", {}, "", function(); end)
 
-	menu.action(killgods, "Kill Godmode Player V1", {"killgod"}, "", function()
-		menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
-		menu.trigger_commands("explodeloop" .. PLAYER.GET_PLAYER_NAME(pid))
+	addict.action(killgods, "Kill Godmode Player V1", {"killgod"}, "", function()
+		addict.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
+		addict.trigger_commands("explodeloop" .. PLAYER.GET_PLAYER_NAME(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(killgods, "Kill Godmode Player V2", {"killgodv2"}, "Note: this will not work if they have no ragdoll on", function()
+    addict.action(killgods, "Kill Godmode Player V2", {"killgodv2"}, "Note: this will not work if they have no ragdoll on", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -10332,26 +10303,26 @@ read_global = {
         entities.delete_by_handle(vehicle1)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.divider(killgods, "Owned & Anon")
+    addict.divider(killgods, "Owned & Anon")
 
-    menu.action(killgods, "Owned Godmode Kill Explosion", {"ogexplode"}, "Automatically bypasses player's godmode and explode the player (only works on bad menus)", function() --owned godmode exp
+    addict.action(killgods, "Owned Godmode Kill Explosion", {"ogexplode"}, "Automatically bypasses player's godmode and explode the player (only works on bad addicts)", function() --owned godmode exp
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
-        menu.trigger_commands("confuse".. players.get_name(pid).. " on")
+        addict.trigger_commands("confuse".. players.get_name(pid).. " on")
         util.yield(10)
         FIRE.ADD_OWNED_EXPLOSION(players.user_ped(), c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
         util.yield(10)
-        menu.trigger_commands("confuse".. players.get_name(pid).. " off")
+        addict.trigger_commands("confuse".. players.get_name(pid).. " off")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(killgods, "Anon Godmode Kill Explosion", {"agexplode"}, "Automatically bypasses player's godmode and explode the player (only works on bad menus)", function()
+    addict.action(killgods, "Anon Godmode Kill Explosion", {"agexplode"}, "Automatically bypasses player's godmode and explode the player (only works on bad addicts)", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
-        menu.trigger_commands("confuse".. players.get_name(pid).. " on")
+        addict.trigger_commands("confuse".. players.get_name(pid).. " on")
         util.yield(10)
         FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 1.0, false)
         util.yield(10)
-        menu.trigger_commands("confuse".. players.get_name(pid).. " off")
+        addict.trigger_commands("confuse".. players.get_name(pid).. " off")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     
@@ -10398,7 +10369,7 @@ read_global = {
     end
 
                 
-        menu.action(vehicle_kicks, "Steal Vehicle",{"steal"},"Spawns a ped to rip them out and teleports you inside. works on all menus.", function()
+        addict.action(vehicle_kicks, "Steal Vehicle",{"steal"},"Spawns a ped to rip them out and teleports you inside. works on all addicts.", function()
             local player_index = player_index(players.user())
             local vehicle = get_player_vehicle(pid, false)
             local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle, -2.0, 0.0, 0.1)
@@ -10410,7 +10381,7 @@ read_global = {
                 end
             end)
 
-        menu.action(vehicle_kicks, "Steal Vehicle V2", {"stealv2"}, "Spawns a ped to take them out of their vehicle and drives away.", function() -- Skidded from femboy girl prishum
+        addict.action(vehicle_kicks, "Steal Vehicle V2", {"stealv2"}, "Spawns a ped to take them out of their vehicle and drives away.", function() -- Skidded from femboy girl prishum
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local pos = players.get_position(pid)
             local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
@@ -10447,7 +10418,7 @@ read_global = {
             end
         end)
 
-        menu.action(vehicle_kicks, "Kick from Vehicle", {"kickveh"}, "Spawns a ped to rip them out and drives away. works on all menus.", function()
+        addict.action(vehicle_kicks, "Kick from Vehicle", {"kickveh"}, "Spawns a ped to rip them out and drives away. works on all addicts.", function()
             local vehicle = get_player_vehicle(pid, false)
             local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle, -2.0, 0.0, 0.1)
             ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, 0)
@@ -10464,7 +10435,7 @@ read_global = {
             end
         end)
 
-        menu.action(vehicle_kicks, "Kick from Vehicle V2", {"kickveh"}, "Changes the net object owner of the vehicle.", function()
+        addict.action(vehicle_kicks, "Kick from Vehicle V2", {"kickveh"}, "Changes the net object owner of the vehicle.", function()
             local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
@@ -10477,7 +10448,7 @@ read_global = {
             PED.SET_PED_INTO_VEHICLE(pped, myveh, -1)
         end)
 
-        menu.toggle_loop(vehicle_kicks, "Kick from Vehicle V2", {"kickvehloop"}, "Changes the net object owner of the vehicle looped.", function()
+        addict.toggle_loop(vehicle_kicks, "Kick from Vehicle V2", {"kickvehloop"}, "Changes the net object owner of the vehicle looped.", function()
             local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             local veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
@@ -10533,43 +10504,43 @@ read_global = {
             fail_count = 0
         end)
 
-    tpoptions = menu.list(griefing, "TP Options", {}, "", function(); end)
+    tpoptions = addict.list(griefing, "TP Options", {}, "", function(); end)
 
-    griefingtpp = menu.list(tpoptions, "TP Player", {}, "", function(); end)
+    griefingtpp = addict.list(tpoptions, "TP Player", {}, "", function(); end)
 
-        menu.action(griefingtpp, "Teleport To Them", {"goingtheere"}, "", function()
-            menu.trigger_commands("tp" .. players.get_name(pid))
+        addict.action(griefingtpp, "Teleport To Them", {"goingtheere"}, "", function()
+            addict.trigger_commands("tp" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(griefingtpp, "Teleport To Me", {"cometome"}, "", function()
-            menu.trigger_commands("summon" .. players.get_name(pid))
+        addict.action(griefingtpp, "Teleport To Me", {"cometome"}, "", function()
+            addict.trigger_commands("summon" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(griefingtpp, "TP Player To Eclipse Towers", {"tpeclipse"}, "", function()
-            menu.trigger_commands("apt90" .. players.get_name(pid))
+        addict.action(griefingtpp, "TP Player To Eclipse Towers", {"tpeclipse"}, "", function()
+            addict.trigger_commands("apt90" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(griefingtpp, "TP Player To MazeBank", {"tpmazebank"}, "", function()
-            menu.trigger_commands("apt90" .. players.get_name(pid))
+        addict.action(griefingtpp, "TP Player To MazeBank", {"tpmazebank"}, "", function()
+            addict.trigger_commands("apt90" .. players.get_name(pid))
         end, nil, nil, COMMANDPERM_FRIENDLY)
                         
-        griefingtp = menu.list(tpoptions, "TP All Players", {}, "", function(); end)
+        griefingtp = addict.list(tpoptions, "TP All Players", {}, "", function(); end)
 
-    menu.action(griefingtp, "TP Everyone To MazeBank", {"tpallmazebank"}, "Teleports all players to mazebank you.", function()
+    addict.action(griefingtp, "TP Everyone To MazeBank", {"tpallmazebank"}, "Teleports all players to mazebank you.", function()
         excludeselected = true
-        menu.trigger_commands("tpplayersmazebank")
+        addict.trigger_commands("tpplayersmazebank")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(griefingtp, "TP All Players to me", {"tpallplayers"}, "Teleports all players to you.", function()
-        menu.trigger_commands("say " .. " Get on the bike :)")
-        menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " manchez")
+    addict.action(griefingtp, "TP All Players to me", {"tpallplayers"}, "Teleports all players to you.", function()
+        addict.trigger_commands("say " .. " Get on the bike :)")
+        addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " manchez")
         util.toast("Give them a second to get on...")
         excludeselected = true
-        menu.trigger_commands("tpplayers")
+        addict.trigger_commands("tpplayers")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(griefingtp, "TP All Players Near me", {"tpallnear"}, "Teleports all players near you.", function()
-        menu.trigger_commands("aptmeall")
+    addict.action(griefingtp, "TP All Players Near me", {"tpallnear"}, "Teleports all players near you.", function()
+        addict.trigger_commands("aptmeall")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
     
@@ -10604,43 +10575,43 @@ read_global = {
         tpTableToPlayer(pickupHandles, player)
     end
 
-    local pteleportEntities = menu.list(tpoptions, "Teleport Entities to Player", {}, "")
+    local pteleportEntities = addict.list(tpoptions, "Teleport Entities to Player", {}, "")
 
-    menu.action(pteleportEntities, "Teleport ALL Entities to Player", {"tpallentities"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function()
-        menu.trigger_commands("tppeds" .. players.get_name(pid))
+    addict.action(pteleportEntities, "Teleport ALL Entities to Player", {"tpallentities"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function()
+        addict.trigger_commands("tppeds" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpvehs" .. players.get_name(pid))
+        addict.trigger_commands("tpvehs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpobjs" .. players.get_name(pid))
+        addict.trigger_commands("tpobjs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tppickups" .. players.get_name(pid))
+        addict.trigger_commands("tppickups" .. players.get_name(pid))
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(pteleportEntities, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
+    addict.toggle_loop(pteleportEntities, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("tppeds" .. players.get_name(pid))
+            addict.trigger_commands("tppeds" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tpvehs" .. players.get_name(pid))
+            addict.trigger_commands("tpvehs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tpobjs" .. players.get_name(pid))
+            addict.trigger_commands("tpobjs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tppickups" .. players.get_name(pid))
+            addict.trigger_commands("tppickups" .. players.get_name(pid))
         else
-            menu.trigger_commands("tppeds" .. players.get_name(pid))
+            addict.trigger_commands("tppeds" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tpvehs" .. players.get_name(pid))
+            addict.trigger_commands("tpvehs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tpobjs" .. players.get_name(pid))
+            addict.trigger_commands("tpobjs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("tppickups" .. players.get_name(pid))
+            addict.trigger_commands("tppickups" .. players.get_name(pid))
         end
     end)
 
-    menu.action(pteleportEntities, "TP Peds on Player", {"tppeds"}, "", function ()
+    addict.action(pteleportEntities, "TP Peds on Player", {"tppeds"}, "", function ()
         TpAllPeds(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(pteleportEntities, "TP Peds on Player", {"toggletppeds"}, "", function (on_toggle)
+    addict.toggle_loop(pteleportEntities, "TP Peds on Player", {"toggletppeds"}, "", function (on_toggle)
             if on_toggle then
                 TpAllPeds(pid)
             else
@@ -10648,11 +10619,11 @@ read_global = {
             end
     end)
 
-    menu.action(pteleportEntities, "TP All Vehicles on Player", {"tpvehs"}, "", function ()
+    addict.action(pteleportEntities, "TP All Vehicles on Player", {"tpvehs"}, "", function ()
         TpAllVehs(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(pteleportEntities, "TP All Vehicles on Player", {"toggletppedstpvehs"}, "", function (on_toggle)
+    addict.toggle_loop(pteleportEntities, "TP All Vehicles on Player", {"toggletppedstpvehs"}, "", function (on_toggle)
             if on_toggle then
                 TpAllVehs(pid)
             else
@@ -10660,11 +10631,11 @@ read_global = {
             end
     end)
 
-    menu.action(pteleportEntities, "TP All Objects on Player", {"tpobjs"}, "", function ()
+    addict.action(pteleportEntities, "TP All Objects on Player", {"tpobjs"}, "", function ()
         TpAllObjects(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(pteleportEntities, "TP All Objects on Player", {"tpobjs"}, "", function (on_toggle)
+    addict.toggle_loop(pteleportEntities, "TP All Objects on Player", {"tpobjs"}, "", function (on_toggle)
             if on_toggle then
                 TpAllObjects(pid)
             else
@@ -10672,11 +10643,11 @@ read_global = {
             end
     end)
 
-    menu.action(pteleportEntities, "TP All Pickups on Player", {"tppickups"}, "", function ()
+    addict.action(pteleportEntities, "TP All Pickups on Player", {"tppickups"}, "", function ()
         TpAllPickups(pid)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(pteleportEntities, "TP All Pickups on Player", {"tppickups"}, "", function (on_toggle)
+    addict.toggle_loop(pteleportEntities, "TP All Pickups on Player", {"tppickups"}, "", function (on_toggle)
             if on_toggle then
                 TpAllPickups(pid)
             else
@@ -10684,15 +10655,15 @@ read_global = {
             end
     end)
 
-menu.toggle_loop(tpoptions, "TP On Ped Loop", {"tploopon"}, "", function(on_toggle)
+addict.toggle_loop(tpoptions, "TP On Ped Loop", {"tploopon"}, "", function(on_toggle)
     if on_toggle then
-    menu.trigger_commands("tp" .. players.get_name(pid))
+    addict.trigger_commands("tp" .. players.get_name(pid))
     else
-    menu.trigger_commands("tp" .. players.get_name(pid))
+    addict.trigger_commands("tp" .. players.get_name(pid))
     end
     end)
 
-menu.toggle_loop(tpoptions, "Tp Spread Your Shit", {"tpspread"}, "Note: Great for spreading any kinda mods like gifting vehicles or crash events.", function(on_toggle)
+addict.toggle_loop(tpoptions, "Tp Spread Your Shit", {"tpspread"}, "Note: Great for spreading any kinda mods like gifting vehicles or crash events.", function(on_toggle)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
     for i=1,1  do
@@ -10839,11 +10810,11 @@ end)
             end
         end
 
-    attachoptions = menu.list(griefing, "Attach Options", {}, "", function(); end)
+    attachoptions = addict.list(griefing, "Attach Options", {}, "", function(); end)
 
-    local windmilling = menu.list(attachoptions, "Spam Windmills", {}, "")
+    local windmilling = addict.list(attachoptions, "Spam Windmills", {}, "")
 
-    menu.toggle_loop(windmilling, "Spam Windmills", {"togglemills"}, "", function(on_toggle)
+    addict.toggle_loop(windmilling, "Spam Windmills", {"togglemills"}, "", function(on_toggle)
  --       if pid ~= players.user() then
         local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
         local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
@@ -10871,7 +10842,7 @@ end)
     end
     end)
 
-    menu.toggle_loop(windmilling, "Windmills V2", {"togglemillsv1"}, "", function(on_toggle)
+    addict.toggle_loop(windmilling, "Windmills V2", {"togglemillsv1"}, "", function(on_toggle)
         if pid ~= players.user() then
                 local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
                 OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
@@ -10907,7 +10878,7 @@ end)
             end
         end)
 
-    menu.toggle_loop(windmilling, "Attach Windmills", {"attachmills"}, "", function()
+    addict.toggle_loop(windmilling, "Attach Windmills", {"attachmills"}, "", function()
         if pid ~= players.user() then
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
@@ -10941,9 +10912,9 @@ end)
         end
     end)
 
-    menu.divider(windmilling, "__________________bruh__________________")
+    addict.divider(windmilling, "__________________bruh__________________")
 
-    menu.action(windmilling, "Clear Windmill's", {"clearwindmills"}, "", function()
+    addict.action(windmilling, "Clear Windmill's", {"clearwindmills"}, "", function()
         local count = 0
         for k,ent in pairs(entities.get_all_objects_as_handles()) do
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -10954,16 +10925,16 @@ end)
     end)
 
 
-    menu.toggle_loop(attachoptions, "Attach A Cone", {"aacone"}, "", function(on_click)
+    addict.toggle_loop(attachoptions, "Attach A Cone", {"aacone"}, "", function(on_click)
         attachto(0.0, 0.07, 0.63, pid, 0.0, 90.0, 0.0, 3760607069, false, false)
     end)
 
-    menu.toggle_loop(attachoptions, "Attach A Backpack", {"abackpack"}, "", function(on_click)
+    addict.toggle_loop(attachoptions, "Attach A Backpack", {"abackpack"}, "", function(on_click)
         attachto(0.0, -0.15, 0.0, pid, 0.0, 0.0, 0.0, 4208448709, false, false)
     end)
 
 
-menu.toggle_loop(attachoptions,"Attach A Umbrella", {}, "", function()
+addict.toggle_loop(attachoptions,"Attach A Umbrella", {}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -10979,7 +10950,7 @@ menu.toggle_loop(attachoptions,"Attach A Umbrella", {}, "", function()
     util.yield(100)
 end)
 
-    menu.toggle_loop(attachoptions, "Attach Candy Cane", {"attachcandycane"}, "", function()
+    addict.toggle_loop(attachoptions, "Attach Candy Cane", {"attachcandycane"}, "", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -10995,7 +10966,7 @@ end)
         util.yield(100)
     end)
     
-    menu.toggle_loop(attachoptions, "Attach A Ramp", {"attachramp"}, "Works best on vehicles", function()
+    addict.toggle_loop(attachoptions, "Attach A Ramp", {"attachramp"}, "Works best on vehicles", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -11028,7 +10999,7 @@ end)
     end)
 
     
-    menu.toggle(attachoptions, "Attach To Player", {"attachto"}, "", function(on)
+    addict.toggle(attachoptions, "Attach To Player", {"attachto"}, "", function(on)
         if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid) == players.user_ped() then 
             return
         end
@@ -11039,7 +11010,7 @@ end)
             end
         end)
 
-        menu.toggle_loop(attachoptions, "Attach All Vehicles", {"attachallvehs"}, "", function(on_toggle)
+        addict.toggle_loop(attachoptions, "Attach All Vehicles", {"attachallvehs"}, "", function(on_toggle)
                 local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
                 vehicles = entities.get_all_vehicles_as_handles()
                 for i, ent in pairs(vehicles) do
@@ -11049,7 +11020,7 @@ end)
                 end
             end)
 
-            menu.toggle_loop(attachoptions, "Attach All Objects", {"attachallobjects"}, "", function(on_toggle)
+            addict.toggle_loop(attachoptions, "Attach All Objects", {"attachallobjects"}, "", function(on_toggle)
                 local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
                 objects = entities.get_all_objects_as_handles()
                 for i, ent in pairs(objects) do
@@ -11059,7 +11030,7 @@ end)
                 end
             end)
 
-            menu.toggle_loop(attachoptions, "Attach All Peds", {"attachallpeds"}, "", function(on_toggle)
+            addict.toggle_loop(attachoptions, "Attach All Peds", {"attachallpeds"}, "", function(on_toggle)
                 local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
                 peds = entities.get_all_peds_as_handles()
                 for i, ent in pairs(peds) do
@@ -11069,7 +11040,7 @@ end)
                 end
             end)
 
-    menu.toggle_loop(attachoptions, "Attach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
+    addict.toggle_loop(attachoptions, "Attach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
         local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         objects = entities.get_all_objects_as_handles()
         vehicles = entities.get_all_vehicles_as_handles()
@@ -11102,7 +11073,7 @@ end)
             end
         end
 
-    menu.toggle_loop(attachoptions, "Dettach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
+    addict.toggle_loop(attachoptions, "Dettach All Nearby Entities", {"attachallnearby"}, "", function(on_toggle)
         local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         objects = entities.get_all_objects_as_handles()
         vehicles = entities.get_all_vehicles_as_handles()
@@ -11125,7 +11096,7 @@ end)
         local usingPiggyback = false
         local usingRape = false
 
-	menu.toggle(attachoptions, "Rape Player", {"rape"}, "The player won't see you attached to them", function (on)
+	addict.toggle(attachoptions, "Rape Player", {"rape"}, "The player won't see you attached to them", function (on)
 		usingRape = on
 		-- Otherwise the game would crash
 		if pid == players.user() then
@@ -11150,25 +11121,25 @@ end)
 		end
 	end)
 
-    menu.action(attachoptions, "Custom Object Model", {"customattmodel"}, "", function(on_click)
+    addict.action(attachoptions, "Custom Object Model", {"customattmodel"}, "", function(on_click)
         util.toast("Please input the model name")
-        menu.show_command_box("customattmodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
+        addict.show_command_box("customattmodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, function(on_command)
         local hash = util.joaat(on_command)
         request_model_load(hash)
         attachto(0.0, 0.0, 0.0, pid, 90.0, 0.0, 0.0, hash, false)
     end)
     
-    menu.action(attachoptions, "Custom Vehicle Model", {"customvemodel"}, "", function(on_click)
+    addict.action(attachoptions, "Custom Vehicle Model", {"customvemodel"}, "", function(on_click)
         util.toast("Please input the model name")
-        menu.show_command_box("customvemodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
+        addict.show_command_box("customvemodel" .. PLAYER.GET_PLAYER_NAME(pid) .. " ")
     end, function(on_command)
         local hash = util.joaat(on_command)
         request_model_load(hash)
         attachto(0.0, 0.0, 0.0, pid, 0.0, 0.0, 0.0, hash, false, true)
     end)
 
-    menu.action(attachoptions, "Clear Objects", {"clearobjects"}, "", function()
+    addict.action(attachoptions, "Clear Objects", {"clearobjects"}, "", function()
         local count = 0
         for k,ent in pairs(entities.get_all_objects_as_handles()) do
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -11178,7 +11149,7 @@ end)
         end
     end)
 
-    menu.action(attachoptions, "Clear Vehicles", {"clearvehicles"}, "", function()
+    addict.action(attachoptions, "Clear Vehicles", {"clearvehicles"}, "", function()
         local count = 0
         for k, ent in pairs(entities.get_all_vehicles_as_handles()) do
             local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1, false)
@@ -11193,9 +11164,9 @@ end)
 
     stopato = true
 
-    local Attackers_trollys = menu.list(griefing, "Attackers")
+    local Attackers_trollys = addict.list(griefing, "Attackers")
 
-    menu.toggle_loop(Attackers_trollys,"Kamikaze lazer", {"kamikazelazer"}, "", function(on)
+    addict.toggle_loop(Attackers_trollys,"Kamikaze lazer", {"kamikazelazer"}, "", function(on)
         local ped = 2459507570
         STREAMING.REQUEST_MODEL(ped)
         while not STREAMING.HAS_MODEL_LOADED(ped) do
@@ -11216,7 +11187,7 @@ end)
         util.yield(3000)
     end)
 
-local trolly_vehicles = menu.list(Attackers_trollys, "Trolly Vehicles")
+local trolly_vehicles = addict.list(Attackers_trollys, "Trolly Vehicles")
 
 function set_ent_face_ent(ent1, ent2) --All credits to Ren for suggesting me this function
     local pos1 = ENTITY.GET_ENTITY_COORDS(ent1)
@@ -11347,9 +11318,9 @@ end
 
 local bandito_godmode = false
 
-menu.divider(trolly_vehicles, "Bandito")
+addict.divider(trolly_vehicles, "Bandito")
 
-menu.click_slider(trolly_vehicles, 'Send Bandito', {'sendbandito'}, '', 1,25,1,1, function(quantity)
+addict.click_slider(trolly_vehicles, 'Send Bandito', {'sendbandito'}, '', 1,25,1,1, function(quantity)
     local bandito_hash = util.joaat("rcbandito")
     local ped_hash = util.joaat('mp_m_freemode_01')
     STREAMING.REQUEST_MODEL(bandito_hash); STREAMING.REQUEST_MODEL(ped_hash)
@@ -11365,11 +11336,11 @@ menu.click_slider(trolly_vehicles, 'Send Bandito', {'sendbandito'}, '', 1,25,1,1
     end
 end)
 
-menu.toggle(trolly_vehicles, "Invincible", {"invincbandito"}, "", function(on)
+addict.toggle(trolly_vehicles, "Invincible", {"invincbandito"}, "", function(on)
     bandito_godmode = on
 end, false)
 
-menu.action(trolly_vehicles, "Delete Banditos", {"deletebandito"}, "", function()
+addict.action(trolly_vehicles, "Delete Banditos", {"deletebandito"}, "", function()
     delete_entities_by_model("rcbandito")
 end)
 
@@ -11378,10 +11349,10 @@ end)
 -------------------------------------
 
 local gokart_godmode = false
-menu.divider(trolly_vehicles, 'Go-Kart')
+addict.divider(trolly_vehicles, 'Go-Kart')
 
 
-menu.click_slider(trolly_vehicles, "Send Go-Kart(s)", {"sendgokart"}, "",1, 15, 1, 1, function(quantity)
+addict.click_slider(trolly_vehicles, "Send Go-Kart(s)", {"sendgokart"}, "",1, 15, 1, 1, function(quantity)
     local vehicleHash = joaat("veto2")
     local pedHash = joaat("mp_m_freemode_01")
     requestModels(vehicleHash, pedHash)
@@ -11404,11 +11375,11 @@ menu.click_slider(trolly_vehicles, "Send Go-Kart(s)", {"sendgokart"}, "",1, 15, 
 
 end)
 
-menu.toggle(trolly_vehicles, 'Invincible Go-Kart', {"invinckart"}, '', function(toggle)
+addict.toggle(trolly_vehicles, 'Invincible Go-Kart', {"invinckart"}, '', function(toggle)
     gokart_godmode = toggle
 end)
 
-menu.action(trolly_vehicles, 'Delete Go-Karts', {"deletekart"}, '', function()
+addict.action(trolly_vehicles, 'Delete Go-Karts', {"deletekart"}, '', function()
     delete_entities_by_model('veto2')
 end)
 ----------------------------------------------------------------------------------------------------------------------- attacker ufo --------------------------------------------------------
@@ -11505,12 +11476,12 @@ end)
 return pilot, heli
 end	
 
-local ufo_options = menu.list(Attackers_trollys, "Enemy Ufo", {}, "")
+local ufo_options = addict.list(Attackers_trollys, "Enemy Ufo", {}, "")
 
-menu.divider(ufo_options, "Enemy Ufo")
+addict.divider(ufo_options, "Enemy Ufo")
 
 local gunner_weapon = "weapon_combatmg"
-menu.action(ufo_options, "Spawn Ufo", {"sendufo"}, "Spawns a ufo.", function()
+addict.action(ufo_options, "Spawn Ufo", {"sendufo"}, "Spawns a ufo.", function()
     local pilot, heli = spawn_ufo(pid, gunner_weapon, collision)
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
         local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -11525,7 +11496,7 @@ menu.action(ufo_options, "Spawn Ufo", {"sendufo"}, "Spawns a ufo.", function()
     end
 end)
 
-menu.toggle_loop(ufo_options, "Spawn Ufo Every 3 Seconds", {"send3ufo"}, "Spawns a ufo every 3 seconds if left toggled.", function()
+addict.toggle_loop(ufo_options, "Spawn Ufo Every 3 Seconds", {"send3ufo"}, "Spawns a ufo every 3 seconds if left toggled.", function()
     local pilot, heli = spawn_ufo(pid, gunner_weapon, collision)
     util.yield(3000)
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -11541,11 +11512,11 @@ menu.toggle_loop(ufo_options, "Spawn Ufo Every 3 Seconds", {"send3ufo"}, "Spawns
     end
 end)
 
-menu.action(ufo_options, "Alien Explosion", {"ufoexplode"}, "Simulate an alien invasion", function()
+addict.action(ufo_options, "Alien Explosion", {"ufoexplode"}, "Simulate an alien invasion", function()
     local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local c = ENTITY.GET_ENTITY_COORDS(p)
     local ufo = util.joaat("sum_prop_dufocore_01a")
-    menu.trigger_commands("freeze".. players.get_name(pid).. " on")
+    addict.trigger_commands("freeze".. players.get_name(pid).. " on")
     c.z = c.z + 10
     local spawnedufo = entities.create_object(ufo, c) --creates ufo
     util.yield(2000)
@@ -11553,34 +11524,34 @@ menu.action(ufo_options, "Alien Explosion", {"ufoexplode"}, "Simulate an alien i
     FIRE.ADD_EXPLOSION(c.x, c.y, c.z, exp, 100.0, true, false, 3.0, false)
     util.yield(1000)
     entities.delete_by_handle(spawnedufo)
-    menu.trigger_commands("freeze".. players.get_name(pid).. " off")
+    addict.trigger_commands("freeze".. players.get_name(pid).. " off")
 end)
 
-menu.divider(ufo_options, "Settings")
+addict.divider(ufo_options, "Settings")
 
-menu.toggle(ufo_options, "Invincible", {"invincufo"}, "", function(on)
+addict.toggle(ufo_options, "Invincible", {"invincufo"}, "", function(on)
     ufo_godmode = on
 end, true)
 
-local menu_gunner_weapon_list = menu.list(ufo_options, "Gunners Weapon")
-menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
+local addict_gunner_weapon_list = addict.list(ufo_options, "Gunners Weapon")
+addict.divider(addict_gunner_weapon_list, "Gunner Weapon List")
 
 for i = 1, #gunner_weapon_listing do
-    menu.action(menu_gunner_weapon_list, gunner_weapon_listing[i][1], {}, "", function()
+    addict.action(addict_gunner_weapon_list, gunner_weapon_listing[i][1], {}, "", function()
         gunner_weapon = gunner_weapon_listing[i][2]
     end)
 end
 
-menu.toggle(ufo_options, "Visible", {"visableufo"}, "You shouldn't be that toxic to turn this off", function(on)
+addict.toggle(ufo_options, "Visible", {"visableufo"}, "You shouldn't be that toxic to turn this off", function(on)
     ufo_visible = on
 end, false)
 
-menu.toggle(ufo_options, "Collision", {"collisionufo"}, "When it's turned off disables world collision for ufo. Playes can still destroy the vehicle", function(on)
+addict.toggle(ufo_options, "Collision", {"collisionufo"}, "When it's turned off disables world collision for ufo. Playes can still destroy the vehicle", function(on)
     collision = on
 end, true)
 
-menu.action(ufo_options, "Delete All", {"deleteufo"}, "Deletes all ufo you've spawned", function()
-    menu.trigger_commands("superc")
+addict.action(ufo_options, "Delete All", {"deleteufo"}, "Deletes all ufo you've spawned", function()
+    addict.trigger_commands("superc")
 end)
 
 ---------------------------------------------------------------------- attacker buzzard --------------------------------------------------------
@@ -11656,14 +11627,14 @@ end)
 return pilot, heli
 end	
 
-local buzzard_options = menu.list(Attackers_trollys, "Enemy Buzzard", {}, "")
+local buzzard_options = addict.list(Attackers_trollys, "Enemy Buzzard", {}, "")
 
-menu.divider(buzzard_options, "Enemy Buzzard")
+addict.divider(buzzard_options, "Enemy Buzzard")
 
 buzzard_visible = true
 local gunner_weapon = "weapon_combatmg"
 
-menu.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
+addict.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
     local pilot, heli = spawn_buzzard(pid, gunner_weapon, collision)
 
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -11679,30 +11650,30 @@ menu.action(buzzard_options, "Spawn Buzzard", {"sendbuzzard"}, "", function()
     end
 end)
 
-menu.divider(buzzard_options, "Settings")
+addict.divider(buzzard_options, "Settings")
 
-menu.toggle(buzzard_options, "Invincible", {"invincbuzzard"}, "", function(on)
+addict.toggle(buzzard_options, "Invincible", {"invincbuzzard"}, "", function(on)
     buzzard_godmode = on
 end, true)
 
-local menu_gunner_weapon_list = menu.list(buzzard_options, "Gunners Weapon")
-menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
+local addict_gunner_weapon_list = addict.list(buzzard_options, "Gunners Weapon")
+addict.divider(addict_gunner_weapon_list, "Gunner Weapon List")
 
 for i = 1, #gunner_weapon_list do
-    menu.action(menu_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
+    addict.action(addict_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
         gunner_weapon = gunner_weapon_list[i][2]
     end)
 end
 
-menu.toggle(buzzard_options, "Visible", {"visablebuzzard"}, "You shouldn't be that toxic to turn this off", function(on)
+addict.toggle(buzzard_options, "Visible", {"visablebuzzard"}, "You shouldn't be that toxic to turn this off", function(on)
     buzzard_visible = on
 end, true)
 
-menu.toggle(buzzard_options, "Collision", {"collisionbuzzard"}, "When it's turned off disables world collision for Buzzard. Playes can still destroy the vehicle", function(on)
+addict.toggle(buzzard_options, "Collision", {"collisionbuzzard"}, "When it's turned off disables world collision for Buzzard. Playes can still destroy the vehicle", function(on)
     collision = on
 end, false)
 
-menu.action(buzzard_options, "Delete All", {"deletebuzzard"}, "Deletes all Buzzards you've spawned", function()
+addict.action(buzzard_options, "Delete All", {"deletebuzzard"}, "Deletes all Buzzards you've spawned", function()
     for key, value in pairs(buzzard_entities) do
         entities.delete_by_handle(value)
     end
@@ -11781,14 +11752,14 @@ end)
 return pilot, heli
 end	
 
-local police_options = menu.list(Attackers_trollys, "Enemy Police Heli", {}, "")
+local police_options = addict.list(Attackers_trollys, "Enemy Police Heli", {}, "")
 
-menu.divider(police_options, "Enemy Police Heli")
+addict.divider(police_options, "Enemy Police Heli")
 
 policeheli_visible = true
 local gunner_weapon = "weapon_combatmg"
 
-menu.action(police_options, "Spawn Police Heli", {"sendpoliceheli"}, "", function()
+addict.action(police_options, "Spawn Police Heli", {"sendpoliceheli"}, "", function()
     local pilot, heli = spawn_policeheli(pid, gunner_weapon, collision)
 
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
@@ -11804,30 +11775,30 @@ menu.action(police_options, "Spawn Police Heli", {"sendpoliceheli"}, "", functio
     end
 end)
 
-menu.divider(police_options, "Settings")
+addict.divider(police_options, "Settings")
 
-menu.toggle(police_options, "Invincible", {"invincpoliceheli"}, "", function(on)
+addict.toggle(police_options, "Invincible", {"invincpoliceheli"}, "", function(on)
     policeheli_godmode = on
 end, true)
 
-local menu_gunner_weapon_list = menu.list(police_options, "Gunners Weapon")
-menu.divider(menu_gunner_weapon_list, "Gunner Weapon List")
+local addict_gunner_weapon_list = addict.list(police_options, "Gunners Weapon")
+addict.divider(addict_gunner_weapon_list, "Gunner Weapon List")
 
 for i = 1, #gunner_weapon_list do
-    menu.action(menu_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
+    addict.action(addict_gunner_weapon_list, gunner_weapon_list[i][1], {}, "", function()
         gunner_weapon = gunner_weapon_list[i][2]
     end)
 end
 
-menu.toggle(police_options, "Visible", {"visablepoliceheli"}, "You shouldn't be that toxic to turn this off", function(on)
+addict.toggle(police_options, "Visible", {"visablepoliceheli"}, "You shouldn't be that toxic to turn this off", function(on)
     policeheli_visible = on
 end, true)
 
-menu.toggle(police_options, "Collision", {"collisionpoliceheli"}, "When it's turned off disables world collision for policeheli. Playes can still destroy the vehicle", function(on)
+addict.toggle(police_options, "Collision", {"collisionpoliceheli"}, "When it's turned off disables world collision for policeheli. Playes can still destroy the vehicle", function(on)
     collision = on
 end, false)
 
-menu.action(police_options, "Delete All", {"deletepoliceheli"}, "Deletes all policehelis you've spawned", function()
+addict.action(police_options, "Delete All", {"deletepoliceheli"}, "Deletes all policehelis you've spawned", function()
     for key, value in pairs(policeheli_entities) do
         entities.delete_by_handle(value)
     end
@@ -11835,7 +11806,7 @@ end)
 
 ----------------------------------------------- Attacker FBI ----------------------------------------------------------------------
 
-menu.action(Attackers_trollys,"Enemy FBI's", {"sendfbi"}, "", function()
+addict.action(Attackers_trollys,"Enemy FBI's", {"sendfbi"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     if table_kidnap == nil then
         table_kidnap = {}
@@ -11889,7 +11860,7 @@ end)
 
 ----------------------------------------------- Attacker Cops ----------------------------------------------------------------------
 
-menu.action(Attackers_trollys,"Enemy Cops", {"sendcops"}, "", function()
+addict.action(Attackers_trollys,"Enemy Cops", {"sendcops"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     if table_kidnap == nil then
         table_kidnap = {}
@@ -11954,11 +11925,11 @@ lazer_entities = {}
 
 local amount = 45
 
-local lazer_options = menu.list(Attackers_trollys, "Army Attack", {}, "")
+local lazer_options = addict.list(Attackers_trollys, "Army Attack", {}, "")
 
-menu.divider(lazer_options, "Army Attack")
+addict.divider(lazer_options, "Army Attack")
 
-menu.slider(lazer_options, "Spawn Ped Amount", {"spawnpedammount"}, "", 1, 45, amount, 1, function(val)
+addict.slider(lazer_options, "Spawn Ped Amount", {"spawnpedammount"}, "", 1, 45, amount, 1, function(val)
     amount = val
 end)
 
@@ -12020,10 +11991,10 @@ function spawn_attack(pid, gunner_weapon, collision)
     lazer_visible = true
     local gunner_weapons = "weapon_combatmg"
 
-menu.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
+addict.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
     local pilot, lazer = spawn_attack(pid, gunner_weapons, collision)
-    menu.trigger_commands("sendtank " .. players.get_name(pid))
-    menu.trigger_commands("sendbuzzard " .. players.get_name(pid))
+    addict.trigger_commands("sendtank " .. players.get_name(pid))
+    addict.trigger_commands("sendbuzzard " .. players.get_name(pid))
     while ENTITY.GET_ENTITY_HEALTH(pilot) > 0 do
         local player_peds = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local a = ENTITY.GET_ENTITY_COORDS(player_peds)
@@ -12037,38 +12008,38 @@ menu.action(lazer_options, "Army Attack", {"sendarmyattack"}, "", function()
     end
 end)
 
-menu.divider(lazer_options, "Settings")
+addict.divider(lazer_options, "Settings")
 
-menu.toggle(lazer_options, "Invincible", {"invincarmy"}, "", function(on)
+addict.toggle(lazer_options, "Invincible", {"invincarmy"}, "", function(on)
     lazer_godmode = on
 end, true)
 
-local menu_gunner_weapon_lists = menu.list(lazer_options, "Gunners Weapon")
-menu.divider(menu_gunner_weapon_lists, "Gunner Weapon List")
+local addict_gunner_weapon_lists = addict.list(lazer_options, "Gunners Weapon")
+addict.divider(addict_gunner_weapon_lists, "Gunner Weapon List")
 
 for i = 1, #gunner_weapon_lists do
-    menu.action(menu_gunner_weapon_lists, gunner_weapon_lists[i][1], {}, "", function()
+    addict.action(addict_gunner_weapon_lists, gunner_weapon_lists[i][1], {}, "", function()
         gunner_weapons = gunner_weapon_lists[i][2]
     end)
 end
 
-menu.toggle(lazer_options, "Visible", {"visablearmy"}, "You shouldn't be that toxic to turn this off", function(on)
+addict.toggle(lazer_options, "Visible", {"visablearmy"}, "You shouldn't be that toxic to turn this off", function(on)
     lazer_visible = on
 end, true)
 
-menu.toggle(lazer_options, "Collision", {"collisionarmy"}, "When it's turned off disables world collision for army. Playes can still destroy the vehicle", function(on)
+addict.toggle(lazer_options, "Collision", {"collisionarmy"}, "When it's turned off disables world collision for army. Playes can still destroy the vehicle", function(on)
     collision = on
 end, false)
 
-menu.action(lazer_options, "Delete All", {"deletearmy"}, "Deletes all army you've spawned", function()
-    menu.trigger_commands("superc")
+addict.action(lazer_options, "Delete All", {"deletearmy"}, "Deletes all army you've spawned", function()
+    addict.trigger_commands("superc")
 end)
 
 ----------------------------------------------------End------------------------------------------------------------------------------
 
-local Attacker_Tanks = menu.list(Attackers_trollys, "Attacker Tanks")
+local Attacker_Tanks = addict.list(Attackers_trollys, "Attacker Tanks")
 
-menu.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", function()
+addict.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     if table_kidnap == nil then
         table_kidnap = {}
@@ -12142,7 +12113,7 @@ menu.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", func
     end
 end)
 
-menu.action(Attacker_Tanks,"Spawn Attacker Tank", {"sendtank"}, "", function()
+addict.action(Attacker_Tanks,"Spawn Attacker Tank", {"sendtank"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     if table_kidnap == nil then
         table_kidnap = {}
@@ -12210,7 +12181,7 @@ else
 end
 end
 
-menu.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", function()
+addict.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     if table_kidnap == nil then
         table_kidnap = {}
@@ -12264,8 +12235,8 @@ menu.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", func
     end
 end)
 
-menu.action(Attacker_Tanks, "Delete Tanks", {"deletetanks"}, "Deletes all tanks you've spawned", function()
-    menu.trigger_commands("superc")
+addict.action(Attacker_Tanks, "Delete Tanks", {"deletetanks"}, "Deletes all tanks you've spawned", function()
+    addict.trigger_commands("superc")
 end)
 
 function brish(pid)
@@ -12297,16 +12268,16 @@ function brish(pid)
     util.log("Britishman sent to " .. PLAYER.GET_PLAYER_NAME(pid))
 end
 
-local Armys = menu.list(Attackers_trollys, "Ped Attackers")
+local Armys = addict.list(Attackers_trollys, "Ped Attackers")
 
-menu.action(Attackers_trollys, "Delete All Attackers", {"deleteattacks"}, "Deletes all everything you've spawned", function()
-    menu.trigger_commands("superc")
+addict.action(Attackers_trollys, "Delete All Attackers", {"deleteattacks"}, "Deletes all everything you've spawned", function()
+    addict.trigger_commands("superc")
 end)
 
-local Nearby_Armys = menu.list(Armys, "Nearby Peds Attack")
+local Nearby_Armys = addict.list(Armys, "Nearby Peds Attack")
 
 local selweapon = 1
-menu.toggle_loop(Nearby_Armys, "Nearby Peds Attack", {"pedsattack"}, "", function()
+addict.toggle_loop(Nearby_Armys, "Nearby Peds Attack", {"pedsattack"}, "", function()
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -12333,26 +12304,26 @@ menu.toggle_loop(Nearby_Armys, "Nearby Peds Attack", {"pedsattack"}, "", functio
     end 
 end)
 
-menu.list_select(Nearby_Armys, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+addict.list_select(Nearby_Armys, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
     selweapon = opt
 end)
 
-local British_Attack = menu.list(Armys, "Bri' 'ish Attack")
+local British_Attack = addict.list(Armys, "Bri' 'ish Attack")
 
-menu.action(British_Attack, "Bri' 'ish Attack", {"brish"}, "", function()
+addict.action(British_Attack, "Bri' 'ish Attack", {"brish"}, "", function()
     brish(pid)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(British_Attack, "Clear Brits", {"clearbrits"}, "", function()
-    menu.trigger_commands("superc 5")
-    menu.trigger_commands("superc 3")
+addict.action(British_Attack, "Clear Brits", {"clearbrits"}, "", function()
+    addict.trigger_commands("superc 5")
+    addict.trigger_commands("superc 3")
 end)
 
 local selectedwep = 1
 local selectedped = 1
 local player_Custom_army = {}
-local CustomArmy = menu.list(Armys, "Custom Army", {}, "")
-menu.click_slider(CustomArmy, "Spawn Custom Army", {"customarmy"}, "Max set to 48 because stands throttler deletes anymore than that.", 1, 48, 1, 1, function(val)
+local CustomArmy = addict.list(Armys, "Custom Army", {}, "")
+addict.click_slider(CustomArmy, "Spawn Custom Army", {"customarmy"}, "Max set to 48 because stands throttler deletes anymore than that.", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     local modelHash <const> = util.joaat(all_weapons_list[selectedwep])
@@ -12375,39 +12346,39 @@ menu.click_slider(CustomArmy, "Spawn Custom Army", {"customarmy"}, "Max set to 4
     end 
 end)
 
-menu.list_select(CustomArmy, 'Ped Select', {}, "", all_peds_list, 1, function (opt)
+addict.list_select(CustomArmy, 'Ped Select', {}, "", all_peds_list, 1, function (opt)
     selectedped = opt
 end)
 
-menu.list_select(CustomArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+addict.list_select(CustomArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
     selectedwep = opt
 end)
 
-menu.action(CustomArmy, "Clear Peds", {"clearpeds"}, "", function()
-    menu.trigger_commands("superc 5")
+addict.action(CustomArmy, "Clear Peds", {"clearpeds"}, "", function()
+    addict.trigger_commands("superc 5")
 end)
 
 local selectedwep1 = 1
 local player_Yule_army = {}
-local YuleArmy = menu.list(Armys, "Yule Army", {}, "")
+local YuleArmy = addict.list(Armys, "Yule Army", {}, "")
 
-menu.toggle(YuleArmy, "Yule Monster Fuck Player", {"toggleyulemonster"}, "Will Cause Crash Events (C0)", function(on_toggle)
+addict.toggle(YuleArmy, "Yule Monster Fuck Player", {"toggleyulemonster"}, "Will Cause Crash Events (C0)", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("clearyules" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("clearyules" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(YuleArmy, "__________________bruh__________________")
+addict.divider(YuleArmy, "__________________bruh__________________")
 
-menu.click_slider(YuleArmy, "Spawn Yule Monster Army", {"yulearmy"}, "", 1, 48, 1, 1, function(val)
+addict.click_slider(YuleArmy, "Spawn Yule Monster Army", {"yulearmy"}, "", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     local modelHash <const> = util.joaat(all_weapons_list[selectedwep1])
@@ -12431,11 +12402,11 @@ menu.click_slider(YuleArmy, "Spawn Yule Monster Army", {"yulearmy"}, "", 1, 48, 
     end 
 end)
 
-menu.list_select(YuleArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+addict.list_select(YuleArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
     selectedwep1 = opt
 end)
 
-menu.action(YuleArmy, "Clear Yule's", {"clearyules"}, "", function()
+addict.action(YuleArmy, "Clear Yule's", {"clearyules"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("U_M_M_YuleMonster")) then
             entities.delete_by_handle(ped)
@@ -12445,25 +12416,25 @@ end)
 
 local selectedwep2 = 1
 local player_furry_army = {}
-local FurryArmy = menu.list(Armys, "Furry Army", {}, "")
+local FurryArmy = addict.list(Armys, "Furry Army", {}, "")
 
-menu.toggle(FurryArmy, "Furry Fuck Player", {"furryfuck"}, "Spawns IG Furry the new ped :)", function(on_toggle)
+addict.toggle(FurryArmy, "Furry Fuck Player", {"furryfuck"}, "Spawns IG Furry the new ped :)", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("clearfurrys" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("clearfurrys" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(FurryArmy, "__________________bruh__________________")
+addict.divider(FurryArmy, "__________________bruh__________________")
 
-menu.click_slider(FurryArmy, "Spawn Furry Army", {"furryarmy"}, "", 1, 48, 1, 1, function(val)
+addict.click_slider(FurryArmy, "Spawn Furry Army", {"furryarmy"}, "", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     local modelHash <const> = util.joaat(all_weapons_list[selectedwep2])
@@ -12487,11 +12458,11 @@ menu.click_slider(FurryArmy, "Spawn Furry Army", {"furryarmy"}, "", 1, 48, 1, 1,
     end 
 end)
 
-menu.list_select(FurryArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+addict.list_select(FurryArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
     selectedwep2 = opt
 end)
 
-menu.action(FurryArmy, "Clear Furry's", {"clearfurrys"}, "", function()
+addict.action(FurryArmy, "Clear Furry's", {"clearfurrys"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("IG_Furry")) then
             entities.delete_by_handle(ped)
@@ -12502,25 +12473,25 @@ end)
 
     local selectedwep3 = 1
     local player_fathoes_army = {}
-    local FathoesArmy = menu.list(Armys, "Fathoe Army", {}, "")
+    local FathoesArmy = addict.list(Armys, "Fathoe Army", {}, "")
 
-    menu.toggle(FathoesArmy, "Fathoe Fuck Player", {"fathoefuck"}, "May cause crash event (A0:335) if spammed.", function(on_toggle)
+    addict.toggle(FathoesArmy, "Fathoe Fuck Player", {"fathoefuck"}, "May cause crash event (A0:335) if spammed.", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
             util.toast("Wait 5 Seconds to turn off please.")
         else
-            menu.trigger_commands("clearfathoes" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("superc")
+            addict.trigger_commands("clearfathoes" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("superc")
             end        
         end)
 
-    menu.divider(FathoesArmy, "__________________bruh__________________")
+    addict.divider(FathoesArmy, "__________________bruh__________________")
 
-    menu.click_slider(FathoesArmy, "Spawn Fathoes Army", {"fathoesarmy"}, "", 1, 48, 1, 1, function(val)
+    addict.click_slider(FathoesArmy, "Spawn Fathoes Army", {"fathoesarmy"}, "", 1, 48, 1, 1, function(val)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
         local modelHash <const> = util.joaat(all_weapons_list[selectedwep3])
@@ -12544,11 +12515,11 @@ end)
         end 
     end)
 
-    menu.list_select(FathoesArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+    addict.list_select(FathoesArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
         selectedwep3 = opt
     end)
 
-    menu.action(FathoesArmy, "Clear Fathoe's", {"clearfathoes"}, "", function()
+    addict.action(FathoesArmy, "Clear Fathoe's", {"clearfathoes"}, "", function()
         for i, ped in ipairs(entities.get_all_peds_as_handles()) do
             if PED.IS_PED_MODEL(ped, util.joaat("IG_Fooliganz_01")) then
                 entities.delete_by_handle(ped)
@@ -12556,23 +12527,23 @@ end)
         end
     end)
 
-    local ToplessArmy = menu.list(Armys, "Topless Army", {}, "")
+    local ToplessArmy = addict.list(Armys, "Topless Army", {}, "")
 
-    menu.toggle(ToplessArmy, "Topless Fuck Player", {"toplessfuck"}, "May cause crash event (A0:335) if spammed.", function(on_toggle)
+    addict.toggle(ToplessArmy, "Topless Fuck Player", {"toplessfuck"}, "May cause crash event (A0:335) if spammed.", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
             util.toast("Wait 5 Seconds to turn off please.")
         else
-            menu.trigger_commands("cleartoplesshoes" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("superc")
+            addict.trigger_commands("cleartoplesshoes" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("superc")
             end        
         end)
 
-menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
+addict.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 of them around the target then dances like a prostitute.", function(on)
     local hooker
     local c
     -- Infront
@@ -12605,11 +12576,11 @@ menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 o
     TASK.TASK_START_SCENARIO_IN_PLACE(hooker, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", 0, false)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.divider(ToplessArmy, "__________________bruh__________________")
+    addict.divider(ToplessArmy, "__________________bruh__________________")
 
     local selectedwep4 = 1
     local player_topless_army = {}
-    menu.click_slider(ToplessArmy, "Spawn Topless Army", {"toplessarmy"}, "", 1, 48, 1, 1, function(val)
+    addict.click_slider(ToplessArmy, "Spawn Topless Army", {"toplessarmy"}, "", 1, 48, 1, 1, function(val)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
         local modelHash <const> = util.joaat(all_weapons_list[selectedwep4])
@@ -12633,11 +12604,11 @@ menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 o
         end 
     end)
 
-    menu.list_select(ToplessArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+    addict.list_select(ToplessArmy, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
         selectedwep4 = opt
     end)
 
-    menu.action(ToplessArmy, "Clear Topless Hoes", {"cleartoplesshoes"}, "", function()
+    addict.action(ToplessArmy, "Clear Topless Hoes", {"cleartoplesshoes"}, "", function()
         for i, ped in ipairs(entities.get_all_peds_as_handles()) do
             if PED.IS_PED_MODEL(ped, util.joaat("a_f_y_topless_01")) then
                 entities.delete_by_handle(ped)
@@ -12646,25 +12617,25 @@ menu.action(ToplessArmy, "Topless Dancing Army", {"dancingtopless"}, "Spawns 4 o
     end)
 
 local player_deer_army = {}
-local DeerArmy = menu.list(Armys, "Deer Army")
+local DeerArmy = addict.list(Armys, "Deer Army")
 
-menu.toggle(DeerArmy, "Deer Fuck Player", {"deerfuck"}, "", function(on_toggle)
+addict.toggle(DeerArmy, "Deer Fuck Player", {"deerfuck"}, "", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("cleardeers" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("cleardeers" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(DeerArmy, "__________________bruh__________________")
+addict.divider(DeerArmy, "__________________bruh__________________")
 
-menu.click_slider(DeerArmy, "Spawn A Deer Army", {"deerarmy"}, "They will follow you like lost...", 1, 48, 1, 1, function(val)
+addict.click_slider(DeerArmy, "Spawn A Deer Army", {"deerarmy"}, "They will follow you like lost...", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -12681,7 +12652,7 @@ menu.click_slider(DeerArmy, "Spawn A Deer Army", {"deerarmy"}, "They will follow
     end 
 end)
 
-menu.action(DeerArmy, "Clear Deer's", {"cleardeers"}, "", function()
+addict.action(DeerArmy, "Clear Deer's", {"cleardeers"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("A_C_Deer")) then
             entities.delete_by_handle(ped)
@@ -12690,25 +12661,25 @@ menu.action(DeerArmy, "Clear Deer's", {"cleardeers"}, "", function()
 end)
 
 local player_boar_army = {}
-local BoarArmy = menu.list(Armys, "Boar/Pig Army")
+local BoarArmy = addict.list(Armys, "Boar/Pig Army")
 
-menu.toggle(BoarArmy, "Boar/Pig Fuck Player", {"boarfuck"}, "Restart the script if they don't stop spawning instances of a A_C_Pig. Or you will crash the player with Crash event (A0:335). For some reason you will see a pig spawning pigs out its ass like a portal.", function(on_toggle)
+addict.toggle(BoarArmy, "Boar/Pig Fuck Player", {"boarfuck"}, "Restart the script if they don't stop spawning instances of a A_C_Pig. Or you will crash the player with Crash event (A0:335). For some reason you will see a pig spawning pigs out its ass like a portal.", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("boararmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("boararmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("clearboars" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("clearboars" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(BoarArmy, "__________________bruh__________________")
+addict.divider(BoarArmy, "__________________bruh__________________")
 
-menu.click_slider(BoarArmy, "Spawn A Boar/Pig Army", {"boararmy"}, "They will follow you like lost...", 1, 48, 1, 1, function(val)
+addict.click_slider(BoarArmy, "Spawn A Boar/Pig Army", {"boararmy"}, "They will follow you like lost...", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -12735,7 +12706,7 @@ menu.click_slider(BoarArmy, "Spawn A Boar/Pig Army", {"boararmy"}, "They will fo
     end 
 end)
 
-menu.action(BoarArmy, "Clear Boar/Pig's", {"clearboars"}, "", function()
+addict.action(BoarArmy, "Clear Boar/Pig's", {"clearboars"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("A_C_Boar")) then
             entities.delete_by_handle(ped)
@@ -12751,25 +12722,25 @@ end)
 
 
 local player_Rabbit_army = {}
-local RabbitArmy = menu.list(Armys, "Rabbit Army", {}, "")
+local RabbitArmy = addict.list(Armys, "Rabbit Army", {}, "")
 
-menu.toggle(RabbitArmy, "Rabbit Fuck Player", {"togglerabbit"}, "", function(on_toggle)
+addict.toggle(RabbitArmy, "Rabbit Fuck Player", {"togglerabbit"}, "", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("clearrabbits" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("clearrabbits" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(RabbitArmy, "__________________bruh__________________")
+addict.divider(RabbitArmy, "__________________bruh__________________")
 
-menu.click_slider(RabbitArmy, "Spawn Rabbit Army", {"rabbitarmy"}, "", 1, 48, 1, 1, function(val)
+addict.click_slider(RabbitArmy, "Spawn Rabbit Army", {"rabbitarmy"}, "", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -12789,7 +12760,7 @@ menu.click_slider(RabbitArmy, "Spawn Rabbit Army", {"rabbitarmy"}, "", 1, 48, 1,
     end 
 end)
 
-menu.action(RabbitArmy, "Clear Rabbit's", {"clearrabbits"}, "", function()
+addict.action(RabbitArmy, "Clear Rabbit's", {"clearrabbits"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("A_C_Rabbit_02")) then
             entities.delete_by_handle(ped)
@@ -12799,25 +12770,25 @@ end)
 
 
 local player_pussy_army = {}
-local PussyArmy = menu.list(Armys, "Pussy Army", {}, "")
+local PussyArmy = addict.list(Armys, "Pussy Army", {}, "")
 
-menu.toggle(PussyArmy, "Pussy Fuck Player", {"deerfuck"}, "", function(on_toggle)
+addict.toggle(PussyArmy, "Pussy Fuck Player", {"deerfuck"}, "", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.toast("Wait 5 Seconds to turn off please.")
     else
-        menu.trigger_commands("clearpussys" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("clearpussys" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("skydivepeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
         end        
     end)
 
-menu.divider(PussyArmy, "__________________bruh__________________")
+addict.divider(PussyArmy, "__________________bruh__________________")
 
-menu.click_slider(PussyArmy, "Spawn Pussy Army", {"pussyarmy"}, "", 1, 48, 1, 1, function(val)
+addict.click_slider(PussyArmy, "Spawn Pussy Army", {"pussyarmy"}, "", 1, 48, 1, 1, function(val)
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
     pos.y = pos.y - 5
@@ -12834,7 +12805,7 @@ menu.click_slider(PussyArmy, "Spawn Pussy Army", {"pussyarmy"}, "", 1, 48, 1, 1,
     end 
 end)
 
-menu.action(PussyArmy, "Clear Pussy's", {"clearpussys"}, "", function()
+addict.action(PussyArmy, "Clear Pussy's", {"clearpussys"}, "", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
         if PED.IS_PED_MODEL(ped, util.joaat("a_c_cat_01")) then
             entities.delete_by_handle(ped)
@@ -12843,11 +12814,11 @@ menu.action(PussyArmy, "Clear Pussy's", {"clearpussys"}, "", function()
 end)
 
 
-    local CloneEntities = menu.list(griefing, "Clone Attacker", {}, "")
+    local CloneEntities = addict.list(griefing, "Clone Attacker", {}, "")
 
     local pclpid = {}
     local selectedweapon = 1
-    menu.action(CloneEntities, "Clone", {}, "Clone the player into a ped", function()
+    addict.action(CloneEntities, "Clone", {}, "Clone the player into a ped", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(p, util.joaat("PLAYER"))
@@ -12866,11 +12837,11 @@ end)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(pclone,util.joaat("HATES_PLAYER"))
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.list_select(CloneEntities, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
+    addict.list_select(CloneEntities, 'Weapon Select', {}, "", all_weapons_list, 1, function (opt)
         selectedweapon = opt
     end)
 
-    menu.toggle_loop(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the player into a centipede. Note: Click a few times for better results.", function()
+    addict.toggle_loop(CloneEntities, "Clone Centipede", {"clonecentipede"}, "Clone the player into a centipede. Note: Click a few times for better results.", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
         PED.SET_PED_RELATIONSHIP_GROUP_HASH(p, util.joaat("PLAYER"))
@@ -12909,29 +12880,29 @@ end)
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    local ControlEntities = menu.list(griefing, "Control Entities", {}, "")
+    local ControlEntities = addict.list(griefing, "Control Entities", {}, "")
 
-    menu.action(ControlEntities,"Entity Dump", {"entcrash"}, "Working.", function()
+    addict.action(ControlEntities,"Entity Dump", {"entcrash"}, "Working.", function()
         Draw_Box_Vehicles()
         Draw_Box_Objects()
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
     for i=1,1  do
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -858.3132, 184.23877, 100.07001)
-        menu.trigger_commands("objfuck" .. players.get_name(pid))
+        addict.trigger_commands("objfuck" .. players.get_name(pid))
         util.yield(1000)
-        menu.trigger_commands("vehfuck" .. players.get_name(pid))
+        addict.trigger_commands("vehfuck" .. players.get_name(pid))
         end
         util.yield(1000)
-        menu.trigger_commands("objfuck" .. players.get_name(pid))
-        menu.trigger_commands("vehfuck" .. players.get_name(pid))
-        menu.trigger_commands("superc")
+        addict.trigger_commands("objfuck" .. players.get_name(pid))
+        addict.trigger_commands("vehfuck" .. players.get_name(pid))
+        addict.trigger_commands("superc")
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    efucks = menu.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
+    efucks = addict.list(ControlEntities, "Entity Fuck", {}, "", function(); end)
 
-    menu.toggle_loop(efucks, "Vehicle fuck", {"vehfuck"}, "", function()
+    addict.toggle_loop(efucks, "Vehicle fuck", {"vehfuck"}, "", function()
         Draw_Box_Vehicles()
     for _, entity in ipairs(entities.get_all_vehicles_as_handles()) do
         if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
@@ -12946,7 +12917,7 @@ end)
         util.yield(1)
     end)
 
-    menu.toggle_loop(efucks, "Ped fuck", {"pedfuck"}, "", function()
+    addict.toggle_loop(efucks, "Ped fuck", {"pedfuck"}, "", function()
         Draw_Box_Peds()
         for _, entity in ipairs(entities.get_all_peds_as_handles()) do
             if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
@@ -12961,7 +12932,7 @@ end)
             util.yield(1)
         end)
 
-        menu.toggle_loop(efucks, "Object fuck", {"objfuck"}, "", function()
+        addict.toggle_loop(efucks, "Object fuck", {"objfuck"}, "", function()
             Draw_Box_Objects()
             for _, entity in ipairs(entities.get_all_objects_as_handles()) do
                 if ENTITY.DOES_ENTITY_EXIST(entity) and not PED.IS_PED_A_PLAYER(NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(entity)) then
@@ -12976,10 +12947,10 @@ end)
                 util.yield(1)
             end)
 
-    local BlackholeEntities = menu.list(ControlEntities, "Blackholes", {}, "")
+    local BlackholeEntities = addict.list(ControlEntities, "Blackholes", {}, "")
     
 	local dont_stop = false
-	menu.toggle_loop(BlackholeEntities,"Vehicle Blackhole", {"vehicleblackholes"}, "Basically 'impulse like sport mode. but applied to every vehicle.", function(on)
+	addict.toggle_loop(BlackholeEntities,"Vehicle Blackhole", {"vehicleblackholes"}, "Basically 'impulse like sport mode. but applied to every vehicle.", function(on)
         Draw_Box_Vehicles()
 		for k, veh in pairs(entities.get_all_vehicles_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -13002,7 +12973,7 @@ end)
 		end
 	end)
 
-    menu.toggle_loop(BlackholeEntities,"Object Blackhole", {"objectblackholes"}, "Basically 'impulse like sport mode. but applied to every object.", function(on)
+    addict.toggle_loop(BlackholeEntities,"Object Blackhole", {"objectblackholes"}, "Basically 'impulse like sport mode. but applied to every object.", function(on)
         Draw_Box_Objects()
 		for k, veh in pairs(entities.get_all_objects_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -13025,7 +12996,7 @@ end)
 		end
 	end)
 
-    menu.toggle_loop(BlackholeEntities,"Ped Blackhole", {"pedblackholes"}, "Turn on undead to not effect you. Basically 'impulse like sport mode. but applied to every ped.", function(on)
+    addict.toggle_loop(BlackholeEntities,"Ped Blackhole", {"pedblackholes"}, "Turn on undead to not effect you. Basically 'impulse like sport mode. but applied to every ped.", function(on)
         Draw_Box_Peds()
 		for k, veh in pairs(entities.get_all_peds_as_handles()) do
 			local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
@@ -13049,13 +13020,13 @@ end)
         end)
 
     hole_zoff = 50
-    menu.slider(BlackholeEntities, "Blackhole Z-offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
+    addict.slider(BlackholeEntities, "Blackhole Z-offset", {"blackholeoffset"}, "", 0, 100, 50, 10, function(s)
     hole_zoff = s
     end)
 
-	centipedegriefing = menu.list(ControlEntities, "Human Centipede", {}, "", function(); end)
+	centipedegriefing = addict.list(ControlEntities, "Human Centipede", {}, "", function(); end)
 
-    menu.action(centipedegriefing, "Human Centipede", {"centipede"}, "", function()
+    addict.action(centipedegriefing, "Human Centipede", {"centipede"}, "", function()
         local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_peds_as_handles()
         local last_ped = 0
@@ -13079,7 +13050,7 @@ end)
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
     
-    menu.toggle_loop(centipedegriefing, "Human Centipede", {"togglecentipede"}, "", function(on_toggle)
+    addict.toggle_loop(centipedegriefing, "Human Centipede", {"togglecentipede"}, "", function(on_toggle)
         local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_peds_as_handles()
         local last_ped = 0
@@ -13103,7 +13074,7 @@ end)
         end
     end)
     
-    menu.toggle_loop(ControlEntities, "Sky Dive Peds", {"skydivepeds"}, "", function()
+    addict.toggle_loop(ControlEntities, "Sky Dive Peds", {"skydivepeds"}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
                 all_peds = entities.get_all_peds_as_handles()
@@ -13115,7 +13086,7 @@ end)
             end
     end)
 
-    menu.toggle_loop(ControlEntities, "Writher Peds", {"writherpeds"}, "", function()
+    addict.toggle_loop(ControlEntities, "Writher Peds", {"writherpeds"}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
                 all_peds = entities.get_all_peds_as_handles()
@@ -13127,7 +13098,7 @@ end)
             end
     end)
 
-    menu.toggle_loop(ControlEntities, "Vault Peds", {"vaultpeds"}, "", function()
+    addict.toggle_loop(ControlEntities, "Vault Peds", {"vaultpeds"}, "", function()
         util.yield(1000)
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
@@ -13140,7 +13111,7 @@ end)
             end
     end)
 
-    menu.toggle_loop(ControlEntities, "Cower Peds", {"cowerpeds"}, "", function()
+    addict.toggle_loop(ControlEntities, "Cower Peds", {"cowerpeds"}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
                 all_peds = entities.get_all_peds_as_handles()
@@ -13152,7 +13123,7 @@ end)
             end
     end)
 
-    menu.toggle_loop(ControlEntities, "Cover Peds", {"coverpeds"}, "", function()
+    addict.toggle_loop(ControlEntities, "Cover Peds", {"coverpeds"}, "", function()
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local c = ENTITY.GET_ENTITY_COORDS(p)
                 all_peds = entities.get_all_peds_as_handles()
@@ -13164,10 +13135,10 @@ end)
             end
     end)
 
-    local tormentplayer = menu.list(griefing, "Torment Shit")
+    local tormentplayer = addict.list(griefing, "Torment Shit")
 
-    menu.action(tormentplayer, "Huge Shit On Head", {"hshit"}, "Make a massive shit", function()
-        menu.trigger_commands("tp" .. players.get_name(pid))
+    addict.action(tormentplayer, "Huge Shit On Head", {"hshit"}, "Make a massive shit", function()
+        addict.trigger_commands("tp" .. players.get_name(pid))
         local c = ENTITY.GET_ENTITY_COORDS(players.user_ped())
         c.z = c.z -1
         while not STREAMING.HAS_ANIM_DICT_LOADED(agroup) do 
@@ -13179,8 +13150,8 @@ end)
         entities.create_object(mshit, c)
         end)
     
-    menu.action(tormentplayer, "Normal Shit On Head", {"nshit"}, "Make a normale sized shit", function()
-        menu.trigger_commands("tp" .. players.get_name(pid))
+    addict.action(tormentplayer, "Normal Shit On Head", {"nshit"}, "Make a normale sized shit", function()
+        addict.trigger_commands("tp" .. players.get_name(pid))
         local c = ENTITY.GET_ENTITY_COORDS(players.user_ped())
         c.z = c.z -1
         while not STREAMING.HAS_ANIM_DICT_LOADED(agroup) do 
@@ -13192,11 +13163,11 @@ end)
         entities.create_object(rshit, c)
     end)
 
-    local Ped_Voices = menu.list(griefing, "Ped Voices")
+    local Ped_Voices = addict.list(griefing, "Ped Voices")
 
-    local Beach_Man = menu.list(Ped_Voices, "Beach man")
+    local Beach_Man = addict.list(Ped_Voices, "Beach man")
 
-    menu.toggle_loop(Beach_Man, "Mother Fuck", {"motherfuck"}, "", function()
+    addict.toggle_loop(Beach_Man, "Mother Fuck", {"motherfuck"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_Y_BEACH_03_BLACK_MINI_01"
         local speech = "MOTHER_FUCK"
@@ -13216,9 +13187,9 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    local A_M_M_Hillbilly_01 = menu.list(Ped_Voices, "Hill Billy")
+    local A_M_M_Hillbilly_01 = addict.list(Ped_Voices, "Hill Billy")
 
-    menu.toggle_loop(A_M_M_Hillbilly_01, "Perv", {"pervert"}, "", function()
+    addict.toggle_loop(A_M_M_Hillbilly_01, "Perv", {"pervert"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_M_HILLBILLY_01_WHITE_MINI_01"
         local speech = "SHOUT_PERV_AT_WOMAN_PERV"
@@ -13238,7 +13209,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(A_M_M_Hillbilly_01, "Nice Car", {"nicecar"}, "", function()
+    addict.toggle_loop(A_M_M_Hillbilly_01, "Nice Car", {"nicecar"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_M_HILLBILLY_01_WHITE_MINI_01"
         local speech = "NICE_CAR_SHOUT"
@@ -13258,7 +13229,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(A_M_M_Hillbilly_01, "Nice Car Thanks", {"nicecarthanks"}, "", function()
+    addict.toggle_loop(A_M_M_Hillbilly_01, "Nice Car Thanks", {"nicecarthanks"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_M_HILLBILLY_01_WHITE_MINI_01"
         local speech = "NICE_CAR_THANKS"
@@ -13278,7 +13249,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(A_M_M_Hillbilly_01, "Angry", {"angry"}, "", function()
+    addict.toggle_loop(A_M_M_Hillbilly_01, "Angry", {"angry"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_M_HILLBILLY_01_WHITE_MINI_01"
         local speech = "ANGRY_WITH_PLAYER_TREVOR"
@@ -13298,7 +13269,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(A_M_M_Hillbilly_01, "Agreement", {"agreeing"}, "", function()
+    addict.toggle_loop(A_M_M_Hillbilly_01, "Agreement", {"agreeing"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_M_M_HILLBILLY_01_WHITE_MINI_01"
         local speech = "AGREE_ACROSS_STREET"
@@ -13318,9 +13289,9 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    local EASTSA_01_LATINO = menu.list(Ped_Voices, "Eastsa Latino")
+    local EASTSA_01_LATINO = addict.list(Ped_Voices, "Eastsa Latino")
 
-    menu.toggle_loop(EASTSA_01_LATINO, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "Laughter Torment", {"laughter"}, "Only works when they are on foot.", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "FEMALE_DISTANT_LAUGH"
@@ -13340,7 +13311,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(EASTSA_01_LATINO, "Car Crash 1", {"carcrash1"}, "", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "Car Crash 1", {"carcrash1"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "CRASH_GENERIC"
@@ -13360,7 +13331,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(EASTSA_01_LATINO, "Car Crash 2", {"carcrash2"}, "", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "Car Crash 2", {"carcrash2"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "CRASH_CAR"
@@ -13380,7 +13351,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(EASTSA_01_LATINO, "Idiotaaa", {"idiota"}, "", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "Idiotaaa", {"idiota"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "CHALLENGE_THREATEN"
@@ -13400,7 +13371,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(EASTSA_01_LATINO, "Move!!!", {"movenow"}, "", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "Move!!!", {"movenow"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "BLOCKED_GENERIC"
@@ -13420,7 +13391,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-    menu.toggle_loop(EASTSA_01_LATINO, "No trouble", {"notrouble"}, "", function()
+    addict.toggle_loop(EASTSA_01_LATINO, "No trouble", {"notrouble"}, "", function()
         local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
         local speech = "APOLOGY_NO_TROUBLE"
@@ -13440,7 +13411,7 @@ end)
         entities.delete_by_handle(voice_ped)
     end)
 
-menu.toggle_loop(EASTSA_01_LATINO, "Animal!!!", {"animalaa"}, "", function()
+addict.toggle_loop(EASTSA_01_LATINO, "Animal!!!", {"animalaa"}, "", function()
     local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
     local speech = "ANGRY_WITH_PLAYER_TREVOR"
@@ -13460,7 +13431,7 @@ menu.toggle_loop(EASTSA_01_LATINO, "Animal!!!", {"animalaa"}, "", function()
     entities.delete_by_handle(voice_ped)
 end)
 
-menu.toggle_loop(EASTSA_01_LATINO, "Be Careful", {"becareful"}, "", function()
+addict.toggle_loop(EASTSA_01_LATINO, "Be Careful", {"becareful"}, "", function()
     local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
     local speech = "BUMP"
@@ -13480,7 +13451,7 @@ menu.toggle_loop(EASTSA_01_LATINO, "Be Careful", {"becareful"}, "", function()
     entities.delete_by_handle(voice_ped)
 end)
 
-menu.toggle_loop(EASTSA_01_LATINO, "Challenge accepted", {"chalacc"}, "", function()
+addict.toggle_loop(EASTSA_01_LATINO, "Challenge accepted", {"chalacc"}, "", function()
     local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local voice = "A_F_M_EASTSA_01_LATINO_FULL_01"
     local speech = "CHALLENGE_ACCEPTED_BUMPED_INTO"
@@ -13545,35 +13516,35 @@ end)
         util.yield()
     end)
 
-    menu.toggle_loop(tormentplayer, "Asteroid Smash", {"asteroidon"}, "Crush the player with an asteroid", function() 
+    addict.toggle_loop(tormentplayer, "Asteroid Smash", {"asteroidon"}, "Crush the player with an asteroid", function() 
         local coords = players.get_position(pid)
         coords.z = coords['z'] + 15.0
         local asteroid = entities.create_object(3751297495, coords)
         ENTITY.SET_ENTITY_DYNAMIC(asteroid, true)
     end)
 
-    menu.toggle_loop(tormentplayer, "Ragdoll", {"ragdollon"}, "Keeps target ragdolled", function()
+    addict.toggle_loop(tormentplayer, "Ragdoll", {"ragdollon"}, "Keeps target ragdolled", function()
         local coords = players.get_position(pid)
         coords.z = coords['z'] - 2.0
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 11, 1, false, true, 0, true)
         util.yield(10)
     end)
 
-    menu.toggle_loop(tormentplayer, "Flames", {"fireon"}, "Spam fire beneath the target", function()
+    addict.toggle_loop(tormentplayer, "Flames", {"fireon"}, "Spam fire beneath the target", function()
         local coords = players.get_position(pid)
         coords.z = coords['z'] - 2.0
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 12, 1, true, false, 0, false)
         util.yield(25)
     end)
 
-    menu.toggle_loop(tormentplayer, "Water Jet", {"wateron"}, "Spam water jets beneath the target", function()
+    addict.toggle_loop(tormentplayer, "Water Jet", {"wateron"}, "Spam water jets beneath the target", function()
         local coords = players.get_position(pid)
         coords.z = coords['z'] - 2.0
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 13, 1, true, false, 0, false)
         util.yield(25)
     end)
 
-    menu.toggle_loop(tormentplayer, "Flame path", {"flamepathon"}, "They better run", function()
+    addict.toggle_loop(tormentplayer, "Flame path", {"flamepathon"}, "They better run", function()
         local coords = players.get_position(pid)
         --coords.z = coords['z'] + 1.5
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 38, 0, false, false, 0, false)
@@ -13583,7 +13554,7 @@ end)
     
     local crash_ents = {}
     local crash_toggle = false
-    menu.toggle(tormentplayer, "Constructipede", {"constructipede"}, "", function(val)
+    addict.toggle(tormentplayer, "Constructipede", {"constructipede"}, "", function(val)
         crash_toggle = val
             if val then
                 local ped_mdl = util.joaat("s_m_y_construct_01")
@@ -13648,7 +13619,7 @@ end)
     
     local crash_ents = {}
     local crash_toggle = false
-    menu.toggle(tormentplayer, "Jack Hammmer Noise", {"jacknoise"}, "Sends Jack Hammmers to cause noise.", function(val)
+    addict.toggle(tormentplayer, "Jack Hammmer Noise", {"jacknoise"}, "Sends Jack Hammmers to cause noise.", function(val)
         crash_toggle = val
             if val then
                 local ped_mdl = util.joaat("s_m_y_construct_01")
@@ -13690,14 +13661,14 @@ end)
             end
     end)
 
-    menu.toggle_loop(tormentplayer, "Crap trail", {"crapon"}, "", function()
+    addict.toggle_loop(tormentplayer, "Crap trail", {"crapon"}, "", function()
         local coords = players.get_position(pid)
         coords.z = coords['z'] + 1.5
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 35, 0, false, false, 0, false)
         util.yield(65)
     end)
 
-    menu.toggle_loop(tormentplayer, "Drop Fake Bags", {"dropfakebags"}, "Old School :D", function()
+    addict.toggle_loop(tormentplayer, "Drop Fake Bags", {"dropfakebags"}, "Old School :D", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local card = MISC.GET_HASH_KEY("prop_money_bag_01")
@@ -13708,7 +13679,7 @@ end)
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
     end)
 
-menu.toggle_loop(tormentplayer, "Glitch Physics", {"glitchphysics"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Glitch Physics", {"glitchphysics"}, "", function(on_toggle)
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -13738,7 +13709,7 @@ menu.toggle_loop(tormentplayer, "Glitch Physics", {"glitchphysics"}, "", functio
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", function(on_toggle)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_peds_as_handles()
@@ -13759,7 +13730,7 @@ menu.toggle_loop(tormentplayer, "Rain Peds on Player", {"rainingpeds"}, "", func
     end
 end)
 
-menu.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", function(on_toggle)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_vehicles_as_handles()
@@ -13781,7 +13752,7 @@ menu.toggle_loop(tormentplayer, "Rain Vehicles on Player", {"rainveh"}, "", func
 end)
 
 
-menu.toggle_loop(tormentplayer, "Rain Objects on Player", {"rainobj"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Rain Objects on Player", {"rainobj"}, "", function(on_toggle)
     local c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     local ped_c = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
         all_peds = entities.get_all_objects_as_handles()
@@ -13802,7 +13773,7 @@ menu.toggle_loop(tormentplayer, "Rain Objects on Player", {"rainobj"}, "", funct
     end
 end)
 
-menu.toggle_loop(tormentplayer, "Bend There Knees", {"bendknees"}, "Forces them down making them bend there knees.", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Bend There Knees", {"bendknees"}, "Forces them down making them bend there knees.", function(on_toggle)
     for k, ped in pairs(entities.get_all_peds_as_handles()) do
         local PedInSeat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ped, -1, false)
         local locspeed2 = speed
@@ -13830,7 +13801,7 @@ menu.toggle_loop(tormentplayer, "Bend There Knees", {"bendknees"}, "Forces them 
 end)
 
 ---------------------------------------------------------------------------------------------------------------------
-menu.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_toggle)
         local p_hash = util.joaat("s_m_y_swat_01")
         local c 
         local cop
@@ -13846,44 +13817,44 @@ menu.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_t
     end)
 
     
-    menu.toggle(tormentplayer, "Toggle Sneaky Mode", {"sneakymode"}, "Teleports you to player then turns you invisible, off radar and no collisions...", function(on_toggle)
+    addict.toggle(tormentplayer, "Toggle Sneaky Mode", {"sneakymode"}, "Teleports you to player then turns you invisible, off radar and no collisions...", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("invisibility" .. " on")
-            menu.trigger_commands("reducedcollision" .. " on")
-            menu.trigger_commands("otr")
-            menu.trigger_commands("quietsteps")
+            addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("invisibility" .. " on")
+            addict.trigger_commands("reducedcollision" .. " on")
+            addict.trigger_commands("otr")
+            addict.trigger_commands("quietsteps")
             util.toast("Sneaky Mode On") 
         else
-            menu.trigger_commands("tpmazehelipad")
-            menu.trigger_commands("invisibility" .. " off")
-            menu.trigger_commands("reducedcollision" .. " off")
-            menu.trigger_commands("otr")
-            menu.trigger_commands("quietsteps")
+            addict.trigger_commands("tpmazehelipad")
+            addict.trigger_commands("invisibility" .. " off")
+            addict.trigger_commands("reducedcollision" .. " off")
+            addict.trigger_commands("otr")
+            addict.trigger_commands("quietsteps")
             util.toast("Sneaky Mode Off")
             end 
     end)
 
-    menu.toggle(tormentplayer, "Toggle Pidgeon Mode", {"pidgeonmode"}, "Teleports you to player then turns you into a Pidgeon, off radar and no collisions...", function(on_toggle)
+    addict.toggle(tormentplayer, "Toggle Pidgeon Mode", {"pidgeonmode"}, "Teleports you to player then turns you into a Pidgeon, off radar and no collisions...", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("otr")
-            menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
-            menu.trigger_commands("reducedcollision" .. " on")
-            menu.trigger_commands("acpigeon")
+            addict.trigger_commands("otr")
+            addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("reducedcollision" .. " on")
+            addict.trigger_commands("acpigeon")
             util.yield(100)
-            menu.trigger_commands("alwaysunarmed")
+            addict.trigger_commands("alwaysunarmed")
             util.toast("Pidgeon Mode On") 
         else
-            menu.trigger_commands("alwaysunarmed")
-            menu.trigger_commands("otr")
-            menu.trigger_commands("tpmazehelipad")
-            menu.trigger_commands("reducedcollision" .. " off")
-            menu.trigger_commands("outfit1candydinka")
+            addict.trigger_commands("alwaysunarmed")
+            addict.trigger_commands("otr")
+            addict.trigger_commands("tpmazehelipad")
+            addict.trigger_commands("reducedcollision" .. " off")
+            addict.trigger_commands("outfit1candydinka")
             util.toast("Pidgeon Mode Off")
             end 
     end)
 
-	ptfxloop = menu.list(griefing, "PTFX Loops", {"ptfxloops"}, "", function(); end)
+	ptfxloop = addict.list(griefing, "PTFX Loops", {"ptfxloops"}, "", function(); end)
 
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local pos = ENTITY.GET_ENTITY_COORDS(player_ped, true)
@@ -13891,7 +13862,7 @@ menu.toggle_loop(tormentplayer, "Give Wanted", {"givewanted"}, "", function(on_t
 
 --Ptfx
 
-menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggle)
+addict.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggle)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -13902,7 +13873,7 @@ menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggl
                 "blood_wheel", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 
-    menu.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
+    addict.toggle_loop(ptfxloop, "Electric", {"ptfxelectric"}, "", function(on_toggle)
         request_ptfx_asset("core")
         GRAPHICS.USE_PARTICLE_FX_ASSET("core")
         GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -13913,7 +13884,7 @@ menu.toggle_loop(ptfxloop, "Blood Splash", {"bloodslash"}, "", function(on_toggl
             "ent_sht_electrical_box", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 end)
     
-menu.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
+addict.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -13924,7 +13895,7 @@ menu.toggle_loop(ptfxloop, "Smoke", {"ptfxsmoke"}, "", function(on_toggle)
                 "veh_respray_smoke", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 
-menu.toggle_loop(ptfxloop, "Clown Explosions", {"ptfxclown"}, "", function(on_toggle)
+addict.toggle_loop(ptfxloop, "Clown Explosions", {"ptfxclown"}, "", function(on_toggle)
 		request_ptfx_asset("scr_rcbarry2")
 		GRAPHICS.USE_PARTICLE_FX_ASSET("scr_rcbarry2")
 		GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -13935,7 +13906,7 @@ menu.toggle_loop(ptfxloop, "Clown Explosions", {"ptfxclown"}, "", function(on_to
             "scr_exp_clown", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 
-menu.toggle_loop(ptfxloop, "Extinguisher", {"ptfxextinguisher"}, "", function(on_toggle)
+addict.toggle_loop(ptfxloop, "Extinguisher", {"ptfxextinguisher"}, "", function(on_toggle)
             request_ptfx_asset("core")
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
@@ -13946,7 +13917,7 @@ menu.toggle_loop(ptfxloop, "Extinguisher", {"ptfxextinguisher"}, "", function(on
                 "exp_extinguisher", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
 	end)
 
-menu.toggle_loop(ptfxloop, "Water Mist", {"ptfxwatermist"}, "", function(on_toggle)
+addict.toggle_loop(ptfxloop, "Water Mist", {"ptfxwatermist"}, "", function(on_toggle)
             GRAPHICS.USE_PARTICLE_FX_ASSET("core")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
                 "ent_anim_bm_water_mist", pos.x, pos.y, pos.z, 0, 0, 0, 2.5, false, false, false)
@@ -13975,80 +13946,80 @@ function offset_coords_forward(pos, heading, distance)
     return newpos
 end
 
-	lagwiths = menu.list(griefing, "Lag With Shit", {}, "", function(); end)
+	lagwiths = addict.list(griefing, "Lag With Shit", {}, "", function(); end)
 
-    menu.divider(lagwiths, "Addict Laggers")
+    addict.divider(lagwiths, "Addict Laggers")
 
-    menu.toggle(lagwiths, "All Toggles On/Off", {"togglelagwiths"}, "Warning! This will cause a crash event (XQ).", function(on_toggle)
+    addict.toggle(lagwiths, "All Toggles On/Off", {"togglelagwiths"}, "Warning! This will cause a crash event (XQ).", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("nuke" .. players.get_name(pid))
+            addict.trigger_commands("nuke" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("nukev2" .. players.get_name(pid))
+            addict.trigger_commands("nukev2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("orbitalfuck" .. players.get_name(pid))
+            addict.trigger_commands("orbitalfuck" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("cpulag" .. players.get_name(pid))
+            addict.trigger_commands("cpulag" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
+            addict.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithbarracks" .. players.get_name(pid))
+            addict.trigger_commands("lagwithbarracks" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithbarracks3" .. players.get_name(pid))
+            addict.trigger_commands("lagwithbarracks3" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithdune" .. players.get_name(pid))
+            addict.trigger_commands("lagwithdune" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithtugs" .. players.get_name(pid))
+            addict.trigger_commands("lagwithtugs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithtugsv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithtugsv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithcargos" .. players.get_name(pid))
+            addict.trigger_commands("lagwithcargos" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithcargosv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithcargosv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithsubs" .. players.get_name(pid))
+            addict.trigger_commands("lagwithsubs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithsubsv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithsubsv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithkhanjali" .. players.get_name(pid))
+            addict.trigger_commands("lagwithkhanjali" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithkhanjaliv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithkhanjaliv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithfreight" .. players.get_name(pid))
+            addict.trigger_commands("lagwithfreight" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithfreightcar" .. players.get_name(pid))
+            addict.trigger_commands("lagwithfreightcar" .. players.get_name(pid))
             util.yield(100)
         else
-            menu.trigger_commands("cpulag" .. players.get_name(pid))
+            addict.trigger_commands("cpulag" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
+            addict.trigger_commands("lagwitharmytrailer2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithbarracks" .. players.get_name(pid))
+            addict.trigger_commands("lagwithbarracks" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithbarracks3" .. players.get_name(pid))
+            addict.trigger_commands("lagwithbarracks3" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithdune" .. players.get_name(pid))
+            addict.trigger_commands("lagwithdune" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithtugs" .. players.get_name(pid))
+            addict.trigger_commands("lagwithtugs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithtugsv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithtugsv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithcargos" .. players.get_name(pid))
+            addict.trigger_commands("lagwithcargos" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithcargosv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithcargosv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithsubs" .. players.get_name(pid))
+            addict.trigger_commands("lagwithsubs" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithsubsv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithsubsv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithkhanjali" .. players.get_name(pid))
+            addict.trigger_commands("lagwithkhanjali" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithkhanjaliv2" .. players.get_name(pid))
+            addict.trigger_commands("lagwithkhanjaliv2" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithfreight" .. players.get_name(pid))
+            addict.trigger_commands("lagwithfreight" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("lagwithfreightcar" .. players.get_name(pid))
+            addict.trigger_commands("lagwithfreightcar" .. players.get_name(pid))
             util.yield(100)
-            menu.trigger_commands("superc")
+            addict.trigger_commands("superc")
             util.yield(100)
             end
         end)
@@ -14120,14 +14091,14 @@ function DRAW_LOCKON_SPRITE_ON_PLAYER(pid, color)
 	GRAPHICS.DRAW_SPRITE("helicopterhud", "hud_outline", posx, posy, mult * 0.03 * 1.5, mult * 0.03 * 2.6, 90.0, color.r, color.g, color.b, 255, true)
 end
 
-    menu.divider(lagwiths, "Do not spam them all")
+    addict.divider(lagwiths, "Do not spam them all")
 
-    menu.action(lagwiths, "Eat My Shorts", {"eatmyshorts"}, "", function()
+    addict.action(lagwiths, "Eat My Shorts", {"eatmyshorts"}, "", function()
         EatMyShorts(pid)
     end)
 
     
-    menu.action(lagwiths, "Metro Madness", {""}, "", function()
+    addict.action(lagwiths, "Metro Madness", {""}, "", function()
             while true do
             local coords = player_coords(pid)
             coords.x = coords.x
@@ -14157,7 +14128,7 @@ end
         end
     end)
 
-    menu.action(lagwiths, "Drunk Pilot", {"drunkpilot"}, "", function()
+    addict.action(lagwiths, "Drunk Pilot", {"drunkpilot"}, "", function()
             local coords = player_coords(pid)
             coords.x = coords.x
             coords.y = coords.y + -30
@@ -14207,7 +14178,7 @@ end
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.action(lagwiths, "Garage Doors", {"garagedoors"}, "", function()
+    addict.action(lagwiths, "Garage Doors", {"garagedoors"}, "", function()
         local coords = player_coords(pid)
         coords.x = coords.x
         coords.y = coords.y + -30
@@ -14227,7 +14198,7 @@ end
         end
     end)
 
-    menu.action(lagwiths, "Train Fuck", {"trainfuck"}, "", function()
+    addict.action(lagwiths, "Train Fuck", {"trainfuck"}, "", function()
         local coords = player_coords(pid)
         coords.x = coords.x
         coords.y = coords.y + -30
@@ -14254,9 +14225,9 @@ end
         end
     end)
     
-    menu.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
-        menu.trigger_commands("levitate")
-        menu.trigger_commands("anticrashcamera")
+    addict.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
+        addict.trigger_commands("levitate")
+        addict.trigger_commands("anticrashcamera")
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
         local p = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -14317,8 +14288,8 @@ end
             entities.delete_by_handle(ent)
             ct = ct + 1
         end
-        menu.trigger_commands("levitate")
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("levitate")
+        addict.trigger_commands("anticrashcamera")
         util.toast("Finished")
         for k, ent in pairs(entities.get_all_peds_as_handles()) do
             if not PED.IS_PED_A_PLAYER(ent) then
@@ -14330,10 +14301,10 @@ end
     end)
 
 
-    menu.action(lagwiths, "Nuke V2", {"nukev2"}, "Nuke the player, This is OP.", function()
-        menu.trigger_commands("levitate")
+    addict.action(lagwiths, "Nuke V2", {"nukev2"}, "Nuke the player, This is OP.", function()
+        addict.trigger_commands("levitate")
         util.yield(100)
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.yield(100)
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
@@ -14343,25 +14314,25 @@ end
         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
         AUDIO.PLAY_SOUND_FRONTEND(-1, "Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS", true);
-        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        addict.trigger_commands("craftloop1" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("sendarmyattack" .. players.get_name(pid))
+        addict.trigger_commands("sendarmyattack" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("atomizeron" .. players.get_name(pid))
+        addict.trigger_commands("atomizeron" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("emploop" .. players.get_name(pid))
+        addict.trigger_commands("emploop" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("bloodslash" .. players.get_name(pid))
+        addict.trigger_commands("bloodslash" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxelectric" .. players.get_name(pid))
+        addict.trigger_commands("ptfxelectric" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxsmoke" .. players.get_name(pid))
+        addict.trigger_commands("ptfxsmoke" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxclown" .. players.get_name(pid))
+        addict.trigger_commands("ptfxclown" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
+        addict.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxwatermist" .. players.get_name(pid))
+        addict.trigger_commands("ptfxwatermist" .. players.get_name(pid))
         util.yield(100)
         AUDIO.PLAY_SOUND_FRONTEND(-1, "TENNIS_POINT_WON", "HUD_AWARDS", true);
         AUDIO.PLAY_SOUND_FRONTEND(-1, "Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds", true);
@@ -14535,29 +14506,29 @@ end
             entities.delete_by_handle(ent)
             ct = ct + 1
         end
-        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        addict.trigger_commands("craftloop1" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("deletearmy" .. players.get_name(pid))
+        addict.trigger_commands("deletearmy" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("atomizeron" .. players.get_name(pid))
+        addict.trigger_commands("atomizeron" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("emploop" .. players.get_name(pid))
+        addict.trigger_commands("emploop" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("bloodslash" .. players.get_name(pid))
+        addict.trigger_commands("bloodslash" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxelectric" .. players.get_name(pid))
+        addict.trigger_commands("ptfxelectric" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxsmoke" .. players.get_name(pid))
+        addict.trigger_commands("ptfxsmoke" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxclown" .. players.get_name(pid))
+        addict.trigger_commands("ptfxclown" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
+        addict.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("ptfxwatermist" .. players.get_name(pid))
+        addict.trigger_commands("ptfxwatermist" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("levitate")
+        addict.trigger_commands("levitate")
         util.yield(100)
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.toast("Finished")
         for k, ent in pairs(entities.get_all_peds_as_handles()) do
             if not PED.IS_PED_A_PLAYER(ent) then
@@ -14569,16 +14540,16 @@ end
     end)
 
     
-menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function(on)
+addict.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function(on)
     local countdown = 4.50	
-    menu.trigger_commands("tpcayoperico")
+    addict.trigger_commands("tpcayoperico")
     if players.is_in_interior(pid) then
         return notification('The player is in interior', red)
     end
     local cam = CAM.CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", false)
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local height = pos.z + 200
-    menu.trigger_commands('becomeorbitalcannon on')
+    addict.trigger_commands('becomeorbitalcannon on')
     CAM.DO_SCREEN_FADE_OUT(500)
     util.yield(1000)
     CAM.SET_CAM_ROT(cam, -90, 0.0, 0.0, 2)
@@ -15901,7 +15872,7 @@ menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function
                 1.0, 
                 false, false, false, true
             )
-            menu.trigger_commands("anticrashcamera")
+            addict.trigger_commands("anticrashcamera")
             util.yield(550)
             AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
             AUDIO.PLAY_SOUND_FROM_COORD(-1, 'DLC_XM_Explosions_Orbital_Cannon', pos.x, pos.y, pos.z, 0, true, 0, false)
@@ -16596,8 +16567,8 @@ menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function
     GRAPHICS.CLEAR_DRAW_ORIGIN()
     util.yield(1300)
     CAM.DO_SCREEN_FADE_IN(0)
-    menu.trigger_commands('becomeorbitalcannon off')
-    menu.trigger_commands("anticrashcamera")
+    addict.trigger_commands('becomeorbitalcannon off')
+    addict.trigger_commands("anticrashcamera")
     util.toast("Its possible his game CrAShEd, 50/50, the russian roulette !")
     if not crash_in_progress0 then   
         crash_in_progress0 = true    
@@ -16638,7 +16609,7 @@ menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function
     end
     util.toast("Super cleanse is complete! " .. ct .. " entities removed.")
     util.yield(5000)
-    menu.trigger_commands("tpmazehelipad")
+    addict.trigger_commands("tpmazehelipad")
     util.yield(2000)
     if not players.exists(pid) then
         util.toast("Player CrAsH !!!")
@@ -16671,7 +16642,7 @@ menu.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function
 end)
 
 
-menu.action(lagwiths, "Cargoplane Spam", {"cargoplanespams"}, "Hold it down alot! :)", function()
+addict.action(lagwiths, "Cargoplane Spam", {"cargoplanespams"}, "Hold it down alot! :)", function()
     while true do
     local coords = player_coords(pid)
     coords.x = coords.x + -30
@@ -16718,7 +16689,7 @@ menu.action(lagwiths, "Cargoplane Spam", {"cargoplanespams"}, "Hold it down alot
     end
 end)
 
-    menu.toggle_loop(lagwiths,"CPU Penetrator", {"cpulag"}, "Lag them do do do it.", function()
+    addict.toggle_loop(lagwiths,"CPU Penetrator", {"cpulag"}, "Lag them do do do it.", function()
         while not STREAMING.HAS_MODEL_LOADED(447548909) do
             STREAMING.REQUEST_MODEL(447548909)
             util.yield(10)
@@ -16733,7 +16704,7 @@ end)
         end
     end)
 
-    menu.toggle_loop(lagwiths, "Lag With Armytrailer2", {"lagwitharmytrailer2"}, "", function()
+    addict.toggle_loop(lagwiths, "Lag With Armytrailer2", {"lagwitharmytrailer2"}, "", function()
         local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local playerpos = ENTITY.GET_ENTITY_COORDS(id)
         playerpos.z = playerpos.z + 3
@@ -16766,7 +16737,7 @@ end)
         util.yield(10000)
     end)
 
-menu.toggle_loop(lagwiths, "Lag With Barracks", {"lagwithbarracks"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Barracks", {"lagwithbarracks"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16799,7 +16770,7 @@ menu.toggle_loop(lagwiths, "Lag With Barracks", {"lagwithbarracks"}, "", functio
     util.yield(10000)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With Barracks3", {"lagwithbarracks3"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Barracks3", {"lagwithbarracks3"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16832,7 +16803,7 @@ menu.toggle_loop(lagwiths, "Lag With Barracks3", {"lagwithbarracks3"}, "", funct
     util.yield(10000)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With dune", {"lagwithdune"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With dune", {"lagwithdune"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16865,7 +16836,7 @@ menu.toggle_loop(lagwiths, "Lag With dune", {"lagwithdune"}, "", function()
     util.yield(10000)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With Tug's", {"lagwithtugs"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Tug's", {"lagwithtugs"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16893,7 +16864,7 @@ menu.toggle_loop(lagwiths, "Lag With Tug's", {"lagwithtugs"}, "", function()
     util.yield(10000)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(lagwiths, "Lag With Tug's V2", {"lagwithtugsv2"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Tug's V2", {"lagwithtugsv2"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16926,7 +16897,7 @@ menu.toggle_loop(lagwiths, "Lag With Tug's V2", {"lagwithtugsv2"}, "", function(
     util.yield(10000)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With Cargobob's", {"lagwithcargos"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Cargobob's", {"lagwithcargos"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -16956,7 +16927,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
 
-menu.toggle_loop(lagwiths, "Lag With Cargobob's V2", {"lagwithcargosv2"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Cargobob's V2", {"lagwithcargosv2"}, "", function()
 
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
@@ -16992,7 +16963,7 @@ menu.toggle_loop(lagwiths, "Lag With Cargobob's V2", {"lagwithcargosv2"}, "", fu
     util.yield(0)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With Sub's", {"lagwithsubs"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Sub's", {"lagwithsubs"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17020,7 +16991,7 @@ menu.toggle_loop(lagwiths, "Lag With Sub's", {"lagwithsubs"}, "", function()
     util.yield(0)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(lagwiths, "Lag With Sub's V2", {"lagwithsubsv2"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With Sub's V2", {"lagwithsubsv2"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
     local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
@@ -17055,7 +17026,7 @@ menu.toggle_loop(lagwiths, "Lag With Sub's V2", {"lagwithsubsv2"}, "", function(
     util.yield(0)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With Khanjali's", {"lagwithkhanjali"}, "", function(on_toggle)
+addict.toggle_loop(lagwiths, "Lag With Khanjali's", {"lagwithkhanjali"}, "", function(on_toggle)
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17083,7 +17054,7 @@ menu.toggle_loop(lagwiths, "Lag With Khanjali's", {"lagwithkhanjali"}, "", funct
     util.yield(0)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(lagwiths, "Lag With Khanjali's V2", {"lagwithkhanjaliv2"}, "", function(on_toggle)
+addict.toggle_loop(lagwiths, "Lag With Khanjali's V2", {"lagwithkhanjaliv2"}, "", function(on_toggle)
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
     local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
@@ -17118,7 +17089,7 @@ menu.toggle_loop(lagwiths, "Lag With Khanjali's V2", {"lagwithkhanjaliv2"}, "", 
     util.yield(0)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With freight", {"lagwithfreight"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With freight", {"lagwithfreight"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17151,7 +17122,7 @@ menu.toggle_loop(lagwiths, "Lag With freight", {"lagwithfreight"}, "", function(
     util.yield(10000)
 end)
 
-menu.toggle_loop(lagwiths, "Lag With freightcar", {"lagwithfreightcar"}, "", function()
+addict.toggle_loop(lagwiths, "Lag With freightcar", {"lagwithfreightcar"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17185,9 +17156,9 @@ menu.toggle_loop(lagwiths, "Lag With freightcar", {"lagwithfreightcar"}, "", fun
 end)
 
 
-	seizures = menu.list(griefing, "Seizure Shit", {}, "", function(); end)
+	seizures = addict.list(griefing, "Seizure Shit", {}, "", function(); end)
 
-menu.toggle_loop(seizures, "Seizure V1", {"seizurev1"}, "", function()
+addict.toggle_loop(seizures, "Seizure V1", {"seizurev1"}, "", function()
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17240,7 +17211,7 @@ menu.toggle_loop(seizures, "Seizure V1", {"seizurev1"}, "", function()
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle_loop(seizures, "Seizure V2", {"seizurev2"}, "", function(on_toggle)
+addict.toggle_loop(seizures, "Seizure V2", {"seizurev2"}, "", function(on_toggle)
     local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local playerpos = ENTITY.GET_ENTITY_COORDS(id)
     playerpos.z = playerpos.z + 3
@@ -17343,20 +17314,20 @@ menu.toggle_loop(seizures, "Seizure V2", {"seizurev2"}, "", function(on_toggle)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-	menu.toggle(seizures, "Seizure V3", {"seizurev3"}, "", function(on_toggle)
+	addict.toggle(seizures, "Seizure V3", {"seizurev3"}, "", function(on_toggle)
 	if on_toggle then
-			menu.trigger_commands("seizurev1" .. players.get_name(pid))
-			menu.trigger_commands("seizurev2" .. players.get_name(pid))
+			addict.trigger_commands("seizurev1" .. players.get_name(pid))
+			addict.trigger_commands("seizurev2" .. players.get_name(pid))
 	else
-			menu.trigger_commands("seizurev1" .. players.get_name(pid))
-			menu.trigger_commands("seizurev2" .. players.get_name(pid))
+			addict.trigger_commands("seizurev1" .. players.get_name(pid))
+			addict.trigger_commands("seizurev2" .. players.get_name(pid))
 		end
 	end)
 
 
-	cage_options = menu.list(griefing, "Cage Options", {}, "")
+	cage_options = addict.list(griefing, "Cage Options", {}, "")
 
-	menu.divider(cage_options, "Cage Options")
+	addict.divider(cage_options, "Cage Options")
 
 
 
@@ -17366,6 +17337,11 @@ SoundAnnoy = {
     { "TENNIS_POINT_WON", "HUD_AWARDS" },
     {"Air_Defenses_Disabled", "DLC_sum20_Business_Battle_AC_Sounds"},
     {"Air_Defences_Activated", "DLC_sum20_Business_Battle_AC_Sounds"},
+    {"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
+    {"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
+    {"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
+    {"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
     {"TIME_LAPSE_MASTER", "0"},
     {"Fire", "DLC_BTL_Terrobyte_Turret_Sounds"},
     {"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
@@ -17404,7 +17380,6 @@ SoundAnnoy = {
     {"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
     {"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
     {"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
- --   {"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
     {"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
     {"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
     {"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
@@ -17503,7 +17478,7 @@ SoundAnnoy = {
     {"MEDAL_GOLD", "HUD_AWARDS"},
     {"MEDAL_SILVER", "HUD_AWARDS"},
     {"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
-    {"Menu_Accept", "Phone_SoundSet_Default"},
+    {"addict_Accept", "Phone_SoundSet_Default"},
     {"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
     {"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
     {"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
@@ -17522,13 +17497,10 @@ SoundAnnoy = {
     {"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
     {"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
     {"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    --{"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
-    {"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
     {"Off_High", "MP_RADIO_SFX"},
     {"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
     {"ON", "NOIR_FILTER_SOUNDS"},
     {"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    --{"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
     {"OOB_Cancel", "GTAO_FM_Events_Soundset"},
     {"OOB_Start", "GTAO_FM_Events_Soundset"},
     {"OPEN_WINDOW", "LESTER1A_SOUNDS"},
@@ -17573,7 +17545,6 @@ SoundAnnoy = {
     {"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
     {"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
     {"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
-    --{"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
     {"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
     {"SCOPE_UI_MASTER", "0"},
     {"ScreenFlash", "WastedSounds"},
@@ -17631,18 +17602,18 @@ local function AudioAnnoyance(Ker_SND, Ker_AUD)
 end
 
 local function playerActionsSetup(pid)
-    local playerMain = menu.list(griefing, "Sounds", {}, "")
+    local playerMain = addict.list(griefing, "Sounds", {}, "")
     local playerPos = getEntityCoords(getPlayerPed(pid))
     local playerPed = getPlayerPed(pid)
     for i = 1, #SoundAnnoy do
-        menu.action(playerMain, SoundAnnoy[i][1], {"kSounds_" .. SoundAnnoy[i][1]}, "", function()
+        addict.action(playerMain, SoundAnnoy[i][1], {"kSounds_" .. SoundAnnoy[i][1]}, "", function()
             local snd, aud
             snd = tostring(SoundAnnoy[i][1])
             aud = tostring(SoundAnnoy[i][2])
            -- AUDIO.PLAY_SOUND_FROM_COORD(-1, snd, playerPos.x, playerPos.y, playerPos.z, aud, true, 50, true)
            AUDIO.PLAY_SOUND_FROM_ENTITY(-1, snd, playerPed, aud, true, true)
         end)
-        menu.toggle_loop(playerMain, SoundAnnoy[i][1], {""}, "", function ()
+        addict.toggle_loop(playerMain, SoundAnnoy[i][1], {""}, "", function ()
             local snd, aud
             snd = tostring(SoundAnnoy[i][1])
             aud = tostring(SoundAnnoy[i][2])
@@ -17652,9 +17623,9 @@ local function playerActionsSetup(pid)
     end
 end
 
-local soundsList = menu.list(griefing, "Play Sounds throughout the map.", {"sounds", "soundslist", "soundannoy"}, "A list of sounds that can be played throughout the entire freemode lobby. Sounds provided by Moist through his MoistScript.")
+local soundsList = addict.list(griefing, "Play Sounds throughout the map.", {"sounds", "soundslist", "soundannoy"}, "A list of sounds that can be played throughout the entire freemode lobby. Sounds provided by Moist through his MoistScript.")
 
-menu.action(soundsList, "Stop all sounds", {"stopall", "stopallsounds"}, "Stops all sounds. Credit to [hungwy] on the Stand discord for telling me the method.", function ()
+addict.action(soundsList, "Stop all sounds", {"stopall", "stopallsounds"}, "Stops all sounds. Credit to [hungwy] on the Stand discord for telling me the method.", function ()
     for i=0,99 do
        AUDIO.STOP_SOUND(i)
        AUDIO.RELEASE_SOUND_ID(i)
@@ -17662,7 +17633,7 @@ menu.action(soundsList, "Stop all sounds", {"stopall", "stopallsounds"}, "Stops 
     end
 end)
 for i = 1, #SoundAnnoy do
-    menu.action(soundsList, SoundAnnoy[i][1], {"allsounds"}, "", function()
+    addict.action(soundsList, SoundAnnoy[i][1], {"allsounds"}, "", function()
         local snd, aud
         snd = tostring(SoundAnnoy[i][1])
         aud = tostring(SoundAnnoy[i][2])
@@ -17670,7 +17641,7 @@ for i = 1, #SoundAnnoy do
     end)
 
 
-    menu.toggle_loop(soundsList, SoundAnnoy[i][1], {"toggleallsounds"}, "", function ()
+    addict.toggle_loop(soundsList, SoundAnnoy[i][1], {"toggleallsounds"}, "", function ()
         local snd, aud
         snd = tostring(SoundAnnoy[i][1])
         aud = tostring(SoundAnnoy[i][2])
@@ -17678,44 +17649,44 @@ for i = 1, #SoundAnnoy do
     end)
 end
 
-menu.action(cage_options, "Garage Cage All Players", {"cageall"}, "Garage Cage all players", function()
+addict.action(cage_options, "Garage Cage All Players", {"cageall"}, "Garage Cage all players", function()
     for _, pid in players.list(false, true, true) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = players.get_position(pid)
         if ENTITY.DOES_ENTITY_EXIST(ped) then
-        menu.trigger_commands("garagecage " .. players.get_name(pid))
+        addict.trigger_commands("garagecage " .. players.get_name(pid))
         end
     end
 end)
 
-menu.action(cage_options, "Send All Cages", {"sendallcages"}, "", function(action)
-        menu.trigger_commands("garagecage" .. players.get_name(pid))
+addict.action(cage_options, "Send All Cages", {"sendallcages"}, "", function(action)
+        addict.trigger_commands("garagecage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("basketcage" .. players.get_name(pid))
+        addict.trigger_commands("basketcage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("simplecage" .. players.get_name(pid))
+        addict.trigger_commands("simplecage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("foodtruckcage" .. players.get_name(pid))
+        addict.trigger_commands("foodtruckcage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("doghousecage" .. players.get_name(pid))
+        addict.trigger_commands("doghousecage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("jollycage" .. players.get_name(pid))
+        addict.trigger_commands("jollycage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("jollycage2" .. players.get_name(pid))
+        addict.trigger_commands("jollycage2" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("jollycage3" .. players.get_name(pid))
+        addict.trigger_commands("jollycage3" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("safecage" .. players.get_name(pid))
+        addict.trigger_commands("safecage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("trashcage" .. players.get_name(pid))
+        addict.trigger_commands("trashcage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("moneycage" .. players.get_name(pid))
+        addict.trigger_commands("moneycage" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("stuntcage" .. players.get_name(pid))
+        addict.trigger_commands("stuntcage" .. players.get_name(pid))
         util.yield(100)
     end)
     
-    menu.action(cage_options, "Garage Cage", {"garagecage"}, "Trap cars too :).", function()
+    addict.action(cage_options, "Garage Cage", {"garagecage"}, "Trap cars too :).", function()
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
         local coords = player_coords(pid)
         local Prop = util.joaat("prop_bh1_09_mp_gar")
@@ -17762,8 +17733,8 @@ menu.action(cage_options, "Send All Cages", {"sendallcages"}, "", function(actio
         ENTITY.ATTACH_ENTITY_TO_ENTITY(object4, object1, 0, 0, -1.8, 1.8, 90, 0, 0, 0, false, true, false, 0, true)
     end)
 
-    menu.action(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
-        menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.action(cage_options, "Arcade Basketball", {"basketcage"}, "", function()
+        addict.trigger_commands("disarm" .. players.get_name(pid))
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2769149392)
 		while not STREAMING.HAS_MODEL_LOADED(2769149392) do		
@@ -17778,24 +17749,24 @@ menu.action(cage_options, "Send All Cages", {"sendallcages"}, "", function(actio
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
 	end)
     
-	menu.action(cage_options, "Simple", {"simplecage"}, "", function()
+	addict.action(cage_options, "Simple", {"simplecage"}, "", function()
 		local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		local pos = ENTITY.GET_ENTITY_COORDS(player_ped) 
 		if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-			menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
+			addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
 			util.yield(300)
 			if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-				menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
+				addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 				return
 			end
-			menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
+			addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 			pos =  ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)) --if not it could place the cage at the wrong position
-            menu.trigger_commands("disarm" .. players.get_name(pid))
+            addict.trigger_commands("disarm" .. players.get_name(pid))
 		end
 		cage_player(pos)
 	end)
 
-	menu.action(cage_options, "First Job", {"foodtruckcage"}, "", function()
+	addict.action(cage_options, "First Job", {"foodtruckcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		local hash = 4022605402
 		STREAMING.REQUEST_MODEL(hash)
@@ -17806,10 +17777,10 @@ menu.action(cage_options, "Send All Cages", {"sendallcages"}, "", function(actio
 		cages[#cages + 1] = cage_object
 		util.yield(15)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-        menu.trigger_commands("disarm" .. players.get_name(pid))
+        addict.trigger_commands("disarm" .. players.get_name(pid))
     end)
 	
-menu.action(cage_options, "Married Simulator", {"doghousecage"}, "", function()
+addict.action(cage_options, "Married Simulator", {"doghousecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = -1782242710
 	STREAMING.REQUEST_MODEL(hash)
@@ -17820,10 +17791,10 @@ menu.action(cage_options, "Married Simulator", {"doghousecage"}, "", function()
 	cages[#cages + 1] = cage_object
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 	
-menu.action(cage_options, "Christmas Time", {"jollycage"}, "", function()
+addict.action(cage_options, "Christmas Time", {"jollycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 238789712
 	STREAMING.REQUEST_MODEL(hash)
@@ -17834,10 +17805,10 @@ menu.action(cage_options, "Christmas Time", {"jollycage"}, "", function()
 	cages[#cages + 1] = cage_object
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 	
-menu.action(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
+addict.action(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_02a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -17853,10 +17824,10 @@ menu.action(cage_options, "Christmas Time v2", {"jollycage2"}, "", function()
 	cages[#cages + 1] = cage_object
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
-menu.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
+addict.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("ch_prop_tree_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -17872,10 +17843,10 @@ menu.action(cage_options, "Christmas Time v3", {"jollycage3"}, "", function()
 	cages[#cages + 1] = cage_object
 	util.yield()
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
-menu.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
+addict.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 1089807209
 	STREAMING.REQUEST_MODEL(hash)
@@ -17895,10 +17866,10 @@ menu.action(cage_options, "'Safe' Space", {"safecage"}, "", function()
 	ENTITY.FREEZE_ENTITY_POSITION(cage_object5, true)
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
-menu.action(cage_options, "Average X-Force User", {"trashcage"}, "", function()
+addict.action(cage_options, "Average X-Force User", {"trashcage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = 684586828
 	STREAMING.REQUEST_MODEL(hash)
@@ -17912,10 +17883,10 @@ menu.action(cage_options, "Average X-Force User", {"trashcage"}, "", function()
 	cages[#cages + 1] = cage_object
 	util.yield(15)
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
-menu.action(cage_options, "money cage", {"moneycage"}, "", function()
+addict.action(cage_options, "money cage", {"moneycage"}, "", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("bkr_prop_moneypack_03a")
 	STREAMING.REQUEST_MODEL(hash)
@@ -17939,10 +17910,10 @@ menu.action(cage_options, "money cage", {"moneycage"}, "", function()
 	local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
 	rot.y = 90
 	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-    menu.trigger_commands("disarm" .. players.get_name(pid))
+    addict.trigger_commands("disarm" .. players.get_name(pid))
 end)
 
-	menu.action(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
+	addict.action(cage_options, "Stunt Tube", {"stuntcage"}, "", function()
 		local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 		STREAMING.REQUEST_MODEL(2081936690)
 
@@ -17956,23 +17927,23 @@ end)
 		rot.y = 90
 		ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
-        menu.trigger_commands("disarm" .. players.get_name(pid))
+        addict.trigger_commands("disarm" .. players.get_name(pid))
 	end)
 							
 	local cage_loop = false
-	menu.toggle(cage_options, "automatic", {"autocage"}, "Cage them in a trap. If they get out... Do it again. No, I'll do it for you actually", function(on)
+	addict.toggle(cage_options, "automatic", {"autocage"}, "Cage them in a trap. If they get out... Do it again. No, I'll do it for you actually", function(on)
 		local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		local a = ENTITY.GET_ENTITY_COORDS(player_ped) --first position
 		cage_loop = on
 		if cage_loop then
 			if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-				menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
+				addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." on")
 				util.yield(300)
 				if PED.IS_PED_IN_ANY_VEHICLE(player_ped, false) then
-					menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
+					addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 					return
 				end
-				menu.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
+				addict.trigger_commands("freeze"..PLAYER.GET_PLAYER_NAME(pid).." off")
 				a =  ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 			end
 			cage_player(a)
@@ -17992,7 +17963,7 @@ end)
 		end
 	end)
 	
-menu.action(cage_options, "Slowly Burn Them To Death", {}, "use this to slowly kill the poor caged person (ONLY WORKS WITH SOME CAGES)", function()
+addict.action(cage_options, "Slowly Burn Them To Death", {}, "use this to slowly kill the poor caged person (ONLY WORKS WITH SOME CAGES)", function()
 	local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
 	local hash = util.joaat("prop_beach_fire")
 	STREAMING.REQUEST_MODEL(hash)
@@ -18008,13 +17979,13 @@ menu.action(cage_options, "Slowly Burn Them To Death", {}, "use this to slowly k
 	rot.y = 90
 end)
 
-	menu.action(cage_options, "Release Player", {"release"}, "Attempts to delete spawned cages, for more complicated traps it may respawn.", function() -- ez fix but lazy
-		menu.trigger_commands("superc 3")
+	addict.action(cage_options, "Release Player", {"release"}, "Attempts to delete spawned cages, for more complicated traps it may respawn.", function() -- ez fix but lazy
+		addict.trigger_commands("superc 3")
 	end)
 
-        local Cargobob_Kidnaps = menu.list(griefing, "Kidnaps")
+        local Cargobob_Kidnaps = addict.list(griefing, "Kidnaps")
 
-	menu.action(Cargobob_Kidnaps,"Deliver Player to you", {"deliver"}, "Kidnaps the target and brings them to your current location", function()
+	addict.action(Cargobob_Kidnaps,"Deliver Player to you", {"deliver"}, "Kidnaps the target and brings them to your current location", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 
 		if table_kidnap == nil then
@@ -18076,7 +18047,7 @@ end)
 	end)
 
 
-    menu.action(Cargobob_Kidnaps,"Special Delivery", {"specialdeliver"}, "Puts the player inside a cargobob.", function()
+    addict.action(Cargobob_Kidnaps,"Special Delivery", {"specialdeliver"}, "Puts the player inside a cargobob.", function()
 		V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 		if table_kidnap == nil then
 			table_kidnap = {}
@@ -18124,38 +18095,38 @@ end)
         end
 	end)
 
-    spams = menu.list(griefing, "Spam", {}, "Sends all types of reports/commends may lag your game when in progress.", function(); end)
+    spams = addict.list(griefing, "Spam", {}, "Sends all types of reports/commends may lag your game when in progress.", function(); end)
             
-    menu.toggle(spams,"Report Spam", {}, "Sends all types of reports, may lag your game when in progress.", function(on)
+    addict.toggle(spams,"Report Spam", {}, "Sends all types of reports, may lag your game when in progress.", function(on)
         spam = on
         while spam do
             if pid ~= players.user() then
-                menu.trigger_commands("reportgriefing " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reportexploits " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reportbugabuse " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reportannoying " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reporthate " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reportvcannoying " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("reportvchate " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportgriefing " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportexploits " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportbugabuse " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportannoying " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reporthate " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportvcannoying " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("reportvchate " .. PLAYER.GET_PLAYER_NAME(pid))
             end
             util.yield()
         end
     end)
 
-    menu.toggle(spams,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
+    addict.toggle(spams,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
         spam = on
         while spam do
             if pid ~= players.user() then
-                menu.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
-                menu.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
             end
             util.yield()
         end
     end)
 
 
-    menu.action(griefing, "Job SmS notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
-        menu.show_command_box_click_based(cl, "jobnotify "..players.get_name(pid):lower().." ") end, function(input)
+    addict.action(griefing, "Job SmS notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
+        addict.show_command_box_click_based(cl, "jobnotify "..players.get_name(pid):lower().." ") end, function(input)
             local event_data = {0x8E38E2DF, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             input = input:sub(1, 127)
             for i = 0, #input -1 do
@@ -18167,23 +18138,23 @@ end)
         end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-        crash = menu.list(menu.player_root(pid), "Crashes", {}, "Addict Crash", function(); end)
+        crash = addict.list(addict.player_root(pid), "Crashes", {}, "Addict Crash", function(); end)
         
-        kick = menu.list(menu.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
+        kick = addict.list(addict.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
-        menu.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses breakup kick.", function()
-            menu.trigger_commands("historyblock " .. players.get_name(pid))
-            menu.trigger_commands("breakup" .. players.get_name(pid))
+        addict.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses breakup kick.", function()
+            addict.trigger_commands("historyblock " .. players.get_name(pid))
+            addict.trigger_commands("breakup" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.action(kick, "Smash Kick", {"smash"}, "Blocks the player join reaction then uses buttplug kick for basic users.", function()
-            menu.trigger_commands("historyblock " .. players.get_name(pid))
-            menu.trigger_commands("buttplug" .. players.get_name(pid))
+        addict.action(kick, "Smash Kick", {"smash"}, "Blocks the player join reaction then uses buttplug kick for basic users.", function()
+            addict.trigger_commands("historyblock " .. players.get_name(pid))
+            addict.trigger_commands("buttplug" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        menu.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks if breakup won't work.", function()
-            menu.trigger_commands("breakup" .. players.get_name(pid))
-            menu.trigger_commands("givesh" .. players.get_name(pid))
+        addict.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks if breakup won't work.", function()
+            addict.trigger_commands("breakup" .. players.get_name(pid))
+            addict.trigger_commands("givesh" .. players.get_name(pid))
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1}) --697566862 Give Collectible
             util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657589 + 1 + (pid * 466) + 321 + 8)}) 
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
@@ -18192,67 +18163,41 @@ end)
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1894573 + 1 + (pid * 608) + 510))})
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-
-            menu.toggle_loop(kick, "Invalid Apartment Kick V1", {"invkick1"}, "Invalid Apartment Invite.", function(on_toggle)
-               local int_min = -2147483647
-               local int_max = 2147483647
-               for i = 1, 15 do
-                   util.trigger_script_event(1 << pid, {-168599209, 4, -106354710, 1957299332, 1, 115, 2037557198, -1322654879, -1220141674, math.random(int_min, int_max), math.random(int_min, int_max), 
-                   math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-                   math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, -106354710, 1957299332, 1, 115, 2037557198, -1322654879, -1220141674})
-               end
-               menu.trigger_commands("givesh" .. players.get_name(pid))
-               util.yield()
-               for i = 1, 15 do
-                   util.trigger_script_event(1 << pid, {-168599209, 4, -106354710, 1957299332, 1, 115, 2037557198, -1322654879, -1220141674, pid, math.random(int_min, int_max)})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, -106354710, 1957299332, 1, 115, 2037557198, -1322654879, -1220141674})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, -106354710, 1957299332, 1, 115, 2037557198, -1322654879, -1220141674})
-               end
-            end, nil, nil, COMMANDPERM_AGGRESSIVE)
-   
-           menu.toggle_loop(kick, "Invalid Apartment Kick V2", {"invkick2"}, "Invalid Apartment Invite.", function(on_toggle)
-               local int_min = -2147483647
-               local int_max = 2147483647
-               for i = 1, 5 do
-                   util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085, math.random(int_min, int_max), math.random(int_min, int_max), 
-                   math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-                   math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085})
-               end
-               menu.trigger_commands("givesh" .. players.get_name(pid))
-               util.yield()
-               for i = 1, 5 do
-                   util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085, pid, math.random(int_min, int_max)})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085})
-                   util.trigger_script_event(1 << pid, {-168599209, 4, 827588970, 828619960, 1, 115, 330139908, -2089816692, -2142984085})
-                   util.yield(300)
-               end
-            end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-        
-            menu.toggle_loop(kick, "Array Kick V1", {"arraykickv1"}, "", function(on_toggle)
+        addict.toggle_loop(kick, "Array Kick", {"arraykick"}, "", function()
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1279059857, math.random(int_min, int_max), math.random(int_min, int_max), 
+                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1, math.random(int_min, int_max), math.random(int_min, int_max), 
                 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {1279059857})
+                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1})
             end
-            menu.trigger_commands("givesh" .. players.get_name(pid))
+            addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1279059857, pid, math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {1279059857})
+                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1})
             end
         end)
 
-        menu.toggle_loop(kick, "Array Kick V2", {"arraykickv2"}, "", function(on_toggle)
-            array_kick(pid)
+        addict.toggle_loop(kick, "SE Kick (S0)", {"sekicks0"}, "Script event kick, Works good on normal player and also on cheap addicts.", function()
+            local int_min = -2147483647
+            local int_max = 2147483647
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+                math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+                math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+            end
+            addict.trigger_commands("givesh" .. players.get_name(pid))
+            util.yield()
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+            end
         end)
 
-        menu.toggle_loop(kick, "SE Kick", {"sekick"}, "Script event kick, Works good on normal player and also on cheap menus. Credits to legy", function()
+        addict.toggle_loop(kick, "SE Kick (S3)", {"sekicks3"}, "Script event kick, Works good on normal player and also on cheap addicts.", function()
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
@@ -18261,7 +18206,7 @@ end)
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
                 util.trigger_script_event(1 << pid, {1727896103, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
             end
-            menu.trigger_commands("givesh" .. players.get_name(pid))
+            addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
                 util.trigger_script_event(1 << pid, {1727896103, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
@@ -18269,54 +18214,54 @@ end)
             end
         end)
 
-	menu.divider(kick, "Stand Kicks")
+	addict.divider(kick, "Stand Kicks")
 
-    	menu.action(kick, "Smart", {"smartkick"}, "Removes the player by any means necessary.", function()
-	menu.trigger_commands("kick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Smart", {"smartkick"}, "Removes the player by any means necessary.", function()
+	addict.trigger_commands("kick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Buttplug", {"buttplugkick"}, "Unblockable when you are the host.", function()
-	menu.trigger_commands("buttplug"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Buttplug", {"buttplugkick"}, "Unblockable when you are the host.", function()
+	addict.trigger_commands("buttplug"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Breakup", {"breakupkick"}, "A discrete kick that won't tell the target who did it.", function()
-	menu.trigger_commands("breakup"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Breakup", {"breakupkick"}, "A discrete kick that won't tell the target who did it.", function()
+	addict.trigger_commands("breakup"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-        menu.action(kick, "Ban", {"bankick"}, "A discrete kick that won't tell the target who did it.", function()
-    menu.trigger_commands("ban"..PLAYER.GET_PLAYER_NAME(pid))
+        addict.action(kick, "Ban", {"bankick"}, "A discrete kick that won't tell the target who did it.", function()
+    addict.trigger_commands("ban"..PLAYER.GET_PLAYER_NAME(pid))
                 end)
 
-    	menu.action(kick, "Confusion", {"confusionkick"}, "Can't be blocked without consequences, but the target might karma you for using it.", function()
-	menu.trigger_commands("confusion"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Confusion", {"confusionkick"}, "Can't be blocked without consequences, but the target might karma you for using it.", function()
+	addict.trigger_commands("confusion"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-        menu.action(kick, "Pool's Closed", {"aidskick"}, "", function()
-    menu.trigger_commands("aids"..PLAYER.GET_PLAYER_NAME(pid))
+        addict.action(kick, "Pool's Closed", {"aidskick"}, "", function()
+    addict.trigger_commands("aids"..PLAYER.GET_PLAYER_NAME(pid))
                 end)
 
-    	menu.action(kick, "Love Letter", {"lovekick"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function()
-	menu.trigger_commands("loveletterkick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Love Letter", {"lovekick"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function()
+	addict.trigger_commands("loveletterkick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Orgasm", {"orgkick"}, "Blocked by popular menus.", function()
-	menu.trigger_commands("orgasmkick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Orgasm", {"orgkick"}, "Blocked by popular addicts.", function()
+	addict.trigger_commands("orgasmkick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Blacklist", {"blacklistkick"}, "Adds the player to the blacklist like they were vote kicked, but kicks them like a desync. Only available when you are the host.", function()
-	menu.trigger_commands("blacklist"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Blacklist", {"blacklistkick"}, "Adds the player to the blacklist like they were vote kicked, but kicks them like a desync. Only available when you are the host.", function()
+	addict.trigger_commands("blacklist"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Host", {"kickhost"}, "Kicks the player using the vote kick mechanism. Unblockable when you are the host, but you might be karma'd for it.", function()
-	menu.trigger_commands("hostkick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Host", {"kickhost"}, "Kicks the player using the vote kick mechanism. Unblockable when you are the host, but you might be karma'd for it.", function()
+	addict.trigger_commands("hostkick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Non-Host", {"kicknonhost"}, "Kicks the player using script events. Blocked by most menus.", function()
-	menu.trigger_commands("nonhostkick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Non-Host", {"kicknonhost"}, "Kicks the player using script events. Blocked by most addicts.", function()
+	addict.trigger_commands("nonhostkick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
-    	menu.action(kick, "Invalid Pickup", {"invalidkick"}, "Block by most menus.", function()
-	menu.trigger_commands("pickupkick"..PLAYER.GET_PLAYER_NAME(pid))
+    	addict.action(kick, "Invalid Pickup", {"invalidkick"}, "Block by most addicts.", function()
+	addict.trigger_commands("pickupkick"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
 	local WeakCrash = {
@@ -18326,74 +18271,74 @@ end)
 		"Please close your game, please please please please please",
 	}
 
-    menu.toggle_loop(spams, "SmS Spam", {"smsspam"}, "Might Work On Pussy's Fam", function(on_toggle)
-		menu.trigger_commands("smstext" .. PLAYER.GET_PLAYER_NAME(pid).. " " .. WeakCrash[math.random(1, #WeakCrash)])
+    addict.toggle_loop(spams, "SmS Spam", {"smsspam"}, "Might Work On Pussy's Fam", function(on_toggle)
+		addict.trigger_commands("smstext" .. PLAYER.GET_PLAYER_NAME(pid).. " " .. WeakCrash[math.random(1, #WeakCrash)])
 		util.yield()
-		menu.trigger_commands("smssend" .. PLAYER.GET_PLAYER_NAME(pid))
+		addict.trigger_commands("smssend" .. PLAYER.GET_PLAYER_NAME(pid))
 	end)
 	
-    menu.toggle(spams, "Notify Spam", {}, "", function(on_toggle)
+    addict.toggle(spams, "Notify Spam", {}, "", function(on_toggle)
 	if on then
-		menu.trigger_commands("notifyspam" .. PLAYER.GET_PLAYER_NAME(pid).. " " .. WeakCrash[math.random(1, #WeakCrash)])
+		addict.trigger_commands("notifyspam" .. PLAYER.GET_PLAYER_NAME(pid).. " " .. WeakCrash[math.random(1, #WeakCrash)])
 	else
-		menu.trigger_commands("notifyspam" .. PLAYER.GET_PLAYER_NAME(pid))
+		addict.trigger_commands("notifyspam" .. PLAYER.GET_PLAYER_NAME(pid))
 		end
 	end)
 
-    local frienm = menu.list(menu.player_root(pid), 'Friendly', {}, '')
+    local frienm = addict.list(addict.player_root(pid), 'Friendly', {}, '')
 
-	menu.action(frienm, "Max Player", {"max"}, "Turns on Godmode, auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
-        		menu.trigger_commands("arm".. players.get_name(pid))
-                menu.trigger_commands("bail".. players.get_name(pid))
-                menu.trigger_commands("boost".. players.get_name(pid))
-                menu.trigger_commands("ceopay".. players.get_name(pid))
-                menu.trigger_commands("autoammo".. players.get_name(pid))
-                menu.trigger_commands("autoheal".. players.get_name(pid))
-                menu.trigger_commands("removestickys".. players.get_name(pid))
-                menu.trigger_commands("givevehgodmode".. players.get_name(pid))
-        		menu.trigger_commands("paragive".. players.get_name(pid))
+	addict.action(frienm, "Max Player", {"max"}, "Turns on Godmode, auto heal, ceopay, vehiclegodmode, vehicle boost, never wanted, gives all weapons, ammo/infinite and parachute all at once.", function ()
+        		addict.trigger_commands("arm".. players.get_name(pid))
+                addict.trigger_commands("bail".. players.get_name(pid))
+                addict.trigger_commands("boost".. players.get_name(pid))
+                addict.trigger_commands("ceopay".. players.get_name(pid))
+                addict.trigger_commands("autoammo".. players.get_name(pid))
+                addict.trigger_commands("autoheal".. players.get_name(pid))
+                addict.trigger_commands("removestickys".. players.get_name(pid))
+                addict.trigger_commands("givevehgodmode".. players.get_name(pid))
+        		addict.trigger_commands("paragive".. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    local drops = menu.list(frienm, "Addict Drops", {}, "")
+    local drops = addict.list(frienm, "Addict Drops", {}, "")
 
-    menu.action(drops, "Crazy Loop", {"crazyloop"}, "Gives cash, cards, rp and gives all collectibles. Might be risky but should be okay.", function()
-            menu.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash and rp it's nothing don't worry.")
+    addict.action(drops, "Crazy Loop", {"crazyloop"}, "Gives cash, cards, rp and gives all collectibles. Might be risky but should be okay.", function()
+            addict.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash and rp it's nothing don't worry.")
             util.yield(500)
-            menu.trigger_commands("smssend" .. players.get_name(pid))
+            addict.trigger_commands("smssend" .. players.get_name(pid))
             util.toast("Text message sent to " .. players.get_name(pid))
-            menu.trigger_commands("cashloopfast" .. players.get_name(pid))
+            addict.trigger_commands("cashloopfast" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("cards" .. players.get_name(pid))
+            addict.trigger_commands("cards" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("rp" .. players.get_name(pid))
+            addict.trigger_commands("rp" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+            addict.trigger_commands("givecollectibles" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("cards" .. players.get_name(pid))
+            addict.trigger_commands("cards" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("rp" .. players.get_name(pid))
+            addict.trigger_commands("rp" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("cashloopfast" .. players.get_name(pid))
+            addict.trigger_commands("cashloopfast" .. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("dropcash" .. players.get_name(pid))
+            addict.trigger_commands("dropcash" .. players.get_name(pid))
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
     
-    menu.action(drops, "All Collectibles", {"collects"}, "", function()
-        menu.trigger_commands("givecollectibles" .. players.get_name(pid))
+    addict.action(drops, "All Collectibles", {"collects"}, "", function()
+        addict.trigger_commands("givecollectibles" .. players.get_name(pid))
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-    local cash_drops = menu.list(drops, "Cash Drops", {}, "")
+    local cash_drops = addict.list(drops, "Cash Drops", {}, "")
 
-menu.action(cash_drops, "Drop Cash", {"dropcash"}, "It will send the target a text message saying this 'You may see a transaction error when receiving cash, message me to turn it off or rejoin.'", function()
-    menu.trigger_commands("cashloop" .. players.get_name(pid))
-    menu.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash, message me to turn it off or rejoin.")
+addict.action(cash_drops, "Drop Cash", {"dropcash"}, "It will send the target a text message saying this 'You may see a transaction error when receiving cash, message me to turn it off or rejoin.'", function()
+    addict.trigger_commands("cashloop" .. players.get_name(pid))
+    addict.trigger_commands("smstext" .. players.get_name(pid) .. " You may see a transaction error when receiving cash, message me to turn it off or rejoin.")
     util.yield(500)
-    menu.trigger_commands("smssend" .. players.get_name(pid))
+    addict.trigger_commands("smssend" .. players.get_name(pid))
     util.toast("Text message sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(cash_drops, "Drop Cash Loop", {"cashloop"}, "Less errors, 3600ms cash drops.", function()
+addict.toggle_loop(cash_drops, "Drop Cash Loop", {"cashloop"}, "Less errors, 3600ms cash drops.", function()
     local coords = players.get_position(pid)
     coords.z = coords.z + 1.5
     local cash = MISC.GET_HASH_KEY("PICKUP_VEHICLE_MONEY_VARIABLE")
@@ -18406,7 +18351,7 @@ menu.toggle_loop(cash_drops, "Drop Cash Loop", {"cashloop"}, "Less errors, 3600m
     util.yield(3600)
 end)
 
-menu.toggle_loop(cash_drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with errors.", function()
+addict.toggle_loop(cash_drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes with errors.", function()
     local coords = players.get_position(pid)
     coords.z = coords.z + 1.5
     local cash = MISC.GET_HASH_KEY("PICKUP_VEHICLE_MONEY_VARIABLE")
@@ -18418,17 +18363,17 @@ menu.toggle_loop(cash_drops, "Drop Cash Loop (Fast)", {"cashloopfast"}, "Comes w
     util.toast("Cash Dropping To " .. players.get_name(pid))
 end)
 
-local PedCash = menu.list(cash_drops, "Ped Cash Loop", {}, "")
+local PedCash = addict.list(cash_drops, "Ped Cash Loop", {}, "")
 
-menu.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash for friends to enable themselves using commands. Might be risky but should be okay.", function()
-        menu.trigger_commands("pedcashloops" .. players.get_name(pid))
+addict.action(PedCash, "Ped Cash Loop", {"pedcashlooped"}, "Gives ped cash for friends to enable themselves using commands. Might be risky but should be okay.", function()
+        addict.trigger_commands("pedcashloops" .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped cash. Might be risky but should be okay.", function()
-    menu.trigger_commands("pedboost")
-    menu.trigger_commands("toggletppeds" .. players.get_name(pid))
-    menu.trigger_commands("writherpeds" .. players.get_name(pid))
-    menu.trigger_commands("yoinkpickuploop" .. players.get_name(pid))
+addict.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped cash. Might be risky but should be okay.", function()
+    addict.trigger_commands("pedboost")
+    addict.trigger_commands("toggletppeds" .. players.get_name(pid))
+    addict.trigger_commands("writherpeds" .. players.get_name(pid))
+    addict.trigger_commands("yoinkpickuploop" .. players.get_name(pid))
     util.yield(500)
     ent = entities.get_all_peds_as_handles()
     if not PED.IS_PED_A_PLAYER(ent) then
@@ -18442,9 +18387,9 @@ menu.toggle_loop(PedCash, "Ped Cash Loop Toggled", {"pedcashloops"}, "Gives ped 
     end
 end)
 
-local rp_drops = menu.list(drops, "RP Drops", {}, "")
+local rp_drops = addict.list(drops, "RP Drops", {}, "")
 
-    menu.toggle_loop(rp_drops, "Drop RP (Attach)", {"dropfigures"}, "Spam twice to detach.", function()
+    addict.toggle_loop(rp_drops, "Drop RP (Attach)", {"dropfigures"}, "Spam twice to detach.", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -18471,12 +18416,12 @@ local rp_drops = menu.list(drops, "RP Drops", {}, "")
             STREAMING.REQUEST_MODEL(random_hash)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
-        menu.trigger_commands("attachto" .. players.get_name(pid))
-        menu.trigger_commands("tppickups" .. players.get_name(pid))
+        addict.trigger_commands("attachto" .. players.get_name(pid))
+        addict.trigger_commands("tppickups" .. players.get_name(pid))
         util.yield()
     end)
 
-    menu.toggle_loop(rp_drops, "Drop RP Stedily", {"dropfigures"}, "", function()
+    addict.toggle_loop(rp_drops, "Drop RP Stedily", {"dropfigures"}, "", function()
         local coords = players.get_position(pid)
         coords.z = coords.z + 1.5
         local random_hash = 0x4D6514A3
@@ -18507,13 +18452,13 @@ local rp_drops = menu.list(drops, "RP Drops", {}, "")
     end)
 
 
-local yoinkpickup = menu.list(drops, "Pickup Yoinker", {}, "")
+local yoinkpickup = addict.list(drops, "Pickup Yoinker", {}, "")
 
-menu.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
+addict.action(yoinkpickup, "Pickup Yoinker", {"yoinkpickups"}, "", function ()
     TpAllPickups(pid)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", function (on_toggle)
+addict.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", function (on_toggle)
         if on_toggle then
             TpAllPickups(pid)
         else
@@ -18521,7 +18466,7 @@ menu.toggle_loop(yoinkpickup, "Pickup Yoinker Loop", {"yoinkpickuploop"}, "", fu
         end
 end)
 
-menu.toggle_loop(drops, "Drop Guns & Shit", {"dropguns"}, "", function()
+addict.toggle_loop(drops, "Drop Guns & Shit", {"dropguns"}, "", function()
     local coords = players.get_position(pid)
     coords.z = coords.z + 1.5
     local random_hash = 0x6E4E65C2
@@ -18682,24 +18627,24 @@ menu.toggle_loop(drops, "Drop Guns & Shit", {"dropguns"}, "", function()
     OBJECT.CREATE_AMBIENT_PICKUP(random_hash, coords.x, coords.y, coords.z, 0, 1, random_hash, false, true)
 end)
 
-menu.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
+addict.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then turns on the tables. It will spawn you to the table if you select it for yourself.", function(on_toggle)
     if on_toggle then
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
         local pld = PLAYER.GET_PLAYER_PED(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(pld)
-        menu.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
         util.trigger_script_event(1 << pid, {1268038438, 4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
         util.yield(1500)
-        menu.trigger_commands("rigblackjack")
-        menu.trigger_commands("rigroulette ".. "1")
+        addict.trigger_commands("rigblackjack")
+        addict.trigger_commands("rigroulette ".. "1")
         util.yield(1500)
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1132.2958, 263.93478, -51.035763)
-        menu.trigger_commands("casinohelp1")
-        menu.trigger_commands("casinohelp2")
+        addict.trigger_commands("casinohelp1")
+        addict.trigger_commands("casinohelp2")
     else
-        menu.trigger_commands("rigblackjack")
-        menu.trigger_commands("rigroulette ".. "-1")
+        addict.trigger_commands("rigblackjack")
+        addict.trigger_commands("rigroulette ".. "-1")
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
         local pld = PLAYER.GET_PLAYER_PED(pid)
@@ -18709,50 +18654,50 @@ menu.toggle(drops, "Rig Casino", {"rigcasino"}, "Teleports them to casino then t
 end)
 
 
-local hugs = menu.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kataliya for idea.")
+local hugs = addict.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they are stood still. Credits to Kataliya for idea.")
 
 tpf_units = 1
-menu.action(hugs,"Hug Player 1", {}, "Credits to Kataliya for idea.", function()
-    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+addict.action(hugs,"Hug Player 1", {}, "Credits to Kataliya for idea.", function()
+    addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
-    menu.trigger_commands("nocollision" .. " on")
-    menu.trigger_commands("playanimhug")
+    addict.trigger_commands("nocollision" .. " on")
+    addict.trigger_commands("playanimhug")
     util.yield(300)
-    menu.trigger_commands("nocollision" .. " off")
+    addict.trigger_commands("nocollision" .. " off")
     local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
 end)
 
 tpf_units = -0.7
-menu.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kataliya for idea.", function()
-    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
+addict.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kataliya for idea.", function()
+    addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield(200)
-    menu.trigger_commands("nocollision" .. " on")
-    menu.trigger_commands("playanimhug2")
+    addict.trigger_commands("nocollision" .. " on")
+    addict.trigger_commands("playanimhug2")
     util.yield(300)
-    menu.trigger_commands("nocollision" .. " off")
+    addict.trigger_commands("nocollision" .. " off")
     local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
 end)
     
 
-    local tpthem = menu.list(frienm, 'Teleports', {"friendlyteleports"}, '')
+    local tpthem = addict.list(frienm, 'Teleports', {"friendlyteleports"}, '')
 
-        menu.action(tpthem, "Teleport To Them", {"gotothem"}, "", function()
-            menu.trigger_commands("tp" .. players.get_name(pid))
+        addict.action(tpthem, "Teleport To Them", {"gotothem"}, "", function()
+            addict.trigger_commands("tp" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(tpthem, "Teleport To Me", {"bringtome"}, "", function()
-            menu.trigger_commands("summon" .. players.get_name(pid))
+        addict.action(tpthem, "Teleport To Me", {"bringtome"}, "", function()
+            addict.trigger_commands("summon" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
             
-        menu.action(tpthem, "TP To Their Waypoint", {"gotowaypoint"}, "", function()
-            menu.trigger_commands("wptp" .. players.get_name(pid))
+        addict.action(tpthem, "TP To Their Waypoint", {"gotowaypoint"}, "", function()
+            addict.trigger_commands("wptp" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
-        menu.action(tpthem, "Fix loading screen", {"fixme"}, "Try to fix player's infinite loading screen by giving him script host and teleporting to nearest apartment.", function()
-            menu.trigger_commands("givesh" .. players.get_name(pid))
-            menu.trigger_commands("aptme" .. players.get_name(pid))
+        addict.action(tpthem, "Fix loading screen", {"fixme"}, "Try to fix player's infinite loading screen by giving him script host and teleporting to nearest apartment.", function()
+            addict.trigger_commands("givesh" .. players.get_name(pid))
+            addict.trigger_commands("aptme" .. players.get_name(pid))
             end, nil, nil, COMMANDPERM_FRIENDLY)
 
 
@@ -18774,12 +18719,12 @@ end)
                 return false
             end
             
-            menu.toggle_loop(frienm, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
+            addict.toggle_loop(frienm, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
                 local car = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
                 NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
             end)
 
-    menu.toggle_loop(frienm, "Infinity Ammo", {"autoammo"}, "Endless ammo for players", function(toggle)
+    addict.toggle_loop(frienm, "Infinity Ammo", {"autoammo"}, "Endless ammo for players", function(toggle)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local weaphash = WEAPON.GET_SELECTED_PED_WEAPON(ped)
         local ammo = WEAPON.GET_AMMO_IN_PED_WEAPON(ped, weaphash)
@@ -18788,28 +18733,28 @@ end)
         end
     end)
         
-    menu.toggle(frienm,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
+    addict.toggle(frienm,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
 		spam = on
 		while spam do
 			if pid ~= players.user() then
-				menu.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
-				menu.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
+				addict.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
+				addict.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
 			end
 			util.yield()
 		end
 	end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
-    menu.show_command_box("historynote " .. PLAYER.GET_PLAYER_NAME(pid) .. "Friends List")
-    menu.show_command_box("befriend " .. PLAYER.GET_PLAYER_NAME(pid))
+addict.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
+    addict.show_command_box("historynote " .. PLAYER.GET_PLAYER_NAME(pid) .. "Friends List")
+    addict.show_command_box("befriend " .. PLAYER.GET_PLAYER_NAME(pid))
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
+addict.action(addict.player_root(pid), "Spectate", {"spec"}, "", function()
     if pids == PLAYER.PLAYER_ID() then
         return
     else
     end
-    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid))
     local hash = util.joaat("baller")
     local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
     if STREAMING.IS_MODEL_A_VEHICLE(hash) then
@@ -18819,7 +18764,7 @@ menu.action(menu.player_root(pid), "Spectate", {"spec"}, "", function()
         end
         local Coords1 = PlayerCoords.y + 10
         local Coords2 = PlayerCoords.y - 10
-    menu.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
+    addict.trigger_commands("spectate" .. PLAYER.GET_PLAYER_NAME(pid) .. " off")
     end
 end)
 
@@ -18828,14 +18773,14 @@ local function bitTest(addr, offset)
 end
 
 local include_friends = false
-menu.toggle(crash, "Exclude friends", {}, "Save friends ass from being crashed if close (Turns off sync to friends using timeout).", function(on)
+addict.toggle(crash, "Exclude friends", {}, "Save friends ass from being crashed if close (Turns off sync to friends using timeout).", function(on)
     include_friends = on
     for k, id in pairs(players.list(false, true, false)) do
         name = players.get_name(id)
         if include_friends then
-            menu.trigger_commands("timeout"..name.." on")
+            addict.trigger_commands("timeout"..name.." on")
         else
-            menu.trigger_commands("timeout"..name.." off")
+            addict.trigger_commands("timeout"..name.." off")
         end
     end
 end, false)
@@ -18844,21 +18789,21 @@ end, false)
 local function BlockSyncs(pid, callback)
     for _, i in ipairs(players.list(false, true, true)) do
         if i ~= pid then
-            local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-            menu.trigger_command(outSync, "on")
+            local outSync = addict.ref_by_rel_path(addict.player_root(i), "Outgoing Syncs>Block")
+            addict.trigger_command(outSync, "on")
         end
     end
     util.yield(10)
     callback()
     for _, i in ipairs(players.list(false, true, true)) do
         if i ~= pid then
-            local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-            menu.trigger_command(outSync, "off")
+            local outSync = addict.ref_by_rel_path(addict.player_root(i), "Outgoing Syncs>Block")
+            addict.trigger_command(outSync, "off")
         end
     end
 end
 
-menu.divider(crash, "Addict Crashes")
+addict.divider(crash, "Addict Crashes")
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 playerposition = function(entity, distance)
@@ -19099,27 +19044,27 @@ end
         end
     end
 
-local MenuCrashes = menu.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific menus.")
-local lobbycrash = menu.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
-local outfitcrash = menu.list(crash, "Outfit Crashes", {"outfitcrashcrashes"}, "")
-local badheadcrash = menu.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
-local MichaelCrashes = menu.list(crash, "Michael Taxi Crash", {"michaelcrashes"}, "Spawns animations next to them for crashing.")
-local craftcrash = menu.list(crash, "Vehicle Chaos Crashes", {"vehiclechaos"}, "")
-local vehcrash = menu.list(crash, "Vehicle Crashes", {"vehiclecrashes"}, "")
-local TaskCrashes = menu.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
-local objectc = menu.list(crash, "Object Crashes", {"objectcrashes"}, "")
-local weedcrash = menu.list(crash, "Weed Crashes", {"weedcrashes"}, "")
-local bigyachtycrash = menu.list(crash, "Big Yatchy Crashes", {"bigyatchycrashes"}, "")
-local poodlecrash = menu.list(crash, "Poodle Bomb Crashes", {"poodlecrashes"}, "")
-local fragcrash = menu.list(crash, "Fragment Crashes", {"fragmentcrashes"}, "")
-local oxtypecrash = menu.list(crash, "Ox Menu Type Crashes", {"oxcrashes"}, "From Nightfall")
-local SexCrashes = menu.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
-local SECrashes = menu.list(crash, "SE Crashes", {"secrashes"}, "")
-local synccrashes = menu.list(crash, "Sync Crashes", {}, "")
-local standcrash = menu.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
+local addictCrashes = addict.list(crash, "Menu Crashes", {"menucrashes"}, "Crash specific addicts.")
+local lobbycrash = addict.list(crash, "Lobby Crashes", {"lobbycrashes"}, "")
+local outfitcrash = addict.list(crash, "Outfit Crashes", {"outfitcrashcrashes"}, "")
+local badheadcrash = addict.list(crash, "Bad Head Blend Data Crashes", {"badhead"}, "")
+local MichaelCrashes = addict.list(crash, "Michael Taxi Crash", {"michaelcrashes"}, "Spawns animations next to them for crashing.")
+local craftcrash = addict.list(crash, "Vehicle Chaos Crashes", {"vehiclechaos"}, "")
+local vehcrash = addict.list(crash, "Vehicle Crashes", {"vehiclecrashes"}, "")
+local TaskCrashes = addict.list(crash, "Task Crashes", {"taskcrashes"}, "Spawns animations next to them for crashing.")
+local objectc = addict.list(crash, "Object Crashes", {"objectcrashes"}, "")
+local weedcrash = addict.list(crash, "Weed Crashes", {"weedcrashes"}, "")
+local bigyachtycrash = addict.list(crash, "Big Yatchy Crashes", {"bigyatchycrashes"}, "")
+local poodlecrash = addict.list(crash, "Poodle Bomb Crashes", {"poodlecrashes"}, "")
+local fragcrash = addict.list(crash, "Fragment Crashes", {"fragmentcrashes"}, "")
+local oxtypecrash = addict.list(crash, "Ox addict Type Crashes", {"oxcrashes"}, "From Nightfall")
+local SexCrashes = addict.list(crash, "Sex Crashes", {"sexcrashes"}, "Spawns sex animations next to them before crashing")
+local SECrashes = addict.list(crash, "SE Crashes", {"secrashes"}, "")
+local synccrashes = addict.list(crash, "Sync Crashes", {}, "")
+local standcrash = addict.list(crash, "Stand Crash Loops", {"standcrashloops"}, "")
 
---local BroHugCrashes = menu.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
---local chunguscrashes = menu.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
+--local BroHugCrashes = addict.list(crash, "Bro Hug Crashes", {"brohugcrashes"}, "")
+--local chunguscrashes = addict.list(crash, "Big Chungus Crashes", {"bigchungustab"}, "")
 
 --         _____ ________________ ________  _   __
 --        / ___// ____/ ___/ ___//  _/ __ \/ | / /
@@ -19148,14 +19093,14 @@ if PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) then
     PED.DELETE_PED(playerPed)
 end
 
-menu.toggle_loop(crash, "Kick", {""}, "AI. Generated Code.", function()
+addict.toggle_loop(crash, "Kick", {""}, "AI. Generated Code.", function()
     kickPlayer(pid)
 end)
 ]]
 
 
-menu.action(outfitcrash, "Outfit crash v1", {"outfitcrashv1"}, "Changes freemode ped outfit variations and gives them homing launchers. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
-    menu.trigger_commands("anticrashcamera")
+addict.action(outfitcrash, "Outfit crash v1", {"outfitcrashv1"}, "Changes freemode ped outfit variations and gives them homing launchers. Similar to a bro hug. Will have to turn off anticrashcamera yourself.", function(on)
+    addict.trigger_commands("anticrashcamera")
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
 for i=1,1  do
@@ -19315,16 +19260,16 @@ for i=1,1  do
         end
         util.yield(10)
         end
-        menu.trigger_commands("superc")
+        addict.trigger_commands("superc")
         end
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
         util.toast("Outfit Crash In Progress!\n" .. "\n" .. pedtype .. " Ped Types \n" .. "\n" .. ped_amount .. " Random Peds")
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes their outfit variations. Lasts around 30 seconds.", function(on)
+addict.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes their outfit variations. Lasts around 30 seconds.", function(on)
     local math_random = math.random
-    menu.trigger_commands("mpfemale")
+    addict.trigger_commands("mpfemale")
     util.yield(10)
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
@@ -19435,9 +19380,9 @@ menu.action(outfitcrash, "Outfit crash v2", {"outfitcrashv2"}, "Changes their ou
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes your outfit variations. Lasts around 30 seconds.", function(on)
+addict.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes your outfit variations. Lasts around 30 seconds.", function(on)
     local math_random = math.random
-    menu.trigger_commands("mpfemale")
+    addict.trigger_commands("mpfemale")
     util.yield(10)
     local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
     local FinalRenderedCamRot = CAM.GET_FINAL_RENDERED_CAM_ROT(2).z
@@ -19548,7 +19493,7 @@ menu.action(outfitcrash, "Outfit crash v3", {"outfitcrashv3"}, "Changes your out
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-    menu.action(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxi"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task.", function()
+    addict.action(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxi"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task.", function()
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -19578,7 +19523,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
         util.log("Michael Taxi Crash Sent to " .. players.get_name(pid))
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxiloop"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task looped.", function()
+    addict.toggle_loop(MichaelCrashes,"Michael Taxi Crash", {"michaeltaxiloop"}, "Spawns Michael with bad component variations then sets him into taxi performing a bad task looped.", function()
         local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self_ped, -75.2188, -818.582, 2698.8700, true, true, true)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -19609,7 +19554,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 end)
 
 --[[
-menu.toggle_loop(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+addict.toggle_loop(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
         local mdl = util.joaat("A_C_Cat_01")
@@ -19733,16 +19678,16 @@ menu.toggle_loop(chunguscrashes, "Big Chungus Crash", {"bigchungus"}, "Skid from
         util.yield(1000)
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle(chunguscrashes, "Big Chungus Crash", {"bigchungustoggle"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
+addict.toggle(chunguscrashes, "Big Chungus Crash", {"bigchungustoggle"}, "Skid from x-force Big CHUNGUS Crash. Coded by Picoles(RyzeScript)", function(on_toggle)
 if on_toggle then
-    menu.trigger_commands("tploopon" .. players.get_name(pid))
-    menu.trigger_commands("anticrashcamera On")
-    menu.trigger_commands("invisibility On")
-    menu.trigger_commands("levitate On")
-    menu.trigger_commands("potatomode On")
-    menu.trigger_commands("nosky On")
-    menu.trigger_commands("reducedcollision On")
-    menu.trigger_commands("nocollision On")
+    addict.trigger_commands("tploopon" .. players.get_name(pid))
+    addict.trigger_commands("anticrashcamera On")
+    addict.trigger_commands("invisibility On")
+    addict.trigger_commands("levitate On")
+    addict.trigger_commands("potatomode On")
+    addict.trigger_commands("nosky On")
+    addict.trigger_commands("reducedcollision On")
+    addict.trigger_commands("nocollision On")
     local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
     local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
     local mdl = util.joaat("A_C_Cat_01")
@@ -19865,21 +19810,21 @@ if on_toggle then
     entities.delete_by_handle(veh_mdl2)
     util.yield(1000)
 else
-    menu.trigger_commands("tploopon" .. players.get_name(pid))
+    addict.trigger_commands("tploopon" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("anticrashcamera Off")
-    menu.trigger_commands("tpmazehelipad")
-    menu.trigger_commands("invisibility Off")
-    menu.trigger_commands("levitate Off")
-    menu.trigger_commands("potatomode Off")
-    menu.trigger_commands("nosky Off")
-    menu.trigger_commands("reducedcollision Off")
-    menu.trigger_commands("nocollision Off")
+    addict.trigger_commands("anticrashcamera Off")
+    addict.trigger_commands("tpmazehelipad")
+    addict.trigger_commands("invisibility Off")
+    addict.trigger_commands("levitate Off")
+    addict.trigger_commands("potatomode Off")
+    addict.trigger_commands("nosky Off")
+    addict.trigger_commands("reducedcollision Off")
+    addict.trigger_commands("nocollision Off")
     end
 end)
 ]]
 
-menu.toggle_loop(badheadcrash, "Bad Head Blend", {"outfitcrash"}, "", function()
+addict.toggle_loop(badheadcrash, "Bad Head Blend", {"outfitcrash"}, "", function()
     BlockSyncs(pid, function()
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local usr = players.user()
@@ -20212,7 +20157,7 @@ STREAMING.REQUEST_MODEL(mdl)
     end)
 end)
 
-menu.toggle_loop(badheadcrash, "Bad Head Blend v2", {"outfitcrashv2"}, "", function()
+addict.toggle_loop(badheadcrash, "Bad Head Blend v2", {"outfitcrashv2"}, "", function()
     local outfit_component_table = {}
     local outfit_component_texture_table = {}
     local outfit_prop_table = {}
@@ -20308,19 +20253,19 @@ end
     local amount = 5000
     local delay = 0
 
-    menu.slider(SexCrashes, "Spawn Amount", {"spawnammount"}, "", 0, 5000, amount, 50, function(val)
+    addict.slider(SexCrashes, "Spawn Amount", {"spawnammount"}, "", 0, 5000, amount, 50, function(val)
         amount = val
     end)
 
-    menu.slider(SexCrashes, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
+    addict.slider(SexCrashes, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
         delay = val
     end)
 
-    menu.list_select(SexCrashes, "Dildos Model", {"dildomodel"}, "", dildo_names, 1, function(val)
+    addict.list_select(SexCrashes, "Dildos Model", {"dildomodel"}, "", dildo_names, 1, function(val)
         selecteddildo = all_dildos[val]
     end)
     
-    menu.action(SexCrashes, "Rain Dildos", {"rainodildos"}, "", function()
+    addict.action(SexCrashes, "Rain Dildos", {"rainodildos"}, "", function()
         local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
         local myped = PLAYER.PLAYER_PED_ID()
@@ -20354,40 +20299,44 @@ end
         util.toast("[Dildo Rain] Finished.")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.divider(SexCrashes, "_________________________________________")
+    addict.divider(SexCrashes, "_________________________________________")
 
-menu.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stood still if you think freezing wont work. Credits to Legy for idea.", function()
-    menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(10)
-    menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(10)
-    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(200)
-    menu.trigger_commands("dancingtopless" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(10)
-    menu.trigger_commands("fsexmoan")
-    util.yield(10)
-    menu.trigger_commands("msexmoan")
-    util.yield(10)
-    menu.trigger_commands("animlapdance1")
-    util.yield(1000)
-    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("footlettuce" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(1000)
-    menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-    util.yield(5000)
-    menu.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("cancelanim")
+addict.action(SexCrashes,"Sex Crash", {"sexcrash"}, "Note: Make sure they are stood still if you think freezing wont work. Credits to Legy for idea.", function()
+    addict.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("dancingtopless" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("fsexmoans")
+    util.yield(100)
+    addict.trigger_commands("msexmoans")
+    util.yield(100)
+    addict.trigger_commands("animlapdance1")
+    util.yield(100)
+    addict.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("crash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("ngcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("footlettuce" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("attachto" .. PLAYER.GET_PLAYER_NAME(pid))
+    util.yield(100)
+    addict.trigger_commands("fsexmoans")
+    util.yield(100)
+    addict.trigger_commands("msexmoans")
+    util.yield(3500)
+    addict.trigger_commands("superc")
+    addict.trigger_commands("cancelanim")
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(synccrashes, "Sync Crash v1", {"synccrashv1"}, "", function()
+addict.toggle_loop(synccrashes, "Sync Crash v1", {"synccrashv1"}, "", function()
     local cord = getEntityCoords(getPlayerPed(pid))
     local object = entities.create_object(util.joaat("virgo"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
     local object = entities.create_object(util.joaat("swift2"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -20415,11 +20364,11 @@ menu.toggle_loop(synccrashes, "Sync Crash v1", {"synccrashv1"}, "", function()
     MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
     ENTITY.DETACH_ENTITY(object, object)
     entities.delete_by_handle(object)
-    menu.trigger_commands("superc 3")
-    menu.trigger_commands("superc 4")
+    addict.trigger_commands("superc 3")
+    addict.trigger_commands("superc 4")
 end)
 
-menu.toggle_loop(synccrashes, "Sync Crash v2", {"synccrashv2"}, "", function()
+addict.toggle_loop(synccrashes, "Sync Crash v2", {"synccrashv2"}, "", function()
     local cord = getEntityCoords(getPlayerPed(pid))
     local object = entities.create_object(util.joaat("prop_off_chair_04"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
     local object = entities.create_object(util.joaat("prop_parknmeter_01"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -20438,11 +20387,11 @@ menu.toggle_loop(synccrashes, "Sync Crash v2", {"synccrashv2"}, "", function()
     MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
     ENTITY.DETACH_ENTITY(object, object)
     entities.delete_by_handle(object)
-    menu.trigger_commands("superc 3")
-    menu.trigger_commands("superc 4")
+    addict.trigger_commands("superc 3")
+    addict.trigger_commands("superc 4")
 end)
 
-menu.toggle_loop(synccrashes, "Sync Crash v3", {"synccrashv3"}, "", function()
+addict.toggle_loop(synccrashes, "Sync Crash v3", {"synccrashv3"}, "", function()
     local cord = getEntityCoords(getPlayerPed(pid))
     local object = entities.create_object(util.joaat("docktrailer"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
     local object = entities.create_object(util.joaat("docktug"), cord, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
@@ -20477,11 +20426,11 @@ menu.toggle_loop(synccrashes, "Sync Crash v3", {"synccrashv3"}, "", function()
     MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(cord.x, cord.y, cord.z + 1, cord.x, cord.y, cord.z, 0, true, util.joaat("weapon_heavysniper_mk2"), players.user_ped(), false, true, 1.0)
     ENTITY.DETACH_ENTITY(object, object)
     entities.delete_by_handle(object)
-    menu.trigger_commands("superc 3")
-    menu.trigger_commands("superc 4")
+    addict.trigger_commands("superc 3")
+    addict.trigger_commands("superc 4")
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from x-force.", function()
+addict.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from x-force.", function()
     util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655}) -- Crash Event S1
     util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
     util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0}) -- Modded Event S3
@@ -20497,7 +20446,7 @@ menu.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from 
 end)
 
 
-menu.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged from x-force and modified.", function()
+addict.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged from x-force and modified.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20506,7 +20455,7 @@ menu.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged 
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0, pid, math.random(int_min, int_max)}) -- Modded Event S3
@@ -20520,9 +20469,9 @@ menu.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged 
     end
 end)
 
-menu.divider(SECrashes, "_________________________________________")
+addict.divider(SECrashes, "_________________________________________")
 
-menu.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20531,7 +20480,7 @@ menu.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0, pid, math.random(int_min, int_max)})
@@ -20539,7 +20488,7 @@ menu.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event cra
     end
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20548,7 +20497,7 @@ menu.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813, pid, math.random(int_min, int_max)})
@@ -20556,7 +20505,7 @@ menu.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event cra
     end
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20565,7 +20514,7 @@ menu.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922, pid, math.random(int_min, int_max)})
@@ -20573,7 +20522,7 @@ menu.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event cra
     end
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20582,7 +20531,7 @@ menu.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823, pid, math.random(int_min, int_max)})
@@ -20590,7 +20539,7 @@ menu.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event cra
     end
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20599,7 +20548,7 @@ menu.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240, pid, math.random(int_min, int_max)})
@@ -20607,7 +20556,7 @@ menu.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event cra
     end
 end)
 
-menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event crash, works good on normal player and also on cheap menus.", function()
+addict.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
@@ -20616,7 +20565,7 @@ menu.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event cra
         math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
     end
-    menu.trigger_commands("givesh" .. players.get_name(pid))
+    addict.trigger_commands("givesh" .. players.get_name(pid))
     util.yield()
     for i = 1, 15 do
         util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
@@ -20785,20 +20734,20 @@ local crash_ents = {}
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle19, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehicle20, vehicleCoords.x + 60, vehicleCoords.y, vehicleCoords.z)
             util.yield(2000)
-            menu.trigger_commands("superc")
+            addict.trigger_commands("superc")
             return
         end
     end
 
-    local MostMenuCrash = menu.list(MenuCrashes, "Most Menu Crashes", {}, "")
+    local MostaddictCrash = addict.list(addictCrashes, "Most Menu Crashes", {}, "")
 
-    menu.toggle_loop(MostMenuCrash, "TnT Crash", {"tntcrash"}, "Use anticrashcamera for this.", function()
+    addict.toggle_loop(MostaddictCrash, "TnT Crash", {"tntcrash"}, "Use anticrashcamera for this.", function()
         TnT_Crash(pid)
-        menu.trigger_commands("scenariocrash" .. PLAYER.GET_PLAYER_NAME(pid))
-        menu.trigger_commands("entcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("scenariocrash" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("entcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     end)
 
-local kachowlatest = menu.list(MostMenuCrash, "Ka-Chow", {}, "")
+local kachowlatest = addict.list(MostaddictCrash, "Ka-Chow", {}, "")
 
 local planes = {'hydra','volatol','duster','luxor','Lazer','mammatus','velum','Shamal','Stunt','vestra','titan','besra',
 'dodo','alkonost','velum2','cuban800','luxor2','nimbus','howard','alphaz1','seabreeze','nokota','molotok','starling','tula',
@@ -20835,41 +20784,100 @@ G_GeneratedList = false --
 function AddEntityToList(listName, handle, generatedCheck)
     if ((not G_GeneratedList) and generatedCheck) or (not generatedCheck) then
         G_GeneratedList = true
-        local lis = menu.list(kachowlatest, listName .. " handle " .. handle, {}, "")
-        menu.action(lis, "Delete", {"delcrashes"}, "", function()
+        local lis = addict.list(kachowlatest, listName .. " handle " .. handle, {}, "")
+        addict.action(lis, "Delete", {"delcrashes"}, "", function()
             entities.delete_by_handle(handle)
-            menu.delete(lis)
+            addict.delete(lis)
             G_GeneratedList = false
         end)
-        menu.action(lis, "Teleport to entity", {"tptoentity"}, "", function()
+        addict.action(lis, "Teleport to entity", {"tptoentity"}, "", function()
             local pos = ENTITY.GET_ENTITY_COORDS(handle)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(GetLocalPed(), pos.x, pos.y, pos.z + 1, false, false, false)
         end)
-        menu.action(lis, "Drive Entity", {"driveentity"}, "", function()
+        addict.action(lis, "Drive Entity", {"driveentity"}, "", function()
             PED.SET_PED_INTO_VEHICLE(GetLocalPed(), handle, -1)
         end)
-        menu.action(lis, "Teleport to you", {"tpentitytome"}, "", function()
+        addict.action(lis, "Teleport to you", {"tpentitytome"}, "", function()
             local pos = ENTITY.GET_ENTITY_COORDS(GetLocalPed())
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(handle, pos.x, pos.y, pos.z + 1, false, false, false)
         end)
     end
 end
 
-menu.toggle_loop(kachowlatest, "Boosted Ka-Chow", {"boostkachow"}, "", function()
-    menu.trigger_commands("kachowcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("morevehicles" .. PLAYER.GET_PLAYER_NAME(pid))
+addict.toggle_loop(kachowlatest, "Ka-Chow V1", {"kachowv1"}, "Press and hold down the enter button", function()
+local pedpos = ENTITY.GET_ENTITY_COORDS(asda, false)
+pedpos.z = pedpos.z + 10
+RqModel(util.joaat('lazer'))
+local spawn_in = entities.create_vehicle(util.joaat('lazer'), pedpos, 0)
+PED.SET_PED_INTO_VEHICLE(GetLocalPed(), spawn_in, -1)
+if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
+    local jet = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+    ENTITY.SET_ENTITY_PROOFS(jet, true, true, true, true, true, true, true, true)
+        local asda = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), false)
+        util.toast(' | asda.x: '.. asda.x.. 'asda.y: '.. asda.y..'asda.z: '.. asda.z)
+        ENTITY.SET_ENTITY_COORDS(jet, asda.x, asda.y, asda.z + 50, false, false, false, true) 
+    else 
+        local let_coords = coords[math.random(1, #coords)]
+        ENTITY.SET_ENTITY_COORDS(spawn_in, let_coords[1], let_coords[2], let_coords[3], false, false, false, true) 
+    end
+    ENTITY.SET_ENTITY_VELOCITY(spawn_in, 0, 0, 0)
+    ENTITY.SET_ENTITY_ROTATION(spawn_in, 0, 0, 0, 2, true)
+    local s_plane = planes[math.random(1, #planes)]
+    RqModel(util.joaat(s_plane))
+    local veha1 = entities.create_vehicle(util.joaat(s_plane), pedpos, 0)
+    ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, spawn_in, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
+    util.yield(3500)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spawn_in, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(veha1, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+    util.yield(5000)
+    NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veha1)
+    entities.delete_by_handle(spawn_in)
+    entities.delete_by_handle(veha1)
 end)
 
--- local jet_netID;
-menu.toggle_loop(kachowlatest, "Ka-Chow", {"kachowcrash"}, "Press and hold down the enter button", function()
-    menu.trigger_commands("anticrashcamera on")
+addict.toggle_loop(kachowlatest, "Ka-Chow V2", {"kachowv2"}, "Press and hold down the enter button", function()
+    local pedpos = ENTITY.GET_ENTITY_COORDS(asda, false)
+    pedpos.z = pedpos.z + 10
+    RqModel(util.joaat('lazer'))
+    local spawn_in = entities.create_vehicle(util.joaat('lazer'), pedpos, 0)
+    PED.SET_PED_INTO_VEHICLE(GetLocalPed(), spawn_in, -1)
+    util.yield(0)
     if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
         local jet = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
-        -- if VEHICLE.GET_VEHICLE_CLASS(jet) == 16 then --16 class is planes
-        -- jet_netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(jet)
         ENTITY.SET_ENTITY_PROOFS(jet, true, true, true, true, true, true, true, true)
-        -- ENTITY.SET_ENTITY_ROTATION(jet, 0, 0, 0, 2, true) -- rotation sync fuck
-        -- local let_coords = coords[math.random(1, #coords)]--function() for i =1, 32 do if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i) then return ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)) end end end
+            local asda = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), false)
+            util.toast(' | asda.x: '.. asda.x.. 'asda.y: '.. asda.y..'asda.z: '.. asda.z)
+            ENTITY.SET_ENTITY_COORDS(jet, asda.x, asda.y, asda.z + 50, false, false, false, true)
+            util.yield(0)
+            local let_coords = coords[math.random(1, #coords)]
+            ENTITY.SET_ENTITY_COORDS(spawn_in, let_coords[1], let_coords[2], let_coords[3], false, false, false, true)
+            util.yield(0)
+            ENTITY.SET_ENTITY_VELOCITY(spawn_in, 0, 0, 0)
+            ENTITY.SET_ENTITY_ROTATION(spawn_in, 0, 0, 0, 2, true)
+        else
+        end
+        util.yield(0)
+        local s_plane = planes[math.random(1, #planes)]
+        RqModel(util.joaat(s_plane))
+        local veha1 = entities.create_vehicle(util.joaat(s_plane), pedpos, 0)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, spawn_in, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
+        util.yield(500)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spawn_in, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(veha1, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false)
+        ENTITY.SET_ENTITY_VELOCITY(veha1, 0, 0, 0)
+        ENTITY.SET_ENTITY_ROTATION(veha1, 0, 0, 0, 2, true)
+        local let_coords = coords[math.random(1, #coords)]
+        ENTITY.SET_ENTITY_COORDS(veha1, let_coords[1], let_coords[2], let_coords[3], false, false, false, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veha1)
+        entities.delete_by_handle(spawn_in)
+        entities.delete_by_handle(veha1)
+end)
+
+addict.toggle_loop(kachowlatest, "Ka-Chow V3", {"kachowv3"}, "Press and hold down the enter button", function()
+    addict.trigger_commands("anticrashcamera on")
+    if PED.IS_PED_IN_ANY_VEHICLE(GetLocalPed(), false) then
+        local jet = PED.GET_VEHICLE_PED_IS_IN(GetLocalPed(), false)
+        ENTITY.SET_ENTITY_PROOFS(jet, true, true, true, true, true, true, true, true)
         if players.exists(to_ply) then 
             local asda = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(to_ply)) 
             util.toast('Player ID: '..to_ply..' | asda.x: '.. asda.x.. 'asda.y: '.. asda.y..'asda.z: '.. asda.z)
@@ -20881,25 +20889,21 @@ menu.toggle_loop(kachowlatest, "Ka-Chow", {"kachowcrash"}, "Press and hold down 
             local let_coords = coords[math.random(1, #coords)]
             ENTITY.SET_ENTITY_COORDS(jet, let_coords[1], let_coords[2], let_coords[3], false, false, false, true) 
         end
-            
-        ENTITY.SET_ENTITY_VELOCITY(jet, 0, 0, 0) -- velocity sync fuck
-        ENTITY.SET_ENTITY_ROTATION(jet, 0, 0, 0, 2, true) -- rotation sync fuck
+        ENTITY.SET_ENTITY_VELOCITY(jet, 0, 0, 0)
+        ENTITY.SET_ENTITY_ROTATION(jet, 0, 0, 0, 2, true)
         local pedpos = ENTITY.GET_ENTITY_COORDS(GetLocalPed())
         pedpos.z = pedpos.z + 10
         for i = 1, 2 do
             local s_plane = planes[math.random(1, #planes)]
             RqModel(util.joaat(s_plane))
             local veha1 = entities.create_vehicle(util.joaat(s_plane), pedpos, 0)
-
-            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, jet, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true,
-                true, true, true, 2)
+            ENTITY.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(veha1, jet, 0, 0, 0, 0, 5 + (2 * i), 0, 0, 0, 0, 0, 0, 1000, true, true, true, true, 2)
         end
         AddEntityToList("Plane: ", jet, true)
         util.toast("Waiting 5sec for syncs...")
-        util.yield(3500) -- 5k is original
-        for i = 1, 25 do -- 50 is original
+        util.yield(3500)
+        for i = 1, 25 do
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, math.random(0, 2555), math.random(0, 2815), math.random(1, 1232), false, false, false) 
-            --ENTITY.SET_ENTITY_COORDS_NO_OFFSET(jet, 252, 2815, 120, false, false, false) -- far away teleport (sync fuck)
             util.yield()
         end
     else
@@ -20910,90 +20914,95 @@ menu.toggle_loop(kachowlatest, "Ka-Chow", {"kachowcrash"}, "Press and hold down 
     end
 end)
 
-menu.toggle_loop(kachowlatest, "Spawn Others", {"morevehicles"}, "May improve crashing.", function()
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " cuban800")
+addict.toggle_loop(kachowlatest, "Boosted Ka-Chow V3", {"boostkachow"}, "", function()
+    addict.trigger_commands("kachowcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("morevehicles" .. PLAYER.GET_PLAYER_NAME(pid))
+end)
+
+addict.toggle_loop(kachowlatest, "Spawn Others", {"morevehicles"}, "May improve crashing.", function()
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " cuban800")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " titan")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " titan")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " duster")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " duster")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Stunt")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Stunt")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Shamal")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Shamal")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Lazer")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " Lazer")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " vestra")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " vestra")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " volatol")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " volatol")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " besra")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " besra")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " dodo")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " dodo")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alkonost")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alkonost")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum2")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " velum2")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " hydra")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor2")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " luxor2")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nimbus")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nimbus")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " howard")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " howard")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alphaz1")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " alphaz1")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " seabreeze")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " seabreeze")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nokota")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " nokota")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " molotok")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " molotok")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " starling")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " tula")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " tula")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " rogue")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " rogue")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " pyro")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " mogul")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " mogul")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " strikeforce")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " strikeforce")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger2")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " avenger2")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " bombushka")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " bombushka")
     util.yield(10)
-    menu.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
+    addict.trigger_commands("as " .. PLAYER.GET_PLAYER_NAME(pid) .. " microlight")
 end)
 
 
-menu.toggle_loop(kachowlatest, "Delete Crash Every 15 Seconds", {"delcrash"}, "Delete every 15 seconds.", function()
-    menu.trigger_commands("delcrashes")
-    menu.trigger_commands("noentities")
+addict.toggle_loop(kachowlatest, "Delete Crash Every 15 Seconds", {"delcrash"}, "Delete every 15 seconds.", function()
+    addict.trigger_commands("delcrashes")
+    addict.trigger_commands("noentities")
     util.yield(1000)
-    menu.trigger_commands("noentities")
+    addict.trigger_commands("noentities")
     util.yield(15000)
 end)
 
 
-menu.toggle_loop(kachowlatest, "Crash Cam", {}, "", function()
-    menu.trigger_commands("anticrashcamera")
+addict.toggle_loop(kachowlatest, "Crash Cam", {}, "", function()
+    addict.trigger_commands("anticrashcamera")
 end)
 
-menu.toggle_loop(kachowlatest, "TP On Ped Loop", {"tploops"}, "If they dont crash use this.", function()
-    menu.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pids))
+addict.toggle_loop(kachowlatest, "TP On Ped Loop", {"tploops"}, "If they dont crash use this.", function()
+    addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pids))
     util.yield(1)
 end)
 
@@ -21041,9 +21050,9 @@ local to_ply = 1
 local selected = 1
 local spawnedPlanes = {}
 
-local aicrashes = menu.list(MostMenuCrash, "A.I. Crashes", {}, "")
+local aicrashes = addict.list(MostaddictCrash, "A.I. Crashes", {}, "")
 
-menu.toggle_loop(aicrashes, "Start A.I. Fuck", {"aifuckcrash"}, "", function (on_toggle)
+addict.toggle_loop(aicrashes, "Start A.I. Fuck", {"aifuckcrash"}, "", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
@@ -21182,20 +21191,20 @@ menu.toggle_loop(aicrashes, "Start A.I. Fuck", {"aifuckcrash"}, "", function (on
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.toggle_loop(aicrashes, "Boosted A.I. Fuck", {"boostaifuck"}, "", function()
-    menu.trigger_commands("aifuckcrash" .. players.get_name(pid))
+addict.toggle_loop(aicrashes, "Boosted A.I. Fuck", {"boostaifuck"}, "", function()
+    addict.trigger_commands("aifuckcrash" .. players.get_name(pid))
 end)
 
-menu.toggle_loop(aicrashes, "Delete Crash Every 15 Seconds", {"deletingaicrash"}, "Delete every 15 seconds.", function()
-    menu.trigger_commands("noentities")
+addict.toggle_loop(aicrashes, "Delete Crash Every 15 Seconds", {"deletingaicrash"}, "Delete every 15 seconds.", function()
+    addict.trigger_commands("noentities")
     util.yield(1000)
-    menu.trigger_commands("noentities")
+    addict.trigger_commands("noentities")
     util.yield(15000)
 end)
 -----------------------------------------------------------------------------------------------------------
-local Reboundcrash = menu.list(MenuCrashes, "Rebound Crashes", {}, "")
+local Reboundcrash = addict.list(addictCrashes, "Rebound Crashes", {}, "")
 
-menu.action(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working.", function()
+addict.action(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working.", function()
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = players.get_position(pid)
         local mdl = util.joaat("mp_m_freemode_01")
@@ -21221,7 +21230,7 @@ menu.action(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working.", function
     util.log("Rebound Crash Sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working. Can't crash yourself with toggled.", function()
+addict.toggle_loop(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working. Can't crash yourself with toggled.", function()
     if pid ~= players.user() then
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = players.get_position(pid)
@@ -21249,33 +21258,33 @@ menu.toggle_loop(Reboundcrash,"Rebound Crash", {"reboundcrash"}, "Working. Can't
     end
 end)
 -----------------------------------------------------------------------------------------------------------
-local Cheraxcrash = menu.list(MenuCrashes, "Cherax Crashes", {}, "")
+local Cheraxcrash = addict.list(addictCrashes, "Cherax Crashes", {}, "")
 
-menu.action(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
-    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+addict.action(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
+    addict.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Cherax Crash Sent to " .. players.get_name(pid))
     util.log("Cherax Crash Sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
+addict.toggle_loop(Cheraxcrash,"Cherax Crash", {"cheraxcrash"}, "Working.", function()
     if pid ~= players.user() then
-    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("choke" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Cherax Crash Sent to " .. players.get_name(pid))
     util.log("Cherax Crash Sent to " .. players.get_name(pid))
     end
 end)
 -----------------------------------------------------------------------------------------------------------
-local Northcrash = menu.list(MenuCrashes, "North Crashes", {}, "")
+local Northcrash = addict.list(addictCrashes, "North Crashes", {}, "")
 
-menu.action(Northcrash,"North Crash", {"northcrash"}, "Working.", function()
+addict.action(Northcrash,"North Crash", {"northcrash"}, "Working.", function()
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local michael = util.joaat("player_zero")
     while not STREAMING.HAS_MODEL_LOADED(michael) do
@@ -21292,7 +21301,7 @@ menu.action(Northcrash,"North Crash", {"northcrash"}, "Working.", function()
     util.log("North Crash Sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(Northcrash,"North Crash", {"northcrash"}, "Working. Can't crash yourself with toggled.", function()
+addict.toggle_loop(Northcrash,"North Crash", {"northcrash"}, "Working. Can't crash yourself with toggled.", function()
     if pid ~= players.user() then
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local michael = util.joaat("player_zero")
@@ -21311,18 +21320,18 @@ menu.toggle_loop(Northcrash,"North Crash", {"northcrash"}, "Working. Can't crash
     end
 end)
 -----------------------------------------------------------------------------------------------------------
-local KiddionsCrash = menu.list(MenuCrashes, "Kiddions Crashes", {}, "")
+local KiddionsCrash = addict.list(addictCrashes, "Kiddions Crashes", {}, "")
 
-menu.action(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+addict.action(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
+addict.toggle_loop(KiddionsCrash,"Kiddions Crash", {"kiddionscrash"}, "Working. LMFAO", function()
     if pid ~= players.user() then
-    menu.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+    addict.trigger_commands("flashcrash" .. PLAYER.GET_PLAYER_NAME(pid))
     util.yield()
     util.toast("Kiddions Crash Sent to " .. players.get_name(pid))
     util.log("Kiddions Crash Sent to " .. players.get_name(pid))
@@ -21331,23 +21340,23 @@ end)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-menu.toggle_loop(craftcrash, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
+addict.toggle_loop(craftcrash, "Teleport ALL Entities to Player Loop", {"tpallentitiesloop"}, "WARNING: DO NOT SPECTATE! & Toggle Panic Mode Or You Most Likly Crash.", function(on_toggle)
 	if on_toggle then
-        menu.trigger_commands("tppeds" .. players.get_name(pid))
+        addict.trigger_commands("tppeds" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpvehs" .. players.get_name(pid))
+        addict.trigger_commands("tpvehs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpobjs" .. players.get_name(pid))
+        addict.trigger_commands("tpobjs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tppickups" .. players.get_name(pid))
+        addict.trigger_commands("tppickups" .. players.get_name(pid))
     else
-        menu.trigger_commands("tppeds" .. players.get_name(pid))
+        addict.trigger_commands("tppeds" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpvehs" .. players.get_name(pid))
+        addict.trigger_commands("tpvehs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tpobjs" .. players.get_name(pid))
+        addict.trigger_commands("tpobjs" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("tppickups" .. players.get_name(pid))
+        addict.trigger_commands("tppickups" .. players.get_name(pid))
     end
 end)
 
@@ -21361,7 +21370,7 @@ local vehicleType1 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "f
 local selected1 = 1
 local spawnedPlanes1 = {}
 
-menu.toggle_loop(craftcrash, "Start Loop 1", {"craftloop1"}, "Hold down enter...", function (on_toggle)
+addict.toggle_loop(craftcrash, "Start Loop 1", {"craftloop1"}, "Hold down enter...", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local modelHash <const> = util.joaat(vehicleType1[selected1])
     local startTime = util.current_time_millis()
@@ -21395,11 +21404,11 @@ menu.toggle_loop(craftcrash, "Start Loop 1", {"craftloop1"}, "Hold down enter...
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType1, 1, function (opt)
+addict.list_select(craftcrash, 'Select your loop', {}, "", vehicleType1, 1, function (opt)
     selected1 = opt
 end)
 
-menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance1, 25, function(distance)
+addict.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance1, 25, function(distance)
     spawnDistance1 = distance
 end)
 
@@ -21412,7 +21421,7 @@ local vehicleType2 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "f
 local selected2 = 1
 local spawnedPlanes2 = {}
 
-menu.toggle_loop(craftcrash, "Start Loop 2", {"craftloop2"}, "Hold down enter...", function (on_toggle)
+addict.toggle_loop(craftcrash, "Start Loop 2", {"craftloop2"}, "Hold down enter...", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local modelHash <const> = util.joaat(vehicleType2[selected2])
     local startTime = util.current_time_millis()
@@ -21446,11 +21455,11 @@ menu.toggle_loop(craftcrash, "Start Loop 2", {"craftloop2"}, "Hold down enter...
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType2, 1, function (opt)
+addict.list_select(craftcrash, 'Select your loop', {}, "", vehicleType2, 1, function (opt)
     selected2 = opt
 end)
 
-menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance2, 25, function(distance)
+addict.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance2, 25, function(distance)
     spawnDistance2 = distance
 end)
 
@@ -21462,7 +21471,7 @@ local vehicleType3 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "f
 local selected3 = 1
 local spawnedPlanes3 = {}
 
-menu.toggle_loop(craftcrash, "Start Loop 3", {"craftloop3"}, "Hold down enter...", function (on_toggle)
+addict.toggle_loop(craftcrash, "Start Loop 3", {"craftloop3"}, "Hold down enter...", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local modelHash <const> = util.joaat(vehicleType3[selected3])
     local startTime = util.current_time_millis()
@@ -21496,11 +21505,11 @@ menu.toggle_loop(craftcrash, "Start Loop 3", {"craftloop3"}, "Hold down enter...
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType3, 1, function (opt)
+addict.list_select(craftcrash, 'Select your loop', {}, "", vehicleType3, 1, function (opt)
     selected3 = opt
 end)
 
-menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance3, 25, function(distance)
+addict.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance3, 25, function(distance)
     spawnDistance3 = distance
 end)
 
@@ -21512,7 +21521,7 @@ local vehicleType4 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "f
 local selected4 = 1
 local spawnedPlanes4 = {}
 
-menu.toggle_loop(craftcrash, "Start Loop 4", {"craftloop4"}, "Hold down enter...", function (on_toggle)
+addict.toggle_loop(craftcrash, "Start Loop 4", {"craftloop4"}, "Hold down enter...", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local modelHash <const> = util.joaat(vehicleType4[selected4])
     local startTime = util.current_time_millis()
@@ -21546,11 +21555,11 @@ menu.toggle_loop(craftcrash, "Start Loop 4", {"craftloop4"}, "Hold down enter...
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType4, 1, function (opt)
+addict.list_select(craftcrash, 'Select your loop', {}, "", vehicleType4, 1, function (opt)
     selected4 = opt
 end)
 
-menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance4, 25, function(distance)
+addict.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance4, 25, function(distance)
     spawnDistance4 = distance
 end)
 
@@ -21562,7 +21571,7 @@ local vehicleType5 = { 'hydra', 'cargoplane', 'alkonost', 'lazer', "freight", "f
 local selected5 = 1
 local spawnedPlanes5 = {}
 
-menu.toggle_loop(craftcrash, "Start Loop 5", {"craftloop5"}, "Hold down enter...", function (on_toggle)
+addict.toggle_loop(craftcrash, "Start Loop 5", {"craftloop5"}, "Hold down enter...", function (on_toggle)
     local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local modelHash <const> = util.joaat(vehicleType5[selected5])
     local startTime = util.current_time_millis()
@@ -21596,11 +21605,11 @@ menu.toggle_loop(craftcrash, "Start Loop 5", {"craftloop5"}, "Hold down enter...
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED	(modelHash)
 end)
 
-menu.list_select(craftcrash, 'Select your loop', {}, "", vehicleType5, 1, function (opt)
+addict.list_select(craftcrash, 'Select your loop', {}, "", vehicleType5, 1, function (opt)
     selected5 = opt
 end)
 
-menu.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance5, 25, function(distance)
+addict.slider(craftcrash, "Loop Distance", {}, "", 0, 500, spawnDistance5, 25, function(distance)
     spawnDistance5 = distance
 end)
 
@@ -21833,7 +21842,7 @@ local object_names = {
 "xs_prop_trophy_flipper_01a"
 }
 
-local AntiCrashCam <const> = menu.ref_by_path("Game>Camera>Anti-Crash Camera", 38)
+local AntiCrashCam <const> = addict.ref_by_path("Game>Camera>Anti-Crash Camera", 38)
 function RequestModel(Hash, timeout)
     STREAMING.REQUEST_MODEL(Hash)
     time = util.current_time_millis() + (timeout or 1000)
@@ -21861,19 +21870,19 @@ end
 
 local amount = 5000
 local delay = 0
-menu.slider(objectc, "Spawn Amount", {"spawnammount"}, "", 0, 5000, amount, 50, function(val)
+addict.slider(objectc, "Spawn Amount", {"spawnammount"}, "", 0, 5000, amount, 50, function(val)
     amount = val
 end)
 
-menu.slider(objectc, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
+addict.slider(objectc, "Spawn Delay", {"spawndelay"}, "", 0, 500, delay, 10, function(val)
     delay = val
 end)
 
-menu.list_select(objectc, "Object Model", {"objectmodel"}, "", object_names, 1, function(val)
+addict.list_select(objectc, "Object Model", {"objectmodel"}, "", object_names, 1, function(val)
     selectedobject = all_objects[val]
 end)
 
-menu.toggle_loop(objectc, "Send Objects", {"sendobjects"}, "", function()
+addict.toggle_loop(objectc, "Send Objects", {"sendobjects"}, "", function()
     
     local pped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     local ppos = ENTITY.GET_ENTITY_COORDS(pped, true)
@@ -21910,177 +21919,177 @@ menu.toggle_loop(objectc, "Send Objects", {"sendobjects"}, "", function()
 end)
 
 
-    menu.action(TaskCrashes, "Trolly Crash", {"trollcrash"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
+    addict.action(TaskCrashes, "Trolly Crash", {"trollcrash"}, "Trolls player in a ton of ways. May cause crashes. Won't work on yourself. Restart script to stop all trolls.", function()
         if pid ~= players.user() then
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.yield(100)
         local player_ped = PLAYER.PLAYER_PED_ID()    
         local pld = PLAYER.GET_PLAYER_PED(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(pld)
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -75.2188, -818.582, 2699.9976)
-        menu.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("freeze" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("confuse" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("error" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("ragdoll" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("shakecam" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("aggressivenpcs" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("mugloop" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("beast" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("particlespam" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
+        addict.trigger_commands("bounty " .. PLAYER.GET_PLAYER_NAME(pid) .. " 10000")
         util.yield(100)
-        menu.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
+        addict.trigger_commands("pwanted" .. PLAYER.GET_PLAYER_NAME(pid) .. " 5")
         util.yield(100)
-        menu.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("attachcandycane" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("disarm" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("ceokick" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("dropfakebags" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("glitchphysics" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("deerarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("rabbitarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("yulearmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("furryarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("pussyarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("fathoesarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toplessarmy" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("allsounds" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("basketcage" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("invincbandito" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
+        addict.trigger_commands("sendbandito" .. PLAYER.GET_PLAYER_NAME(pid) .. " 25")
         util.yield(1500)
-        menu.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("invinckart" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
+        addict.trigger_commands("sendgokart" .. PLAYER.GET_PLAYER_NAME(pid) .. " 15")
         util.yield(1500)
-        menu.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("invincbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(100)
-        menu.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("sendbuzzard" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("sendtank" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("deliver" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("specialdeliver" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("smsspam" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("atomizeron" .. PLAYER.GET_PLAYER_NAME(pid))
         util.yield(1500)
-        menu.trigger_commands("explode" .. players.get_name(pid))
+        addict.trigger_commands("explode" .. players.get_name(pid))
         util.yield(1500)
-        menu.trigger_commands("explodeloop" .. players.get_name(pid))
+        addict.trigger_commands("explodeloop" .. players.get_name(pid))
         util.yield(1500)
-        menu.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
+        addict.trigger_commands("explosiondelay".. players.get_name(pid) .. " 0")
         util.yield(1500)
-        menu.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
+        addict.trigger_commands("explosionshake".. players.get_name(pid) .. " 10")
         util.yield(1500)
-        menu.trigger_commands("stopall".. players.get_name(pid))
+        addict.trigger_commands("stopall".. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.yield(100)
         util.toast("Addict Fuck Sent to " .. players.get_name(pid))
         util.log("Addict Fuck Sent to " .. players.get_name(pid))
         end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-       menu.divider(TaskCrashes, "_________________________________________")
+       addict.divider(TaskCrashes, "_________________________________________")
 
-       menu.toggle(TaskCrashes, "All Scenario Crashes", {"togglescenariocrashes"}, "It's risky to spectate using this but your call", function(on_toggle)
+       addict.toggle(TaskCrashes, "All Scenario Crashes", {"togglescenariocrashes"}, "It's risky to spectate using this but your call", function(on_toggle)
         if on_toggle then
             util.yield()
-            menu.trigger_commands("anticrashcamera")
+            addict.trigger_commands("anticrashcamera")
             util.yield()
-            menu.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
         else
             util.yield()
-            menu.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("bongoguitarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("cigarscrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("barbellcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("hammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("fishingcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("jackhammercrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("broomcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("drunkcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("trowelcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("wincleancrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("torchcrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
+            addict.trigger_commands("coffeecrash" .. PLAYER.GET_PLAYER_NAME(pid))
             util.yield(200)
-            menu.trigger_commands("noentities")
+            addict.trigger_commands("noentities")
             util.yield(200)
-            menu.trigger_commands("noentities")
+            addict.trigger_commands("noentities")
             util.yield()
-            menu.trigger_commands("anticrashcamera")
+            addict.trigger_commands("anticrashcamera")
             end
         end)
 
-        menu.divider(TaskCrashes, "_________________________________________")
+        addict.divider(TaskCrashes, "_________________________________________")
 
         local ents = {}
         local thingy = false
-        menu.toggle(TaskCrashes, "Muscle Crash", {"musclecrash"}, "Do not spectate them or stand near whilst using this.", function(val,cl)
+        addict.toggle(TaskCrashes, "Muscle Crash", {"musclecrash"}, "Do not spectate them or stand near whilst using this.", function(val,cl)
             thingy = val
             BlockSyncs(pid, function()
                 if val then
@@ -22125,10 +22134,10 @@ end)
             end)
         end)
 
-        menu.divider(TaskCrashes, "_________________________________________")
+        addict.divider(TaskCrashes, "_________________________________________")
     
     local crash_toggle = false
-    menu.toggle(TaskCrashes, "Scenario Crash", {"scenariocrash"}, "Do not spectate them or stand near whilst using this. Made By Aplics.", function(val)
+    addict.toggle(TaskCrashes, "Scenario Crash", {"scenariocrash"}, "Do not spectate them or stand near whilst using this. Made By Aplics.", function(val)
         crash_toggle = val
             if val then
                 local ped_pos = players.get_position(pid)
@@ -22174,17 +22183,17 @@ end)
             end
         end)
        
-       menu.divider(TaskCrashes, "_________________________________________")
+       addict.divider(TaskCrashes, "_________________________________________")
 
 
        local peds = 5
-menu.slider(TaskCrashes, "Number Of Guitars & Bongos", {"noguitarsnbongos"}, "Sends Guitar & Bongos crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Guitars & Bongos", {"noguitarsnbongos"}, "Sends Guitar & Bongos crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Guitar & Bongos Crash", {"bongoguitarscrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Guitar & Bongos Crash", {"bongoguitarscrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22229,13 +22238,13 @@ end)
 
 
        local peds = 5
-menu.slider(TaskCrashes, "Number Of Cigars", {"nocigars"}, "Sends Cigar crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Cigars", {"nocigars"}, "Sends Cigar crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Cigar Crash", {"cigarscrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Cigar Crash", {"cigarscrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22279,13 +22288,13 @@ menu.toggle(TaskCrashes, "Cigar Crash", {"cigarscrash"}, "It's risky to spectate
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Spatulas", {"nospatulars"}, "Sends Spatula crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Spatulas", {"nospatulars"}, "Sends Spatula crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Spatula Crash", {"spatularcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Spatula Crash", {"spatularcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22329,13 +22338,13 @@ menu.toggle(TaskCrashes, "Spatula Crash", {"spatularcrash"}, "It's risky to spec
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Barbell", {"nobarbell"}, "Sends Barbell crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Barbell", {"nobarbell"}, "Sends Barbell crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Barbell Crash", {"barbellcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Barbell Crash", {"barbellcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22379,13 +22388,13 @@ menu.toggle(TaskCrashes, "Barbell Crash", {"barbellcrash"}, "It's risky to spect
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Hammers", {"nohammers"}, "Sends Hammers crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Hammers", {"nohammers"}, "Sends Hammers crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Hammers Crash", {"hammercrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Hammers Crash", {"hammercrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22429,13 +22438,13 @@ menu.toggle(TaskCrashes, "Hammers Crash", {"hammercrash"}, "It's risky to specta
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Fishing Rods", {"norods"}, "Sends Fishing crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Fishing Rods", {"norods"}, "Sends Fishing crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Fishing Crash", {"fishingcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Fishing Crash", {"fishingcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22479,13 +22488,13 @@ menu.toggle(TaskCrashes, "Fishing Crash", {"fishingcrash"}, "It's risky to spect
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Jack Hammmers", {"nojacks"}, "Sends Jack Hammmer crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Jack Hammmers", {"nojacks"}, "Sends Jack Hammmer crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Jack Hammmer Crash", {"jackhammercrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Jack Hammmer Crash", {"jackhammercrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22529,13 +22538,13 @@ menu.toggle(TaskCrashes, "Jack Hammmer Crash", {"jackhammercrash"}, "It's risky 
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Brooms", {"nobrooms"}, "Sends Broom crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Brooms", {"nobrooms"}, "Sends Broom crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Broom Crash", {"broomcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Broom Crash", {"broomcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22580,13 +22589,13 @@ end)
 
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Russian Drunks", {"nodrunks"}, "Sends Russian Drunk crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Russian Drunks", {"nodrunks"}, "Sends Russian Drunk crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Russian Drunk Crash", {"drunkcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Russian Drunk Crash", {"drunkcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22631,13 +22640,13 @@ end)
 
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Trowels", {"notrowels"}, "Sends Trowel crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Trowels", {"notrowels"}, "Sends Trowel crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Trowel Crash", {"trowelcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Trowel Crash", {"trowelcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22682,7 +22691,7 @@ end)
 
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Window Cleans", {"nowincleans"}, "Sends Window Clean crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Window Cleans", {"nowincleans"}, "Sends Window Clean crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
@@ -22690,7 +22699,7 @@ end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Window Clean Crash", {"wincleancrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Window Clean Crash", {"wincleancrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22734,13 +22743,13 @@ menu.toggle(TaskCrashes, "Window Clean Crash", {"wincleancrash"}, "It's risky to
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Torches", {"notorches"}, "Sends Torch crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Torches", {"notorches"}, "Sends Torch crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Torch Crash", {"torchcrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Torch Crash", {"torchcrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22784,13 +22793,13 @@ menu.toggle(TaskCrashes, "Torch Crash", {"torchcrash"}, "It's risky to spectate 
 end)
 
 local peds = 5
-menu.slider(TaskCrashes, "Number Of Coffee Cups", {"nocoffeecups"}, "Sends Coffee crash.", 1, 45, 45, 1, function(amount)
+addict.slider(TaskCrashes, "Number Of Coffee Cups", {"nocoffeecups"}, "Sends Coffee crash.", 1, 45, 45, 1, function(amount)
     peds = amount
 end)
 
 local crash_ents = {}
 local crash_toggle = false
-menu.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectate using this but your call", function(val)
+addict.toggle(TaskCrashes, "Coffee Crash", {"coffeecrash"}, "It's risky to spectate using this but your call", function(val)
     crash_toggle = val
         if val then
             local number_of_peds = peds
@@ -22858,10 +22867,9 @@ local hashes = {
     2099682835,
 }
 
-local para_crash = menu.list(lobbycrash, "Parachute Crashes", {}, "")
+local para_crash = addict.list(lobbycrash, "Parachute Crashes", {}, "")
 
-
-menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
+addict.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
     while on do
         local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
         if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
@@ -22884,7 +22892,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 2
             object_hash2 = 3601491972 -- Crack Pipe
                 STREAMING.REQUEST_MODEL(object_hash2)
@@ -22899,7 +22907,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 3
                 object_hash3 = 452618762 -- Weed Plant  
                 STREAMING.REQUEST_MODEL(object_hash3)
@@ -22914,7 +22922,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 4
                 object_hash4 = 322248450 -- Pooltable
                 STREAMING.REQUEST_MODEL(object_hash4)
@@ -22929,7 +22937,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 5
                 object_hash5 = 2223607550 -- Massive Shit
                 STREAMING.REQUEST_MODEL(object_hash5)
@@ -22944,7 +22952,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 6
                 object_hash6 = 2452367939 -- Normal Shit
                 STREAMING.REQUEST_MODEL(object_hash6)
@@ -22959,7 +22967,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 7
                 object_hash7 = 1043035044 -- Traffic Post
                 STREAMING.REQUEST_MODEL(object_hash7)
@@ -22974,7 +22982,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Para 8
                 object_hash8 = 1585741317 -- Flag
                 STREAMING.REQUEST_MODEL(object_hash8)
@@ -22989,7 +22997,7 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
                 end
                 util.yield(1000)
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
                 ------------------------------------------------------------------------ Ropes 1
                 local hash = 0X187D938D
                 local pos = players.get_position(pid)
@@ -23007,17 +23015,14 @@ menu.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 util.yield(1000)
                 NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ped)
                 ------------------------------------------------------------------------
-                menu.trigger_commands("tpmazehelipad")
+                addict.trigger_commands("tpmazehelipad")
         end
     end
 local gwobaw = memory.script_global(2672505 + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
 end)
 
-
-    -- Parachute Crash
-
-	menu.toggle(para_crash, "Para Crash", {"ParaCrash"}, "", function(on)
+	addict.toggle(para_crash, "Para Crash", {"ParaCrash"}, "", function(on)
         if on then
 		for n = 0 , 1 do
 			PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
@@ -23034,7 +23039,7 @@ end)
 					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
 					end
 					util.yield(1000)
-					menu.trigger_commands("tplsia")
+					addict.trigger_commands("tplsia")
 				bush_hash = 1585741317
 					STREAMING.REQUEST_MODEL(bush_hash)
 				while not STREAMING.HAS_MODEL_LOADED(bush_hash) do
@@ -23048,17 +23053,17 @@ end)
 					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
 					end
 					util.yield(1000)
-					menu.trigger_commands("tplsia")
+					addict.trigger_commands("tplsia")
                     end
                 else
-                    menu.trigger_commands("tpmazehelipad")
+                    addict.trigger_commands("tpmazehelipad")
                     util.restart_script()
                 end
 			end)
 
     -- Parachute Crash 1
 
-	menu.toggle(para_crash, "Para Crash V1", {"paracrashv1"}, "", function(on)
+	addict.toggle(para_crash, "Para Crash V1", {"paracrashv1"}, "", function(on)
         if on then
 		for n = 0 , 5 do
 			PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
@@ -23076,7 +23081,7 @@ end)
 					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
 					end
 					util.yield(1000)
-					menu.trigger_commands("tplsia")
+					addict.trigger_commands("tplsia")
 				post_hash = util.joaat("prop_traffic_01a")
 					STREAMING.REQUEST_MODEL(post_hash)
 				while not STREAMING.HAS_MODEL_LOADED(post_hash) do
@@ -23091,7 +23096,7 @@ end)
 					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
 					end
 					util.yield(1000)
-					menu.trigger_commands("tplsia")
+					addict.trigger_commands("tplsia")
 
                     flag_hash = util.joaat("prop_beachflag_02")
 					STREAMING.REQUEST_MODEL(flag_hash)
@@ -23107,17 +23112,17 @@ end)
 					PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
 					end
 					util.yield(1000)
-					menu.trigger_commands("tplsia")
+					addict.trigger_commands("tplsia")
                     end
                 else
-                    menu.trigger_commands("tpmazehelipad")
+                    addict.trigger_commands("tpmazehelipad")
                     util.restart_script()
                 end
 			end)
 
         -- Parachute Crash 2
                 
-menu.toggle_loop(para_crash, "Para Crash V2", {"paracrashv2"}, "", function()
+addict.toggle_loop(para_crash, "Para Crash V2", {"paracrashv2"}, "", function()
     local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
     local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
     BlockSyncs(pid, function()
@@ -23145,7 +23150,7 @@ menu.toggle_loop(para_crash, "Para Crash V2", {"paracrashv2"}, "", function()
 end)
                 
 
-menu.toggle_loop(para_crash, "Para Crash V3", {"paracrashv3"}, "", function()
+addict.toggle_loop(para_crash, "Para Crash V3", {"paracrashv3"}, "", function()
     local ped = PLAYER.PLAYER_PED_ID()
     local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
     local hashes = {util.joaat("prop_beach_parasol_02"), util.joaat("prop_parasol_04c")}
@@ -23163,11 +23168,11 @@ menu.toggle_loop(para_crash, "Para Crash V3", {"paracrashv3"}, "", function()
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped, pos.x, pos.y, pos.z, false, true, true)
 end)
 
-menu.action(para_crash, "Restart Script To Stop Fuckery", {"restartparas"}, "", function ()
+addict.action(para_crash, "Restart Script To Stop Fuckery", {"restartparas"}, "", function ()
     util.restart_script()
 end)
 
-local Five_G_Crashes = menu.list(lobbycrash, "5G Crashes", {}, "")
+local Five_G_Crashes = addict.list(lobbycrash, "5G Crashes", {}, "")
 
 towtruck_area_attach = function(pid)
  --   if pid == players.user() then return end
@@ -23197,12 +23202,12 @@ towtruck_area_attach = function(pid)
     end
 end
 
-menu.action(Five_G_Crashes, "5G Crash", {"fiveg"}, "Crystals.", function()
+addict.action(Five_G_Crashes, "5G Crash", {"fiveg"}, "Crystals.", function()
     towtruck_area_attach(pid)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 --[[
-menu.action(Five_G_Crashes, "5G Crash", {"5gcrash"}, "Working on this...", function(value, pid)
+addict.action(Five_G_Crashes, "5G Crash", {"5gcrash"}, "Working on this...", function(value, pid)
     --if pid ~= players.user() then
         if players.get_spectate_target(pid) or playerposition(players.user(pid), PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)) then
             local vehicles = entities.get_all_vehicles_as_pointers(entities.get_all_vehicles_as_handles()), 1000, 5000, true, true, ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
@@ -23272,7 +23277,7 @@ menu.action(Five_G_Crashes, "5G Crash", {"5gcrash"}, "Working on this...", funct
 end)
 ]]
 
-menu.action(Five_G_Crashes, "5G Crash", {"fivegcrash"}, "5G? Skidded from Ryze Script.", function()
+addict.action(Five_G_Crashes, "5G Crash", {"fivegcrash"}, "5G? Skidded from Ryze Script.", function()
     local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
     local allvehicles = entities.get_all_vehicles_as_handles()
     for i = 1, 3 do
@@ -23289,60 +23294,60 @@ menu.action(Five_G_Crashes, "5G Crash", {"fivegcrash"}, "5G? Skidded from Ryze S
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-local attachcrash = menu.list(lobbycrash, "Attachment Crashes", {}, "")
+local attachcrash = addict.list(lobbycrash, "Attachment Crashes", {}, "")
 
-menu.divider(attachcrash, "V1 Crashes")
+addict.divider(attachcrash, "V1 Crashes")
 
-menu.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn on anticam for you, Warning! This is OP...", function()
-    menu.trigger_commands("anticrashcamera")
+addict.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn on anticam for you, Warning! This is OP...", function()
+    addict.trigger_commands("anticrashcamera")
     util.yield(100)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
     util.yield(100)
-    menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+    addict.trigger_commands("attachallnearby" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    addict.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop1" .. players.get_name(pid))
+    addict.trigger_commands("craftloop1" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop2" .. players.get_name(pid))
+    addict.trigger_commands("craftloop2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop3" .. players.get_name(pid))
+    addict.trigger_commands("craftloop3" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop4" .. players.get_name(pid))
+    addict.trigger_commands("craftloop4" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop5" .. players.get_name(pid))
+    addict.trigger_commands("craftloop5" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("badnet" .. players.get_name(pid))
+    addict.trigger_commands("badnet" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+    addict.trigger_commands("togglefragv3" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+    addict.trigger_commands("toggleweedcrash" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("vehcrash" .. players.get_name(pid))
+    addict.trigger_commands("vehcrash" .. players.get_name(pid))
     util.yield(100)
     util.toast("Wait For TP Loop to finish or restart the script...")
-    menu.trigger_commands("anticrashcamera")
+    addict.trigger_commands("anticrashcamera")
     util.yield(100)
-    menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+    addict.trigger_commands("attachallnearby" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    addict.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop1" .. players.get_name(pid))
+    addict.trigger_commands("craftloop1" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop2" .. players.get_name(pid))
+    addict.trigger_commands("craftloop2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop3" .. players.get_name(pid))
+    addict.trigger_commands("craftloop3" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop4" .. players.get_name(pid))
+    addict.trigger_commands("craftloop4" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("craftloop5" .. players.get_name(pid))
+    addict.trigger_commands("craftloop5" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("badnet" .. players.get_name(pid))
+    addict.trigger_commands("badnet" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+    addict.trigger_commands("togglefragv3" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+    addict.trigger_commands("toggleweedcrash" .. players.get_name(pid))
     util.yield(100)
     local player_ped = PLAYER.PLAYER_PED_ID()    
     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
@@ -23350,58 +23355,58 @@ menu.action(attachcrash, "Attachment Crash V1", {"attachcrashv1"}, "It will turn
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
+addict.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It will turn on anticam for you, Warning! This is OP...", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.yield(200)
         local player_ped = PLAYER.PLAYER_PED_ID()    
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1210.615, 3850.737, 490.0916)
         util.yield(200)
-        menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+        addict.trigger_commands("attachallnearby" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+        addict.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        addict.trigger_commands("craftloop1" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop2" .. players.get_name(pid))
+        addict.trigger_commands("craftloop2" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop3" .. players.get_name(pid))
+        addict.trigger_commands("craftloop3" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop4" .. players.get_name(pid))
+        addict.trigger_commands("craftloop4" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop5" .. players.get_name(pid))
+        addict.trigger_commands("craftloop5" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("badnet" .. players.get_name(pid))
+        addict.trigger_commands("badnet" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+        addict.trigger_commands("togglefragv3" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+        addict.trigger_commands("toggleweedcrash" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("vehcrash" .. players.get_name(pid))
+        addict.trigger_commands("vehcrash" .. players.get_name(pid))
         util.yield(200)
     else
         util.toast("Wait For TP Loop to finish or restart the script...")
-        menu.trigger_commands("anticrashcamera")
+        addict.trigger_commands("anticrashcamera")
         util.yield(200)
-        menu.trigger_commands("attachallnearby" .. players.get_name(pid))
+        addict.trigger_commands("attachallnearby" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+        addict.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("craftloop1" .. players.get_name(pid))
+        addict.trigger_commands("craftloop1" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop2" .. players.get_name(pid))
+        addict.trigger_commands("craftloop2" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop3" .. players.get_name(pid))
+        addict.trigger_commands("craftloop3" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop4" .. players.get_name(pid))
+        addict.trigger_commands("craftloop4" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("craftloop5" .. players.get_name(pid))
+        addict.trigger_commands("craftloop5" .. players.get_name(pid))
         util.yield(100)
-        menu.trigger_commands("badnet" .. players.get_name(pid))
+        addict.trigger_commands("badnet" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("togglefragv3" .. players.get_name(pid))
+        addict.trigger_commands("togglefragv3" .. players.get_name(pid))
         util.yield(200)
-        menu.trigger_commands("toggleweedcrash" .. players.get_name(pid))
+        addict.trigger_commands("toggleweedcrash" .. players.get_name(pid))
         util.yield(200)
         local player_ped = PLAYER.PLAYER_PED_ID()    
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.96841, -817.8495, 326.17517)
@@ -23410,12 +23415,12 @@ menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It wi
     end)
 
     
-    menu.divider(attachcrash, "V2 Crashes")
+    addict.divider(attachcrash, "V2 Crashes")
 
-    menu.action(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function()
-            menu.trigger_commands("anticrashcamera")
-            menu.trigger_commands("tpmazehelipad")
-            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+    addict.action(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function()
+            addict.trigger_commands("anticrashcamera")
+            addict.trigger_commands("tpmazehelipad")
+            addict.trigger_commands("tpallentitiesloop".. players.get_name(pid))
             local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             objects = entities.get_all_objects_as_handles()
             vehicles = entities.get_all_vehicles_as_handles()
@@ -23433,27 +23438,27 @@ menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It wi
             for i, ent in pairs(objects) do
             ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
             end
-            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
-            menu.trigger_commands("blackholeoffset" .. players.get_name(pid) .. " 0")
-            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
-            menu.trigger_commands("honkallcars".. players.get_name(pid))
-            menu.trigger_commands("blowupallcars".. players.get_name(pid))
+            addict.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            addict.trigger_commands("blackholeoffset" .. players.get_name(pid) .. " 0")
+            addict.trigger_commands("fuckupallcars".. players.get_name(pid))
+            addict.trigger_commands("honkallcars".. players.get_name(pid))
+            addict.trigger_commands("blowupallcars".. players.get_name(pid))
             util.yield(1000)
-            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
-            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
-            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
-            menu.trigger_commands("honkallcars".. players.get_name(pid))
-            menu.trigger_commands("blowupallcars".. players.get_name(pid))
-            menu.trigger_commands("superc")
-            menu.trigger_commands("anticrashcamera")
+            addict.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            addict.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            addict.trigger_commands("fuckupallcars".. players.get_name(pid))
+            addict.trigger_commands("honkallcars".. players.get_name(pid))
+            addict.trigger_commands("blowupallcars".. players.get_name(pid))
+            addict.trigger_commands("superc")
+            addict.trigger_commands("anticrashcamera")
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-    menu.toggle(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function(on_toggle)
+    addict.toggle(attachcrash, "Attachment Crash V2", {"attachcrashv2"}, "Can Cause prevented crashes (X8), (X9), (A0:32) and (A0:38).", function(on_toggle)
         if on_toggle then
-            menu.trigger_commands("anticrashcamera")
-            menu.trigger_commands("tpmazehelipad")
-            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            addict.trigger_commands("anticrashcamera")
+            addict.trigger_commands("tpmazehelipad")
+            addict.trigger_commands("tpallentitiesloop".. players.get_name(pid))
             local tar = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             objects = entities.get_all_objects_as_handles()
             vehicles = entities.get_all_vehicles_as_handles()
@@ -23471,28 +23476,28 @@ menu.toggle(attachcrash, "Attachment Crash V1 Toggled", {"toggleattach"}, "It wi
             for i, ent in pairs(objects) do
             ENTITY.ATTACH_ENTITY_TO_ENTITY(ent, tar, 0, 0.0, -0.20, 2.00, 1.0, 1.0,1, true, true, true, false, 0, true)
             end
-            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
-            menu.trigger_commands("blackholeoffset" .. players.get_name(pid) .. " 0")
-            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
-            menu.trigger_commands("honkallcars".. players.get_name(pid))
-            menu.trigger_commands("blowupallcars".. players.get_name(pid))
+            addict.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            addict.trigger_commands("blackholeoffset" .. players.get_name(pid) .. " 0")
+            addict.trigger_commands("fuckupallcars".. players.get_name(pid))
+            addict.trigger_commands("honkallcars".. players.get_name(pid))
+            addict.trigger_commands("blowupallcars".. players.get_name(pid))
         else
-            menu.trigger_commands("tpallentitiesloop".. players.get_name(pid))
-            menu.trigger_commands("vehicleblackholes".. players.get_name(pid))
-            menu.trigger_commands("fuckupallcars".. players.get_name(pid))
-            menu.trigger_commands("honkallcars".. players.get_name(pid))
-            menu.trigger_commands("blowupallcars".. players.get_name(pid))
-            menu.trigger_commands("superc")
-            menu.trigger_commands("anticrashcamera")
+            addict.trigger_commands("tpallentitiesloop".. players.get_name(pid))
+            addict.trigger_commands("vehicleblackholes".. players.get_name(pid))
+            addict.trigger_commands("fuckupallcars".. players.get_name(pid))
+            addict.trigger_commands("honkallcars".. players.get_name(pid))
+            addict.trigger_commands("blowupallcars".. players.get_name(pid))
+            addict.trigger_commands("superc")
+            addict.trigger_commands("anticrashcamera")
         end
     end)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-local keramicrash = menu.list(lobbycrash, "Kerami Crashes", {}, "")
+local keramicrash = addict.list(lobbycrash, "Kerami Crashes", {}, "")
 
-menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami script.", function(on_toggle)
+addict.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami script.", function(on_toggle)
     local hashes = {1492612435, 3517794615, 3889340782, 3253274834}
     local vehicles = {}
     for i = 1, 4 do
@@ -23523,7 +23528,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
             vehicles[#vehicles+1] = veh
         end)
     end
-    menu.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
+    addict.trigger_commands("tpallentitiesloop" .. players.get_name(pid))
     util.yield(100)
     for _, v in pairs(vehicles) do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(v)
@@ -23531,7 +23536,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
 		end
 	end)
 
-    menu.toggle_loop(keramicrash, "Bad Net Crash V2", {"badnetv2"}, "", function(on_toggle)
+    addict.toggle_loop(keramicrash, "Bad Net Crash V2", {"badnetv2"}, "", function(on_toggle)
         local hashes = {970385471, 2336777441, 184361638, 1030400667, 920453016, 240201337, 642617954, 586013744, 868868440, 1550581940, 3334677549, 3186376089}
         local vehicles = {}
         for i = 1, 4 do
@@ -23571,8 +23576,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
             end
         end)
 
-
-    menu.action(keramicrash, "Rope Crash Silent", {"silentropecrash"}, "", function(on_loop)
+    addict.action(keramicrash, "Rope Crash Silent", {"silentropecrash"}, "", function(on_loop)
         PHYSICS.ROPE_LOAD_TEXTURES()
         local hashes = {2132890591, 2727244247}
         local pc = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
@@ -23593,7 +23597,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
         PHYSICS.ROPE_UNLOAD_TEXTURES()
     end)
     
-    menu.action(keramicrash,"Rope Crash Lobby", {""} ,"" , function(pid)
+    addict.action(keramicrash,"Rope Crash Lobby", {""} ,"" , function(pid)
         local hash = 0X187D938D
         local pos = players.get_position(pid)
         local veh = VEHICLE.CREATE_VEHICLE(hash, pos.x + 5, pos.y, pos.z, 0, true, true, false)
@@ -23615,7 +23619,7 @@ menu.toggle_loop(keramicrash, "Bad Net Crash", {"badnet"}, "Skidded from kerami 
 
 
 
-menu.action(bigyachtycrash, "Big Yatchy V1", {"bigyachtyv1"}, "Causes Crash Event (A1:EA0FF6AD) by sending a prop yacht.", function()
+addict.action(bigyachtycrash, "Big Yatchy V1", {"bigyachtyv1"}, "Causes Crash Event (A1:EA0FF6AD) by sending a prop yacht.", function()
     local user = PLAYER.GET_PLAYER_PED(players.user())
     local model = util.joaat("h4_yacht_refproxy")
     local pos = players.get_position(pid)
@@ -23639,7 +23643,7 @@ menu.action(bigyachtycrash, "Big Yatchy V1", {"bigyachtyv1"}, "Causes Crash Even
     end)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(bigyachtycrash, "Big Yatchy V2", {"bigyachtyv2"}, "Causes Crash Event (A1:E8958704) by sending a prop yacht001.", function()
+addict.action(bigyachtycrash, "Big Yatchy V2", {"bigyachtyv2"}, "Causes Crash Event (A1:E8958704) by sending a prop yacht001.", function()
     local user = PLAYER.GET_PLAYER_PED(players.user())
     local model = util.joaat("h4_yacht_refproxy001")
     local pos = players.get_position(pid)
@@ -23663,7 +23667,7 @@ menu.action(bigyachtycrash, "Big Yatchy V2", {"bigyachtyv2"}, "Causes Crash Even
     end)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(bigyachtycrash, "Big Yatchy V3", {"bigyachtyv3"}, "Causes Crash Event (A1:1A7AEACE) by sending a prop yacht002.", function()
+addict.action(bigyachtycrash, "Big Yatchy V3", {"bigyachtyv3"}, "Causes Crash Event (A1:1A7AEACE) by sending a prop yacht002.", function()
     local user = PLAYER.GET_PLAYER_PED(players.user())
     local model = util.joaat("h4_yacht_refproxy002")
     local pos = players.get_position(pid)
@@ -23687,7 +23691,7 @@ menu.action(bigyachtycrash, "Big Yatchy V3", {"bigyachtyv3"}, "Causes Crash Even
     end)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(bigyachtycrash, "Big Yatchy V4", {"bigyachtyv4"}, "Causes Crash Event (A1:408D3AA0) by sending a prop apayacht.", function()
+addict.action(bigyachtycrash, "Big Yatchy V4", {"bigyachtyv4"}, "Causes Crash Event (A1:408D3AA0) by sending a prop apayacht.", function()
     local user = PLAYER.GET_PLAYER_PED(players.user())
     local model = util.joaat("h4_mp_apa_yacht")
     local pos = players.get_position(pid)
@@ -23711,7 +23715,7 @@ menu.action(bigyachtycrash, "Big Yatchy V4", {"bigyachtyv4"}, "Causes Crash Even
     end)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(bigyachtycrash, "Big Yatchy V5", {"bigyachtyv5"}, "Causes Crash Event (A1:B36122B5) by sending a prop yachtwin.", function()
+addict.action(bigyachtycrash, "Big Yatchy V5", {"bigyachtyv5"}, "Causes Crash Event (A1:B36122B5) by sending a prop yachtwin.", function()
     local user = PLAYER.GET_PLAYER_PED(players.user())
     local model = util.joaat("h4_mp_apa_yacht_win")
     local pos = players.get_position(pid)
@@ -23736,7 +23740,7 @@ menu.action(bigyachtycrash, "Big Yatchy V5", {"bigyachtyv5"}, "Causes Crash Even
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-    menu.action(weedcrash, "Weed Pot Crash", {"weedcrash"}, "", function()
+    addict.action(weedcrash, "Weed Pot Crash", {"weedcrash"}, "", function()
         local cord = getEntityCoords(getPlayerPed(pid))
         local a1 = entities.create_object(-930879665, cord)
         local a2 = entities.create_object(3613262246, cord)
@@ -23763,7 +23767,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
         util.toast("Finished.")
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    menu.toggle_loop(weedcrash, "Weed Pot Crash", {"toggleweedcrash"}, "", function(on_toggle)
+    addict.toggle_loop(weedcrash, "Weed Pot Crash", {"toggleweedcrash"}, "", function(on_toggle)
         local cord = getEntityCoords(getPlayerPed(pid))
         local a1 = entities.create_object(-930879665, cord)
         local a2 = entities.create_object(3613262246, cord)
@@ -23790,9 +23794,9 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
         end
     end)
 
-    local mathcrash = menu.list(lobbycrash, "Math Crash", {}, "")
+    local mathcrash = addict.list(lobbycrash, "Math Crash", {}, "")
 
-menu.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of rope crash.", function()
+addict.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of rope crash.", function()
     local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     pos.x = pos.x+5
@@ -23829,7 +23833,7 @@ menu.action(mathcrash, "Math Crash x3 Lobby", {"math"}, "One of the versions of 
     PHYSICS.ROPE_UNLOAD_TEXTURES()
 end)
 
-menu.toggle_loop(mathcrash, "Math Crash x3 Lobby", {"togglemath"}, "One of the versions of rope crash.", function(on_toggle)
+addict.toggle_loop(mathcrash, "Math Crash x3 Lobby", {"togglemath"}, "One of the versions of rope crash.", function(on_toggle)
     local pos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     local ppos = ENTITY.GET_ENTITY_COORDS(players.user_ped())
     pos.x = pos.x+5
@@ -23868,50 +23872,50 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local clothescrash = menu.list(lobbycrash, "Component Crash", {}, "")
+local clothescrash = addict.list(lobbycrash, "Component Crash", {}, "")
 
 
 
-menu.action(clothescrash,"Confusion Crash", {"confusion"}, "", function()
-    menu.trigger_commands("brohugloop" .. players.get_name(pid))
+addict.action(clothescrash,"Confusion Crash", {"confusion"}, "", function()
+    addict.trigger_commands("brohugloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv2loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv2loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv3loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv3loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv4loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv4loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrash" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrash" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrashv2" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrashv2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrashv2" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrashv2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("michaeltaxiloop" .. players.get_name(pid))
+    addict.trigger_commands("michaeltaxiloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("bigchungus" .. players.get_name(pid))
+    addict.trigger_commands("bigchungus" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugloop" .. players.get_name(pid))
+    addict.trigger_commands("brohugloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv2loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv2loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv3loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv3loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("brohugv4loop" .. players.get_name(pid))
+    addict.trigger_commands("brohugv4loop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrash" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrash" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrashv2" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrashv2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("outfitcrashv2" .. players.get_name(pid))
+    addict.trigger_commands("outfitcrashv2" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("michaeltaxiloop" .. players.get_name(pid))
+    addict.trigger_commands("michaeltaxiloop" .. players.get_name(pid))
     util.yield(100)
-    menu.trigger_commands("bigchungus" .. players.get_name(pid))
+    addict.trigger_commands("bigchungus" .. players.get_name(pid))
     util.yield(100)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-            menu.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
+            addict.action(clothescrash, "Component Crash", {"clothescrash"}, "Warning! Toggle Panic Mode First!", function()
                     if pid ~= players.user() then
                         util.toast("Wait 20 Seconds...")
                         local math_random = math.random
@@ -25008,7 +25012,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
                     end
                 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-                menu.toggle_loop(clothescrash, "Component Crash V2", {"compcrashv2"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
+                addict.toggle_loop(clothescrash, "Component Crash V2", {"compcrashv2"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
                         local math_random = math.random
                         local joaat = util.joaat
                         util.yield(100)
@@ -25675,7 +25679,7 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 end)
 
 
-menu.toggle_loop(clothescrash, "Small Component Crash", {"scompcrash"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
+addict.toggle_loop(clothescrash, "Small Component Crash", {"scompcrash"}, "Warning! Toggle Panic Mode First!", function(on_toggle)
         local math_random = math.random
         local joaat = util.joaat
         util.yield(100)
@@ -25738,7 +25742,7 @@ menu.toggle_loop(clothescrash, "Small Component Crash", {"scompcrash"}, "Warning
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-menu.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", function()
+addict.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", function()
         local mdl = util.joaat('a_c_poodle')
             BlockSyncs(pid, function()
             if request_model(mdl, 2) then
@@ -25763,7 +25767,7 @@ menu.action(poodlecrash, "Poodle Bomb Crash", {"poodle"}, "Skidded from Jinx.", 
     end)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.toggle_loop(poodlecrash, "Poodle Bomb Crash", {"togglepoodle"}, "Skidded from Jinx.", function(on_toggle)
+addict.toggle_loop(poodlecrash, "Poodle Bomb Crash", {"togglepoodle"}, "Skidded from Jinx.", function(on_toggle)
         local mdl = util.joaat('a_c_poodle')
             BlockSyncs(pid, function()
             if request_model(mdl, 2) then
@@ -25788,7 +25792,7 @@ menu.toggle_loop(poodlecrash, "Poodle Bomb Crash", {"togglepoodle"}, "Skidded fr
     end)
 end)
 
-    menu.toggle_loop(poodlecrash, "Poodle Crash V2", {"poodlev2"}, "Skidded from Jinx then x6 by Candy.", function(on_loop)
+    addict.toggle_loop(poodlecrash, "Poodle Crash V2", {"poodlev2"}, "Skidded from Jinx then x6 by Candy.", function(on_loop)
 --Locals
         local mdl = util.joaat('a_c_poodle')
         local mdl1 = util.joaat('a_c_poodle')
@@ -25863,21 +25867,21 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 local function BlockSyncs(pid, callback)
                 for _, i in ipairs(players.list(false, true, true)) do
                     if i ~= pid then
-                        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-                        menu.trigger_command(outSync, "on")
+                        local outSync = addict.ref_by_rel_path(addict.player_root(i), "Outgoing Syncs>Block")
+                        addict.trigger_command(outSync, "on")
                     end
                 end
                 util.yield(10)
                 callback()
                 for _, i in ipairs(players.list(false, true, true)) do
                     if i ~= pid then
-                        local outSync = menu.ref_by_rel_path(menu.player_root(i), "Outgoing Syncs>Block")
-                        menu.trigger_command(outSync, "off")
+                        local outSync = addict.ref_by_rel_path(addict.player_root(i), "Outgoing Syncs>Block")
+                        addict.trigger_command(outSync, "off")
                     end
                 end
                 end
 
-                menu.toggle_loop(fragcrash, "Fragment Crash V1", {"togglefragv1"}, "Skidded From 2take1", function(on_toggle)
+                addict.toggle_loop(fragcrash, "Fragment Crash V1", {"togglefragv1"}, "Skidded From 2take1", function(on_toggle)
                 if pid ~= players.user() then
                         local object = entities.create_object(util.joaat("prop_fragtest_cnst_04"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
                         OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
@@ -25913,7 +25917,7 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                     end
                 end)
 
-                menu.toggle_loop(fragcrash, "Fragment Crash V2", {"togglefragv2"}, "", function(on_toggle)
+                addict.toggle_loop(fragcrash, "Fragment Crash V2", {"togglefragv2"}, "", function(on_toggle)
                     if pid ~= players.user() then
                     local TargetPlayerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)
                     local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(TargetPlayerPed, true)
@@ -25941,20 +25945,20 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                 end
             end)
 
-                menu.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
+                addict.toggle(fragcrash, "Fragment Crash V3", {"togglefragv3"}, "", function(on_toggle)
                     if pid ~= players.user() then
                 if on_toggle then
-                        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
-                        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
+                        addict.trigger_commands("togglefragv1" .. players.get_name(pid))
+                        addict.trigger_commands("togglefragv2" .. players.get_name(pid))
                 else
-                        menu.trigger_commands("togglefragv1" .. players.get_name(pid))
-                        menu.trigger_commands("togglefragv2" .. players.get_name(pid))
-                        menu.trigger_commands("superc")
+                        addict.trigger_commands("togglefragv1" .. players.get_name(pid))
+                        addict.trigger_commands("togglefragv2" .. players.get_name(pid))
+                        addict.trigger_commands("superc")
                         end
                     end
                 end)
 
-            menu.action(vehcrash, "Vehicle Crash", {"vehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function()
+            addict.action(vehcrash, "Vehicle Crash", {"vehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function()
                     util.yield(1500)
                     local hash = util.joaat("baller")
                     local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -25970,45 +25974,45 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
                         ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
                     end
-                    menu.trigger_commands("killveh" .. players.get_name(pid))
-                    menu.trigger_commands("poptires" .. players.get_name(pid))
-                    menu.trigger_commands("removedoors" .. players.get_name(pid))
-                    menu.trigger_commands("slingshot" .. players.get_name(pid))
-                    menu.trigger_commands("igniteveh" .. players.get_name(pid))
-                    menu.trigger_commands("vehkick" .. players.get_name(pid))
-                    menu.trigger_commands("novehs" .. players.get_name(pid))
-                    menu.trigger_commands("delveh" .. players.get_name(pid))
-                    menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
-                    menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
-                    menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
-                    menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
+                    addict.trigger_commands("killveh" .. players.get_name(pid))
+                    addict.trigger_commands("poptires" .. players.get_name(pid))
+                    addict.trigger_commands("removedoors" .. players.get_name(pid))
+                    addict.trigger_commands("slingshot" .. players.get_name(pid))
+                    addict.trigger_commands("igniteveh" .. players.get_name(pid))
+                    addict.trigger_commands("vehkick" .. players.get_name(pid))
+                    addict.trigger_commands("novehs" .. players.get_name(pid))
+                    addict.trigger_commands("delveh" .. players.get_name(pid))
+                    addict.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
+                    addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
+                    addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
+                    addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
                     util.yield(100)
-                    menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                    menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                    addict.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
                 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 
-                menu.toggle_loop(vehcrash, "Vehicle Crash", {"togglevehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function(on_toggle)
+                addict.toggle_loop(vehcrash, "Vehicle Crash", {"togglevehcrash"}, "Sends them with a few car trolls then ton of op crash events starting with car crash events", function(on_toggle)
                     util.yield(1500)
                     local hash = util.joaat("baller")
                     local PlayerCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
@@ -26025,31 +26029,31 @@ ped1 = entities.create_ped(26, mdl, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORD
                         ENTITY.SET_ENTITY_VELOCITY(veh1, 0, -100, 0)
                         ENTITY.SET_ENTITY_VELOCITY(veh2, 0, 100, 0)
                         end
-                        menu.trigger_commands("killveh" .. players.get_name(pid))
-                        menu.trigger_commands("poptires" .. players.get_name(pid))
-                        menu.trigger_commands("removedoors" .. players.get_name(pid))
-                        menu.trigger_commands("slingshot" .. players.get_name(pid))
-                        menu.trigger_commands("igniteveh" .. players.get_name(pid))
-                        menu.trigger_commands("vehkick" .. players.get_name(pid))
-                        menu.trigger_commands("novehs" .. players.get_name(pid))
-                        menu.trigger_commands("delveh" .. players.get_name(pid))
-                        menu.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
-                        menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
-                        menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
-                        menu.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
+                        addict.trigger_commands("killveh" .. players.get_name(pid))
+                        addict.trigger_commands("poptires" .. players.get_name(pid))
+                        addict.trigger_commands("removedoors" .. players.get_name(pid))
+                        addict.trigger_commands("slingshot" .. players.get_name(pid))
+                        addict.trigger_commands("igniteveh" .. players.get_name(pid))
+                        addict.trigger_commands("vehkick" .. players.get_name(pid))
+                        addict.trigger_commands("novehs" .. players.get_name(pid))
+                        addict.trigger_commands("delveh" .. players.get_name(pid))
+                        addict.trigger_commands("slaughter" .. PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("crash"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("ngcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("footlettuce"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("spatularcrash"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
+                        addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
+                        addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 100")
+                        addict.trigger_commands("nospatulars".. players.get_name(pid) .. " 1")
                         util.yield(100)
-                        menu.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
-                        menu.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("poodle"..PLAYER.GET_PLAYER_NAME(pid))
+                        addict.trigger_commands("spatularcrash" .. PLAYER.GET_PLAYER_NAME(pid))
                         end)
 
                         
-menu.toggle_loop(vehcrash, "Next Gen Crash", {"nextgen"}, "", function()
+addict.toggle_loop(vehcrash, "Next Gen Crash", {"nextgen"}, "", function()
     local hash = 1349725314
     local playerPed = PLAYER.GET_PLAYER_PED(pid)
     local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed)
@@ -26066,67 +26070,67 @@ menu.toggle_loop(vehcrash, "Next Gen Crash", {"nextgen"}, "", function()
 end)
 
 
-            local oxtypecrashclick = menu.list(oxtypecrash, "Ox Menu Type Crashes Click", {}, "From Nightfall")
+            local oxtypecrashclick = addict.list(oxtypecrash, "Ox addict Type Crashes Click", {}, "From Nightfall")
 
-            menu.action(oxtypecrashclick, "All Ox Menu Type Crashes", {"oxallcrash"}, "Spam it for stronger results... Use Panic Mode If Needed.", function()
+            addict.action(oxtypecrashclick, "All Ox addict Type Crashes", {"oxallcrash"}, "Spam it for stronger results... Use Panic Mode If Needed.", function()
                 if on_toggle then
-                menu.trigger_commands("clickcombat" .. players.get_name(pid))
+                addict.trigger_commands("clickcombat" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickbeverlycrash" .. players.get_name(pid))
+                addict.trigger_commands("clickbeverlycrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickfabiencrash" .. players.get_name(pid))
+                addict.trigger_commands("clickfabiencrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickmanuelcrash" .. players.get_name(pid))
+                addict.trigger_commands("clickmanuelcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktaostranslatorcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicktaostranslatorcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktaostranslator2crash" .. players.get_name(pid))
+                addict.trigger_commands("clicktaostranslator2crash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktenniscoachcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicktenniscoachcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickwadecrash" .. players.get_name(pid))
+                addict.trigger_commands("clickwadecrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickshophighcrash" .. players.get_name(pid))
+                addict.trigger_commands("clickshophighcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickfranklincrash" .. players.get_name(pid))
+                addict.trigger_commands("clickfranklincrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicklazlowcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicklazlowcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicksiemoncrash" .. players.get_name(pid))
+                addict.trigger_commands("clicksiemoncrash" .. players.get_name(pid))
                 util.yield(1000)
             else
-                menu.trigger_commands("clickcombat" .. players.get_name(pid))
+                addict.trigger_commands("clickcombat" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickbeverlycrash" .. players.get_name(pid))
+                addict.trigger_commands("clickbeverlycrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickfabiencrash" .. players.get_name(pid))
+                addict.trigger_commands("clickfabiencrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickmanuelcrash" .. players.get_name(pid))
+                addict.trigger_commands("clickmanuelcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktaostranslatorcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicktaostranslatorcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktaostranslator2crash" .. players.get_name(pid))
+                addict.trigger_commands("clicktaostranslator2crash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicktenniscoachcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicktenniscoachcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickwadecrash" .. players.get_name(pid))
+                addict.trigger_commands("clickwadecrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickshophighcrash" .. players.get_name(pid))
+                addict.trigger_commands("clickshophighcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clickfranklincrash" .. players.get_name(pid))
+                addict.trigger_commands("clickfranklincrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicklazlowcrash" .. players.get_name(pid))
+                addict.trigger_commands("clicklazlowcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("clicksiemoncrash" .. players.get_name(pid))
+                addict.trigger_commands("clicksiemoncrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("superc")
+                addict.trigger_commands("superc")
                 util.yield(10)
-                menu.trigger_commands("superc")
+                addict.trigger_commands("superc")
                             end
                         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
                       
-            menu.action(oxtypecrashclick, "Combat Crash", {"clickcombat"}, "", function()
+            addict.action(oxtypecrashclick, "Combat Crash", {"clickcombat"}, "", function()
             local mdl = util.joaat('A_F_M_ProlHost_01')
                 if request_model(mdl, 2) then
                     local pos = players.get_position(pid)
@@ -26149,7 +26153,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Beverly Crash", {"clickbeverlycrash"}, "", function()
+            addict.action(oxtypecrashclick, "Beverly Crash", {"clickbeverlycrash"}, "", function()
             local mdl = util.joaat('cs_beverly')
                 if request_model(mdl, 2) then
                     local pos = players.get_position(pid)
@@ -26172,7 +26176,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Fabien Crash", {"clickfabiencrash"}, "", function()
+            addict.action(oxtypecrashclick, "Fabien Crash", {"clickfabiencrash"}, "", function()
             local mdl = util.joaat('cs_fabien')
                 if request_model(mdl, 2) then
                     local pos = players.get_position(pid)
@@ -26195,7 +26199,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Manuel Crash", {"clickmanuelcrash"}, "", function()
+            addict.action(oxtypecrashclick, "Manuel Crash", {"clickmanuelcrash"}, "", function()
             local mdl = util.joaat('cs_manuel')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26219,7 +26223,7 @@ end)
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
             
-            menu.action(oxtypecrashclick, "Taostranslator Crash", {"clicktaostranslatorcrash"}, "", function()
+            addict.action(oxtypecrashclick, "Taostranslator Crash", {"clicktaostranslatorcrash"}, "", function()
             local mdl = util.joaat('cs_taostranslator')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26242,7 +26246,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Taostranslator2 Crash", {"clicktaostranslator2crash"}, "", function()
+            addict.action(oxtypecrashclick, "Taostranslator2 Crash", {"clicktaostranslator2crash"}, "", function()
             local mdl = util.joaat('cs_taostranslator2')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26265,7 +26269,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Tenniscoach Crash", {"clicktenniscoachcrash"}, "", function()
+            addict.action(oxtypecrashclick, "Tenniscoach Crash", {"clicktenniscoachcrash"}, "", function()
             local mdl = util.joaat('cs_tenniscoach')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26288,7 +26292,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Wade Crash", {"clickwadecrash"}, "", function()
+            addict.action(oxtypecrashclick, "Wade Crash", {"clickwadecrash"}, "", function()
             local mdl = util.joaat('cs_wade')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26311,7 +26315,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Shop HIGH Crash", {"clickshophighcrash"}, "", function()
+            addict.action(oxtypecrashclick, "Shop HIGH Crash", {"clickshophighcrash"}, "", function()
             local mdl = util.joaat('S_F_M_Shop_HIGH')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26334,7 +26338,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Franklin Crash", {"clickfranklincrash"}, "", function()
+            addict.action(oxtypecrashclick, "Franklin Crash", {"clickfranklincrash"}, "", function()
             local mdl = util.joaat('P_Franklin_02')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26357,7 +26361,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Lazlow Crash", {"clicklazlowcrash"}, "", function()
+            addict.action(oxtypecrashclick, "Lazlow Crash", {"clicklazlowcrash"}, "", function()
             local mdl = util.joaat('CS_Lazlow')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26380,7 +26384,7 @@ end)
             end
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
             
-            menu.action(oxtypecrashclick, "Siemon Crash", {"clicksiemoncrash"}, "", function()
+            addict.action(oxtypecrashclick, "Siemon Crash", {"clicksiemoncrash"}, "", function()
             local mdl = util.joaat('IG_SiemonYetarian')
             if request_model(mdl, 2) then
                 local pos = players.get_position(pid)
@@ -26403,67 +26407,67 @@ end)
                 end
             end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-            local oxtypecrashtoggle = menu.list(oxtypecrash, "Ox Menu Type Crashes Toggled", {}, "From Nightfall")
+            local oxtypecrashtoggle = addict.list(oxtypecrash, "Ox addict Type Crashes Toggled", {}, "From Nightfall")
             
-            menu.toggle(oxtypecrashtoggle, "All Ox Menu Type Crashes", {"toggleoxallcrash"}, "Use Panic Mode If Needed.", function(on_toggle)
+            addict.toggle(oxtypecrashtoggle, "All Ox addict Type Crashes", {"toggleoxallcrash"}, "Use Panic Mode If Needed.", function(on_toggle)
                 if on_toggle then
-                menu.trigger_commands("togglecombat" .. players.get_name(pid))
+                addict.trigger_commands("togglecombat" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("beverlycrash" .. players.get_name(pid))
+                addict.trigger_commands("beverlycrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("fabiencrash" .. players.get_name(pid))
+                addict.trigger_commands("fabiencrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("manuelcrash" .. players.get_name(pid))
+                addict.trigger_commands("manuelcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("taostranslatorcrash" .. players.get_name(pid))
+                addict.trigger_commands("taostranslatorcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("taostranslator2crash" .. players.get_name(pid))
+                addict.trigger_commands("taostranslator2crash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("tenniscoachcrash" .. players.get_name(pid))
+                addict.trigger_commands("tenniscoachcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("wadecrash" .. players.get_name(pid))
+                addict.trigger_commands("wadecrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("shophighcrash" .. players.get_name(pid))
+                addict.trigger_commands("shophighcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("franklincrash" .. players.get_name(pid))
+                addict.trigger_commands("franklincrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("lazlowcrash" .. players.get_name(pid))
+                addict.trigger_commands("lazlowcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("siemoncrash" .. players.get_name(pid))
+                addict.trigger_commands("siemoncrash" .. players.get_name(pid))
                 util.yield(10)
             else
-                menu.trigger_commands("togglecombat" .. players.get_name(pid))
+                addict.trigger_commands("togglecombat" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("beverlycrash" .. players.get_name(pid))
+                addict.trigger_commands("beverlycrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("fabiencrash" .. players.get_name(pid))
+                addict.trigger_commands("fabiencrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("manuelcrash" .. players.get_name(pid))
+                addict.trigger_commands("manuelcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("taostranslatorcrash" .. players.get_name(pid))
+                addict.trigger_commands("taostranslatorcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("taostranslator2crash" .. players.get_name(pid))
+                addict.trigger_commands("taostranslator2crash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("tenniscoachcrash" .. players.get_name(pid))
+                addict.trigger_commands("tenniscoachcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("wadecrash" .. players.get_name(pid))
+                addict.trigger_commands("wadecrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("shophighcrash" .. players.get_name(pid))
+                addict.trigger_commands("shophighcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("franklincrash" .. players.get_name(pid))
+                addict.trigger_commands("franklincrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("lazlowcrash" .. players.get_name(pid))
+                addict.trigger_commands("lazlowcrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("siemoncrash" .. players.get_name(pid))
+                addict.trigger_commands("siemoncrash" .. players.get_name(pid))
                 util.yield(10)
-                menu.trigger_commands("superc")
+                addict.trigger_commands("superc")
                 util.yield(10)
-                menu.trigger_commands("superc")
+                addict.trigger_commands("superc")
                             end
                       end)
 
                       
-            menu.toggle_loop(oxtypecrashtoggle, "Combat Crash", {"togglecombat"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Combat Crash", {"togglecombat"}, "", function(on_toggle)
                 
             local mdl = util.joaat('A_F_M_ProlHost_01')
                 if request_model(mdl, 2) then
@@ -26488,7 +26492,7 @@ end)
             end
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Beverly Crash", {"beverlycrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Beverly Crash", {"beverlycrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_beverly')
                 if request_model(mdl, 2) then
@@ -26513,7 +26517,7 @@ end)
             end
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Fabien Crash", {"fabiencrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Fabien Crash", {"fabiencrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_fabien')
                 if request_model(mdl, 2) then
@@ -26538,7 +26542,7 @@ end)
             end
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Manuel Crash", {"manuelcrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Manuel Crash", {"manuelcrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_manuel')
             if request_model(mdl, 2) then
@@ -26565,7 +26569,7 @@ end)
             end)
             
             
-            menu.toggle_loop(oxtypecrashtoggle, "Taostranslator Crash", {"taostranslatorcrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Taostranslator Crash", {"taostranslatorcrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_taostranslator')
             if request_model(mdl, 2) then
@@ -26591,7 +26595,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Taostranslator2 Crash", {"taostranslator2crash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Taostranslator2 Crash", {"taostranslator2crash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_taostranslator2')
             if request_model(mdl, 2) then
@@ -26617,7 +26621,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Tenniscoach Crash", {"tenniscoachcrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Tenniscoach Crash", {"tenniscoachcrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_tenniscoach')
             if request_model(mdl, 2) then
@@ -26643,7 +26647,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Wade Crash", {"wadecrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Wade Crash", {"wadecrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('cs_wade')
             if request_model(mdl, 2) then
@@ -26669,7 +26673,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Shop HIGH Crash", {"shophighcrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Shop HIGH Crash", {"shophighcrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('S_F_M_Shop_HIGH')
             if request_model(mdl, 2) then
@@ -26695,7 +26699,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Franklin Crash", {"franklincrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Franklin Crash", {"franklincrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('P_Franklin_02')
             if request_model(mdl, 2) then
@@ -26721,7 +26725,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Lazlow Crash", {"lazlowcrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Lazlow Crash", {"lazlowcrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('CS_Lazlow')
             if request_model(mdl, 2) then
@@ -26747,7 +26751,7 @@ end)
             
             end)
             
-            menu.toggle_loop(oxtypecrashtoggle, "Siemon Crash", {"siemoncrash"}, "", function(on_toggle)
+            addict.toggle_loop(oxtypecrashtoggle, "Siemon Crash", {"siemoncrash"}, "", function(on_toggle)
             
             local mdl = util.joaat('IG_SiemonYetarian')
             if request_model(mdl, 2) then
@@ -26787,68 +26791,68 @@ local function random_args(id, amount)
     end
 end
 
-	menu.divider(standcrash, "Stand Crash Loops")
+	addict.divider(standcrash, "Stand Crash Loops")
 
 
-        menu.toggle_loop(standcrash, "Elegant", {"togglecrash"}, "Blocked by most menus.", function()
-            menu.trigger_commands("crash" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Elegant", {"togglecrash"}, "Blocked by most addicts.", function()
+            addict.trigger_commands("crash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular menus.", function(on_loop)
-            menu.trigger_commands("choke" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "BDSM", {"togglechoke"}, "Blocked by popular addicts.", function(on_loop)
+            addict.trigger_commands("choke" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Indecent Exposure", {"toggleflashcrash"}, "Blocked by popular menus.", function(on_loop)
-            menu.trigger_commands("flashcrash" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Indecent Exposure", {"toggleflashcrash"}, "Blocked by popular addicts.", function(on_loop)
+            addict.trigger_commands("flashcrash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Next-Gen", {"togglengcrash"}, "Blocked by popular menus.", function(on_loop)
-            menu.trigger_commands("ngcrash" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Next-Gen", {"togglengcrash"}, "Blocked by popular addicts.", function(on_loop)
+            addict.trigger_commands("ngcrash" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Steamroller", {"togglesteamroll"}, "Note: This crash will also affect other players close to your target.", function(on_loop)
-            menu.trigger_commands("steamroll" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Steamroller", {"togglesteamroll"}, "Note: This crash will also affect other players close to your target.", function(on_loop)
+            addict.trigger_commands("steamroll" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Burger King Foot Lettuce", {"togglefootlettuce"}, "Can't be blocked without consequences, but the target might karma you for using it.", function(on_loop)
-            menu.trigger_commands("footlettuce" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Burger King Foot Lettuce", {"togglefootlettuce"}, "Can't be blocked without consequences, but the target might karma you for using it.", function(on_loop)
+            addict.trigger_commands("footlettuce" .. players.get_name(pid))
             util.yield(1000)
         end)
 
-        menu.toggle_loop(standcrash, "Vehicular Manslaughter", {"toggleslaughter"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function(on_loop)
-            menu.trigger_commands("slaughter" .. players.get_name(pid))
+        addict.toggle_loop(standcrash, "Vehicular Manslaughter", {"toggleslaughter"}, "A discrete kick that won't tell the target who did it. Unblockable when you are the host.", function(on_loop)
+            addict.trigger_commands("slaughter" .. players.get_name(pid))
             util.yield(1000)
         end)
 
 
 
-	menu.divider(crash, "Before Crashes")
+	addict.divider(crash, "Before Crashes")
 
-	menu.toggle(crash, "Panic Mode", {"panicmode"}, "This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
-		local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-		local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-		local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-		local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+	addict.toggle(crash, "Panic Mode", {"panicmode"}, "This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
+		local BlockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+		local UnblockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+		local BlockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+		local UnblockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
 		if on_toggle then
-			menu.trigger_commands("desyncall on")
-			menu.trigger_command(BlockIncSyncs)
-			menu.trigger_command(BlockNetEvents)
-			menu.trigger_commands("anticrashcamera on")
+			addict.trigger_commands("desyncall on")
+			addict.trigger_command(BlockIncSyncs)
+			addict.trigger_command(BlockNetEvents)
+			addict.trigger_commands("anticrashcamera on")
 		else
-			menu.trigger_commands("desyncall off")
-			menu.trigger_command(UnblockIncSyncs)
-			menu.trigger_command(UnblockNetEvents)
-			menu.trigger_commands("anticrashcamera off")
+			addict.trigger_commands("desyncall off")
+			addict.trigger_command(UnblockIncSyncs)
+			addict.trigger_command(UnblockNetEvents)
+			addict.trigger_commands("anticrashcamera off")
 		end
 	end)
 
-    menu.toggle(crash, "Block Player", {"block"}, "Shortcut to blocking the player join reaction ", function()
-        menu.trigger_commands("historyblock" .. players.get_name(pid))
+    addict.toggle(crash, "Block Player", {"block"}, "Shortcut to blocking the player join reaction ", function()
+        addict.trigger_commands("historyblock" .. players.get_name(pid))
     end)
 
 end
@@ -27025,20 +27029,20 @@ local values = {
 
 local interior_stuff = {0, 233985, 169473, 169729, 169985, 170241, 177665, 177409, 185089, 184833, 184577, 163585, 167425, 167169}
 
-local self_protections = menu.list(menu.my_root(), "Protections", {}, "")
+local self_protections = addict.list(addict.my_root(), "Protections", {}, "")
 
-menu.divider(self_protections, "Addict Protections")
+addict.divider(self_protections, "Addict Protections")
 
-local proofsList = menu.list(self_protections, "Godmode Editor", {}, "")
-local immortalityCmd = menu.ref_by_path("Self>Immortality")
+local proofsList = addict.list(self_protections, "Godmode Editor", {}, "")
+local immortalityCmd = addict.ref_by_path("Self>Immortality")
 for _,data in pairs(proofs) do
-    menu.toggle(proofsList, data.name, {data.name:lower().."proof"}, "Makes you invulnerable to "..data.name:lower()..".", function(toggle)
+    addict.toggle(proofsList, data.name, {data.name:lower().."proof"}, "Makes you invulnerable to "..data.name:lower()..".", function(toggle)
         data.on = toggle
     end)
 end
 util.create_tick_handler(function()
     local player = players.user_ped()
-    if not menu.get_value(immortalityCmd) then
+    if not addict.get_value(immortalityCmd) then
         ENTITY.SET_ENTITY_PROOFS(player, proofs.bullet.on, proofs.fire.on, proofs.explosion.on, proofs.collision.on, proofs.melee.on, proofs.steam.on, false, proofs.drown.on)
     end
 end)
@@ -27046,7 +27050,7 @@ end)
 
 local ghost = false
 local ghostCmd
-local ghostCmd = menu.toggle(proofsList, "Auto Ghost Godmode Players", {}, "", function(toggle)
+local ghostCmd = addict.toggle(proofsList, "Auto Ghost Godmode Players", {}, "", function(toggle)
     ghost = toggle
 
     if not ghost then
@@ -27071,19 +27075,19 @@ local ghostCmd = menu.toggle(proofsList, "Auto Ghost Godmode Players", {}, "", f
     end
 end)
 
-menu.toggle_loop(proofsList, "Stealth Vehicle Godmode On", {}, "Won't be detected as vehicle godmode by most menus. Note: Save your profile now to keep it on.", function()
+addict.toggle_loop(proofsList, "Stealth Vehicle Godmode On", {}, "Won't be detected as vehicle godmode by most addicts. Note: Save your profile now to keep it on.", function()
     ENTITY.SET_ENTITY_PROOFS(entities.get_user_vehicle_as_handle(), true, true, true, true, true, 0, 0, true)
     end, function() ENTITY.SET_ENTITY_PROOFS(PED.GET_VEHICLE_PED_IS_IN(players.user(), false), false, false, false, false, false, 0, 0, false)
 end)
 
-menu.toggle_loop(proofsList, "Stealth Vehicle Godmode Off", {}, "Turns off Godmode for the vehicle", function()
+addict.toggle_loop(proofsList, "Stealth Vehicle Godmode Off", {}, "Turns off Godmode for the vehicle", function()
     ENTITY.SET_ENTITY_PROOFS(entities.get_user_vehicle_as_handle(), false, false, false, false, false, 0, 0, false)
     end, function() ENTITY.SET_ENTITY_PROOFS(PED.GET_VEHICLE_PED_IS_IN(players.user(), true), true, true, true, true, true, 0, 0, true)
 end)
 
-local anti_bounty = menu.list(self_protections, "Anti-Bounty's")
+local anti_bounty = addict.list(self_protections, "Anti-Bounty's")
 
-menu.action(anti_bounty, "Anti-Bounty", {"bountyoff"}, "Turns off bounty's.", function()
+addict.action(anti_bounty, "Anti-Bounty", {"bountyoff"}, "Turns off bounty's.", function()
     if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3))) == 1 then 
      memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
      memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
@@ -27092,7 +27096,7 @@ menu.action(anti_bounty, "Anti-Bounty", {"bountyoff"}, "Turns off bounty's.", fu
         end
     end)
     
-    menu.toggle_loop(anti_bounty, "Anti-Bounty's", {"bountysoff"}, "Turns off bounty's. Keep toggled if bounty's persist", function()
+    addict.toggle_loop(anti_bounty, "Anti-Bounty's", {"bountysoff"}, "Turns off bounty's. Keep toggled if bounty's persist", function()
     if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3))) == 1 then 
      memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
      memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
@@ -27100,9 +27104,9 @@ menu.action(anti_bounty, "Anti-Bounty", {"bountyoff"}, "Turns off bounty's.", fu
         end
     end)
 
-local anti_mugger = menu.list(self_protections, "Block Muggers")
+local anti_mugger = addict.list(self_protections, "Block Muggers")
 
-menu.toggle_loop(anti_mugger, "Anti-Mugger", {}, "Prevents you from being mugged", function() -- thx nowiry for improving my method :D
+addict.toggle_loop(anti_mugger, "Anti-Mugger", {}, "Prevents you from being mugged", function() -- thx nowiry for improving my method :D
     if NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_gang_call", 0, true, 0) then
         local ped_netId = memory.script_local("am_gang_call", 63 + 10 + (0 * 7 + 1))
         local sender = memory.script_local("am_gang_call", 287)
@@ -27121,7 +27125,7 @@ menu.toggle_loop(anti_mugger, "Anti-Mugger", {}, "Prevents you from being mugged
     end
 end)
 
-menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mugged.", function()
+addict.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mugged.", function()
     if NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_gang_call", 0, true, 0) then
         local ped_netId = memory.script_local("am_gang_call", 63 + 10 + (0 * 7 + 1))
         local sender = memory.script_local("am_gang_call", 287)
@@ -27140,17 +27144,17 @@ menu.toggle_loop(anti_mugger, "Someone Else", {}, "Prevents others from being mu
     end
 end)
 
-    local Cleansers = menu.list(self_protections, "Cleansers", {"cleansers"})
+    local Cleansers = addict.list(self_protections, "Cleansers", {"cleansers"})
 
-	menu.action(Cleansers, "Remove Attachments", {"remove attachments"}, "Cleans your ped of all attachments by regenerating it", function()
+	addict.action(Cleansers, "Remove Attachments", {"remove attachments"}, "Cleans your ped of all attachments by regenerating it", function()
 		if PED.IS_PED_MALE(PLAYER.PLAYER_PED_ID()) then
-			menu.trigger_commands("mpmale")
+			addict.trigger_commands("mpmale")
 		else
-			menu.trigger_commands("mpfemale")
+			addict.trigger_commands("mpfemale")
 		end
 	end)
 
-    supercleanse = menu.action(Cleansers, "Super Cleanse", {"cleanrope"}, "Cleans everything including ropes.", function(click_type)
+    supercleanse = addict.action(Cleansers, "Super Cleanse", {"cleanrope"}, "Cleans everything including ropes.", function(click_type)
             local ct = 0
             for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
                 local driver = VEHICLE.GET_PED_IN_VEHICLE_SEAT(ent, -1)
@@ -27182,7 +27186,7 @@ end)
             util.toast("Aborted.")
         end)
 
-    supercleanse = menu.toggle_loop(Cleansers, "Super Cleanse Toggle", {"cleanropeloop"}, "Cleans everything including ropes.", function(click_type)
+    supercleanse = addict.toggle_loop(Cleansers, "Super Cleanse Toggle", {"cleanropeloop"}, "Cleans everything including ropes.", function(click_type)
         util.show_corner_help("Be careful; using this can possibly crash your game or break a mission if important entities get deleted. Proceed?\n(NOTE: If you have skip warnings on, this won't show again.)")
             local ct = 0
             for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
@@ -27214,7 +27218,7 @@ end)
             util.toast("Everything cleaned including ropes.")
         end)
 
-    menu.action(Cleansers, "No Entity Spawn", {"clean"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_click)
+    addict.action(Cleansers, "No Entity Spawn", {"clean"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_click)
         local ct = 0
         for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -27245,7 +27249,7 @@ end)
         end
     end, nil, nil, COMMANDPERM_FRIENDLY)
     
-        menu.toggle_loop(Cleansers, "No Entity Spawn Toggled", {"noentities"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_loop)
+        addict.toggle_loop(Cleansers, "No Entity Spawn Toggled", {"noentities"}, "Attempt to fuck every single entity without exception. Not recommended but fuck it.", function(on_loop)
             local ct = 0
             for k,ent in pairs(entities.get_all_vehicles_as_handles()) do
                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
@@ -27276,12 +27280,12 @@ end)
             end
         end)
 
-    menu.toggle_loop(Cleansers, "Clear Shit Up Toggled", {"supercloop"}, "Every 1 second deletes all owned entities.", function (on_toggle)
-        menu.trigger_commands("superc")
+    addict.toggle_loop(Cleansers, "Clear Shit Up Toggled", {"supercloop"}, "Every 1 second deletes all owned entities.", function (on_toggle)
+        addict.trigger_commands("superc")
         util.yield(750)
     end)
 
-	menu.click_slider(Cleansers,"Clear Shit Up", {"superc"}, "5 = peds, 4 = vehicles, 3 = objects, 2 = pickups, 1 = all \nNote: This excludes players and their vehicles.", 1, 5, 1, 1, function(on_change)
+	addict.click_slider(Cleansers,"Clear Shit Up", {"superc"}, "5 = peds, 4 = vehicles, 3 = objects, 2 = pickups, 1 = all \nNote: This excludes players and their vehicles.", 1, 5, 1, 1, function(on_change)
 		if on_change == 5 then
 			local count = 0
 			for k,ent in pairs(entities.get_all_peds_as_handles()) do
@@ -27367,72 +27371,72 @@ end)
 		end
 	end)
 
-menu.toggle_loop(self_protections, "Force Stop all sound events", {"stopsounds"}, "", function()
+addict.toggle_loop(self_protections, "Force Stop all sound events", {"stopsounds"}, "", function()
     for i=-1,100 do
         AUDIO.STOP_SOUND(i)
         AUDIO.RELEASE_SOUND_ID(i)
     end
 end)
 	
-menu.toggle(self_protections, "Toggle Block all Network Events", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+addict.toggle(self_protections, "Toggle Block all Network Events", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
+    local BlockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnblockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
     if on_toggle then
-        menu.trigger_command(BlockNetEvents)
+        addict.trigger_command(BlockNetEvents)
     else
-        menu.trigger_command(UnblockNetEvents)
+        addict.trigger_command(UnblockNetEvents)
     end
 end)
 
 
-menu.toggle(self_protections, "Toggle Block all Incoming Syncs", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>SyPanicncs>Incoming>Any Incoming Sync>Block>Disabled")
+addict.toggle(self_protections, "Toggle Block all Incoming Syncs", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
+    local BlockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+    local UnblockIncSyncs = addict.ref_by_path("Online>Protections>SyPanicncs>Incoming>Any Incoming Sync>Block>Disabled")
     if on_toggle then
-        menu.trigger_command(BlockIncSyncs)
+        addict.trigger_command(BlockIncSyncs)
     else
-        menu.trigger_command(UnblockIncSyncs)
+        addict.trigger_command(UnblockIncSyncs)
     end
 end)
 
-menu.toggle(self_protections, "Toggle Block all Outgoing Syncs", {}, "This breaks the game, and other players will not receive any updates from your client", function(on_toggle)
+addict.toggle(self_protections, "Toggle Block all Outgoing Syncs", {}, "This breaks the game, and other players will not receive any updates from your client", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("desyncall on")
+        addict.trigger_commands("desyncall on")
     else
-        menu.trigger_commands("desyncall off")
+        addict.trigger_commands("desyncall off")
     end
 end)
 
-menu.toggle(self_protections, "Toggle Anticrashcam", {"acc"}, "Put this here for redundancy", function(on_toggle)
+addict.toggle(self_protections, "Toggle Anticrashcam", {"acc"}, "Put this here for redundancy", function(on_toggle)
     if on_toggle then
-        menu.trigger_commands("anticrashcam on")
-        menu.trigger_commands("potatomode on")
+        addict.trigger_commands("anticrashcam on")
+        addict.trigger_commands("potatomode on")
     else
-        menu.trigger_commands("anticrashcam off")
-        menu.trigger_commands("potatomode off")
+        addict.trigger_commands("anticrashcam off")
+        addict.trigger_commands("potatomode off")
     end
 end)
 
-menu.toggle(self_protections, "Toggle Panic Mode", {"panic"}, "Uses all of the above. This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
-    local BlockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-    local UnblockNetEvents = menu.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-    local BlockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
-    local UnblockIncSyncs = menu.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
+addict.toggle(self_protections, "Toggle Panic Mode", {"panic"}, "Uses all of the above. This will render you basically uncrashable at the cost of disrupting all gameplay", function(on_toggle)
+    local BlockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+    local UnblockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+    local BlockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
+    local UnblockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Disabled")
     if on_toggle then
-        menu.trigger_commands("desyncall on")
-        menu.trigger_command(BlockIncSyncs)
-        menu.trigger_command(BlockNetEvents)
-        menu.trigger_commands("anticrashcamera on")
+        addict.trigger_commands("desyncall on")
+        addict.trigger_command(BlockIncSyncs)
+        addict.trigger_command(BlockNetEvents)
+        addict.trigger_commands("anticrashcamera on")
     else
-        menu.trigger_commands("desyncall off")
-        menu.trigger_command(UnblockIncSyncs)
-        menu.trigger_command(UnblockNetEvents)
-        menu.trigger_commands("anticrashcamera off")
+        addict.trigger_commands("desyncall off")
+        addict.trigger_command(UnblockIncSyncs)
+        addict.trigger_command(UnblockNetEvents)
+        addict.trigger_commands("anticrashcamera off")
     end
 end)
 
 
-menu.toggle_loop(self_protections, "Block Clones", {"blockclones"}, "Detects And Blocks Clones.", function()
+addict.toggle_loop(self_protections, "Block Clones", {"blockclones"}, "Detects And Blocks Clones.", function()
     for i, ped in ipairs(entities.get_all_peds_as_handles()) do
     if ENTITY.GET_ENTITY_MODEL(ped) == ENTITY.GET_ENTITY_MODEL(players.user_ped()) and not PED.IS_PED_A_PLAYER(ped) and not util.is_session_transition_active() then
         util.toast("Clone model detected. Clearing...")
@@ -27442,7 +27446,7 @@ menu.toggle_loop(self_protections, "Block Clones", {"blockclones"}, "Detects And
     end
 end)
 
-menu.toggle_loop(self_protections, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
+addict.toggle_loop(self_protections, "Remove Stickys From Car", {"removestickys"}, "", function(toggle)
     local car = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(PLAYER.PLAYER_PED_ID(pid), true))
     NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
 end)
@@ -27456,27 +27460,27 @@ local values = {
 }
 
 
-menu.toggle_loop(self_protections, "Admin Bail", {}, "If it detects an R* admin it changes your session.", function(on)
+addict.toggle_loop(self_protections, "Admin Bail", {}, "If it detects an R* admin it changes your session.", function(on)
     bailOnAdminJoin = on
 end)
 
 if bailOnAdminJoin then
     if players.is_marked_as_admin(player_id) then
         util.toast(players.get_name(player_id) .. " If there is an admin, for another session.")
-        menu.trigger_commands("quickbail")
+        addict.trigger_commands("quickbail")
         return
     end
 end
 
 
-menu.toggle_loop(self_protections, "Block PFTX/Particulate Lag", {}, "", function()
+addict.toggle_loop(self_protections, "Block PFTX/Particulate Lag", {}, "", function()
     local coords = ENTITY.GET_ENTITY_COORDS(players.user_ped() , false);
     GRAPHICS.REMOVE_PARTICLE_FX_IN_RANGE(coords.x, coords.y, coords.z, 400)
     GRAPHICS.REMOVE_PARTICLE_FX_FROM_ENTITY(players.user_ped())
 end)
 
 
-menu.toggle_loop(self_protections, "Ghost PvP Players", {}, "", function()
+addict.toggle_loop(self_protections, "Ghost PvP Players", {}, "", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         if PLAYER.IS_PLAYER_FREE_AIMING(pid) then
             NETWORK.SET_REMOTE_PLAYER_AS_GHOST(pid, true)
@@ -27486,10 +27490,10 @@ menu.toggle_loop(self_protections, "Ghost PvP Players", {}, "", function()
     end
 end)
 
-local detections = menu.list(menu.my_root(), "Modder Detections", {}, "")
+local detections = addict.list(addict.my_root(), "Modder Detections", {}, "")
 
 --[[
-menu.toggle_loop(detections, "Get IP's", {}, "Log's IP's", function()
+addict.toggle_loop(detections, "Get IP's", {}, "Log's IP's", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local print_ip = players.get_connect_ip(pid)
             if print_ip == util.joaat(print_ip) then
@@ -27499,16 +27503,16 @@ menu.toggle_loop(detections, "Get IP's", {}, "Log's IP's", function()
     end
 end)
 
-menu.toggle_loop(detections, "Focused in the menu", {}, "Detects stuff", function()
+addict.toggle_loop(detections, "Focused in the addict", {}, "Detects stuff", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local focused = players.get_focused(pid)
             if focused == util.joaat(focused) then
-                util.draw_debug_text(players.get_name(pid) .. " name is focused in the menu")
+                util.draw_debug_text(players.get_name(pid) .. " name is focused in the addict")
         end
     end
 end)
 
-menu.toggle_loop(detections, "Rockstar id", {}, "Detects stuff", function()
+addict.toggle_loop(detections, "Rockstar id", {}, "Detects stuff", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local rockstar_id = players.get_rockstar_id(pid)
             if rockstar_id == util.joaat(rockstar_id) then
@@ -27517,7 +27521,7 @@ menu.toggle_loop(detections, "Rockstar id", {}, "Detects stuff", function()
     end
 end)
 
-menu.toggle_loop(detections, "Get money", {}, "Detects stuff", function()
+addict.toggle_loop(detections, "Get money", {}, "Detects stuff", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local get_bank = players.get_bank(pid)
             if get_bank == util.joaat(get_bank) then
@@ -27526,7 +27530,7 @@ menu.toggle_loop(detections, "Get money", {}, "Detects stuff", function()
     end
 end)
 
-menu.toggle_loop(detections, "Player is using controller", {}, "Detects stuff", function()
+addict.toggle_loop(detections, "Player is using controller", {}, "Detects stuff", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local is_using_controller = players.is_using_controller(pid)
             if is_using_controller == util.joaat(is_using_controller) then
@@ -27536,13 +27540,13 @@ menu.toggle_loop(detections, "Player is using controller", {}, "Detects stuff", 
 end)
 ]]
 
-local auto_punish = menu.list(detections, "Aim Punishments", {}, "")
+local auto_punish = addict.list(detections, "Aim Punishments", {}, "")
 
-local aim_det = menu.list(detections, "Aim Detection", {}, "")
+local aim_det = addict.list(detections, "Aim Detection", {}, "")
 
-local autohost = menu.list(detections, "Host Detection", {}, "")
+local autohost = addict.list(detections, "Host Detection", {}, "")
 
-    menu.toggle_loop(aim_det, "Aim Detection", {}, "Detects if someone is aiming a weapon at you.", function()
+    addict.toggle_loop(aim_det, "Aim Detection", {}, "Detects if someone is aiming a weapon at you.", function()
         for _, pid in ipairs(players.list(false, true, true)) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             for i, hash in ipairs(all_weapons) do
@@ -27558,15 +27562,15 @@ local autohost = menu.list(detections, "Host Detection", {}, "")
         end
     end)
 
-    menu.toggle_loop(auto_punish, "Auto Snipe", {}, "Detects if someone is aiming a weapon at you, then shoots them back them.", function()
+    addict.toggle_loop(auto_punish, "Auto Snipe", {}, "Detects if someone is aiming a weapon at you, then shoots them back them.", function()
         for _, pid in ipairs(players.list(false, true, true)) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             for i, hash in ipairs(all_weapons) do
             local weapon_hash = util.joaat(hash)
             if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-                menu.trigger_commands("osnipel" .. players.get_name(pid))
+                addict.trigger_commands("osnipel" .. players.get_name(pid))
                 util.yield(1000)
-                menu.trigger_commands("osnipel" .. players.get_name(pid))
+                addict.trigger_commands("osnipel" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
@@ -27577,15 +27581,15 @@ local autohost = menu.list(detections, "Host Detection", {}, "")
         end
     end)
 
-    menu.toggle_loop(auto_punish, "Auto Firework", {}, "Detects if someone is aiming a weapon at you, then shoots fireworks at them.", function()
+    addict.toggle_loop(auto_punish, "Auto Firework", {}, "Detects if someone is aiming a weapon at you, then shoots fireworks at them.", function()
         for _, pid in ipairs(players.list(false, true, true)) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             for i, hash in ipairs(all_weapons) do
             local weapon_hash = util.joaat(hash)
             if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-                menu.trigger_commands("fireworkon" .. players.get_name(pid))
+                addict.trigger_commands("fireworkon" .. players.get_name(pid))
                 util.yield(1000)
-                menu.trigger_commands("fireworkon" .. players.get_name(pid))
+                addict.trigger_commands("fireworkon" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
@@ -27596,15 +27600,15 @@ local autohost = menu.list(detections, "Host Detection", {}, "")
         end
     end)
 
-    menu.toggle_loop(auto_punish, "Auto Atomizer", {}, "Detects if someone is aiming a weapon at you, then shoots atomizer at them.", function()
+    addict.toggle_loop(auto_punish, "Auto Atomizer", {}, "Detects if someone is aiming a weapon at you, then shoots atomizer at them.", function()
         for _, pid in ipairs(players.list(false, true, true)) do
             local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
             for i, hash in ipairs(all_weapons) do
             local weapon_hash = util.joaat(hash)
             if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-                menu.trigger_commands("atomizeron" .. players.get_name(pid))
+                addict.trigger_commands("atomizeron" .. players.get_name(pid))
                 util.yield(1000)
-                menu.trigger_commands("atomizeron" .. players.get_name(pid))
+                addict.trigger_commands("atomizeron" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
                 util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
@@ -27615,17 +27619,17 @@ local autohost = menu.list(detections, "Host Detection", {}, "")
         end
     end)
 
-menu.toggle_loop(autohost, "Is Host", {}, "Detects if someone host", function()
+addict.toggle_loop(autohost, "Is Host", {}, "Detects if someone host", function()
     util.draw_debug_text(players.get_name(players.get_host()) .. " Is Host")
 end)
 
-menu.toggle_loop(autohost, "Auto Kick Host", {}, "Detects if someone host, then kicks them this is best for basic and regular users.", function()
+addict.toggle_loop(autohost, "Auto Kick Host", {}, "Detects if someone host, then kicks them this is best for basic and regular users.", function()
     util.draw_debug_text(players.get_name(players.get_host()) .. " Is Host")
-    menu.trigger_commands("blast" .. players.get_name(players.get_host()))
+    addict.trigger_commands("blast" .. players.get_name(players.get_host()))
 end)
 
-local gdmedits = menu.list(detections, "Godmode", {}, "")
-menu.toggle_loop(gdmedits, "Godmode", {}, "Detects if someone is using godmode.", function()
+local gdmedits = addict.list(detections, "Godmode", {}, "")
+addict.toggle_loop(gdmedits, "Godmode", {}, "Detects if someone is using godmode.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27638,13 +27642,13 @@ menu.toggle_loop(gdmedits, "Godmode", {}, "Detects if someone is using godmode."
     end 
 end)
 
-menu.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using godmode, blocks there joins and breakup kicks them.", function()
+addict.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using godmode, blocks there joins and breakup kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
         for i, interior in ipairs(interior_stuff) do
             if (players.is_godmode(pid) or not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(ped)) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
-            menu.trigger_commands("blast" .. players.get_name(pid))
+            addict.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is In Godmode")
                 util.toast(players.get_name(pid) .. "Is In Godmode")
                 break
@@ -27653,8 +27657,8 @@ menu.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using
     end 
 end)
 
-local vehgdm = menu.list(detections, "Vehicle Godmode", {}, "")
-menu.toggle_loop(vehgdm, "Vehicle Godmode", {}, "Detects if someone is using a vehicle that is in godmode.", function()
+local vehgdm = addict.list(detections, "Vehicle Godmode", {}, "")
+addict.toggle_loop(vehgdm, "Vehicle Godmode", {}, "Detects if someone is using a vehicle that is in godmode.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27670,7 +27674,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode", {}, "Detects if someone is using a v
     end 
 end)
 
-menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is using a vehicle that is in godmode, blocks there joins and breakup kicks them.", function()
+addict.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is using a vehicle that is in godmode, blocks there joins and breakup kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27678,7 +27682,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is
         if PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
             for i, interior in ipairs(interior_stuff) do
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
-                menu.trigger_commands("blast" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
                     util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
@@ -27688,7 +27692,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is
     end 
 end)
 
-menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Slingshot", {}, "Detects if someone is using a vehicle that is in godmode, then slingshots there vehicle.", function()
+addict.toggle_loop(vehgdm, "Vehicle Godmode Auto Slingshot", {}, "Detects if someone is using a vehicle that is in godmode, then slingshots there vehicle.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27696,7 +27700,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Slingshot", {}, "Detects if someo
         if PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
             for i, interior in ipairs(interior_stuff) do
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
-                menu.trigger_commands("slingshot" .. players.get_name(pid))
+                addict.trigger_commands("slingshot" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
                     util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
@@ -27706,7 +27710,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Slingshot", {}, "Detects if someo
     end 
 end)
 
-menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick Them Out", {}, "Detects if someone is using a vehicle that is in godmode, then kicks them out of the vehicle.", function()
+addict.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick Them Out", {}, "Detects if someone is using a vehicle that is in godmode, then kicks them out of the vehicle.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27714,7 +27718,7 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick Them Out", {}, "Detects if s
         if PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
             for i, interior in ipairs(interior_stuff) do
                 if not ENTITY.GET_ENTITY_CAN_BE_DAMAGED(player_veh) and not NETWORK.NETWORK_IS_PLAYER_FADING(pid) and ENTITY.IS_ENTITY_VISIBLE(ped) and get_transition_state(pid) ~= 0 and get_interior_player_is_in(pid) == interior then
-                menu.trigger_commands("vehkick" .. players.get_name(pid))
+                addict.trigger_commands("vehkick" .. players.get_name(pid))
                     util.draw_debug_text(players.get_name(pid) .. "Is In Vehicle Godmode")
                     util.toast(players.get_name(pid) .. "Is In Vehicle Godmode")
                     break
@@ -27724,8 +27728,8 @@ menu.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick Them Out", {}, "Detects if s
     end 
 end)
 
-local unrelveh = menu.list(detections, "Unreleased Vehicle", {}, "")
-menu.toggle_loop(unrelveh, "Unreleased Vehicle", {}, "Detects if someone is using a vehicle that has not been released yet.", function()
+local unrelveh = addict.list(detections, "Unreleased Vehicle", {}, "")
+addict.toggle_loop(unrelveh, "Unreleased Vehicle", {}, "Detects if someone is using a vehicle that has not been released yet.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(unreleased_vehicles) do
@@ -27736,25 +27740,12 @@ menu.toggle_loop(unrelveh, "Unreleased Vehicle", {}, "Detects if someone is usin
     end
 end)
 
-menu.toggle_loop(unrelveh, "Unreleased Vehicle Auto Kick", {}, "Detects if someone is using a vehicle that has not been released yet, blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(unrelveh, "Unreleased Vehicle Auto Kick", {}, "Detects if someone is using a vehicle that has not been released yet, blocks there joins and buttplug kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(unreleased_vehicles) do
             if modelHash == util.joaat(name) then
-                menu.trigger_commands("blast" .. players.get_name(pid))
-                util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
-            end
-        end
-    end
-end)
-
-menu.toggle_loop(unrelveh, "Unreleased Car Auto Slingshot", {}, "Detects if someone is using a vehicle that has not been released yet, then slingshots there vehicle.", function()
-    for _, pid in ipairs(players.list(false, true, true)) do
-        local modelHash = players.get_vehicle_model(pid)
-        for i, name in ipairs(unreleased_vehicles) do
-            if modelHash == util.joaat(name) then
-                menu.trigger_commands("slingshot" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
                 util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
             end
@@ -27762,12 +27753,12 @@ menu.toggle_loop(unrelveh, "Unreleased Car Auto Slingshot", {}, "Detects if some
     end
 end)
 
-menu.toggle_loop(unrelveh, "Unreleased Car Auto Kick Them Out", {}, "Detects if someone is using a vehicle that has not been released yet, then Kicks them out.", function()
+addict.toggle_loop(unrelveh, "Unreleased Car Auto Slingshot", {}, "Detects if someone is using a vehicle that has not been released yet, then slingshots there vehicle.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(unreleased_vehicles) do
             if modelHash == util.joaat(name) then
-                menu.trigger_commands("vehkick" .. players.get_name(pid))
+                addict.trigger_commands("slingshot" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
                 util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
             end
@@ -27775,8 +27766,21 @@ menu.toggle_loop(unrelveh, "Unreleased Car Auto Kick Them Out", {}, "Detects if 
     end
 end)
 
-local modhack = menu.list(detections, "It's a hacker", {}, "")
-menu.toggle_loop(modhack, "It's a hacker", {}, "Detects if the player is about to ban", function()
+addict.toggle_loop(unrelveh, "Unreleased Car Auto Kick Them Out", {}, "Detects if someone is using a vehicle that has not been released yet, then Kicks them out.", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local modelHash = players.get_vehicle_model(pid)
+        for i, name in ipairs(unreleased_vehicles) do
+            if modelHash == util.joaat(name) then
+                addict.trigger_commands("vehkick" .. players.get_name(pid))
+                util.draw_debug_text(players.get_name(pid) .. " Is Driving An Unreleased Vehicle " .. "(" .. name .. ")")
+                util.toast(players.get_name(pid) .. " Is Driving An Unreleased Vehicle" .. "(" .. name .. ")")
+            end
+        end
+    end
+end)
+
+local modhack = addict.list(detections, "It's a hacker", {}, "")
+addict.toggle_loop(modhack, "It's a hacker", {}, "Detects if the player is about to ban", function()
     for _, player_id in ipairs(players.list(false, true, true)) do
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         local reason = NETWORK.NETWORK_PLAYER_GET_CHEATER_REASON(player_id)
@@ -27788,12 +27792,12 @@ menu.toggle_loop(modhack, "It's a hacker", {}, "Detects if the player is about t
     end
 end)
 
-menu.toggle_loop(modhack, "It's a hacker Auto Kick", {}, "Detects if the player is about to ban, blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(modhack, "It's a hacker Auto Kick", {}, "Detects if the player is about to ban, blocks there joins and buttplug kicks them.", function()
     for _, player_id in ipairs(players.list(false, true, true)) do
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         local reason = NETWORK.NETWORK_PLAYER_GET_CHEATER_REASON(player_id)
         if NETWORK.NETWORK_PLAYER_IS_CHEATER(player_id) then
-                menu.trigger_commands("blast" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " They are about to ban him :u, reason:", reason)
                 util.toast(players.get_name(pid) .. " Is a hacker is being kicked now!" .. "(" .. name .. ")")
             break
@@ -27801,13 +27805,13 @@ menu.toggle_loop(modhack, "It's a hacker Auto Kick", {}, "Detects if the player 
     end
 end)
 
-menu.toggle_loop(modhack, "It's a hacker Auto Crash", {}, "Detects if the player is about to banned, then blocks there joins and sends Attach Crash to annoy them :).", function()
+addict.toggle_loop(modhack, "It's a hacker Auto Crash", {}, "Detects if the player is about to banned, then blocks there joins and sends Attach Crash to annoy them :).", function()
     for _, player_id in ipairs(players.list(false, true, true)) do
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         local reason = NETWORK.NETWORK_PLAYER_GET_CHEATER_REASON(player_id)
         if NETWORK.NETWORK_PLAYER_IS_CHEATER(player_id) then
-                menu.trigger_commands("attachcrash" .. players.get_name(pid))
-                menu.trigger_commands("historyblock" .. players.get_name(pid))
+                addict.trigger_commands("attachcrash" .. players.get_name(pid))
+                addict.trigger_commands("historyblock" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " They are about to ban him :u, reason:", reason)
                 util.toast(players.get_name(pid) .. " Is a hacker and is being Attach Crashed!" .. "(" .. name .. ")")
             break
@@ -27816,8 +27820,8 @@ menu.toggle_loop(modhack, "It's a hacker Auto Crash", {}, "Detects if the player
 end)
 
 
-local modweps = menu.list(detections, "Weapon In Interior", {}, "")
-menu.toggle_loop(modweps, "Weapon In Interior", {}, "Detects if you use a gun indoors", function()
+local modweps = addict.list(detections, "Weapon In Interior", {}, "")
+addict.toggle_loop(modweps, "Weapon In Interior", {}, "Detects if you use a gun indoors", function()
     for _, player_id in ipairs(players.list(false, true, true)) do
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
@@ -27827,23 +27831,11 @@ menu.toggle_loop(modweps, "Weapon In Interior", {}, "Detects if you use a gun in
     end
 end)
 
-menu.toggle_loop(modweps, "Weapon In Interior Auto Kick", {}, "Detects if you use a gun indoors, then blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(modweps, "Weapon In Interior Auto Kick", {}, "Detects if you use a gun indoors, then blocks there joins and buttplug kicks them.", function()
     for _, player_id in ipairs(players.list(false, true, true)) do
         local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
         if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
-                menu.trigger_commands("blast" .. players.get_name(pid))
-            util.draw_debug_text(players.get_name(player_id) .. " Has a gun indoors")
-                util.toast(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
-            break
-        end
-    end
-end)
-
-menu.toggle_loop(modweps, "Weapon In Interior Auto Disarm", {}, "Detects if you use a gun indoors, then disarms them.", function()
-    for _, player_id in ipairs(players.list(false, true, true)) do
-        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
-        if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
-                menu.trigger_commands("disarm" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
             util.draw_debug_text(players.get_name(player_id) .. " Has a gun indoors")
                 util.toast(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
             break
@@ -27851,9 +27843,21 @@ menu.toggle_loop(modweps, "Weapon In Interior Auto Disarm", {}, "Detects if you 
     end
 end)
 
+addict.toggle_loop(modweps, "Weapon In Interior Auto Disarm", {}, "Detects if you use a gun indoors, then disarms them.", function()
+    for _, player_id in ipairs(players.list(false, true, true)) do
+        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+        if players.is_in_interior(player_id) and WEAPON.IS_PED_ARMED(player, 7) then
+                addict.trigger_commands("disarm" .. players.get_name(pid))
+            util.draw_debug_text(players.get_name(player_id) .. " Has a gun indoors")
+                util.toast(players.get_name(pid) .. " Weapon In Interior Auto Kicking..." .. "(" .. name .. ")")
+            break
+        end
+    end
+end)
 
-local modwep = menu.list(detections, "Modded Weapon", {}, "")
-menu.toggle_loop(modwep, "Modded Weapon", {}, "Detects if someone is using a weapon that can not be obtained in online.", function()
+
+local modwep = addict.list(detections, "Modded Weapon", {}, "")
+addict.toggle_loop(modwep, "Modded Weapon", {}, "Detects if someone is using a weapon that can not be obtained in online.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         for i, hash in ipairs(modded_weapons) do
@@ -27866,13 +27870,13 @@ menu.toggle_loop(modwep, "Modded Weapon", {}, "Detects if someone is using a wea
     end
 end)
 
-menu.toggle_loop(modwep, "Modded Weapon Auto Kick", {}, "Detects if someone is using a weapon that can not be obtained in online, blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(modwep, "Modded Weapon Auto Kick", {}, "Detects if someone is using a weapon that can not be obtained in online, blocks there joins and buttplug kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         for i, hash in ipairs(modded_weapons) do
             local weapon_hash = util.joaat(hash)
             if WEAPON.HAS_PED_GOT_WEAPON(ped, weapon_hash, false) and (WEAPON.IS_PED_ARMED(ped, 7) or TASK.GET_IS_TASK_ACTIVE(ped, 8) or TASK.GET_IS_TASK_ACTIVE(ped, 9)) then
-                menu.trigger_commands("blast" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 util.toast(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 break
@@ -27881,13 +27885,13 @@ menu.toggle_loop(modwep, "Modded Weapon Auto Kick", {}, "Detects if someone is u
     end
 end)
 
-menu.toggle_loop(modwep, "Modded Weapon Auto Disarm", {}, "Detects if someone is using a weapon that can not be obtained in online, then disarms them.", function()
+addict.toggle_loop(modwep, "Modded Weapon Auto Disarm", {}, "Detects if someone is using a weapon that can not be obtained in online, then disarms them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         for i, hash in ipairs(modded_weapons) do
             local weapon_hash = util.joaat(hash)
             if WEAPON.HAS_PED_GOT_WEAPON(ped, weapon_hash, false) and (WEAPON.IS_PED_ARMED(ped, 7) or TASK.GET_IS_TASK_ACTIVE(ped, 8) or TASK.GET_IS_TASK_ACTIVE(ped, 9)) then
-                menu.trigger_commands("disarm" .. players.get_name(pid))
+                addict.trigger_commands("disarm" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 util.toast(players.get_name(pid) .. " Is Using A Modded Weapon" .. "(" .. hash .. ")")
                 break
@@ -27896,8 +27900,8 @@ menu.toggle_loop(modwep, "Modded Weapon Auto Disarm", {}, "Detects if someone is
     end
 end)
 
-local modveh = menu.list(detections, "Modded Vehicle", {}, "")
-menu.toggle_loop(modveh, "Modded Vehicle", {}, "Detects if someone is using a vehicle that can not be obtained in online.", function()
+local modveh = addict.list(detections, "Modded Vehicle", {}, "")
+addict.toggle_loop(modveh, "Modded Vehicle", {}, "Detects if someone is using a vehicle that can not be obtained in online.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(modded_vehicles) do
@@ -27909,26 +27913,12 @@ menu.toggle_loop(modveh, "Modded Vehicle", {}, "Detects if someone is using a ve
     end
 end)
 
-menu.toggle_loop(modveh, "Modded Vehicle Auto Kick", {}, "Detects if someone is using a vehicle that can not be obtained in online, blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(modveh, "Modded Vehicle Auto Kick", {}, "Detects if someone is using a vehicle that can not be obtained in online, blocks there joins and buttplug kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(modded_vehicles) do
             if modelHash == util.joaat(name) then
-                menu.trigger_commands("blast" .. players.get_name(pid))
-                util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
-                util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
-                break
-            end
-        end
-    end
-end)
-
-menu.toggle_loop(modveh, "Modded Vehicle Auto Slingshot", {}, "Detects if someone is using a vehicle that can not be obtained in online, then slingshots vehicle.", function()
-    for _, pid in ipairs(players.list(false, true, true)) do
-        local modelHash = players.get_vehicle_model(pid)
-        for i, name in ipairs(modded_vehicles) do
-            if modelHash == util.joaat(name) then
-                menu.trigger_commands("slingshot" .. players.get_name(pid))
+                addict.trigger_commands("blast" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 break
@@ -27937,12 +27927,26 @@ menu.toggle_loop(modveh, "Modded Vehicle Auto Slingshot", {}, "Detects if someon
     end
 end)
 
-menu.toggle_loop(modveh, "Modded Vehicle Auto Kick Them Out", {}, "Detects if someone is using a vehicle that can not be obtained in online, then kicks them out of the vehicle.", function()
+addict.toggle_loop(modveh, "Modded Vehicle Auto Slingshot", {}, "Detects if someone is using a vehicle that can not be obtained in online, then slingshots vehicle.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local modelHash = players.get_vehicle_model(pid)
         for i, name in ipairs(modded_vehicles) do
             if modelHash == util.joaat(name) then
-                menu.trigger_commands("vehkick" .. players.get_name(pid))
+                addict.trigger_commands("slingshot" .. players.get_name(pid))
+                util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
+                util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
+                break
+            end
+        end
+    end
+end)
+
+addict.toggle_loop(modveh, "Modded Vehicle Auto Kick Them Out", {}, "Detects if someone is using a vehicle that can not be obtained in online, then kicks them out of the vehicle.", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local modelHash = players.get_vehicle_model(pid)
+        for i, name in ipairs(modded_vehicles) do
+            if modelHash == util.joaat(name) then
+                addict.trigger_commands("vehkick" .. players.get_name(pid))
                 util.draw_debug_text(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 util.toast(players.get_name(pid) .. " Is Driving A Modded Vehicle" .. "(" .. name .. ")")
                 break
@@ -27952,8 +27956,8 @@ menu.toggle_loop(modveh, "Modded Vehicle Auto Kick Them Out", {}, "Detects if so
 end)
 
 
-local detsuperd = menu.list(detections, "Super Drive", {}, "")
-menu.toggle_loop(detsuperd, "Super Drive", {}, "Detects if the player is using super drive.", function()
+local detsuperd = addict.list(detections, "Super Drive", {}, "")
+addict.toggle_loop(detsuperd, "Super Drive", {}, "Detects if the player is using super drive.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
@@ -27966,29 +27970,14 @@ menu.toggle_loop(detsuperd, "Super Drive", {}, "Detects if the player is using s
     end
 end)
 
-menu.toggle_loop(detsuperd, "Super Drive Auto Kick", {}, "Detects if the player is using super drive, blocks there joins and buttplug kicks them.", function()
+addict.toggle_loop(detsuperd, "Super Drive Auto Kick", {}, "Detects if the player is using super drive, blocks there joins and buttplug kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
         local veh_speed = (ENTITY.GET_ENTITY_SPEED(vehicle)* 2.236936)
         local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
         if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
-        menu.trigger_commands("blast" .. players.get_name(pid))
-        util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
-            util.toast(players.get_name(pid) .. " Is Using Super Drive")
-            break
-        end
-    end
-end)
-
-menu.toggle_loop(detsuperd, "Super Drive Auto Slingshot", {}, "Detects if the player is using super drive, then slinghsots there vehicle.", function()
-    for _, pid in ipairs(players.list(false, true, true)) do
-        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-        local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
-        local veh_speed = (ENTITY.GET_ENTITY_SPEED(vehicle)* 2.236936)
-        local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
-        if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
-        menu.trigger_commands("slingshot" .. players.get_name(pid))
+        addict.trigger_commands("blast" .. players.get_name(pid))
         util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
             util.toast(players.get_name(pid) .. " Is Using Super Drive")
             break
@@ -27996,14 +27985,29 @@ menu.toggle_loop(detsuperd, "Super Drive Auto Slingshot", {}, "Detects if the pl
     end
 end)
 
-menu.toggle_loop(detsuperd, "Super Drive Auto Kick Them Out", {}, "Detects if the player is using super drive, then kicks them out of the vehicle.", function()
+addict.toggle_loop(detsuperd, "Super Drive Auto Slingshot", {}, "Detects if the player is using super drive, then slinghsots there vehicle.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
         local veh_speed = (ENTITY.GET_ENTITY_SPEED(vehicle)* 2.236936)
         local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
         if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
-        menu.trigger_commands("vehkick" .. players.get_name(pid))
+        addict.trigger_commands("slingshot" .. players.get_name(pid))
+        util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
+            util.toast(players.get_name(pid) .. " Is Using Super Drive")
+            break
+        end
+    end
+end)
+
+addict.toggle_loop(detsuperd, "Super Drive Auto Kick Them Out", {}, "Detects if the player is using super drive, then kicks them out of the vehicle.", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
+        local veh_speed = (ENTITY.GET_ENTITY_SPEED(vehicle)* 2.236936)
+        local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
+        if class ~= 15 and class ~= 16 and veh_speed >= 180 and VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehicle, -1) and players.get_vehicle_model(pid) ~= util.joaat("oppressor") then -- not checking opressor mk1 cus its stinky
+        addict.trigger_commands("vehkick" .. players.get_name(pid))
         util.draw_debug_text(players.get_name(pid) .. " Is Using Super Drive")
             util.toast(players.get_name(pid) .. " Is Using Super Drive")
             break
@@ -28013,38 +28017,38 @@ end)
 
 --------------------------------------
 
-menu.action(menu.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
+addict.action(addict.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
 	os.exit()
 end)
 
-menu.action(menu.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
+addict.action(addict.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
     local pick = math.random(6)
     if pick == 4 then 
-        menu.show_command_box("say " .. "I loose.")
+        addict.show_command_box("say " .. "I loose.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
         util.log("I loose.")
         util.yield(300)
         os.exit()
     else
         util.toast("Lucky Bastard ;)")
-		menu.show_command_box("say " .. "I got lucky.")
+		addict.show_command_box("say " .. "I got lucky.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
         util.yield(200)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
     end
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-menu.action(menu.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
+addict.action(addict.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
     MISC.RESTART_GAME("E574A662ACAEFBB1")
 end)
 
-menu.action(menu.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
+addict.action(addict.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
     util.restart_script()
 end)
 
 focusref = {}
 isfocused = false
-selectedcolormenu = 0
+selectedcoloraddict = 0
 colorselec = 1
 allchatlabel = util.get_label_text("MP_CHAT_ALL")
 teamchatlabel = util.get_label_text("MP_CHAT_TEAM")
@@ -28167,49 +28171,49 @@ function decode(text)
 end
 
 
-local maxpl = menu.list(Net_Shit, "Max Players To 32")
+local maxpl = addict.list(Net_Shit, "Max Players To 32")
 
-    menu.slider(maxpl, "Max Players To 32", {"maxplayers"}, "Set the maximum number of players in a session (only works when you are the host)", 1, 32, 32, 1, function (value)
+    addict.slider(maxpl, "Max Players To 32", {"maxplayers"}, "Set the maximum number of players in a session (only works when you are the host)", 1, 32, 32, 1, function (value)
         if Stand_internal_script_can_run then
             NETWORK.NETWORK_SESSION_SET_MATCHMAKING_GROUP_MAX(0, value)
         util.toast("Slots are now free :)")
         end
     end)
 
-    menu.slider(maxpl, "Max Spectators", {"maxSpectators"}, "Set the maximum number of observers (only works when you are the host)", 0, 2, 2, 1, function (value)
+    addict.slider(maxpl, "Max Spectators", {"maxSpectators"}, "Set the maximum number of observers (only works when you are the host)", 0, 2, 2, 1, function (value)
         if Stand_internal_script_can_run then
             NETWORK.NETWORK_SESSION_SET_MATCHMAKING_GROUP_MAX(4, value)
             util.toast("Slots are now free :)")
         end
     end)
 
-local chat_trans = menu.list(Net_Shit, "Chat Translator")
+local chat_trans = addict.list(Net_Shit, "Chat Translator")
 
-settingtrad = menu.list(chat_trans, "Settings for traduction")
-colortradtrad = menu.list(chat_trans, "PLayer name color")
-menu.on_focus(colortradtrad, function()
+settingtrad = addict.list(chat_trans, "Settings for traduction")
+colortradtrad = addict.list(chat_trans, "PLayer name color")
+addict.on_focus(colortradtrad, function()
 	util.yield(50)
 	isfocused = false
 end)
-selectmenu = menu.action(colortradtrad, "Selectioned : ".."Color : "..colorselec, {}, "this will be saved to a config file", function()
-	menu.focus(focusref[tonumber(colorselec)])
+selectaddict = addict.action(colortradtrad, "Selectioned : ".."Color : "..colorselec, {}, "this will be saved to a config file", function()
+	addict.focus(focusref[tonumber(colorselec)])
 end)
-menu.on_focus(selectmenu, function()
+addict.on_focus(selectaddict, function()
 	util.yield(50)
 	isfocused = false
 end)
 for i = 1, 234 do
-	focusref[i] = menu.action(colortradtrad, "Color : "..i, {}, "this will be saved to a config file", function() 
-		menu.set_menu_name(selectmenu, "Selectioned : ".."Color : "..i)
+	focusref[i] = addict.action(colortradtrad, "Color : "..i, {}, "this will be saved to a config file", function() 
+		addict.set_addict_name(selectaddict, "Selectioned : ".."Color : "..i)
 		colorselec = i
 		save()
 	end)
-	menu.on_focus(focusref[i], function()
+	addict.on_focus(focusref[i], function()
 		isfocused = false
 		util.yield(50)
 		isfocused = true
 		while isfocused do
-			if not menu.is_open() then
+			if not addict.is_open() then
 				isfocused = false
 			end
 			ptr1 = memory.alloc()
@@ -28224,7 +28228,7 @@ for i = 1, 234 do
 end
 
 
-menu.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_text("MP_CHAT_TEAM")).."] translation message", {"labelteam"}, "leaving it blank will revert it to the original label", function(s, click_type)
+addict.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_text("MP_CHAT_TEAM")).."] translation message", {"labelteam"}, "leaving it blank will revert it to the original label", function(s, click_type)
 	if (s == "") then
 		teamchatlabel = util.get_label_text("MP_CHAT_TEAM")
 	else
@@ -28235,11 +28239,11 @@ menu.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_t
 	end
 end)
 if not (teamchatlabel == util.get_label_text("MP_CHAT_TEAM")) then
-	menu.trigger_commands("labelteam "..teamchatlabel)
+	addict.trigger_commands("labelteam "..teamchatlabel)
 end
 
 
-menu.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_text("MP_CHAT_ALL")).."] translation message", {"labelall"}, "leaving it blank will revert it to the original label", function(s, click_type)
+addict.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_text("MP_CHAT_ALL")).."] translation message", {"labelall"}, "leaving it blank will revert it to the original label", function(s, click_type)
 	if (s == "") then
 		allchatlabel = util.get_label_text("MP_CHAT_ALL")
 	else
@@ -28250,42 +28254,42 @@ menu.text_input(settingtrad, "Custom label for ["..string.upper(util.get_label_t
 	end
 end)
 if not (teamchatlabel == util.get_label_text("MP_CHAT_TEAM")) then
-	menu.trigger_commands("labelall "..allchatlabel)
+	addict.trigger_commands("labelall "..allchatlabel)
 end
 
-targetlangmenu = menu.slider_text(chat_trans, "Target Language", {}, "You need to click to aply change", LangName, function(s)
+targetlangaddict = addict.slider_text(chat_trans, "Target Language", {}, "You need to click to aply change", LangName, function(s)
 	targetlang = LangLookupByName[LangKeys[s]]
 end)
 
-tradlocamenu = menu.slider_text(settingtrad, "Location of Traducted Message", {}, "You need to click to aply change", {"Global Chat networked", "Global Chat not networked", "Team Chat not networked", "Team Chat networked", "notification"}, function(s)
+tradlocaaddict = addict.slider_text(settingtrad, "Location of Traducted Message", {}, "You need to click to aply change", {"Global Chat networked", "Global Chat not networked", "Team Chat not networked", "Team Chat networked", "notification"}, function(s)
 	Tradloca = s
 end)
 	
 traductself = false
-menu.toggle(settingtrad, "Traduct Yourself", {}, "", function(on)
+addict.toggle(settingtrad, "Traduct Yourself", {}, "", function(on)
 	traductself = on	
 end)
 traductsamelang = false
-menu.toggle(settingtrad, "Traduct even if the language is the same as the desired one", {}, "might not work correctly because google is dumb", function(on)
+addict.toggle(settingtrad, "Traduct even if the language is the same as the desired one", {}, "might not work correctly because google is dumb", function(on)
 	traductsamelang = on	
 end)
 oldway = false
-menu.toggle(settingtrad, "Use the old method", {}, players.get_name(players.user()).." [ALL] player_sender : their message", function(on)
+addict.toggle(settingtrad, "Use the old method", {}, players.get_name(players.user()).." [ALL] player_sender : their message", function(on)
 	oldway = on	
 end)
 traduct = false
-menu.toggle(chat_trans, "Translator On/Off", {}, "", function(on)
+addict.toggle(chat_trans, "Translator On/Off", {}, "", function(on)
 	traduct = on
 end, false)
 
-traductmymessage = menu.list(chat_trans, "Send Traducted message")
-finallangmenu = menu.slider_text(traductmymessage, "Final Language", {"finallang"}, "Final Languge of your message.																	  You need to click to aply change", LangName, function(s)
+traductmymessage = addict.list(chat_trans, "Send Traducted message")
+finallangaddict = addict.slider_text(traductmymessage, "Final Language", {"finallang"}, "Final Languge of your message.																	  You need to click to aply change", LangName, function(s)
    targetlangmessagesend = LangLookupByName[LangKeys[s]]
 end)
 
-menu.action(traductmymessage, "Send Message", {"Sendmessage"}, "Input the text For your message", function(on_click)
+addict.action(traductmymessage, "Send Message", {"Sendmessage"}, "Input the text For your message", function(on_click)
     util.toast("Please input your message")
-    menu.show_command_box("Sendmessage ")
+    addict.show_command_box("Sendmessage ")
 end, function(on_command)
     mytext = on_command
     async_http.init("translate.googleapis.com", "/translate_a/single?client=gtx&sl=auto&tl="..targetlangmessagesend.."&dt=t&q="..encode(mytext), function(Sucess)
@@ -28347,14 +28351,14 @@ end)
 
 run = 0
 while run<10 do 
-	Tradloca = menu.get_value(tradlocamenu)
-	targetlangmessagesend = LangLookupByName[LangKeys[menu.get_value(finallangmenu)]]
-	targetlang = LangLookupByName[LangKeys[menu.get_value(targetlangmenu)]]
+	Tradloca = addict.get_value(tradlocaaddict)
+	targetlangmessagesend = LangLookupByName[LangKeys[addict.get_value(finallangaddict)]]
+	targetlang = LangLookupByName[LangKeys[addict.get_value(targetlangaddict)]]
 	util.yield()
 	run = run+1
 end
 
-	menu.action(detections,"Check Stats", {"check stats"}, "Weak",function(on)
+	addict.action(detections,"Check Stats", {"check stats"}, "Weak",function(on)
 			for pid = 0, 31 do
 				local rp = players.get_rank(pid)
 				local money = players.get_money(pid)
@@ -28368,10 +28372,10 @@ end
 			end
 	end)
 
-faketype = menu.list(Net_Shit, "Spoof Typing indicator", {}, "", function(); end)
+faketype = addict.list(Net_Shit, "Spoof Typing indicator", {}, "", function(); end)
 
-menu.action(faketype, "Start Fake Typing", {}, "Will show a typing indicator above your nickname and also make other menus think that you're typing in chat", function()
-	menu.trigger_commands("hidetyping off")
+addict.action(faketype, "Start Fake Typing", {}, "Will show a typing indicator above your nickname and also make other addicts think that you're typing in chat", function()
+	addict.trigger_commands("hidetyping off")
 	for pids = 0, 31 do
 		if players.exists(pids) and pids ~= players.user() then
 			send_script_event(747270864, pids, {players.user(), pids, 6769})
@@ -28379,7 +28383,7 @@ menu.action(faketype, "Start Fake Typing", {}, "Will show a typing indicator abo
 	end
 end)
 
-menu.action(faketype, "Stop Fake Typing", {}, "", function()
+addict.action(faketype, "Stop Fake Typing", {}, "", function()
 	for pids = 0, 31 do
 		if players.exists(pids) and pids ~= players.user() then
 			send_script_event(-990958325, pids, {players.user(), pids, 7556})
@@ -28387,23 +28391,23 @@ menu.action(faketype, "Stop Fake Typing", {}, "", function()
 	end
 end)
 
-menu.toggle(faketype, "Anti-Type", {}, "AKA 'Suppress Typing Indicator', hides the fact that you're typing", function(on)
+addict.toggle(faketype, "Anti-Type", {}, "AKA 'Suppress Typing Indicator', hides the fact that you're typing", function(on)
 	if on then
-		menu.trigger_commands("hidetyping on")
+		addict.trigger_commands("hidetyping on")
 	else
-		menu.trigger_commands("hidetyping off")
+		addict.trigger_commands("hidetyping off")
 	end
 end)
 
-menu.toggle_loop(Net_Shit, "Clear All Notifications", {"clearnotifs"}, "I recommend you use nextConsole Script made by lance so you can see the log on screen when people try to crash you with this enabled.", function()
-    Clear_Stand_Notifs = menu.ref_by_path("Stand>Clear Notifications")
-    Clear_Minimap_Notifs = menu.ref_by_path("Game>Remove Notifications Above Minimap")
-        menu.trigger_command(Clear_Stand_Notifs)
-        menu.trigger_command(Clear_Minimap_Notifs)
+addict.toggle_loop(Net_Shit, "Clear All Notifications", {"clearnotifs"}, "I recommend you use nextConsole Script made by lance so you can see the log on screen when people try to crash you with this enabled.", function()
+    Clear_Stand_Notifs = addict.ref_by_path("Stand>Clear Notifications")
+    Clear_Minimap_Notifs = addict.ref_by_path("Game>Remove Notifications Above Minimap")
+        addict.trigger_command(Clear_Stand_Notifs)
+        addict.trigger_command(Clear_Minimap_Notifs)
         util.yield(1000)
     end)
 
-menu.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"}, "Automatically accept join screens and transaction errors.", function()
+addict.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"}, "Automatically accept join screens and transaction errors.", function()
     local mess_hash = HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
     if mess_hash == -896436592 then
         util.toast("This player left the session.")
@@ -28423,7 +28427,7 @@ menu.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"
     util.yield()
 end)
 
-menu.toggle_loop(Net_Shit, "Accept Joins", {"autojoin"}, "Automatically accept join screens reliably.", function()
+addict.toggle_loop(Net_Shit, "Accept Joins", {"autojoin"}, "Automatically accept join screens reliably.", function()
     local message_hash = HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
     if message_hash == 15890625 or message_hash == -398982408 or message_hash == -587688989 then
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
@@ -28431,7 +28435,7 @@ menu.toggle_loop(Net_Shit, "Accept Joins", {"autojoin"}, "Automatically accept j
     end
 end, true)
 
-menu.toggle_loop(Net_Shit, "Auto Enter", {"autoenter"}, "Automatically hits enter.", function()
+addict.toggle_loop(Net_Shit, "Auto Enter", {"autoenter"}, "Automatically hits enter.", function()
     HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
     PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
     util.yield(100)
@@ -28439,16 +28443,16 @@ end)
 
 players.dispatch_on_join()
 
-menu.toggle(Net_Shit, "Stand User Identification", {}, "Identifies other Stand users but also allows them to identify you.", function(on_toggle)
-    local standid = menu.ref_by_path("Online>Protections>Detections>Stand User Identification")
+addict.toggle(Net_Shit, "Stand User Identification", {}, "Identifies other Stand users but also allows them to identify you.", function(on_toggle)
+    local standid = addict.ref_by_path("Online>Protections>Detections>Stand User Identification")
     if on_toggle then
-        menu.trigger_command(standid, "on")
+        addict.trigger_command(standid, "on")
     else
-        menu.trigger_command(standid, "off")
+        addict.trigger_command(standid, "off")
     end
 end)
 
-menu.toggle_loop(Net_Shit, 'Increase Kosatka Missile Range', {'krange'}, 'You can use it anywhere in the map now', function ()
+addict.toggle_loop(Net_Shit, 'Increase Kosatka Missile Range', {'krange'}, 'You can use it anywhere in the map now', function ()
     if util.is_session_started() then
     memory.write_float(memory.script_global(262145 + 30176), 200000.0)
     end
@@ -28458,7 +28462,7 @@ end)
 joining_log = false
 joining_toast = false
 
-menu.toggle(Net_Shit, "Join/leave notifications", {}, "", function(on_toggle)
+addict.toggle(Net_Shit, "Join/leave notifications", {}, "", function(on_toggle)
 	if on_toggle then
 		joining_log = true
         joining_toast = true
@@ -28540,7 +28544,7 @@ util.create_thread(function()
 				if vehicle then
 					local hash = util.joaat("oppressor2")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
-						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
 							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
 						end
@@ -28563,7 +28567,7 @@ util.create_thread(function()
 				if vehicle then
 					local hash = util.joaat("lazer")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
-						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
 							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
 						end
@@ -28586,7 +28590,7 @@ util.create_thread(function()
 				if vehicle then
 					local hash = util.joaat("kosatka")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
-						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
 							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
 						end
@@ -28609,7 +28613,7 @@ util.create_thread(function()
 				if vehicle then
 					local hash = util.joaat("hydra")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
-						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
 							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
 						end
@@ -28632,7 +28636,7 @@ util.create_thread(function()
 				if vehicle then
 					local hash = util.joaat("khanjali")
 					if VEHICLE.IS_VEHICLE_MODEL(vehicle, hash) then
-						menu.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
+						addict.trigger_commands("vehkick" .. PLAYER.GET_PLAYER_NAME(v))
 						if lock_vehicle then
 							VEHICLE.SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(vehicle, true)
 						end
@@ -28644,7 +28648,7 @@ util.create_thread(function()
 	end
 end)
 
-sexscript = menu.list(funfun, "Animation Script", {}, "", function(); end)
+sexscript = addict.list(funfun, "Animation Script", {}, "", function(); end)
 
 SCRIPT_SOURCE = "REPO"
 SCRIPT_BRANCH = "release"
@@ -28836,13 +28840,13 @@ function show_busyspinner(text)
     HUD.END_TEXT_COMMAND_BUSYSPINNER_ON(2)
 end
 
-SCRIPT_META_LIST = menu.list(sexscript, "Script Meta")
-menu.divider(SCRIPT_META_LIST, SCRIPT_NAME .. " V" .. VERSION)
-menu.hyperlink(SCRIPT_META_LIST, "View full changelog", "https://jackz.me/stand/changelog?html=1&reverse=1&script=" .. SCRIPT_NAME)
-menu.hyperlink(SCRIPT_META_LIST, "Jackz's Guilded", "https://www.guilded.gg/i/k8bMDR7E?cid=918b2f61-989c-41c4-ba35-8fd0e289c35d&intent=chat", "Get help, submit suggestions, report bugs, or be with other users of my scripts")
-menu.hyperlink(SCRIPT_META_LIST, "Github Source", "https://github.com/Jackzmc/lua-scripts", "View all my lua scripts on github")
+SCRIPT_META_LIST = addict.list(sexscript, "Script Meta")
+addict.divider(SCRIPT_META_LIST, SCRIPT_NAME .. " V" .. VERSION)
+addict.hyperlink(SCRIPT_META_LIST, "View full changelog", "https://jackz.me/stand/changelog?html=1&reverse=1&script=" .. SCRIPT_NAME)
+addict.hyperlink(SCRIPT_META_LIST, "Jackz's Guilded", "https://www.guilded.gg/i/k8bMDR7E?cid=918b2f61-989c-41c4-ba35-8fd0e289c35d&intent=chat", "Get help, submit suggestions, report bugs, or be with other users of my scripts")
+addict.hyperlink(SCRIPT_META_LIST, "Github Source", "https://github.com/Jackzmc/lua-scripts", "View all my lua scripts on github")
 if SCRIPT_SOURCE == "MANUAL" then
-    menu.list_select(SCRIPT_META_LIST, "Release Channel", {SCRIPT_NAME.."channel"}, "Sets the release channel for updates for this script.\nChanging the channel from release may result in bugs.", SCRIPT_BRANCH_NAMES, 1, function(index, name)
+    addict.list_select(SCRIPT_META_LIST, "Release Channel", {SCRIPT_NAME.."channel"}, "Sets the release channel for updates for this script.\nChanging the channel from release may result in bugs.", SCRIPT_BRANCH_NAMES, 1, function(index, name)
         show_busyspinner("Downloading update...")
         download_script_update(SCRIPT_BRANCH_IDS[index], function()
             HUD.BUSYSPINNER_OFF()
@@ -28853,14 +28857,14 @@ if SCRIPT_SOURCE == "MANUAL" then
         end)
     end)
 else
-    menu.readonly(SCRIPT_META_LIST, "Release Channel", "Use the manual version from https://jackz.me/stand/get-latest-zip to change the release channel.")
+    addict.readonly(SCRIPT_META_LIST, "Release Channel", "Use the manual version from https://jackz.me/stand/get-latest-zip to change the release channel.")
 end
 if _lang ~= nil then
-    menu.hyperlink(SCRIPT_META_LIST, "Help Translate", "https://jackz.me/stand/translate/?script=" .. SCRIPT, "If you wish to help translate, this script has default translations fed via google translate, but you can edit them here:\nOnce you make changes, top right includes a save button to get a -CHANGES.json file, send that my way.")
-    _lang.add_language_selector_to_menu(SCRIPT_META_LIST)
+    addict.hyperlink(SCRIPT_META_LIST, "Help Translate", "https://jackz.me/stand/translate/?script=" .. SCRIPT, "If you wish to help translate, this script has default translations fed via google translate, but you can edit them here:\nOnce you make changes, top right includes a save button to get a -CHANGES.json file, send that my way.")
+    _lang.add_language_selector_to_addict(SCRIPT_META_LIST)
 end
-menu.readonly(SCRIPT_META_LIST, "Build Commit", BRANCH_LAST_COMMIT and BRANCH_LAST_COMMIT:sub(1,10) or "Dev Build")
-menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of your stand log (%appdata%\\Stand\\Log.txt) to hastebin.com.\nHastebin posts expire in upto 7 days.\n\nUploaded log can be accessed from \"Open Uploaded Log\" button below once pressed", function()
+addict.readonly(SCRIPT_META_LIST, "Build Commit", BRANCH_LAST_COMMIT and BRANCH_LAST_COMMIT:sub(1,10) or "Dev Build")
+addict.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of your stand log (%appdata%\\Stand\\Log.txt) to hastebin.com.\nHastebin posts expire in upto 7 days.\n\nUploaded log can be accessed from \"Open Uploaded Log\" button below once pressed", function()
     logs = io.open(filesystem.stand_dir() .. "Log.txt", "r")
     if logs then
         show_busyspinner("Uploading logs....")
@@ -28868,7 +28872,7 @@ menu.action(SCRIPT_META_LIST, "Upload Logs", {}, "Uploads the last ~20 lines of 
             HUD.BUSYSPINNER_OFF()
             url = "https://hastebin.com/" .. body:sub(9, -3)
             util.toast("Uploaded: " .. url)
-            menu.hyperlink(SCRIPT_META_LIST, "Open Uploaded Log", url)
+            addict.hyperlink(SCRIPT_META_LIST, "Open Uploaded Log", url)
         end, function()
             util.toast("Failed to submit logs, network error")
             HUD.BUSYSPINNER_OFF() 
@@ -28917,8 +28921,8 @@ end
 -- END TEMPLATE --
 
 if metaList then
-    menu.divider(metaList, "-- Credits --")
-    menu.hyperlink(metaList, "dpemotes", "https://github.com/andristum/dpemotes/", "For the special animations section, code was modified from repository")
+    addict.divider(metaList, "-- Credits --")
+    addict.hyperlink(metaList, "dpemotes", "https://github.com/andristum/dpemotes/", "For the special animations section, code was modified from repository")
 end
 
 -- Iterates in consistent order a Key/Value
@@ -28969,7 +28973,7 @@ affectType = 0
 -- SCENARIOS
 ----------------------
 
-menu.action(sexscript, "Stop All Actions", {"stopself"}, "Stops the current scenario or animation", function(v)
+addict.action(sexscript, "Stop All Actions", {"stopself"}, "Stops the current scenario or animation", function(v)
     clear_anim_props()
     ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
     if clearActionImmediately then
@@ -28991,10 +28995,10 @@ menu.action(sexscript, "Stop All Actions", {"stopself"}, "Stops the current scen
         end
     end
 end)
-menu.toggle(sexscript, "Clear Action Immediately", {"clearimmediately"}, "If enabled, will immediately stop the animation / scenario that is playing when activating a new one. If false, you will transition smoothly to the next action.", function(on)
+addict.toggle(sexscript, "Clear Action Immediately", {"clearimmediately"}, "If enabled, will immediately stop the animation / scenario that is playing when activating a new one. If false, you will transition smoothly to the next action.", function(on)
     lclearActionImmediately = on
 end, clearActionImmediately)
-menu.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities that will play this action.\n0 = Only yourself\n1 = Only NPCs\n2 = Both you and NPCS", { { "Only yourself" }, { "Only NPCs" }, {"Both you and NPCS"} }, 1, function(index)
+addict.list_select(sexscript, "Action Targets", {"actiontarget"}, "The entities that will play this action.\n0 = Only yourself\n1 = Only NPCs\n2 = Both you and NPCS", { { "Only yourself" }, { "Only NPCs" }, {"Both you and NPCS"} }, 1, function(index)
     affectType = index - 1
 end)
 
@@ -29013,18 +29017,18 @@ function generateAnimationAction(key, data)
     end
 end
 
-menu.divider(sexscript, "Stuff")
-specialAnimationsMenu = menu.list(sexscript, "Special Animations", {}, "Special animations that can use props")
-menu.toggle(specialAnimationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
-animationsMenu = menu.list(sexscript, "Animations", {}, "List of animations you can play")
-menu.toggle(animationsMenu, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+addict.divider(sexscript, "Stuff")
+specialAnimationsaddict = addict.list(sexscript, "Special Animations", {}, "Special animations that can use props")
+addict.toggle(specialAnimationsaddict, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
+animationsaddict = addict.list(sexscript, "Animations", {}, "List of animations you can play")
+addict.toggle(animationsaddict, "Controllable", {"animationcontrollable"}, "Should the animation allow player control?", onControllablePress, allowControl)
 
 
 for category, rows in pairsByKeys(SPECIAL_ANIMATIONS) do
-    catmenu = menu.list(specialAnimationsMenu, category, {})
+    cataddict = addict.list(specialAnimationsaddict, category, {})
     for key, data in pairsByKeys(rows) do
-        menu.action(
-            catmenu,
+        addict.action(
+            cataddict,
             data[3] or key,
             {"playanim"..key},
             string.format("%s %s\nPlay this animation\nAnimation Id: %s", data[1], data[2], key),
@@ -29054,16 +29058,16 @@ function delete_anim_props()
     end
 end
 
-animMenuData = {}
-resultMenus = {}
-cloudFavoritesMenu = menu.list(animationsMenu, "Cloud Favorites", {}, "View categorized saved favorites from other users, or store your own.")
-favoritesMenu = menu.list(animationsMenu, "Favorites", {}, "List of all your favorited animations. Hold SHIFT to add or remove from favorites.")
-cloudFavoritesUploadMenu = menu.list(cloudFavoritesMenu, "Upload", {}, "Add your own cloud animation favorites. BETA.")
-    cloudUploadFromFavorites = menu.list(cloudFavoritesUploadMenu, "From Favorites", {}, "Browse your favorite played animations to upload them", function() populate_cloud_list(true) end)
-    cloudUploadFromRecent = menu.list(cloudFavoritesUploadMenu, "From Recent", {}, "Browse your recently played animations to upload them",  function() populate_cloud_list(false) end)
-cloudFavoritesBrowseMenu = menu.list(cloudFavoritesMenu, "Browse", {}, "Browse all uploaded cloud animation favorites")
+animaddictData = {}
+resultaddicts = {}
+cloudFavoritesaddict = addict.list(animationsaddict, "Cloud Favorites", {}, "View categorized saved favorites from other users, or store your own.")
+favoritesaddict = addict.list(animationsaddict, "Favorites", {}, "List of all your favorited animations. Hold SHIFT to add or remove from favorites.")
+cloudFavoritesUploadaddict = addict.list(cloudFavoritesaddict, "Upload", {}, "Add your own cloud animation favorites. BETA.")
+    cloudUploadFromFavorites = addict.list(cloudFavoritesUploadaddict, "From Favorites", {}, "Browse your favorite played animations to upload them", function() populate_cloud_list(true) end)
+    cloudUploadFromRecent = addict.list(cloudFavoritesUploadaddict, "From Recent", {}, "Browse your recently played animations to upload them",  function() populate_cloud_list(false) end)
+cloudFavoritesBrowseaddict = addict.list(cloudFavoritesaddict, "Browse", {}, "Browse all uploaded cloud animation favorites")
 
-cloudUsers = {} -- Record<user, { menu, categories = Record<dictionary, { menu, animations = {} }>}
+cloudUsers = {} -- Record<user, { addict, categories = Record<dictionary, { addict, animations = {} }>}
 cloud_loading = false
 function cloudvehicle_fetch_error(code)
     return function()
@@ -29079,7 +29083,7 @@ function upload_animation(group, animation, alias)
         string.format(
             '/stand/cloud/actions/manage?scname=%s&hash=%d&alias=%s&dict=%s&anim=%s',
             SOCIALCLUB._SC_GET_NICKNAME(),
-            menu.get_activation_key_hash(),
+            addict.get_activation_key_hash(),
             alias or '',
             group,
             animation
@@ -29099,10 +29103,10 @@ function upload_animation(group, animation, alias)
     async_http.dispatch()
 end
 function populate_cloud_list(useFavorites)
-    listMenu = useFavorites and cloudUploadFromFavorites or cloudUploadFromRecent
+    listaddict = useFavorites and cloudUploadFromFavorites or cloudUploadFromRecent
     tuple = useFavorites and favorites or recents
     for _, m in ipairs(cloud_list) do
-        menu.delete(m)
+        addict.delete(m)
     end
     cloud_list = {}
     for _, favorite in ipairs(tuple) do
@@ -29110,7 +29114,7 @@ function populate_cloud_list(useFavorites)
         -- if favorite[3] then
         --     name = favorite[3] .. " (" .. favorite[2] .. ")"
         -- end
-        action = menu.action(listMenu, name, {}, "Upload the " .. favorite[2] .. " from group " .. favorite[1] .. " to the cloud", function(v)
+        action = addict.action(listaddict, name, {}, "Upload the " .. favorite[2] .. " from group " .. favorite[1] .. " to the cloud", function(v)
             upload_animation(favorite[1], favorite[2], nil)
         end)
         table.insert(cloud_list, action)
@@ -29126,27 +29130,27 @@ function populate_user_dict(user, dictionary)
         cloud_loading = false
         if body:sub(1, 1) == "<" then
             util.toast("Ratelimited, try again in a few seconds.")
-            menu.divider(cloudUsers[user].categories[dictionary].menu, "Ratelimited, try again in a few seconds")
+            addict.divider(cloudUsers[user].categories[dictionary].addict, "Ratelimited, try again in a few seconds")
             return
         end
         for _, animation in ipairs(cloudUsers[user].categories[dictionary].animations) do
-            pcall(menu.delete, animation)
+            pcall(addict.delete, animation)
         end
         cloudUsers[user].categories[dictionary].animations = {}
         count = 0
         for animation in string.gmatch(body, "[^\r\n]+") do
             count = count + 1
-            action = menu.action(cloudUsers[user].categories[dictionary].menu, animation, {}, dictionary .. " " .. animation, function(_)
+            action = addict.action(cloudUsers[user].categories[dictionary].addict, animation, {}, dictionary .. " " .. animation, function(_)
                 play_animation(dictionary, animation)
             end)
             table.insert(cloudUsers[user].categories[dictionary].animations, action)
         end
-        menu.set_menu_name(cloudUsers[user].categories[dictionary].menu, dictionary .. " (" .. count .. ")")
+        addict.set_addict_name(cloudUsers[user].categories[dictionary].addict, dictionary .. " (" .. count .. ")")
         HUD.BUSYSPINNER_OFF()
     end, cloudvehicle_fetch_error("FETCH_USER_ANIMS"))
     async_http.dispatch()
 end
-menu.on_focus(cloudFavoritesBrowseMenu, function()
+addict.on_focus(cloudFavoritesBrowseaddict, function()
     show_busyspinner("Fetching users")
     while cloud_loading do
         util.yield()
@@ -29159,25 +29163,25 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
             return
         end
         for user, udata in pairs(cloudUsers) do
-            pcall(menu.delete, udata.menu)
+            pcall(addict.delete, udata.addict)
             for dictionary, cdata in pairs(udata.categories) do
-                pcall(menu.delete, cdata.menu)
+                pcall(addict.delete, cdata.addict)
                 for i, animation in ipairs(cdata.animations) do
-                    pcall(menu.delete, animation)
+                    pcall(addict.delete, animation)
                     cdata.animations[i] = nil
                 end
                 udata.categories[dictionary] = nil
             end
-            cloudUsers[user].menu = nil
+            cloudUsers[user].addict = nil
         end
         for user in string.gmatch(body, "[^\r\n]+") do
-            userMenu = menu.list(cloudFavoritesBrowseMenu, user, {}, "All action categories favorited by " .. user)
+            useraddict = addict.list(cloudFavoritesBrowseaddict, user, {}, "All action categories favorited by " .. user)
             cloudUsers[user] = {
-                menu = userMenu,
+                addict = useraddict,
                 categories = {}
             }
             -- TODO: Move from on_focus to on click
-            menu.on_focus(userMenu, function(_)
+            addict.on_focus(useraddict, function(_)
                 show_busyspinner("Fetching dictionaries for " .. user)
                 while cloud_loading do
                     util.yield()
@@ -29190,22 +29194,22 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
                         return
                     end
                     for dictionary, cdata in pairs(cloudUsers[user].categories) do
-                        pcall(menu.delete, cdata.menu)
+                        pcall(addict.delete, cdata.addict)
                         for animation in ipairs(cdata.animations) do
-                            pcall(menu.delete, animation)
+                            pcall(addict.delete, animation)
                         end
                     end
                     cloudUsers[user].categories = {}
                     count = 0
                     for dictionary in string.gmatch(body, "[^\r\n]+") do
                         count = count + 1
-                        dictMenu = menu.list(userMenu, dictionary, {}, "All actions in " .. dictionary .. " favorited by " .. user, function() populate_user_dict(user, dictionary) end)
+                        dictaddict = addict.list(useraddict, dictionary, {}, "All actions in " .. dictionary .. " favorited by " .. user, function() populate_user_dict(user, dictionary) end)
                         cloudUsers[user].categories[dictionary] = {
-                            menu = dictMenu,
+                            addict = dictaddict,
                             animations = {}
                         }
                     end
-                    menu.set_menu_name(userMenu, user .. " (" .. count .. ")")
+                    addict.set_addict_name(useraddict, user .. " (" .. count .. ")")
                     HUD.BUSYSPINNER_OFF()
                 end, cloudvehicle_fetch_error("FETCH_USER_CATEGORIES"))
                 async_http.dispatch()
@@ -29215,17 +29219,17 @@ menu.on_focus(cloudFavoritesBrowseMenu, function()
     end, cloudvehicle_fetch_error("FETCH_USERS"))
     async_http.dispatch()
 end)
-recentsMenu = menu.list(animationsMenu, "Recents", {}, "List of all your recently played animations")
-menu.divider(animationsMenu, "Raw Animations")
-searchMenu = menu.list(animationsMenu, "Search", {}, "Search for animation groups")
-menu.action(searchMenu, "Search Animation Groups", {"searchanim"}, "Searches all animation groups for the inputted text", function()
-    menu.show_command_box("searchanim ")
+recentsaddict = addict.list(animationsaddict, "Recents", {}, "List of all your recently played animations")
+addict.divider(animationsaddict, "Raw Animations")
+searchaddict = addict.list(animationsaddict, "Search", {}, "Search for animation groups")
+addict.action(searchaddict, "Search Animation Groups", {"searchanim"}, "Searches all animation groups for the inputted text", function()
+    addict.show_command_box("searchanim ")
 end, function(args)
     -- Delete existing results
-    for _, m in ipairs(resultMenus) do
-        pcall(menu.delete, m)
+    for _, m in ipairs(resultaddicts) do
+        pcall(addict.delete, m)
     end
-    resultMenus = {}
+    resultaddicts = {}
     -- Find all possible groups
     results = {}
     -- loop ANIMATIONS by heading then subheading then insert based on result
@@ -29263,31 +29267,31 @@ end, function(args)
     -- Messy, but no way to call a list group, so recreate all animations in a sublist:
     for i = 1, 201 do
         if results[i] then
-            -- m = menu.list(searchMenu, group, {}, "All animations for " .. group)
-           m = menu.action(searchMenu, results[i][2], {"animate" .. results[i][1] .. " " .. results[i][2]}, "Plays the " .. results[i][2] .. " animation from group " .. results[i][1], function(v)
+            -- m = addict.list(searchaddict, group, {}, "All animations for " .. group)
+           m = addict.action(searchaddict, results[i][2], {"animate" .. results[i][1] .. " " .. results[i][2]}, "Plays the " .. results[i][2] .. " animation from group " .. results[i][1], function(v)
                 play_animation(results[i][1], results[i][2], false)
             end)
-            table.insert(resultMenus, m)
+            table.insert(resultaddicts, m)
         end
     end
 end)
-browseMenu = menu.list(animationsMenu, "Browse Animations", {}, "WARNING: Will cause a freeze when exiting, stand does not like unloading 15,000 animations. Use search if your pc cannot handle.", function() setup_animation_list() end)
-menu.on_focus(browseMenu, function()
+browseaddict = addict.list(animationsaddict, "Browse Animations", {}, "WARNING: Will cause a freeze when exiting, stand does not like unloading 15,000 animations. Use search if your pc cannot handle.", function() setup_animation_list() end)
+addict.on_focus(browseaddict, function()
     if animLoaded then
         util.toast("WARN: Unloading animation browse list, prepare for lag.")
         util.yield(100)
         destroy_animations_data()
     end
 end)
-show_busyspinner("Loading Menus...")
+show_busyspinner("Loading addicts...")
 
 
-scenariosMenu = menu.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
+scenariosaddict = addict.list(sexscript, "Scenarios", {}, "List of scenarios you can play\nSome scenarios only work on certain genders, example AA Coffee only works on male peds.")
 for group, scenarios in pairs(SCENARIOS) do
-    submenu = menu.list(scenariosMenu, group, {}, "All " .. group .. " scenarios")
+    subaddict = addict.list(scenariosaddict, group, {}, "All " .. group .. " scenarios")
     for _, scenario in ipairs(scenarios) do
         scenarioCount = scenarioCount + 1
-        menu.action(submenu, scenario[2], {"scenario"}, "Plays the " .. scenario[2] .. " scenario", function(v)
+        addict.action(subaddict, scenario[2], {"scenario"}, "Plays the " .. scenario[2] .. " scenario", function(v)
             ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
             
             -- Play scenario on all npcs if enabled:
@@ -29322,7 +29326,7 @@ HUD.BUSYSPINNER_OFF()
 -- Maybe smart deletion but eh
 function populate_favorites()
     for _, action in ipairs(favoritesActions) do
-        menu.delete(action)
+        addict.delete(action)
     end
     favoritesActions = {}
     for _, favorite in ipairs(favorites) do
@@ -29331,9 +29335,9 @@ function populate_favorites()
             name = favorite[3] .. " (" .. favorite[2] .. ")"
         end
         local a
-        a = menu.action(favoritesMenu, name, {}, "Plays " .. favorite[2] .. " from group " .. favorite[1], function(v)
+        a = addict.action(favoritesaddict, name, {}, "Plays " .. favorite[2] .. " from group " .. favorite[1], function(v)
             if PAD.IS_CONTROL_PRESSED(2, 209) then
-                menu.show_warning(a, 2, "Are you sure you want to remove this animation from your favorites", function()
+                addict.show_warning(a, 2, "Are you sure you want to remove this animation from your favorites", function()
                     play_animation(favorite[1], favorite[2], false, nil, true)
                 end)
             else
@@ -29355,10 +29359,10 @@ end
 
 function add_anim_to_recent(group, anim)
     if #recents >= 20 then
-        menu.delete(recents[1][3])
+        addict.delete(recents[1][3])
         table.remove(recents, 1)
     end
-    local action = menu.action(recentsMenu, anim, {"animate" .. group .. " " .. anim}, "Plays the " .. anim .. " animation from group " .. group, function(v)
+    local action = addict.action(recentsaddict, anim, {"animate" .. group .. " " .. anim}, "Plays the " .. anim .. " animation from group " .. group, function(v)
         play_animation(group, anim, true)
     end)
     table.insert(recents, { group, anim, action })
@@ -29385,20 +29389,20 @@ function download_animation_data()
     HUD.BUSYSPINNER_OFF()
 end
 function destroy_animations_data()
-    for category, data in pairs(animMenuData) do
-        pcall(menu.delete, data.list)
+    for category, data in pairs(animaddictData) do
+        pcall(addict.delete, data.list)
     end
-    animMenuData = {}
+    animaddictData = {}
     animLoaded = false
-    menu.collect_garbage()
+    addict.collect_garbage()
 end
 function setup_category_animations(category)
-    animMenuData[category].menus = {}
-    for _, animation in ipairs(animMenuData[category].animations) do
-        local action = menu.action(animMenuData[category].list, animation, {"animate" .. category .. " " .. animation}, "Plays the " .. animation .. " animation from group " .. category, function(v)
+    animaddictData[category].addicts = {}
+    for _, animation in ipairs(animaddictData[category].animations) do
+        local action = addict.action(animaddictData[category].list, animation, {"animate" .. category .. " " .. animation}, "Plays the " .. animation .. " animation from group " .. category, function(v)
             play_animation(category, animation, false)
         end)
-        table.insert(animMenuData[category].menus, action)
+        table.insert(animaddictData[category].addicts, action)
     end
 end
 function setup_animation_list()
@@ -29420,22 +29424,22 @@ function setup_animation_list()
             end
             if #chunks == 2 then
                 local category = chunks[1]
-                if animMenuData[category] == nil then
-                    animMenuData[category] = {
+                if animaddictData[category] == nil then
+                    animaddictData[category] = {
                         animations = {},
                     }
-                    local list = menu.list(browseMenu, category, {}, "", function() setup_category_animations(category) end
+                    local list = addict.list(browseaddict, category, {}, "", function() setup_category_animations(category) end
                     , function()
-                        if animMenuData[category].menus then
-                            for _, m in ipairs(animMenuData[category].menus) do
-                                pcall(menu.delete, m)
+                        if animaddictData[category].addicts then
+                            for _, m in ipairs(animaddictData[category].addicts) do
+                                pcall(addict.delete, m)
                             end
-                            animMenuData[category].menus = nil
+                            animaddictData[category].addicts = nil
                         end
                     end)
-                    animMenuData[category].list = list
+                    animaddictData[category].list = list
                 end
-                table.insert(animMenuData[chunks[1]].animations, chunks[2])
+                table.insert(animaddictData[chunks[1]].animations, chunks[2])
             end
         else
             local version = line:sub(2)
@@ -29587,44 +29591,44 @@ end
 ----------------------------------------------------------------------------------------------------------------
 
 
-	menu.toggle(Net_Shit, "Rank 420", {"rank"}, "Note: If you save the profile with it toggled it will give you pemanant 420 rank", function(on_toggle)
-		menu.trigger_commands("setrank" .. " 420")
+	addict.toggle(Net_Shit, "Rank 420", {"rank"}, "Note: If you save the profile with it toggled it will give you pemanant 420 rank", function(on_toggle)
+		addict.trigger_commands("setrank" .. " 420")
 	end)
 
-	menu.toggle(Net_Shit, "FPS Boost", {"fpsboost"}, "Wait a few seconds for 5-10 FPS Boost.", function(on_toggle)
+	addict.toggle(Net_Shit, "FPS Boost", {"fpsboost"}, "Wait a few seconds for 5-10 FPS Boost.", function(on_toggle)
 	if on_toggle then
-		menu.trigger_commands("weather" .. " extrasunny")
-		menu.trigger_commands("clouds" .. " clear01")
-		menu.trigger_commands("time" .. " 6")
-		menu.trigger_commands("superc")
-        menu.trigger_commands("noidlecam ")
+		addict.trigger_commands("weather" .. " extrasunny")
+		addict.trigger_commands("clouds" .. " clear01")
+		addict.trigger_commands("time" .. " 6")
+		addict.trigger_commands("superc")
+        addict.trigger_commands("noidlecam ")
 	else
-		menu.trigger_commands("weather" .. " normal")
-		menu.trigger_commands("clouds" .. " normal")
-        menu.trigger_commands("noidlecam ")
+		addict.trigger_commands("weather" .. " normal")
+		addict.trigger_commands("clouds" .. " normal")
+        addict.trigger_commands("noidlecam ")
 		end
 	end)
 
-	menu.toggle(Net_Shit, "FPS Boost No Sky", {"fpsnsboost"}, "Wait a few seconds 10-15 FPS Boost.", function(on_toggle)
+	addict.toggle(Net_Shit, "FPS Boost No Sky", {"fpsnsboost"}, "Wait a few seconds 10-15 FPS Boost.", function(on_toggle)
 	if on_toggle then
-		menu.trigger_commands("weather" .. " extrasunny")
-		menu.trigger_commands("clouds" .. " clear01")
-		menu.trigger_commands("time" .. " 6")
-		menu.trigger_commands("supercloop")
-        menu.trigger_commands("potatomode ")
-        menu.trigger_commands("nosky ")
-        menu.trigger_commands("noidlecam ")
+		addict.trigger_commands("weather" .. " extrasunny")
+		addict.trigger_commands("clouds" .. " clear01")
+		addict.trigger_commands("time" .. " 6")
+		addict.trigger_commands("supercloop")
+        addict.trigger_commands("potatomode ")
+        addict.trigger_commands("nosky ")
+        addict.trigger_commands("noidlecam ")
 	else
-		menu.trigger_commands("weather" .. " normal")
-		menu.trigger_commands("clouds" .. " normal")
-        menu.trigger_commands("supercloop")
-        menu.trigger_commands("potatomode ")
-        menu.trigger_commands("nosky ")
-        menu.trigger_commands("noidlecam ")
+		addict.trigger_commands("weather" .. " normal")
+		addict.trigger_commands("clouds" .. " normal")
+        addict.trigger_commands("supercloop")
+        addict.trigger_commands("potatomode ")
+        addict.trigger_commands("nosky ")
+        addict.trigger_commands("noidlecam ")
 		end
 	end)
 
-bountyloop = menu.list(Recovery, "Bounty Loops", {}, "", function(); end)
+bountyloop = addict.list(Recovery, "Bounty Loops", {}, "", function(); end)
 
 
 --coded by MrWall 
@@ -29640,20 +29644,20 @@ local randomamount = 10000
 
 
 --Header
-menu.divider(bountyloop, "Bounty Loops")
+addict.divider(bountyloop, "Bounty Loops")
 
 local next_loop_time
 local has_bounty = false
-menu.toggle_loop(bountyloop, "Bounty Loop", {"bountyloop"}, "Still experimental", function(on)
+addict.toggle_loop(bountyloop, "Bounty Loop", {"bountyloop"}, "Still experimental", function(on)
     if next_loop_time == nil or util.current_time_millis() > next_loop_time then
         local delay
         if not has_bounty then
             local command = "bounty "..players.get_name(players.user()).." 10000"
-            menu.trigger_commands(command)
+            addict.trigger_commands(command)
             has_bounty = true
             delay = 10000
         else
-            menu.trigger_commands("removebounty")
+            addict.trigger_commands("removebounty")
             has_bounty = false
             delay = 1000
         end
@@ -29663,7 +29667,7 @@ end)
 
 --Waiting time
 delay = 30
-menu.slider(bountyloop, "Repeat Colldown", {"bdelay"}, "Set the time on how long the script waits to give the next player a bounty (time is in sec)", 10, 300, delay, 5, function(value)
+addict.slider(bountyloop, "Repeat Colldown", {"bdelay"}, "Set the time on how long the script waits to give the next player a bounty (time is in sec)", 10, 300, delay, 5, function(value)
 	delay = value
 end)
 
@@ -29676,7 +29680,7 @@ function random_pay()
 	return randomamount 
 end
 
-menu.toggle(bountyloop, "Random payout¿", {}, "Set random pay bounty loops\n\nActive = random", function(d)
+addict.toggle(bountyloop, "Random payout¿", {}, "Set random pay bounty loops\n\nActive = random", function(d)
 	if d then
 		random_pay()
 	else
@@ -29684,7 +29688,7 @@ menu.toggle(bountyloop, "Random payout¿", {}, "Set random pay bounty loops\n\nA
 	end
 end)
 
-menu.toggle(bountyloop, "notifications Off", {}, "By default notifications are turned OFF", function(on)
+addict.toggle(bountyloop, "notifications Off", {}, "By default notifications are turned OFF", function(on)
 	if on then
 		notify = true
 		util.show_corner_help("~p~notifications ~g~On")
@@ -29695,10 +29699,10 @@ menu.toggle(bountyloop, "notifications Off", {}, "By default notifications are t
 end)
 
 --Bounty Toggle
-menu.toggle_loop(bountyloop, "Start Loops", {}, "Will get a random players and give them bounty on set time", function()
+addict.toggle_loop(bountyloop, "Start Loops", {}, "Will get a random players and give them bounty on set time", function()
 	if #playerList > 0 then
 		randomPlayer = players.get_name(playerList[math.random(1, #playerList)])
-		menu.trigger_commands("bounty" .. randomPlayer .. " " .. randomamount)
+		addict.trigger_commands("bounty" .. randomPlayer .. " " .. randomamount)
 		if notify then
 			util.show_corner_help("~r~Bounty placed~y~... \n~r~$ ~w~= " .. randomamount)
 			if not util.BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED("~p~notifications ~g~On") then
@@ -29828,13 +29832,13 @@ function request_control_once(entity)
 	return NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
 end
 
-menu.divider(worldchaos, "Fist Power")
+addict.divider(worldchaos, "Fist Power")
 
 local targetEntity = NULL
 local lastStop <const> = newTimer()
 local explosionProof = false
 
-menu.toggle_loop(worldchaos, "Blackhole Finger", {"bhfinger"}, "Move entities with your finger when pointing them. Press B to start pointing.", function()
+addict.toggle_loop(worldchaos, "Blackhole Finger", {"bhfinger"}, "Move entities with your finger when pointing them. Press B to start pointing.", function()
 	if is_player_pointing() then
 		write_global.int(4521801 + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
 		if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
@@ -29910,7 +29914,7 @@ end)
 
 
 dont_stop = false
-menu.toggle_loop(worldchaos,"Point Fly Nearby vehicles", {"vehflyall"}, "basically 'impulse like sport mode' but applied to every vehicle", function()
+addict.toggle_loop(worldchaos,"Point Fly Nearby vehicles", {"vehflyall"}, "basically 'impulse like sport mode' but applied to every vehicle", function()
 if is_player_pointing() then
     write_global.int(4521801 + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
     if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
@@ -30002,7 +30006,7 @@ end
 end)
 
 enabled = false
-menu.toggle(bountyloop, "Infinite bountys Loop", {"infinibounty"}, "Places a 10k bounty on the entire session again and again.", function(on)
+addict.toggle(bountyloop, "Infinite bountys Loop", {"infinibounty"}, "Places a 10k bounty on the entire session again and again.", function(on)
     if on then
         enabled = true
     else
@@ -30012,7 +30016,7 @@ end, false)
 
 while true do
     if enabled then
-        menu.trigger_commands("bountyall 10000")
+        addict.trigger_commands("bountyall 10000")
     end
     util.yield(1000)
 end
