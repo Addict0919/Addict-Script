@@ -1,15 +1,7 @@
-v1.2.4
+v1.2.5
 ________________________
-Added World ESP - In Chaos Shit
+Replaced Array Kick (New)
 
-Added Destruction - In Chaos Shit
+Added SE Kick (S0)
 
-Added Teleport Into all vehicles - In Chaos Shit
-
-Added Tp into nearest vehicle - In Fun Shit>Driving Shit>Tp into nearest vehicle
-
-Added Auto Run - In Fun Shit>My Player>Auto Run
-
-Added Phantom Fuck - In Vehicle Events>Trolling Options>Phantom fuck
-
-Added Nearby Peds Attack - In Griefing>Attackers>Ped Attackers>Nearby Peds Attack
+Added SE Kick (S3)
