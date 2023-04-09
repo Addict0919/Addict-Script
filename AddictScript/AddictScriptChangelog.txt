@@ -16,4 +16,4 @@ ________________________
 v1.28
 ________________________
 Added Launch Forward (Vehicle Events)
-Added Launch Backward (Vehicle Events).
+Added Launch Backward (Vehicle Events)
