@@ -7,3 +7,7 @@ Added SE Kick (S0)
 Added SE Kick (S3)
 
 Fixed Update Button
+________________________
+v1.26
+________________________
+Cleaned some things up
