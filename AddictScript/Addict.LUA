@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.26
+local addict_version = 1.27
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -5593,7 +5593,7 @@ helpcommands = addict.list(spams, "Help Commands", {}, "Command: help", function
 
 addict.action(helpcommands, "Help Commands", {"help"}, "", function()
 chat.send_message(
-    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whataddict",
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5603,7 +5603,7 @@ end, nil, nil, COMMANDPERM_FRIENDLY)
 
 addict.toggle_loop(helpcommands, "Help Commands", {"helpcommand"}, "", function(on_toggle)
 chat.send_message(
-    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whataddict",
+    "/help1 /help2 /help3 /help4 /help5 /carhelpa /carhelpb /carhelpc /whatmenu",
     false, -- in team chat
     true, -- add to local history
     true  -- networked
@@ -5842,9 +5842,9 @@ chat.send_message(
 util.yield(150000)
 end)
 
-whataddict = addict.list(spams, "What addict Do I Use?", {}, "Command: whataddict", function(); end)
+whatmenu = addict.list(spams, "What addict Do I Use?", {}, "Command: whatmenu", function(); end)
 
-addict.action(whataddict, "What addict Do I Use?", {"whataddict"}, "", function()
+addict.action(whatmenu, "What addict Do I Use?", {"whatmenu"}, "", function()
 chat.send_message(
     "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other addict's.",
     false, -- in team chat
@@ -5854,7 +5854,7 @@ chat.send_message(
 util.yield(150000)
 end, nil, nil, COMMANDPERM_FRIENDLY)
 
-addict.toggle_loop(whataddict, "What addict Do I Use?", {"whataddict"}, "", function(on_toggle)
+addict.toggle_loop(whatmenu, "What addict Do I Use?", {"whatmenu"}, "", function(on_toggle)
 chat.send_message(
     "I use Stand Ultimate, 2take1 VIP coloaded, and I got tons other addict's.",
     false, -- in team chat
@@ -12019,9 +12019,6 @@ local Attacker_Tanks = addict.list(Attackers_trollys, "Attacker Tanks")
 
 addict.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if table_kidnap == nil then
-        table_kidnap = {}
-    end
     hash = util.joaat("khanjali")
     ped_hash = util.joaat("MP_M_Cocaine_01")
     if STREAMING.IS_MODEL_A_VEHICLE(hash) then
@@ -12037,7 +12034,7 @@ addict.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", fu
         }
         ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
         ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
+        table_kidnap = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
         CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
         while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
             STREAMING.REQUEST_MODEL(ped_hash)
@@ -12045,8 +12042,8 @@ addict.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", fu
         end
         ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
         ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
+        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap, ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
             true, true, false, 0, false)
         coords_ped = v3()
         coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
@@ -12054,37 +12051,36 @@ addict.action(Attacker_Tanks,"Spawn Attacker Khanjali", {"sendkhanjali"}, "", fu
         coords_ped.y = coords_ped.y + math.random(-20, 20)
         coords_ped.z = coords_ped.z
         ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
-        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
+        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap, -1)
 
-        if table_kidnap[veh_to_attach] then
-            DECORATOR.DECOR_SET_INT(table_kidnap[veh_to_attach], "MPBitset", 0)
-            VEHICLE.SET_VEHICLE_MOD_KIT(table_kidnap[veh_to_attach], 0)
+        if table_kidnap then
+            DECORATOR.DECOR_SET_INT(table_kidnap, "MPBitset", 0)
+            VEHICLE.SET_VEHICLE_MOD_KIT(table_kidnap, 0)
             for i = 0 ,50 do
-                VEHICLE.SET_VEHICLE_MOD(table_kidnap[veh_to_attach], i, VEHICLE.GET_NUM_VEHICLE_MODS(table_kidnap[veh_to_attach], i) - 13, false)
+                VEHICLE.SET_VEHICLE_MOD(table_kidnap, i, VEHICLE.GET_NUM_VEHICLE_MODS(table_kidnap, i) - 13, false)
             end	
-            VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(table_kidnap[veh_to_attach], 255, 0, 255)
-            VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(table_kidnap[veh_to_attach],255, 0, 255)
-            VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap[veh_to_attach], 10)
-            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap[veh_to_attach], 17, true)
-            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap[veh_to_attach], 18, true)
-            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap[veh_to_attach], 19, true)
-            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap[veh_to_attach], 20, true)
-            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap[veh_to_attach], 21, true)
+            VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(table_kidnap, 255, 0, 255)
+            VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(table_kidnap,255, 0, 255)
+            VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap, 10)
+            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap, 17, true)
+            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap, 18, true)
+            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap, 19, true)
+            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap, 20, true)
+            VEHICLE.TOGGLE_VEHICLE_MOD(table_kidnap, 21, true)
             for i = 0 ,4 do
-                if not VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap[veh_to_attach], i) then
-                    VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap[veh_to_attach], i, true)
+                if not VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap, i) then
+                    VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap, i, true)
                 end
             end
-            VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap[veh_to_attach], 255, 0, 255)
-            VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(table_kidnap[veh_to_attach], "Addict")
+            VEHICLE.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(table_kidnap, 255, 0, 255)
+            VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(table_kidnap, "Addict")
 
         end
-        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap, true, true, false)
         TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
         TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
         util.yield(1)
         entities.delete_by_handle(ped_to_kidnap)
-        veh_to_attach = veh_to_attach + 1
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
         util.toast(os.date("%H:%M:%S") .. " Khanjali Sent To Attack", TOAST_ABOVE_MAP)
@@ -12093,9 +12089,6 @@ end)
 
 addict.action(Attacker_Tanks,"Spawn Attacker Tank", {"sendtank"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if table_kidnap == nil then
-        table_kidnap = {}
-    end
     hash = util.joaat("rhino")
     ped_hash = util.joaat("MP_M_Cocaine_01")
     if STREAMING.IS_MODEL_A_VEHICLE(hash) then
@@ -12111,16 +12104,15 @@ addict.action(Attacker_Tanks,"Spawn Attacker Tank", {"sendtank"}, "", function()
         }
         ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
         ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
-        CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
+        table_kidnap = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true), CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
         while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
             STREAMING.REQUEST_MODEL(ped_hash)
             util.yield()
         end
         ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
         ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
+        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap, ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
             true, true, false, 0, false)
         coords_ped = v3()
         coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
@@ -12128,13 +12120,12 @@ addict.action(Attacker_Tanks,"Spawn Attacker Tank", {"sendtank"}, "", function()
         coords_ped.y = coords_ped.y + math.random(-20, 20)
         coords_ped.z = coords_ped.z
         ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
-        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
-        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
+        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap, -1)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap, true, true, false)
         TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
         TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
         util.yield(1)
         entities.delete_by_handle(ped_to_kidnap)
-        veh_to_attach = veh_to_attach + 1
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
         util.toast(os.date("%H:%M:%S") .. " Tank Sent To Attack", TOAST_ABOVE_MAP)
@@ -12161,9 +12152,6 @@ end
 
 addict.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", function()
     V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    if table_kidnap == nil then
-        table_kidnap = {}
-    end
     hash = util.joaat("minitank")
     ped_hash = util.joaat("mp_m_freemode_01")
     if STREAMING.IS_MODEL_A_VEHICLE(hash) then
@@ -12179,7 +12167,7 @@ addict.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", fu
         }
         ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
         ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-        table_kidnap[veh_to_attach] = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
+        table_kidnap = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true),
         CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
         while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
             STREAMING.REQUEST_MODEL(ped_hash)
@@ -12187,8 +12175,8 @@ addict.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", fu
         end
         ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
         ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap[veh_to_attach], true)
-        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap[veh_to_attach], ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
+        ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap, true)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap, ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false,
             true, true, false, 0, false)
         coords_ped = v3()
         coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
@@ -12196,17 +12184,16 @@ addict.action(Attacker_Tanks,"Spawn Attacker MiniTank", {"sendminitank"}, "", fu
         coords_ped.y = coords_ped.y + math.random(-20, 20)
         coords_ped.z = coords_ped.z
         ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
-        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap[veh_to_attach], -1)
-        VEHICLE.SET_VEHICLE_MOD_KIT(table_kidnap[veh_to_attach], 0)
+        PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap, -1)
+        VEHICLE.SET_VEHICLE_MOD_KIT(table_kidnap, 0)
         for i = 0, 50 do
-            VEHICLE.SET_VEHICLE_MOD(table_kidnap[veh_to_attach], i, VEHICLE.GET_NUM_VEHICLE_MODS(table_kidnap[veh_to_attach], i) - 1, false)
+            VEHICLE.SET_VEHICLE_MOD(table_kidnap, i, VEHICLE.GET_NUM_VEHICLE_MODS(table_kidnap, i) - 1, false)
         end
-        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap[veh_to_attach], true, true, false)
+        VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap, true, true, false)
         TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
         TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
         util.yield(1)
         entities.delete_by_handle(ped_to_kidnap)
-        veh_to_attach = veh_to_attach + 1
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
         util.toast(os.date("%H:%M:%S") .. " Tank Sent To Attack", TOAST_ABOVE_MAP)
