@@ -1,11 +1,8 @@
 v1.2.5
 ________________________
 Replaced Array Kick (New)
-
 Added SE Kick (S0)
-
 Added SE Kick (S3)
-
 Fixed Update Button
 ________________________
 v1.26
@@ -19,4 +16,4 @@ ________________________
 v1.28
 ________________________
 Added Launch Forward (Vehicle Events)
-Added Launch Backward (Vehicle Events)
+Added Launch Backward (Vehicle Events).
