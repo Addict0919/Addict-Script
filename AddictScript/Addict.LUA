@@ -1,10 +1,3 @@
-util.keep_running()
-util.require_natives("natives-1663599433-uno")
-util.require_natives("natives-1640181023")
-util.require_natives("natives-1651208000")
-util.require_natives("natives-1663599433")
-guidedMissile = require "ToxTool"
-
 -- Addict Script™ Copyright© 2023 
 --[[ -- Coded By Candy
 WE HAVE TAKEN OVER░ \☻/\☻/
@@ -24,9 +17,19 @@ local Credits_To = {
 }
 -- Credits 🧐🔼🔼🔼
 
+util.keep_running()
+util.require_natives("natives-1663599433-uno")
+util.require_natives("natives-1640181023")
+util.require_natives("natives-1651208000")
+util.require_natives("natives-1663599433")
+guidedMissile = require "ToxTool"
+
 local addict = menu
-local addict_version = 1.25
+local addict_version = 1.26
+
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
+addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
+
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
     response=true;
     addict.action(github, "Changelog", {"addictchangelog"}, b, function()
@@ -1180,13 +1183,13 @@ local attachments_table = {
     ["0x11AE5C97"] = "Default Clip"
 }
 
-remove_attachment_tab = addict.action(weapons, "Give Ammo", {"giveammo"}, "Give ammo for current weapon (fix for stand unlimited ammo not working with special ammo)", --done
+addict.action(weapons, "Give Ammo", {"giveammo"}, "Give ammo for current weapon (fix for stand unlimited ammo not working with special ammo)", --done
     function(on_click)
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
         WEAPON.ADD_AMMO_TO_PED(PLAYER.GET_PLAYER_PED(players.user()), curr_equipped_weapon, 10)
     end
 )
-remove_attachment_tab = addict.action(weapons, "Give All Attachments", {"giveallattachments"}, "Give all attachments from your current weapon", --done
+addict.action(weapons, "Give All Attachments", {"giveallattachments"}, "Give all attachments from your current weapon", --done
     function(on_click)
         util.toast("Giving all attachments ...")
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
@@ -1196,7 +1199,7 @@ remove_attachment_tab = addict.action(weapons, "Give All Attachments", {"giveall
         util.toast("Done :D")
     end
 )
-remove_attachment_tab = addict.action(weapons, "Remove All Attachments", {"removeallattachments"}, "Removes all attachments from your current weapon", --done
+addict.action(weapons, "Remove All Attachments", {"removeallattachments"}, "Removes all attachments from your current weapon", --done
     function(on_click)
         util.toast("Removing all attachments ...")
         local curr_equipped_weapon = WEAPON.GET_SELECTED_PED_WEAPON(PLAYER.GET_PLAYER_PED(players.user()))
@@ -1810,9 +1813,11 @@ addict.click_slider(acidlabmanager, "Sell Value Multiplier", {"value"}, "Warning
     memory.write_int(memory.script_global(262145 + 17425), value * 1485) 
 end)
  
-cashskids = addict.list(Recovery, "Recovery Loops", {}, "Skidded of course.", function(); end)
+cashskids = addict.list(Recovery, "Property Trade In", {}, "Skidded of course.", function(); end)
 
-local root = cashskids
+warning = addict.list(cashskids, "VERY RISKY!!!", {}, "You may get banned...", function(); end)
+
+local root = warning
 
 local items = {
     settings = {
@@ -9784,29 +9789,11 @@ GenerateFeatures = function(pid)
 	addict.action(health_sub_vehicle_tab,"Explode Vehicle", {"explodeveh"}, "Explodes vehicle",function()
 		local vehicle = get_player_veh(pid,false)
 		if vehicle then
-			--local pos = ENTITY.GET_ENTITY_COORDS(vehicle)--tried around with EXPLODE_VEHICLE but didnt work mayb im just rarted
-			--FIRE.ADD_EXPLOSION(pos.x,pos.y,pos.z, 7, 1000, true, false, 1, false)
 			VEHICLE.ADD_VEHICLE_PHONE_EXPLOSIVE_DEVICE(vehicle)
 			VEHICLE.DETONATE_VEHICLE_PHONE_EXPLOSIVE_DEVICE()
             util.yield(1000)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
---[[
-    addict.toggle_loop(mov_sub_vehicle_tab, "Give horn boost", {}, "Give the target horn-boost", function()  
-        local vehicle = get_player_veh(pid,true)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
-        local force = ENTITY.GET_ENTITY_FORWARD_VECTOR(vehicle)
-        force.x = force.x * 20
-        force.y = force.y * 20
-        force.z = force.z * 20
-        while PLAYER.IS_PLAYER_PRESSING_HORN(pid) == true do 
-            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
-            ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
-            util.yield(100)
-        end 
-    end)
-]]
 
 	addict.action(mov_sub_vehicle_tab,"Boost", {"boost"}, "Sets max speed of vehicle to 100 better for cars",function()
 		local vehicle = get_player_veh(pid,true)
@@ -9829,21 +9816,12 @@ GenerateFeatures = function(pid)
 		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-    addict.action(mov_sub_vehicle_tab, 'Reverse Car', {'reversecars'}, "Note: Restart Addict Script if you need to reset your own speed",function()
-	    local vehicle = get_player_veh(pid,true)
-        local player_torques = 1000000
-            player_torques = value
-            util.create_tick_handler(function()
-            if PED.IS_PED_IN_ANY_VEHICLE(players.user_ped(), true) then
-            local playerVehicle = PED.GET_VEHICLE_PED_IS_IN(players.user_ped(), false)
-            NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(playerVehicle)
-            VEHICLE.SET_VEHICLE_CHEAT_POWER_INCREASE(playerVehicle, player_torque/1000000)
-            VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, -2147483647)
-            util.toast("Restart Addict Script To Reset Your Own Speed")
-            end
-            return (player_torques ~= 1000000)
-        end)
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+    addict.action(mov_sub_vehicle_tab,"Stop Vehicle", {"stopveh"}, "Sets Vehicle Speed to 0.",function()
+        local vehicle = get_player_veh(pid,true)
+        if vehicle then
+            VEHICLE.SET_VEHICLE_MAX_SPEED(vehicle, 0.1) 
+        end
+    end, nil, nil, COMMANDPERM_FRIENDLY)
 
 	addict.action(mov_sub_vehicle_tab,"Reset Speed", {"resetaccs"}, "Resets max speed of vehicle",function()
 		local vehicle = get_player_veh(pid,true)
@@ -18124,7 +18102,6 @@ end)
         end
     end)
 
-
     addict.action(griefing, "Job SmS notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
         addict.show_command_box_click_based(cl, "jobnotify "..players.get_name(pid):lower().." ") end, function(input)
             local event_data = {0x8E38E2DF, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -18723,7 +18700,7 @@ end)
                 local car = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), true)
                 NETWORK.REMOVE_ALL_STICKY_BOMBS_FROM_ENTITY(car)
             end)
-
+            
     addict.toggle_loop(frienm, "Infinity Ammo", {"autoammo"}, "Endless ammo for players", function(toggle)
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local weaphash = WEAPON.GET_SELECTED_PED_WEAPON(ped)
