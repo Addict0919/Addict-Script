@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.27
+local addict_version = 1.28
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -9805,22 +9805,8 @@ GenerateFeatures = function(pid)
 	addict.action(mov_sub_vehicle_tab,"Addict boost", {"Addictboost"}, "Sets max speed of vehicle to 9999999 better for bikes",function()
 		local vehicle = get_player_veh(pid,true)
 		if vehicle then
-			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 9999999) 
+			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 2147483647) 
 		end
-    end, nil, nil, COMMANDPERM_FRIENDLY)
-
-	addict.action(mov_sub_vehicle_tab,"Trash Speed", {"trashaccs"}, "Sets max speed of vehicle to INT_MIN",function()
-		local vehicle = get_player_veh(pid,true)
-		if vehicle then
-			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, -2147483647) 
-		end
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-    addict.action(mov_sub_vehicle_tab,"Stop Vehicle", {"stopveh"}, "Sets Vehicle Speed to 0.",function()
-        local vehicle = get_player_veh(pid,true)
-        if vehicle then
-            VEHICLE.SET_VEHICLE_MAX_SPEED(vehicle, 0.1) 
-        end
     end, nil, nil, COMMANDPERM_FRIENDLY)
 
 	addict.action(mov_sub_vehicle_tab,"Reset Speed", {"resetaccs"}, "Resets max speed of vehicle",function()
@@ -9829,6 +9815,49 @@ GenerateFeatures = function(pid)
 			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, 1) 
 		end
     end, nil, nil, COMMANDPERM_FRIENDLY)
+
+    addict.action(mov_sub_vehicle_tab,"Ruin Speed", {"trashaccs"}, "Sets max speed of vehicle to INT_MIN.",function()
+		local vehicle = get_player_veh(pid,true)
+		if vehicle then
+			VEHICLE.MODIFY_VEHICLE_TOP_SPEED(vehicle, -2147483647) 
+		end
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+    
+    addict.action(mov_sub_vehicle_tab, "Launch Forward", {}, "", function()
+		local vehicle =  get_player_veh(pid,true)
+		if vehicle then
+			local force = ENTITY.GET_ENTITY_FORWARD_VECTOR(vehicle)
+			force:mul(40.0)
+			AUDIO.SET_VEHICLE_BOOST_ACTIVE(vehicle, true)
+			ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+			AUDIO.SET_VEHICLE_BOOST_ACTIVE(vehicle, false)
+		end
+	end)
+
+    addict.action(mov_sub_vehicle_tab, "Launch Backward", {}, "", function()
+		local vehicle =  get_player_veh(pid,true)
+		if vehicle then
+			local force = ENTITY.GET_ENTITY_FORWARD_VECTOR(vehicle)
+			force:mul(-40.0)
+			AUDIO.SET_VEHICLE_BOOST_ACTIVE(vehicle, true)
+			ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+			AUDIO.SET_VEHICLE_BOOST_ACTIVE(vehicle, false)
+		end
+	end)
+
+	addict.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
+        local vehicle = get_player_veh(pid,true)
+        if vehicle then
+            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, 10000, true, false, true)
+        end
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
+
+    addict.action(mov_sub_vehicle_tab,"Launch Down", {"launchdown"}, "Shoots player down",function()
+		local vehicle = get_player_veh(pid,true)
+		if vehicle then
+			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, -10000, true, false, true)
+		end
+    end, nil, nil, COMMANDPERM_AGGRESSIVE)
 		
 	addict.action(mov_sub_vehicle_tab,"East", {"eastveh"}, "Boosts player's vehicle in the East direction",function()
 		local vehicle = get_player_veh(pid,true)
@@ -9856,20 +9885,6 @@ GenerateFeatures = function(pid)
         if vehicle then
             ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 10000, 0, true, false, true)
         end
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-	addict.action(mov_sub_vehicle_tab,"Launch Up", {"launchup"}, "Shoots player up",function()
-        local vehicle = get_player_veh(pid,true)
-        if vehicle then
-            ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, 10000, true, false, true)
-        end
-    end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-    addict.action(mov_sub_vehicle_tab,"Launch Down", {"launchdown"}, "Shoots player down",function()
-		local vehicle = get_player_veh(pid,true)
-		if vehicle then
-			ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(vehicle, 1, 0, 0, -10000, true, false, true)
-		end
     end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 	addict.action(detach_sub_vehicle_tab,"Detach Trailer", {"detachtrailer"}, "Detaches attached trailer",function()
