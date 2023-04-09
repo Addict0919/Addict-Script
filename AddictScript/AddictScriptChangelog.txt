@@ -15,3 +15,8 @@ ________________________
 v1.27
 ________________________
 Fixed all attacker tanks
+________________________
+v1.28
+________________________
+Added Launch Forward (Vehicle Events)
+Added Launch Backward (Vehicle Events)
