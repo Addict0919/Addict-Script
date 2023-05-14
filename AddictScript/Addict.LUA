@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.29
+local addict_version = 1.30
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -28392,6 +28392,15 @@ addict.toggle_loop(Net_Shit, "Accept Joins", {"autojoin"}, "Automatically accept
         util.yield(200)
     end
 end, true)
+
+menu.toggle_loop(Net_Shit, "Auto Host", {"autohost"}, "Great for basic and regular users.", function() -- Credits to funmenu
+	if not (players.get_host() == PLAYER.PLAYER_ID()) and not util.is_session_transition_active() then
+		if not (PLAYER.GET_PLAYER_NAME(players.get_host()) == "**Invalid**") then
+			menu.trigger_commands("kick"..PLAYER.GET_PLAYER_NAME(players.get_host()))
+			util.yield(200)
+		end
+	end
+end)
 
 addict.toggle_loop(Net_Shit, "Auto Enter", {"autoenter"}, "Automatically hits enter.", function()
     HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
