@@ -5,3 +5,7 @@ Updated max player to stands updates
 Added All cars pink - In Chaos Shit
 
 Added All cars rainbow - In Chaos Shit
+________________________
+v1.30
+________________________
+Added Auto host (Great for basic and regular users)
