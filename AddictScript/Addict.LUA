@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.30
+local addict_version = 1.31
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -162,7 +162,7 @@ util.log("▒▒▒▒▄▄▄██▒▒█▀█▀█▒▒██▄▄▄�
 util.log("▒▒▒▒▀▀██▒▒▒▒▒▒▒▒▒▒▒██▀▀▒▒▒▒")
 util.log("▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▀▀▒▒▒▒▒▒")
 util.log("Welcome To Addict Script!™ v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-util.toast("Welcome To Addict Script!™ v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+util.toast("Welcome To Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
@@ -11178,6 +11178,86 @@ end)
 
     local Attackers_trollys = addict.list(griefing, "Attackers")
 
+    addict.action(Attackers_trollys,"Heli Rapel V1", {"helirapelv1"}, "", function(on)
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = ENTITY.GET_ENTITY_COORDS(ped)
+        pos.z = pos.z + 35
+        local mdl = util.joaat("A_C_Chimp_02")
+        local veh_mdl = util.joaat("maverick")
+        util.request_model(mdl)
+        util.request_model(veh_mdl)
+        local modelHash <const> = util.joaat("weapon_raypistol")
+        local flag_hash = util.joaat("prop_flag_uk")
+        PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, util.joaat("PLAYER"))
+        local veh = entities.create_vehicle(veh_mdl, pos, 0)
+        VEHICLE.SET_HELI_BLADES_FULL_SPEED(veh)
+        local chimp2 = entities.create_ped(2, mdl, pos, 0)
+        local player_chimp_army = entities.create_ped(2, mdl, pos, 0)
+        local object = entities.create_object(flag_hash, pos)
+        ENTITY.ATTACH_ENTITY_TO_ENTITY(object, player_chimp_army, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+        ENTITY.SET_ENTITY_COLLISION(veh, false, false)
+        ENTITY.SET_ENTITY_COLLISION(player_chimp_army, false, false)
+        ENTITY.SET_ENTITY_COLLISION(chimp2, false, false)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(veh, true, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(player_chimp_army, true, true)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(chimp2, true, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(player_chimp_army, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+        ENTITY.SET_ENTITY_INVINCIBLE(chimp2, true)
+        PED.SET_PED_INTO_VEHICLE(player_chimp_army, veh, 1)
+        PED.SET_PED_INTO_VEHICLE(chimp2, veh, -1)
+        TASK.TASK_RAPPEL_FROM_HELI(player_chimp_army, 20)
+        PED.SET_PED_MAX_HEALTH(player_chimp_army, 100)
+        ENTITY.SET_ENTITY_HEALTH(player_chimp_army, 100)
+        ENTITY.SET_ENTITY_INVINCIBLE(player_chimp_army, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(player_chimp_army)
+        PED.SET_PED_AS_ENEMY(player_chimp_army, true)
+        PED.SET_PED_FLEE_ATTRIBUTES(player_chimp_army, 0, false)
+        PED.SET_PED_COMBAT_ATTRIBUTES(player_chimp_army, 46, true)
+        WEAPON.GIVE_WEAPON_TO_PED(player_chimp_army, modelHash, 9999,  true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(player_chimp_army, player_ped, 0, 16)
+        PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_chimp_army, util.joaat("HATES_PLAYER"))
+        util.toast("Chimp sent to " .. PLAYER.GET_PLAYER_NAME(pid))
+        util.log("Chimp sent to " .. PLAYER.GET_PLAYER_NAME(pid))
+    end)
+
+addict.action(Attackers_trollys,"Heli Rapel V2", {"helirapelv2"}, "", function(on)
+    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+    local pos = ENTITY.GET_ENTITY_COORDS(ped)
+    pos.z = pos.z + 25
+    pos.x = pos.x + math.random(0, 50)
+    pos.y = pos.y + math.random(0, 50)
+    local mdl = util.joaat("A_C_Rabbit_02")
+    local veh_mdl = util.joaat("maverick")
+    util.request_model(mdl)
+    util.request_model(veh_mdl)
+    local veh = entities.create_vehicle(veh_mdl, pos, 0)
+    VEHICLE.SET_HELI_BLADES_FULL_SPEED(veh)
+    local jesus = entities.create_ped(2, mdl, pos, 0)
+    local jesus2 = entities.create_ped(2, mdl, pos, 0)
+    ENTITY.SET_ENTITY_COLLISION(veh, false, false)
+    ENTITY.SET_ENTITY_COLLISION(jesus, false, false)
+    ENTITY.SET_ENTITY_COLLISION(jesus2, false, false)
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(veh, true, true)
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(jesus, true, true)
+    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(jesus2, true, true)
+    ENTITY.SET_ENTITY_INVINCIBLE(jesus, true)
+    ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
+    ENTITY.SET_ENTITY_INVINCIBLE(jesus2, true)
+    PED.SET_PED_INTO_VEHICLE(jesus, veh, 1)
+    PED.SET_PED_INTO_VEHICLE(jesus2, veh, -1)
+    TASK.TASK_RAPPEL_FROM_HELI(jesus, 20)
+    ENTITY.ATTACH_ENTITY_TO_ENTITY(veh, pos, 0, 0, -1, 2.5, 0, 180, 0, 0, false, true, false, 0, true)
+    ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 1, math.random(0, 10),math.random(0, 10), math.random(0, 10), 0.0, 0.0, 0.0, false, true, true, false, true)
+    ENTITY.SET_ENTITY_VELOCITY(veh, math.random(-10, 10), math.random(-10, 10), math.random(30, 50))
+    ENTITY.SET_ENTITY_MAX_SPEED(veh, 500.0)
+    ENTITY.SET_ENTITY_ROTATION(veh, math.random(0, 360), math.random(0, 360), math.random(0, 360), 0, true)
+    util.yield(20000)
+    entities.delete_by_handle(veh)
+    entities.delete_by_handle(jesus)
+    entities.delete_by_handle(jesus2)
+end)
+
     addict.toggle_loop(Attackers_trollys,"Kamikaze lazer", {"kamikazelazer"}, "", function(on)
         local ped = 2459507570
         STREAMING.REQUEST_MODEL(ped)
@@ -12241,7 +12321,7 @@ function brish(pid)
     local flag_hash = util.joaat("prop_flag_uk")
     local hash = 905946442
     request_model(hash)
-    player_Brish_army[i] =  entities.create_ped(28, hash, pos, FinalRenderedCamRot)
+    player_Brish_army[i] = entities.create_ped(28, hash, pos, FinalRenderedCamRot)
     request_model(flag_hash)
     PED.SET_PED_MAX_HEALTH(player_Brish_army[i], 100)
     ENTITY.SET_ENTITY_HEALTH(player_Brish_army[i], 100)
@@ -18264,7 +18344,7 @@ end)
                 addict.trigger_commands("autoammo".. players.get_name(pid))
                 addict.trigger_commands("autoheal".. players.get_name(pid))
                 addict.trigger_commands("removestickys".. players.get_name(pid))
-                addict.trigger_commands("givevehgodmode".. players.get_name(pid))
+                addict.trigger_commands("givevehgod".. players.get_name(pid))
         		addict.trigger_commands("paragive".. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_FRIENDLY)
 
@@ -22828,6 +22908,126 @@ local hashes = {
 
 local para_crash = addict.list(lobbycrash, "Parachute Crashes", {}, "")
 
+addict.action(para_crash, "Chimp Chute", {"chimpchute"}, "", function(on)
+    while on do
+        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
+            GRAPHICS.ANIMPOSTFX_STOP_ALL()
+            memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
+        end
+        for n = 0 , 1 do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            local pos = ENTITY.GET_ENTITY_COORDS(ped)
+            pos.z = pos.z + 20
+            pos.x = pos.x + math.random(0, 50)
+            pos.y = pos.y + math.random(0, 50)
+            local mdl = util.joaat("A_C_Chimp_02")
+            util.request_model(mdl)
+            local PEDP = entities.create_ped(2, mdl, pos, 0)
+            ------------------------------------------------------------------------ Para 1
+            object_hash1 = 2099682835 -- Pipes
+                STREAMING.REQUEST_MODEL(object_hash1)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash1) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash1)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 2
+            object_hash2 = 3601491972 -- Crack Pipe
+                STREAMING.REQUEST_MODEL(object_hash2)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash2) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash2)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 3
+                object_hash3 = 452618762 -- Weed Plant  
+                STREAMING.REQUEST_MODEL(object_hash3)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash3) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash3)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 4
+                object_hash4 = 322248450 -- Pooltable
+                STREAMING.REQUEST_MODEL(object_hash4)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash4) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash4)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 5
+                object_hash5 = 2223607550 -- Massive Shit
+                STREAMING.REQUEST_MODEL(object_hash5)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash5) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash5)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 6
+                object_hash6 = 2452367939 -- Normal Shit
+                STREAMING.REQUEST_MODEL(object_hash6)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash6) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash6)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 7
+                object_hash7 = 1043035044 -- Traffic Post
+                STREAMING.REQUEST_MODEL(object_hash7)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash7) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash7)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------ Para 8
+                object_hash8 = 1585741317 -- Flag
+                STREAMING.REQUEST_MODEL(object_hash8)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash8) do
+                util.yield()
+                end
+                PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PEDP, object_hash8)
+                WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PEDP, 0xFBAB5776, 1000, false)
+                util.yield(1000)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(PEDP)
+                util.yield(1000)
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+                ------------------------------------------------------------------------
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
+        end
+    end
+local gwobaw = memory.script_global(2672505 + 1685 + 756)
+memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
+end)
+
 addict.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
     while on do
         local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
@@ -22981,7 +23181,7 @@ local gwobaw = memory.script_global(2672505 + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
 end)
 
-	addict.toggle(para_crash, "Para Crash", {"ParaCrash"}, "", function(on)
+	addict.toggle(para_crash, "Para Crash", {"paracrash"}, "", function(on)
         if on then
 		for n = 0 , 1 do
 			PEDP = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
