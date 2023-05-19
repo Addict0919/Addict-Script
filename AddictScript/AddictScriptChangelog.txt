@@ -9,3 +9,7 @@ ________________________
 v1.30
 ________________________
 Added Auto host (Great for basic and regular users)
+________________________
+v1.31
+________________________
+Fixed max player error
