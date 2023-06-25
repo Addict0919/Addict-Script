@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.31
+local addict_version = 1.32
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -169,7 +169,7 @@ local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3"
 addict.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
 addict.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-addict.action(Credits, "Not_DerPaul", {}, "Great coder helped with security and testing :).", function() end)
+addict.action(Credits, "notderpaul", {}, "Great coder helped with security and testing :).", function() end)
 addict.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
 addict.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
 addict.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
@@ -1674,7 +1674,7 @@ players.on_join(function(player_id)
         
         addict.divider(Mors_Mutual, "Vehicle Gifting")
         
-        check = memory.script_global(78558)
+        check = memory.script_global(78689)
 
         function BitTest(value, bit)
             return value & (1 << bit) ~= 0
@@ -1690,7 +1690,7 @@ players.on_join(function(player_id)
 
         addict.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
-            veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+            veh = memory.script_global(1586488 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield | 0xC)
         end)
@@ -1761,7 +1761,7 @@ players.on_join(function(player_id)
     
         addict.action(Mors_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
             for slot = 0, 415 do
-                veh = memory.script_global(1586468 + 1 + (slot * 142) + 103)
+                veh = memory.script_global(1586488 + 1 + (slot * 142) + 103)
                 bitfield = memory.read_int(veh)
                 memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
             end
@@ -1769,7 +1769,7 @@ players.on_join(function(player_id)
     
         addict.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
             pv_slot = memory.script_global(2359296 + 1 + (0 * 5568) + 681 + 2)
-            veh = memory.script_global(1586468 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+            veh = memory.script_global(1586488 + 1 + (memory.read_int(pv_slot) * 142) + 103)
             bitfield = memory.read_int(veh)
             memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
         end)
@@ -3230,17 +3230,13 @@ function parse_all_timer_files()
     end
 end
 
-function SET_INT_GLOBAL(global, value)
-    memory.write_int(memory.script_global(global), value)
-end
-
 cashloop = addict.list(Recovery, "$500k + $750k Loop", {}, "", function(); end)
 
 addict.toggle_loop(cashloop, "Start $500k + $750k Loop", {""}, "500k + 750k Loop Every 10 Seconds. Warning! Dont spend over 50 million a day. If cash stops it will start again in 60 seconds.", function()
-    SET_INT_GLOBAL(1968313, 1)
+    memory.write_int(memory.script_global(1969112), 1)
     util.log("$ 500K Added")
     util.yield(1)
-    SET_INT_GLOBAL(1968313, 2)
+    memory.write_int(memory.script_global(1969112), 2)
     util.log("$ 750K Added")
     util.yield(1)
     addict.trigger_commands("accepterrors")
@@ -8028,14 +8024,14 @@ end)
     end)
 
     addict.toggle_loop(playermode, "Fast Respawn", {"fastrespawn"}, "", function()
-        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
         if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
             GRAPHICS.ANIMPOSTFX_STOP_ALL()
             memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
         end
     end,
         function()
-        local gwobaw = memory.script_global(2672505 + 1685 + 756)
+        local gwobaw = memory.script_global(2672524 + 1685 + 756)
         memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
     end)
     
@@ -18205,27 +18201,27 @@ end)
             addict.trigger_commands("breakup" .. players.get_name(pid))
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1}) --697566862 Give Collectible
-            util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657589 + 1 + (pid * 466) + 321 + 8)}) 
+            util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657704 + 1 + (pid * 466) + 321 + 8)}) 
             util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1})
-            util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657589 + 1 + (pid * 466) + 321 + 8)})
-            util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1894573 + 1 + (pid * 608) + 510))})
+            util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657704 + 1 + (pid * 466) + 321 + 8)})
+            util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1895156 + 1 + (pid * 608) + 510))})
         end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
         addict.toggle_loop(kick, "Array Kick", {"arraykick"}, "", function()
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1, math.random(int_min, int_max), math.random(int_min, int_max), 
+                util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1, math.random(int_min, int_max), math.random(int_min, int_max), 
                 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1})
+                util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1})
             end
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1, pid, math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {23546804, 20, 1, -1, -1, -1, -1})
+                util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1})
             end
         end)
 
@@ -18233,16 +18229,16 @@ end)
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+                util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
                 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+                util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
             end
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {1417982303, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+                util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
             end
         end)
 
@@ -18250,15 +18246,15 @@ end)
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1727896103, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
                 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {1727896103, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
             end
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {1727896103, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
                 util.trigger_script_event(1 << pid, {1017995959, 27, 0})-- S1 Credits to legy
             end
         end)
@@ -22910,7 +22906,7 @@ local para_crash = addict.list(lobbycrash, "Parachute Crashes", {}, "")
 
 addict.action(para_crash, "Chimp Chute", {"chimpchute"}, "", function(on)
     while on do
-        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
         if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
             GRAPHICS.ANIMPOSTFX_STOP_ALL()
             memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
@@ -23024,13 +23020,13 @@ addict.action(para_crash, "Chimp Chute", {"chimpchute"}, "", function(on)
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
         end
     end
-local gwobaw = memory.script_global(2672505 + 1685 + 756)
+local gwobaw = memory.script_global(2672524 + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
 end)
 
 addict.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
     while on do
-        local gwobaw = memory.script_global(2672505 + 1685 + 756) -- Global_2672505.f_1685.f_756
+        local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
         if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
             GRAPHICS.ANIMPOSTFX_STOP_ALL()
             memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
@@ -23177,7 +23173,7 @@ addict.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
                 addict.trigger_commands("tpmazehelipad")
         end
     end
-local gwobaw = memory.script_global(2672505 + 1685 + 756)
+local gwobaw = memory.script_global(2672524 + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1)) 
 end)
 
@@ -27019,11 +27015,11 @@ end
 
 
 local function get_transition_state(pid)
-    return memory.read_int(memory.script_global(((0x2908D3 + 1) + (pid * 0x1C5)) + 230))
+    return memory.read_int(memory.script_global(((2689235 + 1) + (pid * 0x1C5)) + 230))
 end
 
 local function get_interior_player_is_in(pid)
-    return memory.read_int(memory.script_global(((0x2908D3 + 1) + (pid * 0x1C5)) + 243)) 
+    return memory.read_int(memory.script_global(((2689235 + 1) + (pid * 0x1C5)) + 243)) 
 end
 
 
