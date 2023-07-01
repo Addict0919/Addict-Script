@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.32
+local addict_version = 1.33
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -28172,20 +28172,18 @@ end)
 --------------------------------------
 
 addict.action(addict.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
-	os.exit()
+    MISC.QUIT_GAME() -- os.exit() not working?
 end)
 
 addict.action(addict.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
     local pick = math.random(6)
     if pick == 4 then 
-        addict.show_command_box("say " .. "I loose.")
+        util.toast("I loose.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
-        util.log("I loose.")
         util.yield(300)
-        os.exit()
+        MISC.QUIT_GAME() -- os.exit() not working?
     else
         util.toast("Lucky Bastard ;)")
-		addict.show_command_box("say " .. "I got lucky.")
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
         util.yield(200)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
@@ -28193,7 +28191,7 @@ addict.action(addict.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chanc
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 addict.action(addict.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
-    MISC.RESTART_GAME("E574A662ACAEFBB1")
+    MISC.RESTART_GAME()
 end)
 
 addict.action(addict.my_root(), "Restart Script", {"restartaddictlua"}, "Restarts the script to check for updates. Or you may prefer it on hotkey to make it the first script in players list making spectate option faster to find.", function ()
@@ -28213,7 +28211,6 @@ function save()
 	configfile:close()
 end
 
-
 if not filesystem.exists(filesystem.store_dir().."chat_translator//config.txt") then
 	filesystem.mkdir(filesystem.store_dir().."chat_translator//")
 	configfile = io.open(filesystem.store_dir().."chat_translator//config.txt", "w+")
@@ -28226,6 +28223,7 @@ else
 	configfile:close()
 	load(configfiledata)()
 end
+
 util.ensure_package_is_installed("lua/ScaleformLib")
 local sfchat = require("lib.ScaleformLib")("multiplayer_chat")
 sfchat:draw_fullscreen()
@@ -28297,7 +28295,6 @@ local Languages = {
 	{ Name = "Yiddish", Key = "yi" },
 }
 
-
 local LangKeys = {}
 local LangName = {}
 local LangIndexes = {}
@@ -28323,7 +28320,6 @@ end
 function decode(text)
 	return string.gsub(text, "%+", " ")
 end
-
 
 local maxpl = addict.list(Net_Shit, "Max Players To 32")
 
