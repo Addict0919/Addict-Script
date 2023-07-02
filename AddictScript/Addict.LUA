@@ -1585,7 +1585,7 @@ players.on_join(function(player_id)
     end)
     
     addict.toggle_loop(Recovery, "Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100% every second.",function()
-        local popularity_loop_command_ref = addict.ref_by_path("Online>Quick Progress>Nightclub Popularity", 38)
+        local popularity_loop_command_ref = addict.ref_by_path("Online>Quick Progress>Nightclub Popularity>Set Nightclub Popularity", 38)
         addict.trigger_command(popularity_loop_command_ref, 100)
         util.yield(1000)
     end)
