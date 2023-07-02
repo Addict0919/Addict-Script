@@ -1,6 +1,6 @@
 v1.33
 ________________________
-- fixed yeet options nmot working due to os.exit not working
+- fixed yeet options not working due to os.exit "broken"
 - improved a little of code
 
 v1.32
