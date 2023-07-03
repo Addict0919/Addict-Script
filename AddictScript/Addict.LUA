@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.33
+local addict_version = 1.34
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
@@ -5302,16 +5302,16 @@ addict.action(crashes_kicks, "Desync Kick", {desynckick}, "", function()
     end
 end)
 
-addict.action(crashes_kicks, "Breakup Kick", {"break"}, "Kicks Them.", function()
+addict.action(crashes_kicks, "Kick", {"kicking"}, "Kicks Them.", function()
     for pids = 0, 31 do
         if excludeselected then
             if pids ~= players.user() and not selectedplayer[pids] and players.exists(pids) then
-                addict.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("kick" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.yield()
             end
         else
             if pids ~= players.user() and selectedplayer[pids] and players.exists(pids) then
-                addict.trigger_commands("breakup" .. PLAYER.GET_PLAYER_NAME(pids))
+                addict.trigger_commands("kick" .. PLAYER.GET_PLAYER_NAME(pids))
                 util.yield()
             end
         end
@@ -18187,18 +18187,13 @@ end)
         
         kick = addict.list(addict.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
-        addict.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses breakup kick.", function()
+        addict.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses kick.", function()
             addict.trigger_commands("historyblock " .. players.get_name(pid))
-            addict.trigger_commands("breakup" .. players.get_name(pid))
+            addict.trigger_commands("kick" .. players.get_name(pid))
     	end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
-        addict.action(kick, "Smash Kick", {"smash"}, "Blocks the player join reaction then uses buttplug kick for basic users.", function()
-            addict.trigger_commands("historyblock " .. players.get_name(pid))
-            addict.trigger_commands("buttplug" .. players.get_name(pid))
-    	end, nil, nil, COMMANDPERM_AGGRESSIVE)
-
-        addict.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks if breakup won't work.", function()
-            addict.trigger_commands("breakup" .. players.get_name(pid))
+        addict.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks.", function()
+            addict.trigger_commands("kick" .. players.get_name(pid))
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1}) --697566862 Give Collectible
             util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657704 + 1 + (pid * 466) + 321 + 8)}) 
@@ -18267,10 +18262,6 @@ end)
 
     	addict.action(kick, "Buttplug", {"buttplugkick"}, "Unblockable when you are the host.", function()
 	addict.trigger_commands("buttplug"..PLAYER.GET_PLAYER_NAME(pid))
-    			end)
-
-    	addict.action(kick, "Breakup", {"breakupkick"}, "A discrete kick that won't tell the target who did it.", function()
-	addict.trigger_commands("breakup"..PLAYER.GET_PLAYER_NAME(pid))
     			end)
 
         addict.action(kick, "Ban", {"bankick"}, "A discrete kick that won't tell the target who did it.", function()
@@ -27796,7 +27787,7 @@ addict.toggle_loop(gdmedits, "Godmode", {}, "Detects if someone is using godmode
     end 
 end)
 
-addict.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using godmode, blocks there joins and breakup kicks them.", function()
+addict.toggle_loop(gdmedits, "Godmode Auto Kick", {}, "Detects if someone is using godmode, blocks there joins and kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
@@ -27828,7 +27819,7 @@ addict.toggle_loop(vehgdm, "Vehicle Godmode", {}, "Detects if someone is using a
     end 
 end)
 
-addict.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is using a vehicle that is in godmode, blocks there joins and breakup kicks them.", function()
+addict.toggle_loop(vehgdm, "Vehicle Godmode Auto Kick", {}, "Detects if someone is using a vehicle that is in godmode, blocks there joins and kicks them.", function()
     for _, pid in ipairs(players.list(false, true, true)) do
         local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
         local pos = ENTITY.GET_ENTITY_COORDS(ped, false)
