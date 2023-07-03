@@ -1,7 +1,7 @@
 v1.33
 ________________________
-- fixed yeet options not working due to os.exit "broken"
-- improved a little of code
+- Fixed yeet options not working due to os.exit "broken"
+- Improved a little of code.
 ________________________
 v1.32
 ________________________
@@ -11,3 +11,8 @@ v1.34
 - Fixed Blast Kick
 - Removed breakup kick
 ________________________
+v1.34
+- Updated Credits
+- Removed more old kicks
+- Added S1 Script event kick
+- Added another S3 Script event kick
