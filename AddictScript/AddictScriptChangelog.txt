@@ -11,7 +11,7 @@ v1.34
 - Fixed Blast Kick
 - Removed breakup kick
 ________________________
-v1.34
+v1.35
 - Updated Credits
 - Removed more old kicks
 - Added S1 Script event kick
