@@ -1,15 +1,3 @@
-v1.33
-________________________
-- Fixed yeet options not working due to os.exit "broken"
-- Improved a little of code.
-________________________
-v1.32
-________________________
-- Updated some stuff to 1.67
-________________________
-v1.34
-- Fixed Blast Kick
-- Removed breakup kick
 ________________________
 v1.35
 - Updated Credits
