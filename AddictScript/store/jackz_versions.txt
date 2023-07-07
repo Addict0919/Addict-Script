@@ -1,4 +1,0 @@
-# DO NOT EDIT ! File is used for changelogs
-Script: 1.10.10
-Currupt Scri: 1.10.10
-
