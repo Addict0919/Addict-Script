@@ -25,16 +25,15 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.35
+local addict_version = 1.36
+local dev_mode = false -- Disables stuff like Updates [true/false]
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
-addict.hyperlink(github, "Addict Skidz", "https://discord.gg/tuFd76tRXy")
+addict.hyperlink(github, "Addict Discord", "https://discord.gg/tuFd76tRXy")
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog.txt",function(b)
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(b)
     response=true;
-    addict.action(github, "Changelog", {"addictchangelog"}, b, function()
-        async_http.dispatch()
-    end)
+    addict.action(github, "Changelog", {"addictchangelog"}, b, function() end)
 end,
 function()
     response=true 
@@ -144,26 +143,14 @@ myModule("UnregisterNetworkObject", "48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 
 	UnregisterNetworkObject_addr = address - 0xB
 end)
 
-util.log("░█████╗░██████╗░██████╗░██╗░█████╗░████████╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗")
-util.log("██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝  ██╔════╝██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝")
-util.log("███████║██║░░██║██║░░██║██║██║░░╚═╝░░░██║░░░  ╚█████╗░██║░░╚═╝██████╔╝██║██████╔╝░░░██║░░░")
-util.log("██╔══██║██║░░██║██║░░██║██║██║░░██╗░░░██║░░░  ░╚═══██╗██║░░██╗██╔══██╗██║██╔═══╝░░░░██║░░░")
-util.log("██║░░██║██████╔╝██████╔╝██║╚█████╔╝░░░██║░░░  ██████╔╝╚█████╔╝██║░░██║██║██║░░░░░░░░██║░░░")
-util.log("╚═╝░░╚═╝╚═════╝░╚═════╝░╚═╝░╚════╝░░░░╚═╝░░░  ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░░░░╚═╝░░░")
-util.log("▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒▒▒")
-util.log("▒▒████▄▒▒▒▄▄▄▄▄▄▄▒▒▒▄████▒▒")
-util.log("▒▒▒▒▒▀▀▒▄█████████▄▒▀▀▒▒▒▒▒")
-util.log("▒▒▒▒▒▒▒█████████████▒▒▒▒▒▒▒")
-util.log("▒▒▒▒▒▒▒██▀▀▀███▀▀▀██▒▒▒▒▒▒▒")
-util.log("▒▒▒▒▒▒▒██▒▒▒███▒▒▒██▒▒▒▒▒▒▒")
-util.log("▒▒▒▒▒▒▒█████▀▄▀█████▒▒▒▒▒▒▒")
-util.log("▒▒▒▒▒▒▒▒▒▒███████▒▒▒▒▒▒▒▒▒▒")
-util.log("▒▒▒▒▄▄▄██▒▒█▀█▀█▒▒██▄▄▄▒▒▒▒")
-util.log("▒▒▒▒▀▀██▒▒▒▒▒▒▒▒▒▒▒██▀▀▒▒▒▒")
-util.log("▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▀▀▒▒▒▒▒▒")
-util.log("Welcome To Addict Script!™ v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-util.toast("Welcome To Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+if not dev_mode then
+    util.log("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+    util.toast("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
+else
+    util.log("Welcome Developer to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Enjoy Playing :)")
+    util.toast("Welcome Developer to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Enjoy Playing :)")
+end
+---------------------------------------------------------------------------------
 local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
 ---------------------------------------------------------------------------------
 addict.divider(Credits, "Great Coders <3")
