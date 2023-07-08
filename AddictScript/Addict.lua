@@ -47,10 +47,10 @@ if not dev_mode then
         response=true;
         if addict_version~=currentVer then 
             addict.action(github,"Update",{"updateaddict"},"If it still says 'Update' when it's been updated just ignore it I'll fix this bug in future keep your eyes peeled for updates in the changelog.",function()
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.LUA',function(c)
+                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
                     local d=select(2,load(c))
                     if d then 
-                        util.toast("Update failed to download, please re-download manually via Github or using Addict Skidz server.")
+                        util.toast("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
                         return 
                     end;
                     local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
