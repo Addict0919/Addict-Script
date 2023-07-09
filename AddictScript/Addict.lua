@@ -25,7 +25,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.36
+local addict_version = 1.37
 local dev_mode = false -- Disables stuff like Updates [true/false]
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
