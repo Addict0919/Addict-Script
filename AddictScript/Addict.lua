@@ -154,7 +154,7 @@ local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3"
 addict.divider(Credits, "Great Coders <3")
 ---------------------------------------------------------------------------------
 addict.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-addict.action(Credits, "notderpaul", {}, "Great coder helped with security and testing :).", function() end)
+addict.action(Credits, "Notderpaul", {}, "Great coder helped with code, security and testing :).", function() end)
 addict.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
 addict.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
 addict.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
@@ -166,8 +166,9 @@ addict.action(Credits, "Jailbroken", {}, "Cool guy very fast learner, unlike som
 ---------------------------------------------------------------------------------
 addict.divider(Credits, "Great Supporters <3")
 ---------------------------------------------------------------------------------
-addict.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is my best friend.", function() end)
-addict.action(Credits, "Kwengz", {}, "This guy got me into paid addicts and showed me the ropes.", function() end)
+addict.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is funny as fuck.", function() end)
+addict.action(Credits, "Kwengz", {}, "This guy got me into paid menus and showed me the ropes. He's a don.", function() end)
+addict.action(Credits, "Crime Scene", {}, "This guy's a legend always up for piss around xD.", function() end)
 addict.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
 addict.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
 addict.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
@@ -18219,6 +18220,25 @@ end)
             for i = 1, 15 do
                 util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
                 util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+                util.yield(100)
+            end
+        end)
+
+        addict.toggle_loop(kick, "SE Kick (S1)", {"sekicks1"}, "Script event kick, Works good on normal player and also on cheap addicts.", function()
+            local int_min = -2147483647
+            local int_max = 2147483647
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-901348601, 6, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+                math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+                math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {-901348601, 6, 0})
+            end
+            addict.trigger_commands("givesh" .. players.get_name(pid))
+            util.yield()
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-901348601, 6, 0, pid, math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {-901348601, 6, 0})
+                util.yield(100)
             end
         end)
 
@@ -18226,16 +18246,53 @@ end)
             local int_min = -2147483647
             local int_max = 2147483647
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
+                util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
                 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
                 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+                util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
             end
             addict.trigger_commands("givesh" .. players.get_name(pid))
             util.yield()
             for i = 1, 15 do
-                util.trigger_script_event(1 << pid, {-1638522928, 27, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+                util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
                 util.trigger_script_event(1 << pid, {1017995959, 27, 0})-- S1 Credits to legy
+                util.yield(100)
+            end
+        end)
+
+        addict.toggle_loop(kick, "SE Kick (S4)", {"sekicks4"}, "Script event kick, Works good on normal player and also on cheap addicts.", function()
+            local int_min = -2147483647
+            local int_max = 2147483647
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1, math.random(int_min, int_max), math.random(int_min, int_max), 
+                math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+                math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1})
+            end
+            addict.trigger_commands("givesh" .. players.get_name(pid))
+            util.yield()
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+                util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1})
+                util.yield(100)
+            end
+        end)
+
+        addict.toggle_loop(kick, "SE Kick (S7)", {"sekicks7"}, "Script event kick, Works good on normal player and also on cheap addicts.", function()
+            local int_min = -2147483647
+            local int_max = 2147483647
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, math.random(int_min, int_max), math.random(int_min, int_max), 
+                math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+                math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+                util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
+            end
+            addict.trigger_commands("givesh" .. players.get_name(pid))
+            util.yield()
+            for i = 1, 15 do
+                util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+                util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
+                util.yield(100)
             end
         end)
 
@@ -20451,133 +20508,7 @@ addict.toggle_loop(synccrashes, "Sync Crash v3", {"synccrashv3"}, "", function()
     addict.trigger_commands("superc 4")
 end)
 
-addict.toggle_loop(SECrashes, "SE Crash From X-Froce", {"xforcese"}, "Logged from x-force.", function()
-    util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655}) -- Crash Event S1
-    util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
-    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0}) -- Modded Event S3
-    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 1, 0}) -- Modded Event S3
-    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 0, 0}) -- Modded Event S3
-    util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 2, 0}) -- Modded Event S3
-    util.trigger_script_event(1 << pid, {891653640, 26770, 95398, 98426, -24591, 47901, -64814}) -- Crash Event S0
-    util.trigger_script_event(1 << pid, {891653640, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S0
-    util.trigger_script_event(1 << pid, {-992162568, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S1
-    util.trigger_script_event(1 << pid, {1556360603, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S2
-    util.trigger_script_event(1 << pid, {2041805809, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Modded Event S3
-    util.trigger_script_event(1 << pid, {-702866045, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Apartment Invite
-end)
-
-
-addict.toggle_loop(SECrashes, "SE Crash From X-Froce V2", {"xforcesev2"}, "Logged from x-force and modified.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655, math.random(int_min, int_max), math.random(int_min, int_max), -- Crash Event S1
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206}) -- Crash Event S0
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 3, 0, pid, math.random(int_min, int_max)}) -- Modded Event S3
-        util.trigger_script_event(1 << pid, {2041805809, 0, 1466468442, 1, 0}) -- Modded Event S3
-        util.trigger_script_event(1 << pid, {891653640, 26770, 95398, 98426, -24591, 47901, -64814}) -- Crash Event S0
-        util.trigger_script_event(1 << pid, {891653640, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S0
-        util.trigger_script_event(1 << pid, {-992162568, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S1
-        util.trigger_script_event(1 << pid, {1556360603, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Crash Event S2
-        util.trigger_script_event(1 << pid, {2041805809, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647,  2147483647, 2147483647, 2147483647, 2147483647}) -- Modded Event S3
-        util.trigger_script_event(1 << pid, {-702866045, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647}) -- Apartment Invite
-    end
-end)
-
-addict.divider(SECrashes, "_________________________________________")
-
-addict.toggle_loop(SECrashes, "SE Crash V1 (S1)", {"secrashv1"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0})
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {1556360603, 7, 0, 0, -12988, -99097, 0})
-    end
-end)
-
-addict.toggle_loop(SECrashes, "SE Crash V2 (S1)", {"secrashv2"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813})
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, 269390394, -794038991, 674132290, 1008812628, 1828128189, -1047846427, -417630924, 1559354806, -2088673813})
-    end
-end)
-
-addict.toggle_loop(SECrashes, "SE Crash V3 (S1)", {"secrashv3"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922})
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1405321467, -71842618, 1032432734, 1379092698, 2059280791, -306310582, 854698436, 954952113, -21599922})
-    end
-end)
-
-addict.toggle_loop(SECrashes, "SE Crash V4 (S1)", {"secrashv4"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823})
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -157316019, 279369744, 1447611509, -138926790, -1847982995, 124907913, 1712690347, -332924195, 180190823})
-    end
-end)
-
-addict.toggle_loop(SECrashes, "SE Crash V5 (S1)", {"secrashv5"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
-    local int_min = -2147483647
-    local int_max = 2147483647
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240, math.random(int_min, int_max), math.random(int_min, int_max), 
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240})
-    end
-    addict.trigger_commands("givesh" .. players.get_name(pid))
-    util.yield()
-    for i = 1, 15 do
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240, pid, math.random(int_min, int_max)})
-        util.trigger_script_event(1 << pid, {-992162568, 7, -1915611464, 726910408, 1431442525, 212876633, 1775875950, 1471359395, 630636925, -1917431383, 355282240})
-    end
-end)
-
-addict.toggle_loop(SECrashes, "SE Crash V6 (S1)", {"secrashv6"}, "Script event crash, works good on normal player and also on cheap addicts.", function()
+addict.toggle_loop(SECrashes, "SE Crash (S1)", {"secrash"}, "(Will add working ones soon). Script event crash, works good on normal player and also on cheap addicts.", function()
     local int_min = -2147483647
     local int_max = 2147483647
     for i = 1, 15 do
