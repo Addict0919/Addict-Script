@@ -1,0 +1,35 @@
+Model: Trevor
+Head: 0
+Head Variation: 0
+Facial Hair: 0
+Facial Hair Colour: 0
+Hair: 0
+Hair Colour: 0
+Top: 13
+Top Variation: 0
+Top 2: 0
+Top 2 Variation: 0
+Top 3: 14
+Top 3 Variation: 0
+Bag / Parachute: 0
+Bag / Parachute Variation: 0
+Gloves: 0
+Gloves Variation: 0
+Pants: 25
+Pants Variation: 0
+Shoes: 3
+Shoes Variation: 0
+Accessories: 0
+Accessories Variation: 0
+Decals: 0
+Decals Variation: 0
+Hat: -1
+Hat Variation: -1
+Glasses: -1
+Glasses Variation: -1
+Earwear: -1
+Earwear Variation: -1
+Watch: -1
+Watch Variation: -1
+Bracelet: -1
+Bracelet Variation: -1
