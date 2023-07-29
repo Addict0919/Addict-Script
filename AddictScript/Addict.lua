@@ -42,11 +42,11 @@ async_http.dispatch()
 repeat util.yield()
 until response 
 if not dev_mode then
-    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.LUA",function(b)
         currentVer=tonumber(b)
         response=true;
         if addict_version~=currentVer then 
-                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
+                util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.LUA',function(c)
                     local d=select(2,load(c))
                     if d then 
                         util.toast("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
