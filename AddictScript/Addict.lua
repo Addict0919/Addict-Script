@@ -8,13 +8,15 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 -- Add all Globals here for quicker updates
-globals = {
-    {check, 78689},
-    {pv_slot, 2359296 + 1 + (0 * 5568) + 681 + 2},
+global_list = {
+    check = 78689,
+    pv_slot = 2359296 + 1 + (0 * 5568) + 681 + 2,
+
+    orbi = 1969112
 }
 
 local addict = menu
-local addict_version = 1.38
+local addict_version = 1.39
 local dev_mode = false -- Disables stuff like Updates [true/false]
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
@@ -142,6 +144,7 @@ function()
             ---------------------------------------------------------------------------------
             addict.divider(Credits, "Great Coders <3")
             ---------------------------------------------------------------------------------
+            addict.action(Credits, "Blacklight", {}, "Created Addict Installer :).", function() end)
             addict.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
             addict.action(Credits, "notderpaul", {}, "Great coder helped with code, security and testing :).", function() end)
             addict.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
@@ -177,7 +180,7 @@ function()
             addict.action(Credits, "Acjoker", {}, "", function() end)
             addict.action(Credits, "Tox1cEssent1als", {}, "", function() end)
             addict.action(Credits, "(0)Lens", {}, "", function() end)
-            addict.action(Credits, "Fuck the Stand staff tho.✌", {}, "", function() end)
+            addict.action(Credits, "Fuck the Stand staff tho.", {}, "", function() end)
             ---------------------------------------------------------------------------------
 
             local translations = {}
@@ -1667,7 +1670,7 @@ function BitClear(value, bit)
 end
 
 addict.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
-veh = memory.script_global(1586488 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+veh = memory.script_global(1586488 + 1 + (memory.read_int(global_list.pv_slot) * 142) + 103)
 bitfield = memory.read_int(veh)
 memory.write_int(veh, bitfield | 0xC)
 end)
@@ -1686,7 +1689,7 @@ if veh ~= 0 then
     if veh ~= 0 then
         spawned_model = util.reverse_joaat(entities.get_model_hash(veh))
         if hash ~= 0 then
-            memory.write_int(check, 0)
+            memory.write_int(global_list.check, 0)
             handle = entities.pointer_to_handle(veh)
             bitset = DECORATOR.DECOR_GET_INT(handle, "MPBitset")
             bitset = BitClear(bitset, 3)
@@ -1701,12 +1704,12 @@ if veh ~= 0 then
             while interior == 0 do
                 interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
                 if os.time() >= start then
-                    memory.write_int(check, 1)
+                    memory.write_int(global_list.check, 1)
                     util.stop_thread()
                 end
                 util.yield_once()
             end
-            memory.write_int(check, 1)
+            memory.write_int(global_list.check, 1)
             while interior ~= 0 do
                 interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
                 util.yield(1000)
@@ -1745,7 +1748,7 @@ end
 end)
 
 addict.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
-veh = memory.script_global(1586488 + 1 + (memory.read_int(pv_slot) * 142) + 103)
+veh = memory.script_global(1586488 + 1 + (memory.read_int(global_list.pv_slot) * 142) + 103)
 bitfield = memory.read_int(veh)
 memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
 end)
@@ -3209,10 +3212,10 @@ end
 cashloop = addict.list(Recovery, "$500k + $750k Loop", {}, "", function(); end)
 
 addict.toggle_loop(cashloop, "Start $500k + $750k Loop", {""}, "500k + 750k Loop Every 10 Seconds. Warning! Dont spend over 50 million a day. If cash stops it will start again in 60 seconds.", function()
-memory.write_int(memory.script_global(1969112), 1)
+memory.write_int(memory.script_global(global_list.orbi), 1)
 util.log("$ 500K Added")
 util.yield(1)
-memory.write_int(memory.script_global(1969112), 2)
+memory.write_int(memory.script_global(global_list.orbi), 2)
 util.log("$ 750K Added")
 util.yield(1)
 addict.trigger_commands("accepterrors")
