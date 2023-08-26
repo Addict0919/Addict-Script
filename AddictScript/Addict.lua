@@ -18729,11 +18729,13 @@ local hugs = addict.list(frienm, "Hug Player", {"hug"}, "Note: Make sure they ar
 
 tpf_units = 1
 addict.action(hugs,"Hug Player 1", {}, "Credits to Kataliya for idea.", function()
+addict.trigger_commands("freeze" ..  PLAYER.GET_PLAYER_NAME(pid) .. " on")
 addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
 util.yield(200)
 addict.trigger_commands("nocollision" .. " on")
 addict.trigger_commands("playanimhug")
 util.yield(300)
+addict.trigger_commands("freeze" ..  PLAYER.GET_PLAYER_NAME(pid) .. " off")
 addict.trigger_commands("nocollision" .. " off")
 local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
@@ -18741,11 +18743,13 @@ end)
 
 tpf_units = -0.7
 addict.action(hugs,"Hug Player 2", {"hugs"}, "Note: Make sure they are stood still. Like first one but tiny bit different. Credits to Kataliya for idea.", function()
+addict.trigger_commands("freeze" ..  PLAYER.GET_PLAYER_NAME(pid) .. " on")
 addict.trigger_commands("tp" .. PLAYER.GET_PLAYER_NAME(pid))
 util.yield(200)
 addict.trigger_commands("nocollision" .. " on")
 addict.trigger_commands("playanimhug2")
 util.yield(300)
+addict.trigger_commands("freeze" ..  PLAYER.GET_PLAYER_NAME(pid) .. " off")
 addict.trigger_commands("nocollision" .. " off")
 local pos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(players.user_ped(), 0, tpf_units, 0)
 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), pos['x'], pos['y'], pos['z'], true, false, false)
