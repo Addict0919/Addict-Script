@@ -1,19 +1,6 @@
 ________________________
-v1.36
-- Added dev mode [true/false]
-- Code Cleanup
-________________________
-v1.35
-- Updated Credits
-- Removed more old kicks
-- Added S1 Script event kick
-- Added another S3 Script event kick
-________________________
-v1.36
-- Connected Addict installer to Github
-________________________
-v1.37
-- Updated Credits
-- Removed SE crashes
-- Changed updater to auto update
+v1.38
+- updated credits for better visual
+- beautified code
+- added table for globals to update them easier for quicker updates
 ________________________
