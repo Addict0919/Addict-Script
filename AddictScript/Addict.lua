@@ -7,16 +7,68 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
--- Add all Globals here for quicker updates
-global_list = {
-    check = 78689,
-    pv_slot = 2359296 + 1 + (0 * 5568) + 681 + 2,
+-- Add all SE here for quicker updates
+local se = {
+    tpspread = -1388926377,
+    orbitalfuck = 677240627,
+    jobnotify = 2386092767,
+    givecollectible = 697566862,
+    kick1_casino = 1268038438,
+    kick2 = 915462795,
+    arraykick = 1613825825,
+    sekicks0 = -1013606569,
+    sekicks1 = -901348601,
+    sekicks3 = -1638522928,
+    sekicks3_1 = 1017995959,
+    sekicks4 = -2026172248,
+    sekicks7 = -642704387,
+    secrash = -992162568,
 
-    orbi = 1969112
+    startfaketyping = 747270864,
+    stopfaketyping = -990958325,
 }
 
+-- Add all Globals here for quicker updates
+local glob = {
+    base = 262145,
+    player = 2689235,
+    check = 78689,
+    slot = 2359296,
+    pveh = 1586488,
+    resupplyacid = 1648637,
+    orbi = 1969112,
+    nohud = 1645739,
+    fastrespawn = 2672524,
+    playerpoint = 4521801,
+    sekickarg1 = 2657704,
+    sekickarg2 = 1892703,
+    player_bounty = 1835502,
+    bounty1 = 2815059,
+}
+
+local function tunable(value)
+    return memory.script_global(glob.base + value)
+end
+
+local globals = {
+    nightclub_prices = {
+        ["La Mesa"] = tunable(24838),
+        ["Mission Row"] = tunable(24843),
+        ["Vespucci Canals"] = tunable(24845)
+    }
+}
+
+function send_script_event(first_arg, receiver, args)
+    table.insert(args, 1, first_arg)
+    util.trigger_script_event(1 << receiver, args)
+end
+
+local function vector3(x, y, z)
+    return { x = x, y = y, z = z }
+end
+
 local addict = menu
-local addict_version = 1.39
+local addict_version = 1.40
 local dev_mode = false -- Disables stuff like Updates [true/false]
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
@@ -247,7 +299,6 @@ function()
         function random_float(min, max)
             return min + math.random() * (max - min)
         end
-
 
         function get_hud_colour()
             local red_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
@@ -1670,7 +1721,7 @@ function BitClear(value, bit)
 end
 
 addict.action(Mors_Mutual, "Add Insurance", {"addins"}, "Insures your vehicle for free.", function()
-veh = memory.script_global(1586488 + 1 + (memory.read_int(global_list.pv_slot) * 142) + 103)
+veh = memory.script_global(glob.pveh + 1 + (memory.read_int(glob.slot + 1 + (0 * 5568) + 681 + 2) * 142) + 103)
 bitfield = memory.read_int(veh)
 memory.write_int(veh, bitfield | 0xC)
 end)
@@ -1689,7 +1740,7 @@ if veh ~= 0 then
     if veh ~= 0 then
         spawned_model = util.reverse_joaat(entities.get_model_hash(veh))
         if hash ~= 0 then
-            memory.write_int(global_list.check, 0)
+            memory.write_int(glob.check, 0)
             handle = entities.pointer_to_handle(veh)
             bitset = DECORATOR.DECOR_GET_INT(handle, "MPBitset")
             bitset = BitClear(bitset, 3)
@@ -1704,12 +1755,12 @@ if veh ~= 0 then
             while interior == 0 do
                 interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
                 if os.time() >= start then
-                    memory.write_int(global_list.check, 1)
+                    memory.write_int(glob.check, 1)
                     util.stop_thread()
                 end
                 util.yield_once()
             end
-            memory.write_int(global_list.check, 1)
+            memory.write_int(glob.check, 1)
             while interior ~= 0 do
                 interior = INTERIOR.GET_INTERIOR_FROM_ENTITY(ped)
                 util.yield(1000)
@@ -1741,14 +1792,14 @@ addict.divider(Mors_Mutual, "Claim Vehicles")
 
 addict.action(Mors_Mutual, "Claim All Personal Vehicles", {"claimallveh"}, "Claims all destroyed/impounded personal vehicles.", function()
 for slot = 0, 415 do
-    veh = memory.script_global(1586488 + 1 + (slot * 142) + 103)
+    veh = memory.script_global(glob.pveh + 1 + (slot * 142) + 103)
     bitfield = memory.read_int(veh)
     memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
 end
 end)
 
 addict.action(Mors_Mutual, "Claim Personal Vehicle", {"claimpersonal"}, "Claims the current active personal vehicle.", function()
-veh = memory.script_global(1586488 + 1 + (memory.read_int(global_list.pv_slot) * 142) + 103)
+veh = memory.script_global(glob.pveh + 1 + (memory.read_int(glob.slot + 1 + (0 * 5568) + 681 + 2) * 142) + 103)
 bitfield = memory.read_int(veh)
 memory.write_int(veh, bitfield & ((bitfield & (1 << 1)) ~= 0 and ~0x42 or ~0x40))
 end)
@@ -1768,28 +1819,28 @@ acidlabmanager = addict.list(Recovery, "Acid Lab Manager", {}, "", function(); e
 
 addict.divider(acidlabmanager, "Acid Lab Manager")
 addict.click_slider(acidlabmanager, "Product Capacity", {"productcapacity"}, "", 0, 1000, 160, 1, function(capacity)
-memory.write_int(memory.script_global(262145 + 18949), capacity)
+memory.write_int(memory.script_global(glob.base + 18949), capacity)
 end)
 
 addict.toggle(acidlabmanager, "Make Supplies Free", {"supplycost"}, "", function()
-memory.write_int(memory.script_global(262145 + 21869), 0)
+memory.write_int(memory.script_global(glob.base + 21869), 0)
 end, function()
-memory.write_int(memory.script_global(262145 + 21869), 60000)
+memory.write_int(memory.script_global(glob.base + 21869), 60000)
 end)
 
 addict.toggle(acidlabmanager, "Increase Production Speed", {"increaseproductionspeed"}, "", function()
-memory.write_int(memory.script_global(262145 + 17396), 100)
+memory.write_int(memory.script_global(glob.base + 17396), 100)
 end, function()
-memory.write_int(memory.script_global(262145 + 17396), 135000)
+memory.write_int(memory.script_global(glob.base + 17396), 135000)
 end)
 
 addict.action(acidlabmanager, "Resupply Acid", {"resupplyacid"}, "", function()
-local time = NETWORK.GET_CLOUD_TIME_AS_INT() - memory.read_int(memory.script_global(262145 + 18954))
-memory.write_int(memory.script_global(1648637 + 1 + 6), time)
+local time = NETWORK.GET_CLOUD_TIME_AS_INT() - memory.read_int(memory.script_global(glob.base + 18954))
+memory.write_int(memory.script_global(glob.resupplyacid + 1 + 6), time)
 end)
 
 addict.click_slider(acidlabmanager, "Sell Value Multiplier", {"value"}, "Warning: Tested safe amount is ~2 million. Try not to exceed unless you're bored and don't care about your account.", 0, 10000, 1, 1, function(value)
-memory.write_int(memory.script_global(262145 + 17425), value * 1485)
+memory.write_int(memory.script_global(glob.base + 17425), value * 1485)
 end)
 
 cashskids = addict.list(Recovery, "Property Trade In", {}, "Skidded of course.", function(); end)
@@ -2176,10 +2227,6 @@ end
 return false
 end
 
-local function tunable(value)
-return memory.script_global(262145 + value)
-end
-
 local function get_owned_property(property, as_id)
 local ptr = memory.alloc(4)
 
@@ -2228,14 +2275,6 @@ autoshop = os.time(),
 agency = os.time(),
 hanger = os.time(),
 facility = os.time(),
-}
-
-local globals = {
-nightclub_prices = {
-["La Mesa"] = tunable(24838),
-["Mission Row"] = tunable(24843),
-["Vespucci Canals"] = tunable(24845)
-}
 }
 
 local usage_timer = 20
@@ -2362,6 +2401,7 @@ util.yield(1000)
 end)
 
 items.presets.nightclub.root:divider("Tools", "Tools")
+
 items.presets.nightclub.root:action("Unlock Arcades On MazeBank", {}, "Unlocks arcades", function()
 local current_pos = ENTITY.GET_ENTITY_COORDS(players.user_ped(), true)
 local lester_blip = HUD.GET_NEXT_BLIP_INFO_ID(77)
@@ -2378,16 +2418,16 @@ local casino_coords = HUD.GET_BLIP_COORDS(casino_blip)
 ENTITY.SET_ENTITY_COORDS(players.user_ped(), casino_coords.x, casino_coords.y, casino_coords.z, true, true, true, true)
 PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 51, 1)
 ENTITY.SET_ENTITY_COORDS(players.user_ped(), lester_coords.x, lester_coords.y, lester_coords.z, true, true, true, true)
-util.yield(500)
+util.yield(1500)
 addict.trigger_commands("skipcutscene")
 util.yield(100)
 ENTITY.SET_ENTITY_COORDS(players.user_ped(), current_pos.x, current_pos.y, current_pos.z, true, true, true, true)
 
-util.toast("[Recovery]: Unlocked arcades")
+util.toast("[Recovery]: Unlocked Arcades")
 end)
 
 items.presets.nightclub.root:action("Unlock Autoshops On MazeBank", {}, "Unlock Autoshops", function()
-local pos = v3.new(778.99708076172, -1867.5257568359, 28.296264648438)
+local pos = vector3(778.99708076172, -1867.5257568359, 28.296264648438)
 ENTITY.SET_ENTITY_COORDS(players.user_ped(), pos.x, pos.y, pos.z, true, true, true, true)
 end)
 
@@ -2847,9 +2887,9 @@ end)
 moneyMultiplier = addict.toggle_loop(main_addict, 'Disable RP', {""}, 'Dont earn anymore RP with cargo sells.', function()
 if addict.get_value(moneyMultiplier) then
 util.draw_debug_text("RP Disabled")
-memory.write_float(memory.script_global(262145 + 1), 0)
+memory.write_float(memory.script_global(glob.base + 1), 0)
 else
-memory.write_float(memory.script_global(262145 + 1), 1)
+memory.write_float(memory.script_global(glob.base + 1), 1)
 end
 end)
 
@@ -3212,10 +3252,10 @@ end
 cashloop = addict.list(Recovery, "$500k + $750k Loop", {}, "", function(); end)
 
 addict.toggle_loop(cashloop, "Start $500k + $750k Loop", {""}, "500k + 750k Loop Every 10 Seconds. Warning! Dont spend over 50 million a day. If cash stops it will start again in 60 seconds.", function()
-memory.write_int(memory.script_global(global_list.orbi), 1)
+memory.write_int(memory.script_global(glob.orbi), 1)
 util.log("$ 500K Added")
 util.yield(1)
-memory.write_int(memory.script_global(global_list.orbi), 2)
+memory.write_int(memory.script_global(glob.orbi), 2)
 util.log("$ 750K Added")
 util.yield(1)
 addict.trigger_commands("accepterrors")
@@ -3508,12 +3548,6 @@ VEHICLE.SET_VEHICLE_WINDOW_TINT(vehicle, 1)
 VEHICLE.SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, "Addict")
 util.toast("RC Bombs are now ready")
 util.log("RC Bombs are now ready")
-end
-
-
-function send_script_event(first_arg, receiver, args)
-table.insert(args, 1, first_arg)
-util.trigger_script_event(1 << receiver, args)
 end
 
 --[[
@@ -3856,7 +3890,7 @@ local kicks = {
 -1612608404,
 895397362,
 1802646519,
-1268038438,
+se.kick1_casino,
 1927489513,
 1046014587,
 549145155,
@@ -3913,7 +3947,7 @@ local kicks = {
 2119903152,
 507886635,
 -1057685265,
-915462795,
+se.kick2,
 -1069140561,
 1491410017,
 -1601139550,
@@ -3924,7 +3958,7 @@ local kicks = {
 1354970087,
 1796894334,
 392606458,
-697566862,
+se.givecollectible,
 1402665684,
 -1694531511,
 393633835,
@@ -7558,7 +7592,7 @@ HUD.HIDE_HUD_COMPONENT_THIS_FRAME(7)
 HUD.HIDE_HUD_COMPONENT_THIS_FRAME(8)
 HUD.HIDE_HUD_COMPONENT_THIS_FRAME(9)
 ---@diagnostic disable-next-line: param-type-mismatch
-memory.write_int(memory.script_global(1645739+1121), 1)
+memory.write_int(memory.script_global(glob.nohud + 1121), 1)
 sf.CLEAR_ALL()
 sf.TOGGLE_MOUSE_BUTTONS(false)
 end
@@ -8003,14 +8037,14 @@ end
 end)
 
 addict.toggle_loop(playermode, "Fast Respawn", {"fastrespawn"}, "", function()
-local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756) -- Global_2672524.f_1685.f_756
 if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
 GRAPHICS.ANIMPOSTFX_STOP_ALL()
 memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
 end
 end,
 function()
-local gwobaw = memory.script_global(2672524 + 1685 + 756)
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1))
 end)
 
@@ -8650,7 +8684,7 @@ return entity
 end
 
 function PlayerIsPointing()
-PlayerIsPointing = memory.read_int(memory.script_global(4521801 + 930)) == 3
+PlayerIsPointing = memory.read_int(memory.script_global(glob.playerpoint + 930)) == 3
 end
 
 function Draw_Box_Peds()
@@ -10653,82 +10687,42 @@ end)
 addict.toggle_loop(tpoptions, "Tp Spread Your Shit", {"tpspread"}, "Note: Great for spreading any kinda mods like gifting vehicles or crash events.", function(on_toggle)
 local player_ped = PLAYER.PLAYER_PED_ID()
 local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
-for i=1,1  do
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 12.201786, -2608.5598, 27.00581)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 529.52344, -3159.0903, 46.26378)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 797.6639, -2314.7708, 66.75716)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -904.7783, -1799.8903, 60.525257)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -902.62103, -1797.8055, 68.71026)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -811.026, -1052.471, 84.877464)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -74.7535, -820.54895, 331.0572)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 693.5279, -1200.2932, 45.110516)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1944.0536, -911.7328, 177.15826)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 955.1047, 11.822339, 129.3541)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -604.4595, 53.186974, 124.79825)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -84.817345, 882.59576, 287.78268)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1755.0154, -75.41939, 137.54353)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 2568.129, 760.6324, 160.43828)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 807.4092, 2714.9368, 103.85771)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 2252.8367, 3330.679, 138.64398)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1970.4495, 2864.2395, 34.49541)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 1840.9294, 3868.8608, 54.188793)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 490.04102, 5584.988, 802.92584)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, 2313.2842, 5981.442, 136.00969)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -272.11963, 6188.8105, 82.51767)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
-util.yield(100)
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, -1329.5868, -3041.565, 65.06483)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
+
+local coordinatesList = {
+{x = -1329.5868, y = -3041.565, z = 65.06483},
+{x = 12.201786, y = -2608.5598, z = 27.00581},
+{x = 529.52344, y = -3159.0903, z = 46.26378},
+{x = 797.6639, y = -2314.7708, z = 66.75716},
+{x = -904.7783, y = -1799.8903, z = 60.525257},
+{x = -902.62103, y = -1797.8055, z = 68.71026},
+{x = -811.026, y = -1052.471, z = 84.877464},
+{x = -74.7535, y = -820.54895, z = 331.0572},
+{x = 693.5279, y = -1200.2932, z = 45.110516},
+{x = 1944.0536, y = -911.7328, z = 177.15826},
+{x = 955.1047, y = 11.822339, z = 129.3541},
+{x = -1329.5868, y = -3041.565, z = 65.06483},
+{x = -604.4595, y = 53.186974, z = 124.79825},
+{x = -84.817345, y = 882.59576, z = 287.78268},
+{x = -1755.0154, y = -75.41939, z = 137.54353},
+{x = 2568.129, y = 760.6324, z = 160.43828},
+{x = 807.4092, y = 2714.9368, z = 103.85771},
+{x = 2252.8367, y = 3330.679, z = 138.64398},
+{x = -1970.4495, y = 2864.2395, z = 34.49541},
+{x = 1840.9294, y = 3868.8608, z = 54.188793},
+{x = 490.04102, y = 5584.988, z = 802.92584},
+{x = 2313.2842, y = 5981.442, z = 136.00969},
+{x = -272.11963, y = 6188.8105, z = 82.51767},
+{x = -1329.5868, y = -3041.565, z = 65.06483}
+}
+
+for i, coords in ipairs(coordinatesList) do
+ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, coords.x, coords.y, coords.z)
+send_script_event(se.tpspread, pid, {27, -1762807505, 0})
 util.yield(100)
 end
+
 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-util.trigger_script_event(1 << pid, {-1388926377, 27, -1762807505, 0})
+send_script_event(se.tpspread, pid, {27, -1762807505, 0})
 end)
 
 function attachto(offx, offy, offz, pid, angx, angy, angz, hash, isnpc, isveh)
@@ -10831,37 +10825,15 @@ end)
 
 addict.toggle_loop(windmilling, "Windmills V2", {"togglemillsv1"}, "", function(on_toggle)
 if pid ~= players.user() then
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
+local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid))
+local object_model = util.joaat("prop_windmill_01")
+
+for i = 1, 10 do
+local object = entities.create_object(object_model, player_coords)
 OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
 entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
-entities.delete_by_handle(object)
-local object = entities.create_object(util.joaat("prop_windmill_01"), ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)))
-OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, true)
 util.yield(1000)
-entities.delete_by_handle(object)
+end
 end
 end)
 
@@ -10872,29 +10844,24 @@ local playerpos = ENTITY.GET_ENTITY_COORDS(id)
 playerpos.z = playerpos.z + 3
 local khanjali = util.joaat("prop_windmill_01")
 STREAMING.REQUEST_MODEL(khanjali)
+
 while not STREAMING.HAS_MODEL_LOADED(khanjali) do
 util.yield()
 end
-local vehicle1 = entities.create_object(khanjali, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle2 = entities.create_object(khanjali, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle3 = entities.create_object(khanjali, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle4 = entities.create_object(khanjali, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle2)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle3)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle4)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle2, vehicle1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle3, vehicle1, 0, 3, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle4, vehicle1, 0, 3, 0, 0, 0, 0, 0, 0, false, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true)
+
+local function CreateAndAttachVehicle(offsetX, offsetY, offsetZ, rotationY)
+local vehicle = entities.create_object(khanjali, playerpos, 0)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle, id, playerpos, 0, offsetX, offsetY, offsetZ, 0, rotationY, 0, 0, true, true, false, 0, true)
+ENTITY.SET_ENTITY_VISIBLE(vehicle, true)
+NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
+return vehicle
+end
+
+local vehicle1 = CreateAndAttachVehicle(0, 0, 0, 0)
+local vehicle2 = CreateAndAttachVehicle(0, 2, 3, -180)
+local vehicle3 = CreateAndAttachVehicle(0, 5, 3, -180)
+local vehicle4 = CreateAndAttachVehicle(0, 5, 0, 0)
+
 util.yield(10)
 end
 end)
@@ -10903,14 +10870,13 @@ addict.divider(windmilling, "__________________bruh__________________")
 
 addict.action(windmilling, "Clear Windmill's", {"clearwindmills"}, "", function()
 local count = 0
-for k,ent in pairs(entities.get_all_objects_as_handles()) do
+for _, ent in pairs(entities.get_all_objects_as_handles()) do
 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
 entities.delete_by_handle(ent)
 count = count + 1
 util.yield()
 end
 end)
-
 
 addict.toggle_loop(attachoptions, "Attach A Cone", {"aacone"}, "", function(on_click)
 attachto(0.0, 0.07, 0.63, pid, 0.0, 90.0, 0.0, 3760607069, false, false)
@@ -10919,7 +10885,6 @@ end)
 addict.toggle_loop(attachoptions, "Attach A Backpack", {"abackpack"}, "", function(on_click)
 attachto(0.0, -0.15, 0.0, pid, 0.0, 0.0, 0.0, 4208448709, false, false)
 end)
-
 
 addict.toggle_loop(attachoptions,"Attach A Umbrella", {}, "", function()
 local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
@@ -10959,32 +10924,26 @@ local playerpos = ENTITY.GET_ENTITY_COORDS(id)
 playerpos.z = playerpos.z + 3
 local rampattach = util.joaat("lts_prop_lts_ramp_03")
 STREAMING.REQUEST_MODEL(rampattach)
+
 while not STREAMING.HAS_MODEL_LOADED(rampattach) do
 util.yield()
 end
-local vehicle1 = entities.create_object(rampattach, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle2 = entities.create_object(rampattach, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle3 = entities.create_object(rampattach, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-local vehicle4 = entities.create_object(rampattach, playerpos, 0)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle1, id, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true, 0)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle2)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle3)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle4)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle2, vehicle1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle3, vehicle1, 0, 3, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
-ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle4, vehicle1, 0, 3, 0, 0, 0, 0, 0, 0, false, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, true)
+
+local function CreateAndAttachRamp(offsetX, offsetY, offsetZ, rotationY)
+local ramp = entities.create_object(rampattach, playerpos, 0)
+ENTITY.ATTACH_ENTITY_TO_ENTITY(ramp, id, playerpos, 0, offsetX, offsetY, offsetZ, 0, rotationY, 0, 0, true, true, false, 0, true)
+ENTITY.SET_ENTITY_VISIBLE(ramp, true)
+NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(ramp)
+return ramp
+end
+
+local vehicle1 = CreateAndAttachRamp(0, 0, 0, 0)
+local vehicle2 = CreateAndAttachRamp(0, 2, 3, -180)
+local vehicle3 = CreateAndAttachRamp(0, 5, 3, -180)
+local vehicle4 = CreateAndAttachRamp(0, 5, 0, 0)
+
 util.yield(100)
 end)
-
 
 addict.toggle(attachoptions, "Attach To Player", {"attachto"}, "", function(on)
 if PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid) == players.user_ped() then
@@ -11161,37 +11120,48 @@ local mdl = util.joaat("A_C_Chimp_02")
 local veh_mdl = util.joaat("maverick")
 util.request_model(mdl)
 util.request_model(veh_mdl)
-local modelHash <const> = util.joaat("weapon_raypistol")
+local modelHash = util.joaat("weapon_raypistol")
 local flag_hash = util.joaat("prop_flag_uk")
+
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, util.joaat("PLAYER"))
+
 local veh = entities.create_vehicle(veh_mdl, pos, 0)
 VEHICLE.SET_HELI_BLADES_FULL_SPEED(veh)
+
 local chimp2 = entities.create_ped(2, mdl, pos, 0)
 local player_chimp_army = entities.create_ped(2, mdl, pos, 0)
+
 local object = entities.create_object(flag_hash, pos)
 ENTITY.ATTACH_ENTITY_TO_ENTITY(object, player_chimp_army, playerpos, 0, 0, 0, 0, 0, 0, 0, 0, true, true, false, 0, true)
+
 ENTITY.SET_ENTITY_COLLISION(veh, false, false)
 ENTITY.SET_ENTITY_COLLISION(player_chimp_army, false, false)
 ENTITY.SET_ENTITY_COLLISION(chimp2, false, false)
+
 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(veh, true, true)
 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(player_chimp_army, true, true)
 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(chimp2, true, true)
+
 ENTITY.SET_ENTITY_INVINCIBLE(player_chimp_army, true)
 ENTITY.SET_ENTITY_INVINCIBLE(veh, true)
 ENTITY.SET_ENTITY_INVINCIBLE(chimp2, true)
+
 PED.SET_PED_INTO_VEHICLE(player_chimp_army, veh, 1)
 PED.SET_PED_INTO_VEHICLE(chimp2, veh, -1)
 TASK.TASK_RAPPEL_FROM_HELI(player_chimp_army, 20)
+
 PED.SET_PED_MAX_HEALTH(player_chimp_army, 100)
 ENTITY.SET_ENTITY_HEALTH(player_chimp_army, 100)
 ENTITY.SET_ENTITY_INVINCIBLE(player_chimp_army, true)
 NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(player_chimp_army)
+
 PED.SET_PED_AS_ENEMY(player_chimp_army, true)
 PED.SET_PED_FLEE_ATTRIBUTES(player_chimp_army, 0, false)
 PED.SET_PED_COMBAT_ATTRIBUTES(player_chimp_army, 46, true)
-WEAPON.GIVE_WEAPON_TO_PED(player_chimp_army, modelHash, 9999,  true)
+WEAPON.GIVE_WEAPON_TO_PED(player_chimp_army, modelHash, 9999, true)
 PED.SET_PED_COMBAT_ATTRIBUTES(player_chimp_army, player_ped, 0, 16)
-PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_chimp_army, util.joaat("HATES_PLAYER"))
+PED.SET_PED_RELATIONSHIP_group_hash(player_chimp_army, util.joaat("HATES_PLAYER"))
+
 util.toast("Chimp sent to " .. PLAYER.GET_PLAYER_NAME(pid))
 util.log("Chimp sent to " .. PLAYER.GET_PLAYER_NAME(pid))
 end)
@@ -11873,50 +11843,48 @@ end)
 
 ----------------------------------------------- Attacker FBI ----------------------------------------------------------------------
 
-addict.action(Attackers_trollys,"Enemy FBI's", {"sendfbi"}, "", function()
-V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-hash = util.joaat("fbi2")
-ped_hash = util.joaat("S_M_Y_Swat_01")
+addict.action(Attackers_trollys, "Enemy FBI's", { "sendfbi" }, "", function()
+local pid = PLAYER.PLAYER_ID()
+local V3 = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+local hash = util.joaat("fbi2")
+local ped_hash = util.joaat("S_M_Y_Swat_01")
+
 if STREAMING.IS_MODEL_A_VEHICLE(hash) then
 STREAMING.REQUEST_MODEL(hash)
-while not STREAMING.HAS_MODEL_LOADED(hash) do
-util.yield()
-end
-local aab =
-{
-x = -5784.258301,
-y = -8289.385742,
-z = -136.411270
-}
-ENTITY.SET_ENTITY_VISIBLE(ped_to_kidnap, false)
-ENTITY.FREEZE_ENTITY_POSITION(ped_to_kidnap, false)
-table_kidnap = entities.create_vehicle(hash, ENTITY.GET_ENTITY_COORDS(V3, true), CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
-while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
 STREAMING.REQUEST_MODEL(ped_hash)
+while not STREAMING.HAS_MODEL_LOADED(hash) or not STREAMING.HAS_MODEL_LOADED(ped_hash) do
 util.yield()
 end
-ped_to_kidnap = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
-ped_to_drive = entities.create_ped(28, ped_hash, aab, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+
+local spawnCoords = ENTITY.GET_ENTITY_COORDS(V3, true)
+local xOffset = math.random(-20, 20)
+local yOffset = math.random(-20, 20)
+spawnCoords.x = spawnCoords.x + xOffset
+spawnCoords.y = spawnCoords.y + yOffset
+spawnCoords.z = spawnCoords.z
+
+local table_kidnap = entities.create_vehicle(hash, spawnCoords, CAM.GET_FINAL_RENDERED_CAM_ROT(0).z)
+local ped_to_kidnap = entities.create_ped(28, ped_hash, spawnCoords, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+local ped_to_drive = entities.create_ped(28, ped_hash, spawnCoords, CAM.GET_FINAL_RENDERED_CAM_ROT(2).z)
+
 local gunner_weapon = "WEAPON_SMG"
-WEAPON.GIVE_WEAPON_TO_PED(ped_to_kidnap, util.joaat(gunner_weapon) , 9999, false, true)
-WEAPON.GIVE_WEAPON_TO_PED(ped_to_drive, util.joaat(gunner_weapon) , 9999, false, true)
+for _, ped in ipairs({ ped_to_kidnap, ped_to_drive }) do
+WEAPON.GIVE_WEAPON_TO_PED(ped, util.joaat(gunner_weapon), 9999, false, true)
+end
+
 ENTITY.SET_ENTITY_INVINCIBLE(table_kidnap, true)
 ENTITY.ATTACH_ENTITY_TO_ENTITY(table_kidnap, ped_to_kidnap, 0, 0, 1, -1, 0, 0, 0, false, true, true, false, 0, false)
-coords_ped = v3()
-coords_ped = ENTITY.GET_ENTITY_COORDS(V3, true)
-coords_ped.x = coords_ped.x + math.random(-20, 20)
-coords_ped.y = coords_ped.y + math.random(-20, 20)
-coords_ped.z = coords_ped.z
-ENTITY.SET_ENTITY_COORDS(ped_to_kidnap, coords_ped.x, coords_ped.y, coords_ped.z, false, false, false, false)
+
 PED.SET_PED_INTO_VEHICLE(ped_to_drive, table_kidnap, -1)
 VEHICLE.SET_VEHICLE_ENGINE_ON(table_kidnap, true, true, false)
 TASK.TASK_VEHICLE_SHOOT_AT_PED(ped_to_drive, V3, 1)
 TASK.TASK_VEHICLE_CHASE(ped_to_drive, V3)
-util.yield(1)
+
+util.toast(os.date("%H:%M:%S") .. " FBI Sent To Attack", TOAST_ABOVE_MAP)
+
 entities.delete_by_handle(ped_to_kidnap)
 STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(hash)
 STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped_hash)
-util.toast(os.date("%H:%M:%S") .. " FBI Sent To Attack", TOAST_ABOVE_MAP)
 end
 end)
 
@@ -11981,9 +11949,7 @@ local gunner_weapon_lists = { --these are the Army's gunner weapons
 }
 
 lazer_entities = {}
-
 local amount = 45
-
 local lazer_options = addict.list(Attackers_trollys, "Army Attack", {}, "")
 
 addict.divider(lazer_options, "Army Attack")
@@ -11992,59 +11958,50 @@ addict.slider(lazer_options, "Spawn Ped Amount", {"spawnpedammount"}, "", 1, 45,
 amount = val
 end)
 
-function spawn_attack(pid, gunner_weapon, collision)
-local player_peds =  PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+function spawn_attack(pid, gunner_weapon, collision, amount)
+local player_peds = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 local pos = ENTITY.GET_ENTITY_COORDS(player_peds)
 pos.x = pos.x + math.random(-20, 20)
 pos.y = pos.y + math.random(-20, 20)
 pos.z = pos.z + math.random(20, 40)
+
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_peds, util.joaat("PLAYER"))
-local lazer_hash = util.joaat("lazer")
+
 local ped_hash = util.joaat("S_M_Y_ArmyMech_01")
 STREAMING.REQUEST_MODEL(ped_hash)
-STREAMING.REQUEST_MODEL(lazer_hash)
-while not STREAMING.HAS_MODEL_LOADED(ped_hash) or not STREAMING.HAS_MODEL_LOADED(lazer_hash) do
+while not STREAMING.HAS_MODEL_LOADED(ped_hash) do
 util.yield()
 end
-local lazer = entities.create_vehicle(lazer_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-lazer_entities[#lazer_entities + 1] = lazer
-ENTITY.SET_ENTITY_INVINCIBLE(lazer, lazer_godmode)
-ENTITY.SET_ENTITY_VISIBLE(lazer, lazer_visible, 0)
-VEHICLE.SET_VEHICLE_ENGINE_ON(lazer, true, true, true)
-VEHICLE.SET_HELI_BLADES_FULL_SPEED(lazer)
-VEHICLE.CONTROL_LANDING_GEAR(lazer, 3)
-local pilots = entities.create_ped(5, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-lazer_entities[#lazer_entities + 1] = pilots
+
+local lazer = spawn_vehicle("lazer", pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+local pilots = spawn_ped(ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
+
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(pilots, util.joaat("ARMY"))
-ENTITY.SET_ENTITY_VISIBLE(pilots, lazer_visible, 0)
 PED.SET_PED_INTO_VEHICLE(pilots, lazer, -1)
 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(pilots, true)
 PED.SET_PED_MAX_HEALTH(pilots, 500)
 ENTITY.SET_ENTITY_HEALTH(pilots, 500)
-ENTITY.SET_ENTITY_INVINCIBLE(pilots, lazer_godmode)
-TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(pilots, 500, 0)
+
 local gunners = {}
-for i  = 1, amount do
-gunners[#gunners+1] = entities.create_ped(29, ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
-lazer_entities[#lazer_entities + 1] = gunners[i]
+for i = 1, amount do
+gunners[i] = spawn_ped(ped_hash, pos, CAM.GET_GAMEPLAY_CAM_ROT(0).z)
 PED.SET_PED_INTO_VEHICLE(gunners[i], lazer, i)
-WEAPON.GIVE_WEAPON_TO_PED(gunners[i], util.joaat(gunner_weapon) , 9999, false, true)
-PED.SET_PED_COMBAT_ATTRIBUTES(gunners[i], 20 --[[ they can shoot from vehicle ]], true)
---PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(gunner[i], true)
+WEAPON.GIVE_WEAPON_TO_PED(gunners[i], util.joaat(gunner_weapon), 9999, false, true)
+PED.SET_PED_COMBAT_ATTRIBUTES(gunners[i], 20, true)
 PED.SET_PED_MAX_HEALTH(gunners[i], 500)
 ENTITY.SET_ENTITY_HEALTH(gunners[i], 500)
-ENTITY.SET_ENTITY_INVINCIBLE(gunners[i], lazer_godmode)
-ENTITY.SET_ENTITY_VISIBLE(gunners[i], lazer_visible, 0)
 PED.SET_PED_SHOOT_RATE(gunners[i], 1000)
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(gunners[i], util.joaat("ARMY"))
 TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(gunners[i], 1000, 0)
 end
+
 util.create_tick_handler(function()
 PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("ARMY"), util.joaat("PLAYER"))
 PED.SET_RELATIONSHIP_BETWEEN_GROUPS(5, util.joaat("PLAYER"), util.joaat("ARMY"))
 PED.SET_RELATIONSHIP_BETWEEN_GROUPS(0, util.joaat("ARMY"), util.joaat("ARMY"))
 end)
-return pilot, lazer
+
+return pilots, lazer
 end
 
 lazer_visible = true
@@ -12063,6 +12020,7 @@ TASK.TASK_HELI_CHASE(pilot, player_peds, 0, 0, 50)
 else
 TASK.TASK_HELI_MISSION(pilot, lazer, 0, player_peds, a.x, a.y, a.z, 23, 30, -1, -1, 10, 10, 5, 0)
 end
+
 util.yield()
 end
 end)
@@ -12444,6 +12402,7 @@ PED.SET_PED_COMBAT_ATTRIBUTES(player_Yule_army[i], 46, true)
 WEAPON.GIVE_WEAPON_TO_PED(player_Yule_army[i], modelHash, 9999, true, true)
 PED.SET_PED_COMBAT_ATTRIBUTES(player_Yule_army[i], ped, 0, 16)
 PED.SET_PED_RELATIONSHIP_GROUP_HASH(player_Yule_army[i], util.joaat("HATES_PLAYER"))
+
 util.yield()
 end
 end)
@@ -13714,18 +13673,8 @@ FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 35, 0, false, false, 0, false)
 util.yield(65)
 end)
 
-addict.toggle_loop(tormentplayer, "Drop Fake Bags", {"dropfakebags"}, "Old School :D", function()
-local coords = players.get_position(pid)
-coords.z = coords.z + 1.5
-local card = MISC.GET_HASH_KEY("prop_money_bag_01")
-STREAMING.REQUEST_MODEL(card)
-if STREAMING.HAS_MODEL_LOADED(card) == false then
-STREAMING.REQUEST_MODEL(card)
-end
-OBJECT.CREATE_AMBIENT_PICKUP(-1009939663, coords.x, coords.y, coords.z, 0, 1, card, false, true)
-end)
-
-addict.toggle_loop(tormentplayer, "Glitch Physics", {"glitchphysics"}, "", function(on_toggle)
+addict.toggle_loop(tormentplayer, "Glitch Physics", { "glitchphysics" }, "", function(on_toggle)
+local pid = PLAYER.PLAYER_ID()
 local id = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
 local playerpos = ENTITY.GET_ENTITY_COORDS(id)
 playerpos.z = playerpos.z + 3
@@ -13736,21 +13685,24 @@ while not STREAMING.HAS_MODEL_LOADED(khanjali) do
 util.yield()
 end
 
-local vehicle1 = entities.create_object(khanjali, ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.GET_PLAYER_PED(pid), 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
-local vehicle2 = entities.create_object(khanjali, playerpos, 0)
-local vehicle3 = entities.create_object(khanjali, playerpos, 0)
-local vehicle4 = entities.create_object(khanjali, playerpos, 0)
+local function create_vehicle(position, heading)
+local vehicle = entities.create_object(khanjali, position, heading)
+NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle)
+ENTITY.SET_ENTITY_VISIBLE(vehicle, false)
+return vehicle
+end
 
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle1)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle2)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle3)
-NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle4)
+local vehicle1 = create_vehicle(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(id, 0, 2, 3), ENTITY.GET_ENTITY_HEADING(id))
+local vehicle2 = create_vehicle(playerpos, 0)
+local vehicle3 = create_vehicle(playerpos, 0)
+local vehicle4 = create_vehicle(playerpos, 0)
 
 ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle2, vehicle1, 0, 0, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
 ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle3, vehicle1, 0, 3, 3, 0, 0, 0, -180, 0, false, true, false, 0, true)
 ENTITY.ATTACH_ENTITY_TO_ENTITY(vehicle4, vehicle1, 0, 3, 0, 0, 0, 0, 0, 0, false, true, false, 0, true)
-ENTITY.SET_ENTITY_VISIBLE(vehicle1, false)
+
 util.yield(1200)
+
 entities.delete_by_handle(vehicle1)
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
@@ -13771,6 +13723,7 @@ ped_c.x = ped_c.x + math.random(-5, 5)
 ped_c.y = ped_c.y + math.random(-5, 5)
 ped_c.z = ped_c.z + math.random(5, 10)
 ENTITY.SET_ENTITY_VELOCITY(ped, 0.0, 0.0, -1.0)
+
 util.yield(100)
 end
 end
@@ -14273,7 +14226,7 @@ entities.delete_by_handle(vehicle)
 end
 end)
 
-addict.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
+--[[ addict.action(lagwiths, "Nuke V1", {"nuke"}, "Nuke the player", function()
 addict.trigger_commands("levitate")
 addict.trigger_commands("anticrashcamera")
 local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
@@ -14346,10 +14299,9 @@ entities.delete_by_handle(ent)
 end
 ct = ct + 1
 end
-end)
+end) --]]
 
-
-addict.action(lagwiths, "Nuke V2", {"nukev2"}, "Nuke the player, This is OP.", function()
+addict.action(lagwiths, "Nuke V1", {"nukev1"}, "Nuke the player, This is OP.", function()
 addict.trigger_commands("levitate")
 util.yield(100)
 addict.trigger_commands("anticrashcamera")
@@ -14587,6 +14539,87 @@ ct = ct + 1
 end
 end)
 
+addict.action(lagwiths, "Nuke V2", {"nukev2"}, "Nuke the player, This is OP.", function()
+local function playSounds()
+local sounds = {
+"TENNIS_POINT_WON",
+"Air_Defences_Activated",
+"TIME_LAPSE_MASTER",
+"Power_Down",
+"Power_Down",
+"Power_Down"
+}
+
+for _, sound in ipairs(sounds) do
+AUDIO.PLAY_SOUND_FRONTEND(-1, sound, "HUD_AWARDS", true)
+util.yield(50)
+end
+end
+
+local self_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
+local target_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+local exp = 9
+local offset = vector3(0, 0, 2)
+local spam_amount = 300
+
+addict.trigger_commands("levitate")
+addict.trigger_commands("anticrashcamera")
+
+for _ = 1, 10 do
+playSounds()
+local target_coords = ENTITY.GET_ENTITY_COORDS(target_ped)
+local target_heading = ENTITY.GET_ENTITY_HEADING(target_ped)
+local spawn_coords = offset_coords_forward(target_coords, target_heading, 100)
+FIRE.ADD_EXPLOSION(spawn_coords.x, spawn_coords.y, spawn_coords.z, exp, 100.0, true, false, 1.0, false)
+util.yield(50)
+offset.z = offset.z + 2
+spawn_coords = offset_coords_forward(ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, offset.x, offset.y, offset.z), target_heading, 300)
+FIRE.ADD_EXPLOSION(spawn_coords.x, spawn_coords.y, spawn_coords.z, exp, 100.0, true, false, 1.0, false)
+util.yield(50)
+end
+
+while not STREAMING.HAS_MODEL_LOADED(2336777441) do
+STREAMING.REQUEST_MODEL(2336777441)
+util.yield(10)
+end
+
+local player_ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+local player_coords = offset_coords_forward(ENTITY.GET_ENTITY_COORDS(player_ped, true), ENTITY.GET_ENTITY_HEADING(player_ped), 300)
+
+while spam_amount >= 1 do
+entities.create_vehicle(2336777441, player_coords, 0)
+spam_amount = spam_amount - 1
+util.yield(10)
+end
+
+util.toast("Clearing")
+
+for _, ent in pairs(entities.get_all_vehicles_as_handles()) do
+ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+entities.delete_by_handle(ent)
+end
+
+for _, ent in pairs(entities.get_all_peds_as_handles()) do
+if not PED.IS_PED_A_PLAYER(ent) then
+ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, false, false)
+entities.delete_by_handle(ent)
+end
+end
+
+addict.trigger_commands("craftloop1" .. players.get_name(pid))
+addict.trigger_commands("deletearmy" .. players.get_name(pid))
+addict.trigger_commands("atomizeron" .. players.get_name(pid))
+addict.trigger_commands("emploop" .. players.get_name(pid))
+addict.trigger_commands("bloodslash" .. players.get_name(pid))
+addict.trigger_commands("ptfxelectric" .. players.get_name(pid))
+addict.trigger_commands("ptfxsmoke" .. players.get_name(pid))
+addict.trigger_commands("ptfxclown" .. players.get_name(pid))
+addict.trigger_commands("ptfxextinguisher" .. players.get_name(pid))
+addict.trigger_commands("ptfxwatermist" .. players.get_name(pid))
+addict.trigger_commands("levitate")
+addict.trigger_commands("anticrashcamera")
+util.toast("Finished")
+end)
 
 addict.action(lagwiths, "Orbital Fuck", {"orbitalfuck"}, "Be careful...", function(on)
 local countdown = 4.50
@@ -16621,17 +16654,13 @@ util.toast("Its possible his game CrAShEd, 50/50, the russian roulette !")
 if not crash_in_progress0 then
 crash_in_progress0 = true
 script = {}
-function script.trigger_script_event(first_arg, receiver, args)
-table.insert(args, 1, first_arg)
-util.trigger_script_event(1 << receiver, args)
-end
 for i = 1, 256 do
 local parameters = {pid, -1774405356, math.random(0, 4), math.random(0, 1)}
 for i = 5, 13 do
     parameters[i] = math.random(-2147483647, 2147483647)
 end
 parameters[10] = pid
-script.trigger_script_event(677240627, pid, parameters)
+send_script_event(se.orbitalfuck, pid, parameters)
 end
 util.yield(500)
 crash_in_progress0 = false
@@ -18151,14 +18180,14 @@ end)
 
 addict.action(griefing, "Job SmS notification", {"jobnotify"}, "It sends messages to anyone message appears like you started a job with notif above mini map, you may be kicked if you use on modders when not host.", function(cl)
 addict.show_command_box_click_based(cl, "jobnotify "..players.get_name(pid):lower().." ") end, function(input)
-local event_data = {0x8E38E2DF, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local event_data = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 input = input:sub(1, 127)
 for i = 0, #input -1 do
 local slot = i // 8
 local byte = string.byte(input, i + 1)
 event_data[slot + 3] = event_data[slot + 3] | byte << ((i-slot * 8)* 8)
 end
-util.trigger_script_event(1 << pid, event_data)
+send_script_event(se.jobnotify, pid, event_data)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -18174,28 +18203,28 @@ end, nil, nil, COMMANDPERM_AGGRESSIVE)
 addict.action(kick, "Boop Kick", {"boop"}, "Contains 6 SE kicks.", function()
 addict.trigger_commands("kick" .. players.get_name(pid))
 addict.trigger_commands("givesh" .. players.get_name(pid))
-util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1}) --697566862 Give Collectible
-util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657704 + 1 + (pid * 466) + 321 + 8)})
-util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(0x1CE15F + 1 + (pid * 0x257) + 0x1FE))})
-util.trigger_script_event(1 << pid, {697566862, pid, 0x4, -1, 1, 1, 1})
-util.trigger_script_event(1 << pid, {1268038438, pid, memory.script_global(2657704 + 1 + (pid * 466) + 321 + 8)})
-util.trigger_script_event(1 << pid, {915462795, players.user(), memory.read_int(memory.script_global(1895156 + 1 + (pid * 608) + 510))})
+send_script_event(se.givecollectible, pid, {pid, 0x4, -1, 1, 1, 1}) -- Give Collectible SE
+send_script_event(se.kick1_casino, pid, {pid, memory.script_global(glob.sekickarg1 + 1 + (pid * 466) + 321 + 8)})
+send_script_event(se.kick2, pid, {players.user(), memory.read_int(memory.script_global(glob.sekickarg2 + 1 + (pid * 599) + 510))})
+send_script_event(se.givecollectible, pid, {pid, 0x4, -1, 1, 1, 1})
+send_script_event(se.kick1_casino, pid, {pid, memory.script_global(glob.sekickarg1 + 1 + (pid * 466) + 321 + 8)})
+send_script_event(se.kick2, pid, {players.user(), memory.read_int(memory.script_global(glob.sekickarg2 + 1 + (pid * 608) + 510))})
 end, nil, nil, COMMANDPERM_AGGRESSIVE)
 
 addict.toggle_loop(kick, "Array Kick", {"arraykick"}, "", function()
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.arraykick, pid, {20, 1, -1, -1, -1, -1, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1})
+send_script_event(se.arraykick, pid, {20, 1, -1, -1, -1, -1})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1, pid, math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {1613825825, 20, 1, -1, -1, -1, -1})
+send_script_event(se.arraykick, pid, {20, 1, -1, -1, -1, -1, pid, math.random(int_min, int_max)})
+send_script_event(se.arraykick, pid, {20, 1, -1, -1, -1, -1})
 end
 end)
 
@@ -18203,16 +18232,16 @@ addict.toggle_loop(kick, "SE Kick (S0)", {"sekicks0"}, "Script event kick, Works
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.sekicks0, pid, {8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+send_script_event(se.sekicks0, pid, {8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-1013606569, 8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
+send_script_event(se.sekicks0, pid, {8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0, pid, math.random(int_min, int_max)})
+send_script_event(se.sekicks0, pid, {8, 5, -995382610, -1005524293, 1105725452, -995382610, -1005524293, 1105725452, -995350040, -1003336651, 1102848299, 0, 0, 0, 0, 0, 0, 5, 1110704128, 1110704128, 0, 0, 0, 5, 131071, 131071, 131071, 0, 0, 5, 0, 0, 0, 0, 0, 1965090280, -1082130432, 0, 0})
 util.yield(100)
 end
 end)
@@ -18221,16 +18250,16 @@ addict.toggle_loop(kick, "SE Kick (S1)", {"sekicks1"}, "Script event kick, Works
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-901348601, 6, 0, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.sekicks1, pid, {6, 0, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-901348601, 6, 0})
+send_script_event(se.sekicks1, pid, {6, 0})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-901348601, 6, 0, pid, math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-901348601, 6, 0})
+send_script_event(se.sekicks1, pid, {6, 0, pid, math.random(int_min, int_max)})
+send_script_event(se.sekicks1, pid, {6, 0})
 util.yield(100)
 end
 end)
@@ -18239,16 +18268,16 @@ addict.toggle_loop(kick, "SE Kick (S3)", {"sekicks3"}, "Script event kick, Works
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.sekicks3, pid, {12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+send_script_event(se.sekicks3, pid, {12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-1638522928, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
-util.trigger_script_event(1 << pid, {1017995959, 27, 0})-- S1 Credits to legy
+send_script_event(se.sekicks3, pid, {12, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+send_script_event(se.sekicks3_1, pid, {27, 0}) -- S1 Credits to legy
 util.yield(100)
 end
 end)
@@ -18257,16 +18286,16 @@ addict.toggle_loop(kick, "SE Kick (S4)", {"sekicks4"}, "Script event kick, Works
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.sekicks4, pid, {6, 0, 0, 0, 1, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1})
+send_script_event(se.sekicks4, pid, {6, 0, 0, 0, 1})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
-util.trigger_script_event(1 << pid, {-2026172248, 6, 0, 0, 0, 1})
+send_script_event(se.sekicks4, pid, {6, 0, 0, 0, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+send_script_event(se.sekicks4, pid, {6, 0, 0, 0, 1})
 util.yield(100)
 end
 end)
@@ -18275,16 +18304,16 @@ addict.toggle_loop(kick, "SE Kick (S7)", {"sekicks7"}, "Script event kick, Works
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.sekicks7, pid, {6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
+send_script_event(se.sekicks7, pid, {6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
-util.trigger_script_event(1 << pid, {-642704387, 6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
+send_script_event(se.sekicks7, pid, {6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, pid, math.random(int_min, int_max)}) -- S3 Credits to legy
+send_script_event(se.sekicks7, pid, {6, 536247389, -1910234257, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1})
 util.yield(100)
 end
 end)
@@ -18705,7 +18734,7 @@ local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
 local pld = PLAYER.GET_PLAYER_PED(pid)
 local pos = ENTITY.GET_ENTITY_COORDS(pld)
 addict.trigger_commands("casinotp" .. PLAYER.GET_PLAYER_NAME(pid))
-util.trigger_script_event(1 << pid, {1268038438, 4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
+send_script_event(se.kick1_casino, pid, {4, 123, 0, 0, 1, -1001291848, -1016910157, 1108672448, 0, -1, 0, 2147483647, 0, -1}) -- Casino Invite
 util.yield(1500)
 addict.trigger_commands("rigblackjack")
 addict.trigger_commands("rigroulette ".. "1")
@@ -20509,16 +20538,16 @@ addict.toggle_loop(SECrashes, "SE Crash (S1)", {"secrash"}, "(Will add working o
 local int_min = -2147483647
 local int_max = 2147483647
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, math.random(int_min, int_max), math.random(int_min, int_max),
+send_script_event(se.secrash, pid, {7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
 math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
+send_script_event(se.secrash, pid, {7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
 end
 addict.trigger_commands("givesh" .. players.get_name(pid))
 util.yield()
 for i = 1, 15 do
-util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
-util.trigger_script_event(1 << pid, {-992162568, 7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
+send_script_event(se.secrash, pid, {7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183, pid, math.random(int_min, int_max)})
+send_script_event(se.secrash, pid, {7, -1920546950, 424317740, -116307085, -932273001, 1233934158, -218292917, 1056663014, 806139883, -1370540183})
 end
 end)
 
@@ -22810,7 +22839,7 @@ local para_crash = addict.list(lobbycrash, "Parachute Crashes", {}, "")
 
 addict.action(para_crash, "Chimp Chute", {"chimpchute"}, "", function(on)
 while on do
-local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756) -- Global_2672524.f_1685.f_756
 if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
 GRAPHICS.ANIMPOSTFX_STOP_ALL()
 memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
@@ -22924,13 +22953,13 @@ ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PEDP, -75.28762, -818.67267, 325.9517)
 end
 end
-local gwobaw = memory.script_global(2672524 + 1685 + 756)
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1))
 end)
 
 addict.action(para_crash, "Para Rope", {"pararope"}, "", function(on)
 while on do
-local gwobaw = memory.script_global(2672524 + 1685 + 756) -- Global_2672524.f_1685.f_756
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756) -- Global_2672524.f_1685.f_756
 if PED.IS_PED_DEAD_OR_DYING(players.user_ped()) then
 GRAPHICS.ANIMPOSTFX_STOP_ALL()
 memory.write_int(gwobaw, memory.read_int(gwobaw) | 1 << 1)
@@ -23077,7 +23106,7 @@ NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(veh); NETWORK.NETWORK_REQUEST_CONTROL_
 addict.trigger_commands("tpmazehelipad")
 end
 end
-local gwobaw = memory.script_global(2672524 + 1685 + 756)
+local gwobaw = memory.script_global(glob.fastrespawn + 1685 + 756)
 memory.write_int(gwobaw, memory.read_int(gwobaw) &~ (1 << 1))
 end)
 
@@ -26919,11 +26948,11 @@ end
 
 
 local function get_transition_state(pid)
-return memory.read_int(memory.script_global(((2689235 + 1) + (pid * 0x1C5)) + 230))
+return memory.read_int(memory.script_global(((glob.player + 1) + (pid * 453)) + 230))
 end
 
 local function get_interior_player_is_in(pid)
-return memory.read_int(memory.script_global(((2689235 + 1) + (pid * 0x1C5)) + 243))
+return memory.read_int(memory.script_global(((glob.player + 1) + (pid * 453)) + 243))
 end
 
 
@@ -27146,18 +27175,18 @@ end)
 local anti_bounty = addict.list(self_protections, "Anti-Bounty's")
 
 addict.action(anti_bounty, "Anti-Bounty", {"bountyoff"}, "Turns off bounty's.", function()
-if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3))) == 1 then
-memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
-memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
+if memory.read_int(memory.script_global(glob.player_bounty + 4 + 1 + (players.user() * 3))) == 1 then
+memory.write_int(memory.script_global(glob.bounty1 + 1856 + 17), -1)
+memory.write_int(memory.script_global((glob.slot + 1) + 5149 + 13), 2880000)
 else
 util.toast("You don't currently have a bounty bitch! xD.")
 end
 end)
 
 addict.toggle_loop(anti_bounty, "Anti-Bounty's", {"bountysoff"}, "Turns off bounty's. Keep toggled if bounty's persist", function()
-if memory.read_int(memory.script_global(1835502 + 4 + 1 + (players.user() * 3))) == 1 then
-memory.write_int(memory.script_global(2815059 + 1856 + 17), -1)
-memory.write_int(memory.script_global((2359296+1) + 5149 + 13), 2880000)
+if memory.read_int(memory.script_global(glob.player_bounty + 4 + 1 + (players.user() * 3))) == 1 then
+memory.write_int(memory.script_global(glob.bounty1 + 1856 + 17), -1)
+memory.write_int(memory.script_global((glob.slot + 1) + 5149 + 13), 2880000)
 else
 end
 end)
@@ -28432,7 +28461,7 @@ addict.action(faketype, "Start Fake Typing", {}, "Will show a typing indicator a
 addict.trigger_commands("hidetyping off")
 for pids = 0, 31 do
 if players.exists(pids) and pids ~= players.user() then
-send_script_event(747270864, pids, {players.user(), pids, 6769})
+send_script_event(se.startfaketyping, pids, {players.user(), pids, 6769})
 end
 end
 end)
@@ -28440,7 +28469,7 @@ end)
 addict.action(faketype, "Stop Fake Typing", {}, "", function()
 for pids = 0, 31 do
 if players.exists(pids) and pids ~= players.user() then
-send_script_event(-990958325, pids, {players.user(), pids, 7556})
+send_script_event(se.stopfaketyping, pids, {players.user(), pids, 7556})
 end
 end
 end)
@@ -28517,7 +28546,7 @@ end)
 
 addict.toggle_loop(Net_Shit, 'Increase Kosatka Missile Range', {'krange'}, 'You can use it anywhere in the map now', function ()
 if util.is_session_started() then
-memory.write_float(memory.script_global(262145 + 30176), 200000.0)
+memory.write_float(memory.script_global(glob.base + 30176), 200000.0)
 end
 end)
 
@@ -29780,7 +29809,7 @@ end
 end)
 
 is_player_pointing = function ()
-return read_global.int(4521801 + 930) == 3 -- didn't change
+return read_global.int(glob.playerpoint + 930) == 3 -- didn't change
 end
 TraceFlag =
 {
@@ -29903,7 +29932,7 @@ local explosionProof = false
 
 addict.toggle_loop(worldchaos, "Blackhole Finger", {"bhfinger"}, "Move entities with your finger when pointing them. Press B to start pointing.", function()
 if is_player_pointing() then
-write_global.int(4521801 + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
+write_global.int(glob.playerpoint + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
 if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
 local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
 local raycastResult = get_raycast_result(500.0, flag)
@@ -29975,11 +30004,10 @@ set_explosion_proof(players.user_ped(), false)
 end
 end)
 
-
 dont_stop = false
 addict.toggle_loop(worldchaos,"Point Fly Nearby vehicles", {"vehflyall"}, "basically 'impulse like sport mode' but applied to every vehicle", function()
 if is_player_pointing() then
-write_global.int(4521801 + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
+write_global.int(glob.playerpoint + 935, NETWORK.GET_NETWORK_TIME()) -- to avoid the animation to stop
 if not ENTITY.DOES_ENTITY_EXIST(targetEntity) then
 local flag = TraceFlag.peds | TraceFlag.vehicles | TraceFlag.pedsSimpleCollision | TraceFlag.objects
 local raycastResult = get_raycast_result(500.0, flag)
@@ -30081,6 +30109,7 @@ while true do
 if enabled then
 addict.trigger_commands("bountyall 10000")
 end
+
 util.yield(1000)
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
