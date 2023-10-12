@@ -1,6 +1,9 @@
 ________________________
-v1.40
-- updated global usage
-- updated dirty code
-- restructured some parts
+v1.41
+- updated to v3028
+- fixerd loading issue
+- fixed discord invite
+- removed startup sound (due to lib issue & its annoying after several times loading it)
 ________________________
+
+|| Report any Buged/Broken Functions in the Discord ||

@@ -7,43 +7,47 @@ util.require_natives("natives-1651208000")
 util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
--- Add all SE here for quicker updates
+local addict = menu
+local addict_version = 1.41
+local gta_version = "v3028"
+local dev_mode = false -- Disables some stuff like Updates [true/false]
+
+-- Add all SE's here for quicker updates
 local se = {
-    tpspread = -1388926377,
-    orbitalfuck = 677240627,
-    jobnotify = 2386092767,
-    givecollectible = 697566862,
-    kick1_casino = 1268038438,
-    kick2 = 915462795,
+    tpspread = -1388926377, -- older gta se version
+    orbitalfuck = 677240627, -- older gta se version
+    jobnotify = 2386092767, -- older gta se version
+    givecollectible = 697566862, -- older gta se version
+    kick1_casino = 1268038438, -- older gta se version
+    kick2 = 915462795, -- older gta se version
     arraykick = 1613825825,
     sekicks0 = -1013606569,
     sekicks1 = -901348601,
     sekicks3 = -1638522928,
-    sekicks3_1 = 1017995959,
+    sekicks3_1 = 1017995959, -- older gta se version
     sekicks4 = -2026172248,
     sekicks7 = -642704387,
-    secrash = -992162568,
-
-    startfaketyping = 747270864,
-    stopfaketyping = -990958325,
+    secrash = -992162568, -- older gta se version
+    startfaketyping = 747270864, -- older gta se version
+    stopfaketyping = -990958325, -- older gta se version
 }
 
 -- Add all Globals here for quicker updates
 local glob = {
     base = 262145,
-    player = 2689235,
+    player = 2689235, -- older gta global version
     check = 78689,
     slot = 2359296,
     pveh = 1586488,
-    resupplyacid = 1648637,
+    resupplyacid = 1648637, -- older gta global version
     orbi = 1969112,
-    nohud = 1645739,
+    nohud = 1645739, -- older gta global version
     fastrespawn = 2672524,
     playerpoint = 4521801,
     sekickarg1 = 2657704,
-    sekickarg2 = 1892703,
-    player_bounty = 1835502,
-    bounty1 = 2815059,
+    sekickarg2 = 1892703, -- older gta global version
+    player_bounty = 1835502, -- older gta global version
+    bounty1 = 2815059, -- older gta global version
 }
 
 local function tunable(value)
@@ -67,12 +71,8 @@ local function vector3(x, y, z)
     return { x = x, y = y, z = z }
 end
 
-local addict = menu
-local addict_version = 1.40
-local dev_mode = false -- Disables stuff like Updates [true/false]
-
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
-addict.hyperlink(github, "Addict Discord", "https://discord.gg/tuFd76tRXy")
+addict.hyperlink(github, "Addict Discord", "https://discord.gg/zwdPY4jn")
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(b)
 response=true;
@@ -185,8 +185,8 @@ function()
             end)
 
             if dev_mode then
-                util.log("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "with DEVMODE\n" .. "Enjoy Playing :)")
-                util.toast("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "with DEVMODE\n" .. "Enjoy Playing :)")
+                util.log("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "GTAV: " .. gta_version .. "\n" .. "Enjoy Playing :)")
+                util.toast("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "GTAV: " .. gta_version .. "\n" .. "Enjoy Playing :)")
             else
                 util.log("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
                 util.toast("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
@@ -251,15 +251,11 @@ function()
         end
         end)
 
-        local aalib = require("aalib")
-        local PlaySound = aalib.play_sound
-        local SND_ASYNC<const> = 0x0001
-        local SND_FILENAME<const> = 0x00020000
-
         resources_dir = filesystem.resources_dir() .. '\\Addictscript\\'
         Addictscript_logo = directx.create_texture(resources_dir .. 'Addictscript_logo.png')
 
         if not filesystem.is_dir(resources_dir) then
+            return;
         end
 
         if not SCRIPT_SILENT_START then
@@ -291,7 +287,6 @@ function()
                 util.yield()
             end
             end)
-            PlaySound(resources_dir .. "\\bruh.wav", SND_FILENAME | SND_ASYNC)
         end
 
         --------------------------------------------------------------------------------------
