@@ -1,7 +1,7 @@
 ________________________
 v1.41
 - updated to v3028
-- fixerd loading issue
+- fixed loading issue
 - fixed discord invite
 - removed startup sound (due to lib issue & its annoying after several times loading it)
 ________________________
