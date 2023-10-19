@@ -8,9 +8,10 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.41
+local addict_version = 1.42
 local gta_version = "v3028"
-local dev_mode = false -- Disables some stuff like Updates [true/false]
+local dcinv = "fg6Ex4PbkJ"
+local dev_mode = false -- Disables stuff like updates [true/false]
 
 -- Add all SE's here for quicker updates
 local se = {
@@ -72,7 +73,7 @@ local function vector3(x, y, z)
 end
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
-addict.hyperlink(github, "Addict Discord", "https://discord.gg/zwdPY4jn")
+addict.hyperlink(github, "Addict Discord", "https://discord.gg/" .. dcinv)
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(b)
 response=true;
@@ -103,210 +104,216 @@ function()
                 end)
                 async_http.dispatch()
             end
-            end,
-            function()
-                response=true
-                end)
-                async_http.dispatch()
-                repeat util.yield()
-                until response
-            end
+        end,
+    function()
+        response=true
+    end)
+    async_http.dispatch()
+    repeat util.yield()
+    until response
+end
 
-            -- Memory Functions
+-- Memory Functions
 
-            local orgScan = memory.scan
+local orgScan = memory.scan
 
-            function myModule(name, pattern, callback)
-                local address = orgScan(pattern)
-                if address ~= NULL then
-                    util.log("Found " .. name)
-                    callback(address)
-                else
-                    util.log("Failed to find " .. name)
-                    util.stop_script()
-                end
-            end
+function Module(name, pattern, callback)
+    local address = orgScan(pattern)
+    if address ~= NULL then
+        util.log("Found " .. name)
+        callback(address)
+    else
+        util.log("Failed to find " .. name)
+        util.stop_script()
+    end
+end
 
-            function GetNetGamePlayer(player)
-                return util.call_foreign_function(GetNetGamePlayer_addr, player)
-            end
+function GetNetGamePlayer(player)
+    return util.call_foreign_function(GetNetGamePlayer_addr, player)
+end
 
-            function get_net_obj(entity)
-                local pEntity = entities.handle_to_pointer(entity)
-                return pEntity ~= NULL and memory.read_long(pEntity + 0x00D0) or NULL
-            end
+function get_net_obj(entity)
+    local pEntity = entities.handle_to_pointer(entity)
+    return pEntity ~= NULL and memory.read_long(pEntity + 0x00D0) or NULL
+end
 
-            function UnregisterNetworkObject(object, reason, force1, force2)
-                local netObj = get_net_obj(object)
-                if netObj == NULL then
-                    return false
-                end
-                local net_object_mgr = memory.read_long(CNetworkObjectMgr)
-                if net_object_mgr == NULL then
-                    return false
-                end
-                util.call_foreign_function(UnregisterNetworkObject_addr, net_object_mgr, netObj, reason, force1, force2)
-                return true
-            end
+function UnregisterNetworkObject(object, reason, force1, force2)
+    local netObj = get_net_obj(object)
+    if netObj == NULL then
+        return false
+    end
+    local net_object_mgr = memory.read_long(CNetworkObjectMgr)
+    if net_object_mgr == NULL then
+        return false
+    end
+    util.call_foreign_function(UnregisterNetworkObject_addr, net_object_mgr, netObj, reason, force1, force2)
+    return true
+end
 
-            function getModelInfo(modelHash)
-                return util.call_foreign_function(p_getModelInfo, modelHash, NULL)
-            end
+function getModelInfo(modelHash)
+    return util.call_foreign_function(p_getModelInfo, modelHash, NULL)
+end
 
-            function getVehicleModelHandlingData(modelInfo)
-                return util.call_foreign_function(GetHandlingDataFromIndex, memory.read_uint(modelInfo + 0x4B8))
-            end
+function getVehicleModelHandlingData(modelInfo)
+    return util.call_foreign_function(GetHandlingDataFromIndex, memory.read_uint(modelInfo + 0x4B8))
+end
 
-            p_getModelInfo = 0
-            myModule("GVMI", "48 89 5C 24 ? 57 48 83 EC 20 8B 8A ? ? ? ? 48 8B DA", function (address)
-            p_getModelInfo = memory.rip(address + 0x2A)
-            end)
+p_getModelInfo = 0
+Module("GVMI", "48 89 5C 24 ? 57 48 83 EC 20 8B 8A ? ? ? ? 48 8B DA", function (address)
+    p_getModelInfo = memory.rip(address + 0x2A)
+end)
 
+GetHandlingDataFromIndex = 0
+Module("GHDFI", "40 53 48 83 EC 30 48 8D 54 24 ? 0F 29 74 24 ?", function (address)
+    GetHandlingDataFromIndex = memory.rip(address + 0x37)
+end)
 
-            GetHandlingDataFromIndex = 0
-            myModule("GHDFI", "40 53 48 83 EC 30 48 8D 54 24 ? 0F 29 74 24 ?", function (address)
-            GetHandlingDataFromIndex = memory.rip(address + 0x37)
-            end)
+Module("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
+    GetNetGamePlayer_addr = address
+end)
 
-            myModule("GetNetGamePlayer", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", function (address)
-            GetNetGamePlayer_addr = address
-            end)
+Module("CNetworkObjectMgr", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
+    CNetworkObjectMgr = memory.rip(address + 3)
+end)
 
-            myModule("CNetworkObjectMgr", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", function (address)
-            CNetworkObjectMgr = memory.rip(address + 3)
-            end)
+Module("ChangeNetObjOwner", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 81 EC ? ? ? ? 44 8A 62 4B", function (address)
+    ChangeNetObjOwner_addr = address
+end)
 
-            myModule("ChangeNetObjOwner", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 81 EC ? ? ? ? 44 8A 62 4B", function (address)
-            ChangeNetObjOwner_addr = address
-            end)
+Module("UnregisterNetworkObject", "48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83 ec ? 80 7a ? ? 45 8a f9", function (address)
+    UnregisterNetworkObject_addr = address - 0xB
+end)
 
-            myModule("UnregisterNetworkObject", "48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83 ec ? 80 7a ? ? 45 8a f9", function (address)
-            UnregisterNetworkObject_addr = address - 0xB
-            end)
+local welcomeMessage = "Welcome to Addict Script!"
+if dev_mode then
+    welcomeMessage = welcomeMessage .. " (" .. addict_version .. ")\nGTAV: " .. gta_version .. "\nEnjoy Playing :)"
+end
 
-            if dev_mode then
-                util.log("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "GTAV: " .. gta_version .. "\n" .. "Enjoy Playing :)")
-                util.toast("Welcome to Addict Script! (" .. addict_version .. ")\n" .. "GTAV: " .. gta_version .. "\n" .. "Enjoy Playing :)")
-            else
-                util.log("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-                util.toast("Welcome to Addict Script! v" .. addict_version .. "\n" .. "\n" .. "Check Github tab for updates...\n" .. "\n" .. "Enjoy Playing :)")
-            end
+util.log(welcomeMessage)
+util.toast(welcomeMessage)
 
-            local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
-            ---------------------------------------------------------------------------------
-            addict.divider(Credits, "Great Coders <3")
-            ---------------------------------------------------------------------------------
-            addict.action(Credits, "Blacklight", {}, "Created Addict Installer :).", function() end)
-            addict.action(Credits, "Unseemly", {}, "Great coder wouldn't even have an auto updater or certain mods fixed if it wasn't for this guy <3.", function() end)
-            addict.action(Credits, "notderpaul", {}, "Great coder helped with code, security and testing :).", function() end)
-            addict.action(Credits, "Cystal", {}, "Very smart coder helped with mods I gave up on.", function() end)
-            addict.action(Credits, "Legy", {}, "Very smart guy great lua coder with cool suggestions.", function() end)
-            addict.action(Credits, "0xDEADBEEF", {}, "Helped with tons of suggestions, testing and sharing his own code:)", function() end)
-            addict.action(Credits, "Chaos", {}, "Great guy supported me with everything to keep the script running otherwise I would of gave up coding publicly.", function() end)
-            addict.action(Credits, "Wigger", {}, "Codes very well!, very smart guy always has an answer for me :).", function() end)
-            addict.action(Credits, "Glitter", {}, "Known for a long time since I first played gta <3.", function() end)
-            addict.action(Credits, "Nosa", {}, "Known for long time very smart guy. Helped me with code and suggestions.", function() end)
-            addict.action(Credits, "Jailbroken", {}, "Cool guy very fast learner, unlike some people (no names) PRISHUM.", function() end)
-            ---------------------------------------------------------------------------------
-            addict.divider(Credits, "Great Supporters <3")
-            ---------------------------------------------------------------------------------
-            addict.action(Credits, "Yumin", {}, "Yumin Auuuughhh, this guy is funny as fuck.", function() end)
-            addict.action(Credits, "Kwengz", {}, "This guy got me into paid menus and showed me the ropes. He's a don.", function() end)
-            addict.action(Credits, "Crime Scene", {}, "This guy's a legend always up for piss around xD.", function() end)
-            addict.action(Credits, "Rawbert", {}, "Top guy! Known long time he loves drifting in peacful sessions.", function() end)
-            addict.action(Credits, "Stark", {}, "Provided lots great suggestions :D.", function() end)
-            addict.action(Credits, "Everyοnе", {}, "He knows who he is lol.", function() end)
-            addict.action(Credits, "Masi", {}, "Known long time :)", function() end)
-            addict.action(Credits, "Jonash", {}, "Provided great suggestions along the way :).", function() end)
-            addict.action(Credits, "Uncle", {}, "Nice guy always there to help <3.", function() end)
-            addict.action(Credits, "Presidente", {}, "Fun guy to play with known a long time :).", function() end)
-            addict.action(Credits, "Mr-Stoner", {}, "Funny guy to play with, ofc hes a fucking stoner <3.", function() end)
-            addict.action(Credits, "Dealer", {}, "Very cool down to eath guy.", function() end)
-            addict.action(Credits, "Library", {}, "Always been there to help :).", function() end)
-            addict.action(Credits, "FBI4", {}, "Great support always helped us :).", function() end)
-            addict.action(Credits, "Sophie", {}, "For some great ideas she likes to put forward.", function() end)
-            addict.action(Credits, "Charlie", {}, "", function() end)
-            ---------------------------------------------------------------------------------
-            addict.divider(Credits, "Other")
-            ---------------------------------------------------------------------------------
-            addict.action(Credits, "Acjoker", {}, "", function() end)
-            addict.action(Credits, "Tox1cEssent1als", {}, "", function() end)
-            addict.action(Credits, "(0)Lens", {}, "", function() end)
-            addict.action(Credits, "Fuck the Stand staff tho.", {}, "", function() end)
-            ---------------------------------------------------------------------------------
+local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
 
-            local translations = {}
-            setmetatable(translations, {
-                __index = function (self, key)
-                return key
-            end
-        })
+local function addCredit(name, description)
+    addict.action(Credits, name, {}, description, function() end)
+end
+---------------------------------------------------------------------------------
+addict.divider(Credits, "Great Coders <3")
+---------------------------------------------------------------------------------
+addCredit("Blacklight", "Created Addict Installer :).")
+addCredit("Unseemly", "Great coder who contributed to auto updater and mod fixes <3.")
+addCredit("notderpaul", "Great coder who helped with code, security, and testing :).")
+addCredit("Cystal", "Very smart coder who assisted with challenging mods.")
+addCredit("Legy", "A smart lua coder with great suggestions.")
+addCredit("0xDEADBEEF", "Contributed with suggestions, testing, and shared code.")
+addCredit("Chaos", "Great support to keep the script running publicly.")
+addCredit("Wigger", "A skilled coder who always has answers.")
+addCredit("Glitter", "A long-time friend since the early GTA days <3.")
+addCredit("Nosa", "A long-time friend and contributor to code and suggestions.")
+addCredit("Jailbroken", "A fast learner who made valuable contributions.")
+---------------------------------------------------------------------------------
+addict.divider(Credits, "Great Supporters <3")
+---------------------------------------------------------------------------------
+addCredit("Yumin", "Known for his humor and support.")
+addCredit("Kwengz", "Introduced the world of paid menus and provided guidance.")
+addCredit("Crime Scene", "A legend who's always up for a fun time xD.")
+addCredit("Rawbert", "A top guy who loves drifting in peaceful sessions.")
+addCredit("Stark", "Provided lots of great suggestions :D.")
+addCredit("Everyοnе", "He knows who he is lol.")
+addCredit("Masi", "A long-time friend <3.")
+addCredit("Jonash", "Provided valuable suggestions along the way :).")
+addCredit("Uncle", "A nice guy always ready to help <3.")
+addCredit("Presidente", "A fun player known for a long time :).")
+addCredit("Mr-Stoner", "A funny guy to play with, he's a stoner <3.")
+addCredit("Dealer", "A cool and down-to-earth guy.")
+addCredit("Library", "Always there to help :).")
+addCredit("FBI4", "Great support, always helpful :).")
+addCredit("Sophie", "Contributed great ideas.")
+addCredit("Charlie", "")
+---------------------------------------------------------------------------------
+addict.divider(Credits, "Other")
+---------------------------------------------------------------------------------
+addCredit("Acjoker", "")
+addCredit("Tox1cEssent1als", "")
+addCredit("(0)Lens", "")
+addCredit("Fuckk the Stand staff tho.", "")
+---------------------------------------------------------------------------------
 
-        local festive_div = addict.divider(addict.my_root(), "Addict Script")
-        local loading_frames = {'!', '! !', '! ! !', '! ! ! !', ' ! ! ! ! ! ! ! ! !', '! ! ! !', '! ! !', '! !', '!'}
-        util.create_tick_handler(function()
-        for _, frame in pairs(loading_frames) do
-            addict.set_menu_name(festive_div, frame .. ' ' .. translations.Addict_Script .. ' ' .. frame)
-            util.yield(100)
-        end
-        end)
+local translations = {}
+setmetatable(translations, {
+    __index = function (self, key)
+        return key
+    end
+})
 
-        resources_dir = filesystem.resources_dir() .. '\\Addictscript\\'
-        Addictscript_logo = directx.create_texture(resources_dir .. 'Addictscript_logo.png')
+local festive_div = addict.divider(addict.my_root(), "Addict Script")
+local loading_frames = {'!', '! !', '! ! !', '! ! ! !', ' ! ! ! ! ! ! ! ! !', '! ! ! !', '! ! !', '! !', '!'}
+local frame_index = 1
 
-        if not filesystem.is_dir(resources_dir) then
-            return;
-        end
+util.create_tick_handler(function()
+    for _, frame in pairs(loading_frames) do
+        addict.set_menu_name(festive_div, frame .. ' ' .. translations.Addict_Script .. ' ' .. frame)
+        util.yield(100)
+    end
+end)
 
-        if not SCRIPT_SILENT_START then
+resources_dir = filesystem.resources_dir() .. '\\Addictscript\\'
+Addictscript_logo = directx.create_texture(resources_dir .. 'Addictscript_logo.png')
+
+if not filesystem.is_dir(resources_dir) then
+    return
+end
+
+if not SCRIPT_SILENT_START then
+    logo_alpha = 0
+    logo_alpha_incr = 0.02
+    logo_alpha_thread = util.create_thread(function (thr)
+    while true do
+        logo_alpha = logo_alpha + logo_alpha_incr
+        if logo_alpha > 1 then
+            logo_alpha = 1
+        elseif logo_alpha < 0 then
             logo_alpha = 0
-            logo_alpha_incr = 0.02
-            logo_alpha_thread = util.create_thread(function (thr)
-            while true do
-                logo_alpha = logo_alpha + logo_alpha_incr
-                if logo_alpha > 1 then
-                    logo_alpha = 1
-                elseif logo_alpha < 0 then
-                    logo_alpha = 0
-                end
-                util.yield()
+        end
+        util.yield()
+    end
+end)
+
+    logo_thread = util.create_thread(function (thr)
+    starttime = os.clock()
+    local alpha = 0
+    while true do
+            directx.draw_texture(Addictscript_logo, 0.15, 0.10, 0.5, 0.7, 0.5, 0.5, 0, 1, 1, 1, logo_alpha)
+            timepassed = os.clock() - starttime
+            if timepassed > 1 then
+                logo_alpha_incr = -0.01
             end
-            end)
-
-            logo_thread = util.create_thread(function (thr)
-            starttime = os.clock()
-            local alpha = 0
-            while true do
-                directx.draw_texture(Addictscript_logo, 0.15, 0.10, 0.5, 0.7, 0.5, 0.5, 0, 1, 1, 1, logo_alpha)
-                timepassed = os.clock() - starttime
-                if timepassed > 1 then
-                    logo_alpha_incr = -0.01
-                end
-                if logo_alpha == 0 then
-                end
-                util.yield()
+            if logo_alpha == 0 then
+                return
             end
-            end)
+            util.yield()
         end
+    end)
+end
 
-        --------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
 
-        function random_float(min, max)
-            return min + math.random() * (max - min)
-        end
+function random_float(min, max)
+    return min + math.random() * (max - min)
+end
 
-        function get_hud_colour()
-            local red_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
-            local green_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Green")
-            local blue_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Blue")
-            local alpha_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Opacity")
-            local red <const> = addict.get_value(red_command_ref)
-            local green <const> = addict.get_value(green_command_ref)
-            local blue <const> = addict.get_value(blue_command_ref)
-            local alpha <const> = addict.get_value(alpha_command_ref)
+function get_hud_colour()
+    local red_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Red")
+    local green_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Green")
+    local blue_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Blue")
+    local alpha_command_ref <const> = addict.ref_by_path("Stand>Settings>Appearance>Colours>HUD Colour>Opacity")
+    local red <const> = addict.get_value(red_command_ref)
+    local green <const> = addict.get_value(green_command_ref)
+    local blue <const> = addict.get_value(blue_command_ref)
+    local alpha <const> = addict.get_value(alpha_command_ref)
 
-            return red, green, blue, alpha
-        end
+    return red, green, blue, alpha
+end
 
         function request_model(model)
             STREAMING.REQUEST_MODEL(model)

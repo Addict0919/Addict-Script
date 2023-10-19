@@ -1,9 +1,8 @@
 ________________________
-v1.41
-- updated to v3028
-- fixed loading issue
+v1.42
 - fixed discord invite
-- removed startup sound (due to lib issue & its annoying after several times loading it)
+- recoded credits tab
+- code cleanup
 ________________________
 
-|| Report any Buged/Broken Functions in the Discord ||
+Report any Bugs/Broken features on the Discord
