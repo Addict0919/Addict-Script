@@ -13,10 +13,6 @@ local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
 
-local function tunable(value)
-    return memory.script_global(glob.base + value)
-end
-
 -- Add all SE's here for quicker updates
 local se = {
     tpspread = -1388926377, -- older gta se version
@@ -52,11 +48,18 @@ local glob = {
     sekickarg1 = 2657704,
     sekickarg2 = 1892703, -- older gta global version
     player_bounty = 1835502, -- older gta global version
-    bounty1 = 2815059, -- older gta global version    
+    bounty1 = 2815059 -- older gta global version    
+}
+
+local function tunable(value)
+    return memory.script_global(glob.base + value)
+end
+
+local globals = {
     nightclub_prices = {
-        ["La Mesa"] = tunable(24838),
-        ["Mission Row"] = tunable(24843),
-        ["Vespucci Canals"] = tunable(24845)
+        ["La Mesa"] = tunable(24838), -- older gta global version
+        ["Mission Row"] = tunable(24843), -- older gta global version
+        ["Vespucci Canals"] = tunable(24845) -- older gta global version
     }
 }
 
@@ -2332,7 +2335,7 @@ while nc == nc_owned do
 nc = nc_options.first[math.random(#nc_options.first)]
 end
 
-local price = memory.read_int(glob.nightclub_prices[nc])
+local price = memory.read_int(globals.nightclub_prices[nc])
 
 if wallet ~= nil and bank ~= nil then
 if wallet + bank < price then
