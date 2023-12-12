@@ -8,10 +8,14 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.42
-local gta_version = "v3028"
+local addict_version = 1.43
+local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
+
+local function tunable(value)
+    return memory.script_global(glob.base + value)
+end
 
 -- Add all SE's here for quicker updates
 local se = {
@@ -48,14 +52,7 @@ local glob = {
     sekickarg1 = 2657704,
     sekickarg2 = 1892703, -- older gta global version
     player_bounty = 1835502, -- older gta global version
-    bounty1 = 2815059, -- older gta global version
-}
-
-local function tunable(value)
-    return memory.script_global(glob.base + value)
-end
-
-local globals = {
+    bounty1 = 2815059, -- older gta global version    
     nightclub_prices = {
         ["La Mesa"] = tunable(24838),
         ["Mission Row"] = tunable(24843),
@@ -76,35 +73,33 @@ local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Discord", "https://discord.gg/" .. dcinv)
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(b)
-response=true;
-addict.action(github, "Changelog", {"addictchangelog"}, b, function() end)
-end,
-function()
-    response=true
-    end)
-    async_http.dispatch()
-    repeat util.yield()
-    until response
-    if not dev_mode then
-        async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion.lua",function(b)
-        currentVer=tonumber(b)
-        response=true;
-        if addict_version~=currentVer then
-            util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
-            local d=select(2,load(c))
-            if d then
-                util.toast("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
-                return
-                end;
-                local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
-                e:write(c)
-                e:close()
-                util.toast("Update Done!")
-                util.restart_script()
-                end)
-                async_http.dispatch()
-            end
-        end,
+    addict.action(github, "Changelog", {"addictchangelog"}, b, function() end)
+    response=true;
+end)
+async_http.dispatch()
+repeat util.yield()
+until response
+
+if not dev_mode then
+    async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion",function(b)
+    currentVer=tonumber(b)
+    response=true;
+    if addict_version~=currentVer then
+        util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
+        local d=select(2,load(c))
+        if d then
+            util.toast("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
+            return
+            end;
+            local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
+            e:write(c)
+            e:close()
+            util.toast("Update Done!")
+            util.restart_script()
+            end)
+            async_http.dispatch()
+        end
+    end,
     function()
         response=true
     end)
@@ -2337,7 +2332,7 @@ while nc == nc_owned do
 nc = nc_options.first[math.random(#nc_options.first)]
 end
 
-local price = memory.read_int(globals.nightclub_prices[nc])
+local price = memory.read_int(glob.nightclub_prices[nc])
 
 if wallet ~= nil and bank ~= nil then
 if wallet + bank < price then
@@ -10691,40 +10686,40 @@ local player_ped = PLAYER.PLAYER_PED_ID()
 local old_coords = ENTITY.GET_ENTITY_COORDS(player_ped)
 
 local coordinatesList = {
-{x = -1329.5868, y = -3041.565, z = 65.06483},
-{x = 12.201786, y = -2608.5598, z = 27.00581},
-{x = 529.52344, y = -3159.0903, z = 46.26378},
-{x = 797.6639, y = -2314.7708, z = 66.75716},
-{x = -904.7783, y = -1799.8903, z = 60.525257},
-{x = -902.62103, y = -1797.8055, z = 68.71026},
-{x = -811.026, y = -1052.471, z = 84.877464},
-{x = -74.7535, y = -820.54895, z = 331.0572},
-{x = 693.5279, y = -1200.2932, z = 45.110516},
-{x = 1944.0536, y = -911.7328, z = 177.15826},
-{x = 955.1047, y = 11.822339, z = 129.3541},
-{x = -1329.5868, y = -3041.565, z = 65.06483},
-{x = -604.4595, y = 53.186974, z = 124.79825},
-{x = -84.817345, y = 882.59576, z = 287.78268},
-{x = -1755.0154, y = -75.41939, z = 137.54353},
-{x = 2568.129, y = 760.6324, z = 160.43828},
-{x = 807.4092, y = 2714.9368, z = 103.85771},
-{x = 2252.8367, y = 3330.679, z = 138.64398},
-{x = -1970.4495, y = 2864.2395, z = 34.49541},
-{x = 1840.9294, y = 3868.8608, z = 54.188793},
-{x = 490.04102, y = 5584.988, z = 802.92584},
-{x = 2313.2842, y = 5981.442, z = 136.00969},
-{x = -272.11963, y = 6188.8105, z = 82.51767},
-{x = -1329.5868, y = -3041.565, z = 65.06483}
+    {x = -1329.5868, y = -3041.565, z = 65.06483},
+    {x = 12.201786, y = -2608.5598, z = 27.00581},
+    {x = 529.52344, y = -3159.0903, z = 46.26378},
+    {x = 797.6639, y = -2314.7708, z = 66.75716},
+    {x = -904.7783, y = -1799.8903, z = 60.525257},
+    {x = -902.62103, y = -1797.8055, z = 68.71026},
+    {x = -811.026, y = -1052.471, z = 84.877464},
+    {x = -74.7535, y = -820.54895, z = 331.0572},
+    {x = 693.5279, y = -1200.2932, z = 45.110516},
+    {x = 1944.0536, y = -911.7328, z = 177.15826},
+    {x = 955.1047, y = 11.822339, z = 129.3541},
+    {x = -1329.5868, y = -3041.565, z = 65.06483},
+    {x = -604.4595, y = 53.186974, z = 124.79825},
+    {x = -84.817345, y = 882.59576, z = 287.78268},
+    {x = -1755.0154, y = -75.41939, z = 137.54353},
+    {x = 2568.129, y = 760.6324, z = 160.43828},
+    {x = 807.4092, y = 2714.9368, z = 103.85771},
+    {x = 2252.8367, y = 3330.679, z = 138.64398},
+    {x = -1970.4495, y = 2864.2395, z = 34.49541},
+    {x = 1840.9294, y = 3868.8608, z = 54.188793},
+    {x = 490.04102, y = 5584.988, z = 802.92584},
+    {x = 2313.2842, y = 5981.442, z = 136.00969},
+    {x = -272.11963, y = 6188.8105, z = 82.51767},
+    {x = -1329.5868, y = -3041.565, z = 65.06483}
 }
 
 for i, coords in ipairs(coordinatesList) do
-ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, coords.x, coords.y, coords.z)
-send_script_event(se.tpspread, pid, {27, -1762807505, 0})
-util.yield(100)
+    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, coords.x, coords.y, coords.z)
+    send_script_event(se.tpspread, pid, {27, -1762807505, 0})
+    util.yield(100)
 end
 
 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player_ped, old_coords.x, old_coords.y, old_coords.z)
-send_script_event(se.tpspread, pid, {27, -1762807505, 0})
+    send_script_event(se.tpspread, pid, {27, -1762807505, 0})
 end)
 
 function attachto(offx, offy, offz, pid, angx, angy, angz, hash, isnpc, isveh)
