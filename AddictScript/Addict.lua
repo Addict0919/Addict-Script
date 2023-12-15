@@ -8,10 +8,19 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.43
+local addict_version = 1.44
 local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
+
+local function lan(msg)
+    return util.log(msg), util.toast(msg)
+end
+
+if not async_http.have_access() then
+    lan("Disable 'Disable Internet Access' to use Addicted!")
+    util.stop_script()
+end
 
 -- Add all SE's here for quicker updates
 local se = {
@@ -75,8 +84,8 @@ end
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Discord", "https://discord.gg/" .. dcinv)
 
-async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(b)
-    addict.action(github, "Changelog", {"addictchangelog"}, b, function() end)
+async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(text)
+    addict.action(github, "Changelog", {"addictchangelog"}, text, function() end)
     response=true;
 end)
 async_http.dispatch()
@@ -182,13 +191,14 @@ Module("UnregisterNetworkObject", "48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83
     UnregisterNetworkObject_addr = address - 0xB
 end)
 
+-- Startup --
+
 local welcomeMessage = "Welcome to Addict Script!"
 if dev_mode then
     welcomeMessage = welcomeMessage .. " (" .. addict_version .. ")\nGTAV: " .. gta_version .. "\nEnjoy Playing :)"
 end
 
-util.log(welcomeMessage)
-util.toast(welcomeMessage)
+lan(welcomeMessage)
 
 local Credits = addict.list(addict.my_root(), "Credits", {"addictcredits"}, "<3")
 
