@@ -8,7 +8,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.44
+local addict_version = 1.45
 local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
@@ -79,6 +79,12 @@ end
 
 local function vector3(x, y, z)
     return { x = x, y = y, z = z }
+end
+
+function pid_to_handle(pid)-- Credits to lance
+    handle_ptr = memory.alloc(13*8)
+    NETWORK.NETWORK_HANDLE_FROM_PLAYER(pid, handle_ptr, 13)
+    return handle_ptr
 end
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
@@ -771,11 +777,6 @@ function Ped_aim_pool(fov)
             end
             if not ENTITY.HAS_ENTITY_CLEAR_LOS_TO_ENTITY(players.user_ped(), ped, 17) and not aimbot.stw then
                 target = false
-            end
-            handle_ptr = memory.alloc(13*8)
-            function pid_to_handle(pid)-- Credits to lance
-                NETWORK.NETWORK_HANDLE_FROM_PLAYER(pid, handle_ptr, 13)
-                return handle_ptr
             end
             if PED.IS_PED_A_PLAYER(ped) and aimbot.tarplayers and not aimbot.tarfriends then
                 pid = NETWORK.NETWORK_GET_PLAYER_INDEX_FROM_PED(ped)
@@ -27468,6 +27469,19 @@ return
 end
 end)
 
+addict.toggle_loop(self_protections, "Auto Kick Modders", {}, "", function()
+    for _, pid in ipairs(players.list(false, true, true)) do
+        if players.is_marked_as_modder(pid) then
+            if not NETWORK.NETWORK_IS_FRIEND(pid_to_handle(pid)) then
+                addict.trigger_commands("blast" .. players.get_name(pid))
+                lan("Tried Auto Kicking Modder: " .. players.get_name(pid))
+            end
+        end
+    end
+
+    util.yield(15000)
+end)
+
 addict.toggle_loop(self_protections, "Force Stop all sound events", {"stopsounds"}, "", function()
 for i=-1,100 do
 AUDIO.STOP_SOUND(i)
@@ -27568,7 +27582,6 @@ addict.trigger_commands("quickbail")
 return
 end
 end
-
 
 addict.toggle_loop(self_protections, "Block PFTX/Particulate Lag", {}, "", function()
 local coords = ENTITY.GET_ENTITY_COORDS(players.user_ped() , false);
@@ -30119,10 +30132,9 @@ while true do
 if enabled then
 addict.trigger_commands("bountyall 10000")
 end
-
 util.yield(1000)
 end
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 util.on_stop(function()
-util.log("Later pussy (Yawn)")
+    util.log("Later pussy (Yawn)")
 end)
