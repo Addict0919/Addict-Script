@@ -1,4 +1,4 @@
--- Addict Script™ Copyright© 2023
+-- Addict Script™ Copyright© 2024
 
 util.keep_running()
 util.require_natives("natives-1663599433-uno")
@@ -8,9 +8,11 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.45
+local addict_version = 1.46
+
 local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
+
 local dev_mode = false -- Disables stuff like updates [true/false]
 
 local function lan(msg)
@@ -7743,7 +7745,7 @@ local fireWings = {
 }
 local fireWingsSettings = {
 scale = 0.3,
-fireColour = colour or {r = 255, g = 255, b = 255, a = 255},
+fireColour = colour or {r = 0, g = 0, b = 0, a = 0},
 on = false
 }
 local ptfxEgg
@@ -7795,13 +7797,12 @@ end
 end)
 
 addict.slider(fire_wings_list, 'Fire wings scale', {'ToxfireWingsScale'}, '', 1, 100, 3, 1, function(value)
-fireWingsSettings.scale = value / 10
+    fireWingsSettings.scale = value / 10
 end)
 
 addict.rainbow(addict.colour(fire_wings_list, "Fire wings colour", {'ToxfireWingsColour'}, '', fireWingsSettings.fireColour, false, function(colour)
-fireWingsSettings.fireColour = colour
+    fireWingsSettings.fireColour = colour
 end))
-
 
 local player = players.user_ped()
 local agroup = "missfbi3ig_0"
