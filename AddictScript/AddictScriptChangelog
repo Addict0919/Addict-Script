@@ -1,6 +1,9 @@
 ________________________
-v1.46
+v1.47
+[+] Added Config System (for selected options & only a few for now) // Credits to WiriScript
+[+] Addded 'Save Config' Button
 [!] Fixed Error when loading Addicted
+[!] Code Cleanup
 ________________________
 
 Report any Bugs/Broken features on the Discord

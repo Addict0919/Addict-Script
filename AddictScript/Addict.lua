@@ -8,11 +8,9 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.46
-
+local addict_version = 1.47
 local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
-
 local dev_mode = false -- Disables stuff like updates [true/false]
 
 local function lan(msg)
@@ -88,6 +86,44 @@ function pid_to_handle(pid)-- Credits to lance
     NETWORK.NETWORK_HANDLE_FROM_PLAYER(pid, handle_ptr, 13)
     return handle_ptr
 end
+
+---------------------------------
+-- CONFIG
+---------------------------------
+
+require "lib\\addict\\config"
+require "lib\\addict\\ini"
+
+local required <const> = {
+    "lib/pretty/json.lua",
+	"lib/pretty/json/constant.lua",
+	"lib/pretty/json/parser.lua",
+	"lib/pretty/json/serializer.lua"
+}
+
+scriptdir = filesystem.scripts_dir()
+for _, file in ipairs(required) do
+	assert(filesystem.exists(scriptdir .. file), "required file not found: " .. file)
+end
+
+addictDir = scriptdir .. "Addict\\"
+conFile = addictDir .. "config.ini"
+
+if not filesystem.exists(addictDir) then
+	filesystem.mkdir(addictDir)
+end
+
+if filesystem.exists(conFile) then
+	for s, tbl in pairs(ini.load(conFile)) do
+		for k, v in pairs(tbl) do
+			config[s] = config[s] or {}
+			config[s][k] = v
+		end
+	end
+	lan("Configuration loaded")
+end
+
+---------------------------------
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Discord", "https://discord.gg/" .. dcinv)
@@ -252,7 +288,7 @@ addict.divider(Credits, "Other")
 addCredit("Acjoker", "")
 addCredit("Tox1cEssent1als", "")
 addCredit("(0)Lens", "")
-addCredit("Fuckk the Stand staff tho.", "")
+addCredit("Nowiry", "")
 ---------------------------------------------------------------------------------
 
 local translations = {}
@@ -1481,7 +1517,7 @@ local obj_hash = 'prop_container_01a'
 local objgun = addict.list(weapons, 'Custom Model Gun', {"custommodlegunloc"}, '')
 
 local obj = {expl = false}
-OBJgun = addict.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function ()
+OBJgun = addict.toggle_loop(objgun, 'Custom Model Gun', {'modgun'}, 'Fires the model you have selected', function()
 
 local hash = util.joaat(obj_hash)
 Streament(hash)
@@ -1506,9 +1542,10 @@ if PED.IS_PED_SHOOTING(players.user_ped()) and not PED.IS_PED_IN_ANY_VEHICLE(pla
 end
 end)
 
-addict.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function (on)
-obj.expl =  on
-end)
+addict.toggle(objgun, 'Make Models Explosive', {}, 'Makes the models you shoot explosive when hitting something', function(on)
+    config.objgun.expl = on
+    obj.expl = on
+end, config.objgun.expl)
 
 
 addict.text_input(objgun, 'Custom Model Gun', {'customgun'}, 'Enter the model name of a model to change the object you shoot example "prop_keg_01"', function(cusobj)
@@ -1578,6 +1615,7 @@ add_explosion()
 end)
 
 addict.toggle(net_lists["Explosions"], "Explode Loop", {"explodeloop"}, "", function(state)
+config.net_lists.explodeloop = state
 explosion.loop = state
 
 while explosion.loop and players.exists(player_id) do
@@ -1587,7 +1625,7 @@ end
 end)
 
 addict.list_select(net_lists["Explosions"], "Explosion Type", {"explosiontype"}, "", explosion_types, 0, function(value)
-explosion.type = value
+    explosion.type = value
 end)
 
 local explosion_other_net_list <const> = addict.list(net_lists["Explosions"], "Other Settings")
@@ -1598,25 +1636,29 @@ explosion.delay = value
 end)
 
 addict.slider(explosion_other_net_list, "Explosion Shake", {"explosionshake"}, "", 0, 10, 1, 1, function(value)
-explosion.shake = value
+    explosion.shake = value
 end)
 
 addict.toggle(explosion_other_net_list, "Explosion Blamed", {"explosionblamed"}, "", function(state)
-explosion.blamed = state
-end)
+    config.explosion_other_net_list.explosionblamed = state
+    explosion.blamed = state
+end, config.explosion_other_net_list.explosionblamed)
 
 addict.toggle(explosion_other_net_list, "Explosion Audible", {"explosionaudible"}, "", function(state)
-explosion.audible = state
-end, true)
+    config.explosion_other_net_list.explosionaudible = state
+    explosion.audible = state
+end, config.explosion_other_net_list.explosionaudible)
 
 addict.toggle(explosion_other_net_list, "Explosion Visible", {"explosionvisible"}, "", function(state)
-explosion.visible = state
-end, true)
+    config.explosion_other_net_list.explosionvisible = state
+    explosion.visible = state
+end, config.explosion_other_net_list.explosionvisible)
 
 addict.toggle(explosion_other_net_list, "Explosion Damage", {"explosiondamage"}, "If Explosion Blamed is on, turning this off won't have any effect.", function(state)
-explosion.damage = state
+    config.explosion_other_net_list.explosiondamage = state
+    explosion.damage = state
 end)
-end, true)
+end, config.explosion_other_net_list.explosiondamage)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -3296,7 +3338,7 @@ local resource_dir = filesystem.resources_dir()
 if not filesystem.exists(resource_dir) then
 util.toast("resource directory not found. notification system will be less of a bruh")
 else
-util.register_file(resource_dir .. "bruhzowski.ytd")
+util.register_file(resource_dir .. "addictscript/bruhzowski.ytd")
 end
 
 local version = 16
@@ -18849,21 +18891,38 @@ WEAPON.ADD_AMMO_TO_PED(ped, weaphash, 9999)
 end
 end)
 
-addict.toggle(frienm,"Commend Spam", {}, "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.", function(on)
-spam = on
-while spam do
-if pid ~= players.user() then
-addict.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
-addict.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
-end
-util.yield()
-end
-end, nil, nil, COMMANDPERM_FRIENDLY)
+addict.toggle(
+    frienm,
+    "Commend Spam",
+    {},
+    "Sends all types of commends its good for a player if they have been reported alot, may lag your game when in progress.",
+    function(on)
+        spam = on
+        while spam do
+            if pid ~= players.user() then
+                addict.trigger_commands("commendfriendly " .. PLAYER.GET_PLAYER_NAME(pid))
+                addict.trigger_commands("commendhelpful " .. PLAYER.GET_PLAYER_NAME(pid))
+            end
+            util.yield()
+        end
+    end,
+    nil,
+    COMMANDPERM_FRIENDLY
+)
 
-addict.action(frienm, "Send Friend Request", {"sendfriend"}, "", function()
-addict.show_command_box("historynote " .. PLAYER.GET_PLAYER_NAME(pid) .. "Friends List")
-addict.show_command_box("befriend " .. PLAYER.GET_PLAYER_NAME(pid))
-end, nil, nil, COMMANDPERM_FRIENDLY)
+addict.action(
+    frienm,
+    "Send Friend Request",
+    {"sendfriend"},
+    "",
+    function()
+        addict.show_command_box("historynote " .. PLAYER.GET_PLAYER_NAME(pid) .. "Friends List")
+        addict.show_command_box("befriend " .. PLAYER.GET_PLAYER_NAME(pid))
+    end,
+    nil,
+    nil,
+    COMMANDPERM_FRIENDLY
+)
 
 addict.action(addict.player_root(pid), "Spectate", {"spec"}, "", function()
 if pids == PLAYER.PLAYER_ID() then
@@ -27573,143 +27632,211 @@ local values = {
 
 
 addict.toggle_loop(self_protections, "Admin Bail", {}, "If it detects an R* admin it changes your session.", function(on)
-bailOnAdminJoin = on
+    bailOnAdminJoin = on
 end)
 
 if bailOnAdminJoin then
-if players.is_marked_as_admin(player_id) then
-util.toast(players.get_name(player_id) .. " If there is an admin, for another session.")
-addict.trigger_commands("quickbail")
-return
-end
+    if players.is_marked_as_admin(player_id) then
+        util.toast(players.get_name(player_id) .. " If there is an admin, for another session.")
+        addict.trigger_commands("quickbail")
+        return
+    end
 end
 
-addict.toggle_loop(self_protections, "Block PFTX/Particulate Lag", {}, "", function()
-local coords = ENTITY.GET_ENTITY_COORDS(players.user_ped() , false);
-GRAPHICS.REMOVE_PARTICLE_FX_IN_RANGE(coords.x, coords.y, coords.z, 400)
-GRAPHICS.REMOVE_PARTICLE_FX_FROM_ENTITY(players.user_ped())
-end)
+addict.toggle_loop(
+    self_protections,
+    "Block PFTX/Particulate Lag",
+    {},
+    "",
+    function()
+        local coords = ENTITY.GET_ENTITY_COORDS(players.user_ped(), false)
+        GRAPHICS.REMOVE_PARTICLE_FX_IN_RANGE(coords.x, coords.y, coords.z, 400)
+        GRAPHICS.REMOVE_PARTICLE_FX_FROM_ENTITY(players.user_ped())
+    end
+)
 
-
-addict.toggle_loop(self_protections, "Ghost PvP Players", {}, "", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-if PLAYER.IS_PLAYER_FREE_AIMING(pid) then
-NETWORK.SET_REMOTE_PLAYER_AS_GHOST(pid, true)
-else
-NETWORK.SET_REMOTE_PLAYER_AS_GHOST(pid, false)
-end
-end
-end)
+addict.toggle_loop(
+    self_protections,
+    "Ghost PvP Players",
+    {},
+    "",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            if PLAYER.IS_PLAYER_FREE_AIMING(pid) then
+                NETWORK.SET_REMOTE_PLAYER_AS_GHOST(pid, true)
+            else
+                NETWORK.SET_REMOTE_PLAYER_AS_GHOST(pid, false)
+            end
+        end
+    end
+)
 
 local detections = addict.list(addict.my_root(), "Modder Detections", {}, "")
 
 --[[
-addict.toggle_loop(detections, "Get IP's", {}, "Log's IP's", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local print_ip = players.get_connect_ip(pid)
-if print_ip == util.joaat(print_ip) then
-util.draw_debug_text(players.get_connect_ip(pid) .. "(" .. print_ip .. ")")
-util.log(players.get_name(pid) .. "(" .. print_ip .. ")")
-end
-end
-end)
+addict.toggle_loop(
+    detections,
+    "Get IP's",
+    {},
+    "Log's IP's",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local print_ip = players.get_connect_ip(pid)
+            if print_ip == util.joaat(print_ip) then
+                util.draw_debug_text(players.get_connect_ip(pid) .. "(" .. print_ip .. ")")
+                util.log(players.get_name(pid) .. "(" .. print_ip .. ")")
+            end
+        end
+    end
+)
 
-addict.toggle_loop(detections, "Focused in the addict", {}, "Detects stuff", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local focused = players.get_focused(pid)
-if focused == util.joaat(focused) then
-util.draw_debug_text(players.get_name(pid) .. " name is focused in the addict")
-end
-end
-end)
+addict.toggle_loop(
+    detections,
+    "Focused in the addict",
+    {},
+    "Detects stuff",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local focused = players.get_focused(pid)
+            if focused == util.joaat(focused) then
+                util.draw_debug_text(players.get_name(pid) .. " name is focused in the addict")
+            end
+        end
+    end
+)
 
-addict.toggle_loop(detections, "Rockstar id", {}, "Detects stuff", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local rockstar_id = players.get_rockstar_id(pid)
-if rockstar_id == util.joaat(rockstar_id) then
-util.draw_debug_text(players.get_name(players.get_rockstar_id(pid)) .. " Rockstar id")
-end
-end
-end)
+addict.toggle_loop(
+    detections,
+    "Rockstar id",
+    {},
+    "Detects stuff",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local rockstar_id = players.get_rockstar_id(pid)
+            if rockstar_id == util.joaat(rockstar_id) then
+                util.draw_debug_text(players.get_name(players.get_rockstar_id(pid)) .. " Rockstar id")
+            end
+        end
+    end
+)
 
-addict.toggle_loop(detections, "Get money", {}, "Detects stuff", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local get_bank = players.get_bank(pid)
-if get_bank == util.joaat(get_bank) then
-util.draw_debug_text(players.get_name(players.get_bank(pid)) .. " Get money")
-end
-end
-end)
+addict.toggle_loop(
+    detections,
+    "Get money",
+    {},
+    "Detects stuff",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local get_bank = players.get_bank(pid)
+            if get_bank == util.joaat(get_bank) then
+                util.draw_debug_text(players.get_name(players.get_bank(pid)) .. " Get money")
+            end
+        end
+    end
+)
 
-addict.toggle_loop(detections, "Player is using controller", {}, "Detects stuff", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local is_using_controller = players.is_using_controller(pid)
-if is_using_controller == util.joaat(is_using_controller) then
-util.draw_debug_text(players.get_name(players.is_using_controller(pid)) .. " Player is using controller")
-end
-end
-end)
+addict.toggle_loop(
+    detections,
+    "Player is using controller",
+    {},
+    "Detects stuff",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local is_using_controller = players.is_using_controller(pid)
+            if is_using_controller == util.joaat(is_using_controller) then
+                util.draw_debug_text(
+                    players.get_name(players.is_using_controller(pid)) .. " Player is using controller"
+                )
+            end
+        end
+    end
+)
 ]]
 
 local auto_punish = addict.list(detections, "Aim Punishments", {}, "")
-
 local aim_det = addict.list(detections, "Aim Detection", {}, "")
-
 local autohost = addict.list(detections, "Host Detection", {}, "")
 
-addict.toggle_loop(aim_det, "Aim Detection", {}, "Detects if someone is aiming a weapon at you.", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-for i, hash in ipairs(all_weapons) do
-local weapon_hash = util.joaat(hash)
-if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-else
-util.yield(100)
-end
-end
-end
-end)
+addict.toggle_loop(
+    aim_det,
+    "Aim Detection",
+    {},
+    "Detects if someone is aiming a weapon at you.",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+                local weapon_hash = util.joaat(hash)
+                if
+                    PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and
+                        PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash)
+                 then
+                    util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                else
+                    util.yield(100)
+                end
+            end
+        end
+    end
+)
 
-addict.toggle_loop(auto_punish, "Auto Snipe", {}, "Detects if someone is aiming a weapon at you, then shoots them back them.", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-for i, hash in ipairs(all_weapons) do
-local weapon_hash = util.joaat(hash)
-if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-addict.trigger_commands("osnipel" .. players.get_name(pid))
-util.yield(1000)
-addict.trigger_commands("osnipel" .. players.get_name(pid))
-util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-else
-util.yield(100)
-end
-end
-end
-end)
+addict.toggle_loop(
+    auto_punish,
+    "Auto Snipe",
+    {},
+    "Detects if someone is aiming a weapon at you, then shoots them back them.",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+                local weapon_hash = util.joaat(hash)
+                if
+                    PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and
+                        PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash)
+                 then
+                    addict.trigger_commands("osnipel" .. players.get_name(pid))
+                    util.yield(1000)
+                    addict.trigger_commands("osnipel" .. players.get_name(pid))
+                    util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                else
+                    util.yield(100)
+                end
+            end
+        end
+    end
+)
 
-addict.toggle_loop(auto_punish, "Auto Firework", {}, "Detects if someone is aiming a weapon at you, then shoots fireworks at them.", function()
-for _, pid in ipairs(players.list(false, true, true)) do
-local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-for i, hash in ipairs(all_weapons) do
-local weapon_hash = util.joaat(hash)
-if PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash) then
-addict.trigger_commands("fireworkon" .. players.get_name(pid))
-util.yield(1000)
-addict.trigger_commands("fireworkon" .. players.get_name(pid))
-util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
-else
-util.yield(100)
-end
-end
-end
-end)
+addict.toggle_loop(
+    auto_punish,
+    "Auto Firework",
+    {},
+    "Detects if someone is aiming a weapon at you, then shoots fireworks at them.",
+    function()
+        for _, pid in ipairs(players.list(false, true, true)) do
+            local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+            for i, hash in ipairs(all_weapons) do
+                local weapon_hash = util.joaat(hash)
+                if
+                    PLAYER.IS_PLAYER_FREE_AIMING(pid, ped, weapon_hash) and
+                        PLAYER.IS_PLAYER_TARGETTING_ENTITY(pid, ped, weapon_hash)
+                 then
+                    addict.trigger_commands("fireworkon" .. players.get_name(pid))
+                    util.yield(1000)
+                    addict.trigger_commands("fireworkon" .. players.get_name(pid))
+                    util.draw_debug_text(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.toast(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                    util.log(players.get_name(pid) .. " Is Aiming A Weapon" .. "(" .. hash .. ")")
+                else
+                    util.yield(100)
+                end
+            end
+        end
+    end
+)
 
 addict.toggle_loop(auto_punish, "Auto Atomizer", {}, "Detects if someone is aiming a weapon at you, then shoots atomizer at them.", function()
 for _, pid in ipairs(players.list(false, true, true)) do
@@ -28126,26 +28253,39 @@ end
 end
 end)
 
---------------------------------------
+addict.action(
+    addict.my_root(),
+    "Yeet",
+    {"ye"},
+    "Instantly sending yourself to desktop.",
+    function()
+        MISC.QUIT_GAME() -- os.exit() not working/gone?
+    end
+)
 
-addict.action(addict.my_root(), "Yeet", {"ye"}, "Instantly sending yourself to desktop.", function()
-MISC.QUIT_GAME() -- os.exit() not working?
-end)
-
-addict.action(addict.my_root(), "Yeet Roulette", {"yeetroulette"}, "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.", function()
-local pick = math.random(6)
-if pick == 4 then
-util.toast("I loose.")
-PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
-util.yield(300)
-MISC.QUIT_GAME() -- os.exit() not working?
-else
-util.toast("Lucky Bastard ;)")
-PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
-util.yield(200)
-PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
-end
-end, nil, nil, COMMANDPERM_AGGRESSIVE)
+addict.action(
+    addict.my_root(),
+    "Yeet Roulette",
+    {"yeetroulette"},
+    "Take a chance by instantly sending yourself to desktop or use the Restart GTA V Option.",
+    function()
+        local pick = math.random(6)
+        if pick == 4 then
+            lan("I loose.")
+            PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
+            util.yield(300)
+            MISC.QUIT_GAME() -- os.exit() not working/gone?
+        else
+            lan("Lucky Bastard ;)")
+            PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
+            util.yield(200)
+            PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
+        end
+    end,
+    nil,
+    nil,
+    COMMANDPERM_AGGRESSIVE
+)
 
 addict.action(addict.my_root(), "Restart GTA V", {"restartgta"}, "Restarts your game, closes it Online. You will need to reinject (duh).", function(on_click)
 MISC.RESTART_GAME()
@@ -28778,7 +28918,7 @@ SCRIPT_BRANCH_NAMES = {{"jackzscript"},{"dev"},{"release"}}
 -- SOURCE CODE: https://github.com/Jackzmc/lua-scripts
 SCRIPT = "actions"
 VERSION = "1.10.10"
-ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/addict_actions/animations.txt"
+ANIMATIONS_DATA_FILE = filesystem.resources_dir() .. "/addictscript/addict_actions/animations.txt"
 ANIMATIONS_DATA_FILE_VERSION = "1.0"
 SPECIAL_ANIMATIONS_DATA_FILE_VERSION = "1.0.0" -- target version of addict_action
 
@@ -29060,14 +29200,14 @@ end
 end
 return iter
 end
-status = pcall(require, 'resources/addict_actions/addict_action')
+status = pcall(require, 'resources/addictscript/addict_actions/addict_action')
 if not status then
-util.toast("Failed to load resource file: addict_actions/addict_action.lua")
+util.toast("Failed to load resource file: addictscript/addict_actions/addict_action.lua")
 util.stop_script()
 end
 if ANIMATION_DATA_VERSION ~= SPECIAL_ANIMATIONS_DATA_FILE_VERSION then
 if SCRIPT_SOURCE == "MANUAL" then
-download_resources_update("addict_actions/addict_action.min.lua", "addict_actions/addict_action.lua")
+download_resources_update("addictscript/addict_actions/addict_action.min.lua", "addictscript/addict_actions/addict_action.lua")
 util.toast("Restart script to use updated resource file")
 else
 util.toast("addict_actions: Warn: Outdated or missing addict_action. Version: " .. (ANIMATION_DATA_VERSION or "<missing>"))
@@ -29486,7 +29626,7 @@ end
 function download_animation_data()
 local loading = true
 show_busyspinner("Downloading animation data")
-async_http.init("jackz.me", "/stand/resources/addict_actions/animations.txt", function(result)
+async_http.init("jackz.me", "/stand/resources/addictscript/addict_actions/animations.txt", function(result)
 local file = io.open(ANIMATIONS_DATA_FILE, "w")
 file:write(result:gsub("\r", ""))
 file:close()
@@ -30122,20 +30262,25 @@ end)
 
 enabled = false
 addict.toggle(bountyloop, "Infinite bountys Loop", {"infinibounty"}, "Places a 10k bounty on the entire session again and again.", function(on)
-if on then
-enabled = true
-else
-enabled = false
-end
+    if on then
+        enabled = true
+    else
+        enabled = false
+    end
 end, false)
 
-while true do
-if enabled then
-addict.trigger_commands("bountyall 10000")
-end
-util.yield(1000)
-end
+addict.action(addict.my_root(), "Save Config", {"saveconfig"}, "Saves the current State of your Options to the Config File", function()
+    ini.save(conFile, config)
+end)
 
 util.on_stop(function()
-    util.log("Later pussy (Yawn)")
+    lan("Later pussy (Yawn)")
 end)
+
+while true do
+    if enabled then
+        addict.trigger_commands("bountyall 10000")
+    end
+
+    util.yield(1000)
+end
