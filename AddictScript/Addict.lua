@@ -8,7 +8,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.47
+local addict_version = 1.48
 local gta_version = "v3095"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
@@ -2040,7 +2040,7 @@ local xptr, yptr = memory.alloc(4), memory.alloc(4)
 GRAPHICS.GET_ACTUAL_SCREEN_RESOLUTION(xptr, yptr)
 local x, y = tonumber(memory.read_int(xptr)), tonumber(memory.read_int(yptr))
 
-local purchase = function(offsets=nil)
+local purchase = function(offsets=0)
 offsets = offsets or {selection=0, first_buy=0, second_buy=0, third_buy=0}
 MOVE_CURSOR(0.69, 0.58, 300, true) -- select the nightclub
 MOVE_CURSOR(0.30, 0.73, 300, true) -- press the first buy button
@@ -2061,7 +2061,7 @@ local xptr, yptr = memory.alloc(4), memory.alloc(4)
 GRAPHICS.GET_ACTUAL_SCREEN_RESOLUTION(xptr, yptr)
 local x, y = tonumber(memory.read_int(xptr)), tonumber(memory.read_int(yptr))
 
-local purchase = function(offsets=nil)
+local purchase = function(offsets=0)
 offsets = offsets or {selection=0, first_buy=0, second_buy=0, third_buy=0}
 MOVE_CURSOR(0.64, 0.51, 300, true) -- select the nightclub
 MOVE_CURSOR(0.30, 0.73, 300, true) -- press the first buy button
@@ -2082,7 +2082,7 @@ local xptr, yptr = memory.alloc(4), memory.alloc(4)
 GRAPHICS.GET_ACTUAL_SCREEN_RESOLUTION(xptr, yptr)
 local x, y = tonumber(memory.read_int(xptr)), tonumber(memory.read_int(yptr))
 
-local purchase = function(offsets=nil)
+local purchase = function(offsets=0)
 offsets = offsets or {selection=0, first_buy=0, second_buy=0, third_buy=0}
 MOVE_CURSOR(0.479, 0.54, 300, true) -- select the nightclub
 MOVE_CURSOR(0.30, 0.73, 300, true) -- press the first buy button
@@ -2306,30 +2306,24 @@ end
 end
 
 local function get_property_names(property)
-switch property do
-case "Nightclub":
-local names = {}
-for name, id in pairs(property_ids.nightclubs) do
-table.insert(names, name)
-end
-return names
-break
-case "Arcade": return {} break
-case "Autoshop": return {} break
-case "Agency": return {} break
-case "Hanger": return {} break
-case "Facility": return {} break
-default: return {} break
-end
+    local names = {}
+    
+    if property == "Nightclub" then
+        for name, id in pairs(property_ids.nightclubs) do
+            table.insert(names, name)
+        end
+    end
+    
+    return names
 end
 
 local show_usage = {
-nightclub = os.time(),
-arcade = os.time(),
-autoshop = os.time(),
-agency = os.time(),
-hanger = os.time(),
-facility = os.time(),
+    nightclub = os.time(),
+    arcade = os.time(),
+    autoshop = os.time(),
+    agency = os.time(),
+    hanger = os.time(),
+    facility = os.time(),
 }
 
 local usage_timer = 20
@@ -2356,16 +2350,16 @@ local ref =  addict.ref_by_rel_path(items.presets.nightclub.root, "Enable")
 local value = convert_value(options[items.presets.nightclub.choice.value])
 
 if settings.ownership_check then
-if not is_owned(stats.nightclub_owned) then
-ref.value = false
-util.toast("[Recovery]: You do not own a nightclub")
-return
-end
+    if not is_owned(stats.nightclub_owned) then
+        ref.value = false
+        util.toast("[Recovery]: You do not own a nightclub")
+        return
+    end
 end
 
 if not STATS.STAT_SET_INT(stats.nightclub, ((value * 2) + 4500000), true) then
-ref.value = false
-util.toast("[Recovery]: Failed to set nightclub trade-in price")
+    ref.value = false
+    util.toast("[Recovery]: Failed to set nightclub trade-in price")
 end
 
 if show_usage.nightclub - os.time() <= 0 then

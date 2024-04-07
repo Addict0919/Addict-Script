@@ -1,8 +1,6 @@
 ________________________
-v1.47
-[+] Added Config System (for selected options & only a few for now) // Credits to WiriScript
-[+] Addded 'Save Config' Button
-[!] Fixed Error when loading Addicted
+v1.48
+[!] Fixed Loading Issue
 [!] Code Cleanup
 ________________________
 
