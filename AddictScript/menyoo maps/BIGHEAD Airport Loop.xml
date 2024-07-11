@@ -13,9 +13,9 @@
 	<TimecycleModifier strength="1"></TimecycleModifier>
 	<StartTaskSequencesOnLoad>false</StartTaskSequencesOnLoad>
 	<ReferenceCoords>
-		<X>-1136.3607177734</X>
-		<Y>-2194.8708496094</Y>
-		<Z>12.442905426025</Z>
+		<X>-1199.56079</X>
+		<Y>-2302.15698</Y>
+		<Z>13.9445648</Z>
 	</ReferenceCoords>
 	<Placement>
 		<ModelHash>0x0df3d3a7</ModelHash>

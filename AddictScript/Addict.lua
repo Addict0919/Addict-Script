@@ -8,8 +8,8 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.48
-local gta_version = "v3095"
+local addict_version = 1.49
+local gta_version = "v3258"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
 
@@ -127,6 +127,7 @@ end
 
 local github = addict.list(addict.my_root(), "Updates", {"addictupdates"})
 addict.hyperlink(github, "Addict Discord", "https://discord.gg/" .. dcinv)
+addict.hyperlink(github, "View full Changelog on GitHub", "https://raw.githubusercontent.com/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog")
 
 async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptChangelog",function(text)
     addict.action(github, "Changelog", {"addictchangelog"}, text, function() end)
@@ -1664,65 +1665,68 @@ end, config.explosion_other_net_list.explosiondamage)
 
 Recovery = addict.list(addict.my_root(), "Recovery", {}, "Open Musiness Banager > Special Cargo (Tick all apart from AFK Loop) Then start this cargo loop.", function(); end)
 
-addict.toggle(Recovery, "Money Drop All", {"cashloopall"}, "Money drops all players", function()
-for _, pid in players.list(false, true, true) do
-    local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
-    local pos = players.get_position(pid)
-    if ENTITY.DOES_ENTITY_EXIST(ped) then
-        addict.trigger_commands("cashloop " .. players.get_name(pid))
+addict.toggle(Recovery, "Money Drop All", {"cashloopall"}, "Money drops all players", function(state)
+    config.recovery.cashloopall = state
+    for _, pid in players.list(false, true, true) do
+        local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid)
+        local pos = players.get_position(pid)
+        if ENTITY.DOES_ENTITY_EXIST(ped) then
+            addict.trigger_commands("cashloop " .. players.get_name(pid))
+        end
     end
-end
-end)
+end, config.recovery.cashloopall)
 
 addict.toggle_loop(Recovery, "Popularity Loop", {"popularityloop"}, "Toggles the Nightclub popularity loop to always keep it at 100% every second.",function()
-local popularity_loop_command_ref = addict.ref_by_path("Online>Quick Progress>Nightclub Popularity>Set Nightclub Popularity", 38)
-addict.trigger_command(popularity_loop_command_ref, 100)
-util.yield(1000)
+    local popularity_loop_command_ref = addict.ref_by_path("Online>Quick Progress>Nightclub Popularity>Set Nightclub Popularity", 38)
+    addict.trigger_command(popularity_loop_command_ref, 100)
+    util.yield(1000)
 end)
 
 Ped_Cash = addict.list(Recovery, "Ped Cash", {}, "", function(); end)
 
 addict.divider(Ped_Cash, "Ped Cash")
 
-addict.toggle(Ped_Cash, "Ped Cash Boost", {"pedboost"}, "Enable the modifcation of ped cash dropped. You may crash after 1 minute using it offline.", function()
-local _peds = entities.get_all_peds_as_handles()
-for i, _ped in pairs(_peds) do
-    if _ped and not PED.IS_PED_A_PLAYER(_ped) then
-        PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
-        PED.SET_PED_MONEY(_ped, 2000)
-    else
-        PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
-        PED.SET_PED_MONEY(_ped, 2000)
+addict.toggle(Ped_Cash, "Ped Cash Boost", {"pedboost"}, "Enable the modifcation of ped cash dropped. You may crash after 1 minute using it offline.", function(state)
+    config.recovery.pedboost = state
+    local _peds = entities.get_all_peds_as_handles()
+    for i, _ped in pairs(_peds) do
+        if _ped and not PED.IS_PED_A_PLAYER(_ped) then
+            PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
+            PED.SET_PED_MONEY(_ped, 2000)
+        else
+            PED.SET_AMBIENT_PEDS_DROP_MONEY(true)
+            PED.SET_PED_MONEY(_ped, 2000)
+        end
     end
-end
-end)
+end, config.recovery.pedboost)
 
 
-addict.toggle(Ped_Cash, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function (on_toggle)
-if on_toggle then
-    local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
-    addict.trigger_command(AnyPickUp)
-    local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
-    addict.trigger_command(CashPickUp)
-    addict.trigger_commands("bealone")
-    addict.trigger_commands("levitate")
-    addict.trigger_commands("supercloop")
-    addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
-    addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-    addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
-else
-    local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
-    addict.trigger_command(AnyPickUp)
-    local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
-    addict.trigger_command(CashPickUp)
-    addict.trigger_commands("levitate")
-    addict.trigger_commands("supercloop")
-    addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
-    addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
-    addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
-    addict.trigger_commands("superc")
-end
-end)
+addict.toggle(Ped_Cash, "Ped Cash", {"pedcashalone"}, "Warning! Do not know if this is safe.", function(on_toggle)
+    config.recovery.pedcashalone = on_toggle
+    if on_toggle then
+        local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
+        addict.trigger_command(AnyPickUp)
+        local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
+        addict.trigger_command(CashPickUp)
+        addict.trigger_commands("bealone")
+        addict.trigger_commands("levitate")
+        addict.trigger_commands("supercloop")
+        addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
+    else
+        local AnyPickUp = addict.ref_by_path("Online>Protections>Pickups>Any Pickup Collected>Block")
+        addict.trigger_command(AnyPickUp)
+        local CashPickUp = addict.ref_by_path("Online>Protections>Pickups>Cash Pickup Collected>Block")
+        addict.trigger_command(CashPickUp)
+        addict.trigger_commands("levitate")
+        addict.trigger_commands("supercloop")
+        addict.trigger_commands("writherpeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("toggletppeds" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("yoinkpickuploop" .. PLAYER.GET_PLAYER_NAME(pid))
+        addict.trigger_commands("superc")
+    end
+end, config.recovery.pedcashalone)
 
 taximoney = addict.list(Recovery, "Auto TP to Taxi Pickup", {}, "", function(); end)
 
@@ -1782,8 +1786,8 @@ memory.write_int(veh, bitfield | 0xC)
 end)
 
 addict.toggle_loop(Mors_Mutual, "Auto Add Insurance", {"autoaddins"}, "Automatically Insures your vehicle for free.", function()
-addict.trigger_commands("addins")
-util.yield(1000)
+    addict.trigger_commands("addins")
+    util.yield(1000)
 end)
 
 addict.toggle_loop(Mors_Mutual, "Auto Gift You're Vehicle", {"autogiveme"}, "Allows you to drive any vehicle into your garage.", function()
@@ -1878,9 +1882,9 @@ memory.write_int(memory.script_global(glob.base + 18949), capacity)
 end)
 
 addict.toggle(acidlabmanager, "Make Supplies Free", {"supplycost"}, "", function()
-memory.write_int(memory.script_global(glob.base + 21869), 0)
+    memory.write_int(memory.script_global(glob.base + 21869), 0)
 end, function()
-memory.write_int(memory.script_global(glob.base + 21869), 60000)
+    memory.write_int(memory.script_global(glob.base + 21869), 60000)
 end)
 
 addict.toggle(acidlabmanager, "Increase Production Speed", {"increaseproductionspeed"}, "", function()
@@ -18240,7 +18244,6 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 crash = addict.list(addict.player_root(pid), "Crashes", {}, "Addict Crash", function(); end)
-
 kick = addict.list(addict.player_root(pid), "Kicks", {}, "Network Bail", function(); end)
 
 addict.action(kick, "Blast Kick", {"blast"}, "Blocks the player join reaction then uses kick.", function()
@@ -27523,36 +27526,52 @@ return
 end
 end)
 
-addict.toggle_loop(self_protections, "Auto Kick Modders", {}, "", function()
-    for _, pid in ipairs(players.list(false, true, true)) do
-        if players.is_marked_as_modder(pid) then
-            if not NETWORK.NETWORK_IS_FRIEND(pid_to_handle(pid)) then
-                addict.trigger_commands("blast" .. players.get_name(pid))
-                lan("Tried Auto Kicking Modder: " .. players.get_name(pid))
+addict.toggle(self_protections, "Auto Kick Modder", {"autokickmodder"}, "", function(on_toggle)
+    config.self_protections.autokickmodder = on_toggle
+    if on_toggle then
+        for _, pid in ipairs(players.list(false, true, true)) do
+            if players.is_marked_as_modder(pid) then
+                if not NETWORK.NETWORK_IS_FRIEND(pid_to_handle(pid)) then
+                    addict.trigger_commands("smartkick" .. players.get_name(pid))
+                    lan("Tried Auto Kicking Modder: " .. players.get_name(pid))
+                end
             end
         end
     end
 
-    util.yield(15000)
-end)
+    util.yield(15000) -- Interval we Scan for Modders
+end, config.self_protections.autokickmodder)
 
-addict.toggle_loop(self_protections, "Force Stop all sound events", {"stopsounds"}, "", function()
-for i=-1,100 do
-AUDIO.STOP_SOUND(i)
-AUDIO.RELEASE_SOUND_ID(i)
-end
-end)
+addict.toggle_loop(
+    self_protections,
+    "Force Stop all sound events",
+    {"stopsounds"},
+    "",
+    function()
+        for i = -1, 100 do
+            AUDIO.STOP_SOUND(i)
+            AUDIO.RELEASE_SOUND_ID(i)
+        end
+    end
+)
 
-addict.toggle(self_protections, "Toggle Block all Network Events", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
-local BlockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
-local UnblockNetEvents = addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
-if on_toggle then
-addict.trigger_command(BlockNetEvents)
-else
-addict.trigger_command(UnblockNetEvents)
-end
-end)
-
+addict.toggle(
+    self_protections,
+    "Toggle Block all Network Events",
+    {},
+    "This breaks the game, so only leave it on if you are worried about an incoming modder attack",
+    function(on_toggle)
+        local BlockNetEvents =
+            addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Enabled")
+        local UnblockNetEvents =
+            addict.ref_by_path("Online>Protections>Events>Raw Network Events>Any Event>Block>Disabled")
+        if on_toggle then
+            addict.trigger_command(BlockNetEvents)
+        else
+            addict.trigger_command(UnblockNetEvents)
+        end
+    end
+)
 
 addict.toggle(self_protections, "Toggle Block all Incoming Syncs", {}, "This breaks the game, so only leave it on if you are worried about an incoming modder attack", function(on_toggle)
 local BlockIncSyncs = addict.ref_by_path("Online>Protections>Syncs>Incoming>Any Incoming Sync>Block>Enabled")
