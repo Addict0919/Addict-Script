@@ -8,8 +8,8 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.49
-local gta_version = "v3258"
+local addict_version = 1.50
+local gta_version = "v3274"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
 
@@ -28331,7 +28331,7 @@ else
 configfile = io.open(filesystem.store_dir().."chat_translator//config.txt")
 configfiledata = configfile:read("*all")
 configfile:close()
-load(configfiledata)()
+--load(configfiledata)
 end
 
 util.ensure_package_is_installed("lua/ScaleformLib")
