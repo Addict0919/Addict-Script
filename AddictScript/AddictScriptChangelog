@@ -1,6 +1,7 @@
 ________________________
-v1.50
-[!] Updated to v3274 (1.69)
+v1.51
+[!] "Fixed loading issue"
+[-] Temp removed Auto Updater & everything related to load()
 ________________________
 
 Report any Bugs/Broken features on the Discord

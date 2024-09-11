@@ -8,7 +8,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.50
+local addict_version = 1.51
 local gta_version = "v3274"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
@@ -137,21 +137,22 @@ async_http.dispatch()
 repeat util.yield()
 until response
 
+--[[
 if not dev_mode then
     async_http.init("raw.githubusercontent.com","/Addict0919/Addict-Script/main/AddictScript/AddictScriptVersion",function(b)
     currentVer=tonumber(b)
     response=true;
     if addict_version~=currentVer then
-        util.toast("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
+        lan("New Version found")async_http.init('raw.githubusercontent.com','/Addict0919/Addict-Script/main/AddictScript/Addict.lua',function(c)
         local d=select(2,load(c))
         if d then
-            util.toast("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
+            lan("Update failed to download, please re-download manually via Github or using Addict Discord Server.")
             return
             end;
             local e=io.open(filesystem.scripts_dir()..SCRIPT_RELPATH,"wb")
             e:write(c)
             e:close()
-            util.toast("Update Done!")
+            lan("Update Done!")
             util.restart_script()
             end)
             async_http.dispatch()
@@ -164,6 +165,7 @@ if not dev_mode then
     repeat util.yield()
     until response
 end
+]]
 
 -- Memory Functions
 
