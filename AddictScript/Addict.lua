@@ -8,7 +8,7 @@ util.require_natives("natives-1663599433")
 guidedMissile = require "ToxTool"
 
 local addict = menu
-local addict_version = 1.51
+local addict_version = 1.52
 local gta_version = "v3274"
 local dcinv = "fg6Ex4PbkJ"
 local dev_mode = false -- Disables stuff like updates [true/false]
@@ -1765,6 +1765,7 @@ end
 end)
 end)
 
+--[[
 Mors_Mutual = addict.list(Recovery, "Mors Mutual", {"morsmutual"}, "", function(); end)
 
 addict.divider(Mors_Mutual, "Vehicle Gifting")
@@ -1874,7 +1875,7 @@ addict.toggle_loop(Mors_Mutual, "Auto Claim Personal Vehicle", {"autoclaimperson
 addict.trigger_commands("claimpersonal")
 util.yield(1000)
 end, true)
-
+]]
 
 acidlabmanager = addict.list(Recovery, "Acid Lab Manager", {}, "", function(); end)
 
@@ -28669,7 +28670,7 @@ addict.trigger_command(Clear_Minimap_Notifs)
 util.yield(1000)
 end)
 
-addict.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"}, "Automatically accept join screens and transaction errors.", function()
+--[[addict.toggle_loop(Net_Shit, "Accept Joins & Transaction Errors!", {"accepterrors"}, "Automatically accept join screens and transaction errors.", function()
 local mess_hash = HUD.GET_WARNING_SCREEN_MESSAGE_HASH()
 if mess_hash == -896436592 then
 util.toast("This player left the session.")
@@ -28696,6 +28697,7 @@ PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 201, 1.0)
 util.yield(200)
 end
 end, true)
+]]
 
 menu.toggle_loop(Net_Shit, "Auto Host", {"autohost"}, "Great for basic and regular users.", function() -- Credits to funmenu
 if not (players.get_host() == PLAYER.PLAYER_ID()) and not util.is_session_transition_active() then
